@@ -1,0 +1,60 @@
+package simciv;
+
+import java.util.HashMap;
+
+import simciv.buildings.House;
+
+/**
+ * Associates Building classes to strings and
+ * allows constructing them from their names
+ * 
+ * @author Marc
+ * 
+ */
+public class BuildingList
+{
+	@SuppressWarnings("rawtypes")
+	private static HashMap<String,Class> stringToClassMapping = new HashMap<String,Class>();
+	@SuppressWarnings("rawtypes")
+	private static HashMap<Class,String> classToStringMapping = new HashMap<Class,String>();
+	
+	static
+	{
+		// Important : string names must reflect building class names
+		
+		addMapping(House.class, "House");
+	}
+
+	@SuppressWarnings("rawtypes")
+	private static void addMapping(Class buildingClass, String name)
+	{
+		stringToClassMapping.put(name, buildingClass);
+		classToStringMapping.put(buildingClass, name);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static Building createBuildingFromName(String s, World world)
+	{
+		Building b = null;
+		try
+		{
+			Class buildingClass = (Class) stringToClassMapping.get(s);
+			if(buildingClass != null)
+			{
+				b = (Building) buildingClass.getConstructor(new Class[]
+				{ World.class }).newInstance(new Object[]
+				{ world });
+			}
+		}
+		catch(Exception exception)
+		{
+			exception.printStackTrace();
+		}
+		return b;
+	}
+
+	public static String getBuildingString(Building b)
+	{
+		return (String) classToStringMapping.get(b.getClass());
+	}
+}
