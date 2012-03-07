@@ -41,7 +41,7 @@ public class CityBuilder
 	{
 		this.worldRef = worldRef;
 		setMode(MODE_BUILDING);
-		setBuildingString("House");
+		setBuildingString("FarmLand");
 		helpString = "Mode : [R]=roads, [B]=buildings, [E]=erase";
 	}
 	
@@ -102,13 +102,13 @@ public class CityBuilder
 
 				if(mode == MODE_BUILDING)
 				{
-					gfx.translate(pos.x, pos.y);
-					gfx.fillRect(0, 0, 1, 1);
+					gfx.translate(buildingPos.x, buildingPos.y);
+					gfx.fillRect(0, 0, building.getWidth(), building.getHeight());
 				}
 				else
 				{
-					gfx.translate(buildingPos.x, buildingPos.y);
-					gfx.fillRect(0, 0, building.getWidth(), building.getHeight());
+					gfx.translate(pos.x, pos.y);
+					gfx.fillRect(0, 0, 1, 1);
 				}
 				
 			gfx.popTransform();
@@ -162,7 +162,8 @@ public class CityBuilder
 	}
 	
 	/*
-	 * Actions
+	 * Actions :
+	 * (Later, they will cost money and/or resources)
 	 */
 	
 	private void placeRoad()

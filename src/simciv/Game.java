@@ -9,6 +9,7 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import simciv.buildings.FarmLand;
 import simciv.buildings.House;
 import simciv.units.Citizen;
 
@@ -70,6 +71,7 @@ public class Game extends StateBasedGame
 		Citizen.loadContent();
 		House.loadContent();
 		CityBuilder.loadContent();
+		FarmLand.loadContent();
 
 		// Initialize states
     	for(GameState state : states)

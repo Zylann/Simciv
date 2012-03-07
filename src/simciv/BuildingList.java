@@ -2,6 +2,7 @@ package simciv;
 
 import java.util.HashMap;
 
+import simciv.buildings.FarmLand;
 import simciv.buildings.House;
 
 /**
@@ -23,6 +24,7 @@ public class BuildingList
 		// Important : string names must reflect building class names
 		
 		addMapping(House.class, "House");
+		addMapping(FarmLand.class, "FarmLand");
 	}
 
 	@SuppressWarnings("rawtypes")
