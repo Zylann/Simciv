@@ -17,14 +17,14 @@ public class CityBuilder
  	private static Sound placeSound;
  	private static Sound eraseSound;
  	
- 	public static int MODE_ERASE = 0;
- 	public static int MODE_ROAD = 1;
- 	public static int MODE_BUILDING = 2;
- 	public static int MODE_COUNT = 3; // used to count modes
+ 	public static final int MODE_ERASE = 0;
+ 	public static final int MODE_ROAD = 1;
+ 	public static final int MODE_BUILDING = 2;
+ 	public static final int MODE_COUNT = 3; // used to count modes
 
  	// Map cursors
 	Vector2i pos = new Vector2i(); // current pointed cell
-	Vector2i lastPos = new Vector2i(); // last pointed cell
+	Vector2i lastPos = new Vector2i(); // last pointed cell (last cell change)
  	Vector2i lastClickPos = new Vector2i(); // last pointed cell on click
  	Vector2i buildingPos = new Vector2i();
  		 	
