@@ -1,7 +1,14 @@
 package simciv;
 
+/**
+ * A class for generating different kinds of noise (random numbers)
+ * depending on a seed and various parameters.
+ * @author Marc
+ *
+ */
 public class Noise
 {
+	// These values have been set at random.
 	private static final int RAND_SEQ_X = 72699;
 	private static final int RAND_SEQ_Y = 31976;
 	private static final int RAND_SEQ_SEED = 561;
@@ -9,6 +16,14 @@ public class Noise
 	private static final int RAND_SEQ2 = 98756;
 	private static final int RAND_SEQ3 = 423005601;
 	
+	/**
+	 * Generates a random value between 0 and 1.
+	 * The same parameters will return the same value.
+	 * @param x : X position
+	 * @param y : Y position
+	 * @param seed : random seed
+	 * @return value between 0 and 1.
+	 */
     public static float get(int x, int y, int seed)
     {
         int n = RAND_SEQ_X * x + RAND_SEQ_Y * y + RAND_SEQ_SEED * seed;

@@ -35,6 +35,12 @@ public abstract class Entity
 		return healthPoints;
 	}
 	
+	/**
+	 * Set the entity's position.
+	 * For buildings, it is used as the origin position.
+	 * @param x : X in map cells
+	 * @param y : Y in map cells
+	 */
 	public void setPosition(int x, int y)
 	{
 		posX = x;
@@ -56,12 +62,24 @@ public abstract class Entity
 		return nbTicks;
 	}
 	
+	/**
+	 * Increases the tick counter.
+	 * It must be called one time in tick() implementation.
+	 */
 	protected void increaseTicks()
 	{
 		nbTicks++;
 	}
 	
+	/**
+	 * Called regularly to make the entity "live" and execute its tasks.
+	 */
 	public abstract void tick();
 	
+	/**
+	 * Called to draw the entity
+	 * @param gfx
+	 */
 	public abstract void render(Graphics gfx);
 }
+
