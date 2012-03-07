@@ -15,8 +15,10 @@ Current features :
 Dependencies :
 
 	Slick2D library : http://slick.cokeandcode.com/
+	
+	Data files are needed to execute the game (see section below).
 
 Download data files :
-
-	<coming soon...>
+	
+	http://dl.dropbox.com/u/60408088/INFO/Simciv/data.zip
 
