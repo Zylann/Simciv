@@ -14,10 +14,7 @@ public class Map
 {
 	// Map layers :
 	// 2D access is made using (width * y + x).
-	byte terrain[];
-	byte roads[];
-	int buildings[];
-	//short plants[];
+	MapCell cells[];
 
 	int width;
 	int height;	
@@ -32,20 +29,13 @@ public class Map
 	{
 		renderGrid = false;
 
-		this.width = width;
-		this.height = height;
+		this.width = width > 0 ? width : 1;
+		this.height = height > 0 ? height : 1;
 		int area = getArea();
 		
-		terrain = new byte[area];
-		fillTerrain(Terrain.GRASS);
-		
-		roads = new byte[area];
+		cells = new MapCell[area];
 		for(int i = 0; i < area; i++)
-			roads[i] = -1;
-		
-		buildings = new int[area];
-		for(int i = 0; i < area; i++)
-			buildings[i] = -1;
+			cells[i] = new MapCell();
 	}
 	
 	/**
@@ -55,6 +45,11 @@ public class Map
 	public int getArea()
 	{
 		return width * height;
+	}
+	
+	private MapCell getCell(int x, int y)
+	{
+		return cells[width * y + x];
 	}
 	
 	/*
@@ -70,7 +65,7 @@ public class Map
 	public Terrain getTerrain(int x, int y)
 	{
 		if(contains(x, y))
-			return Terrain.get(terrain[width * y + x]);
+			return Terrain.get(getCell(x,y).terrainID);
 		else
 			return Terrain.get(Terrain.VOID);
 	}
@@ -84,7 +79,7 @@ public class Map
 	public void setTerrain(int x, int y, byte t)
 	{
 		if(contains(x, y))
-			terrain[width * y + x] = t;
+			getCell(x,y).terrainID = t;
 	}
 	
 	/**
@@ -95,7 +90,7 @@ public class Map
 	{
 		int size = getArea();
 		for(int i = 0; i < size; i++)
-			terrain[i] = value;
+			cells[i].terrainID = value;
 	}
 	
 	/*
@@ -104,21 +99,7 @@ public class Map
 	
 	public boolean isRoad(int x, int y)
 	{
-		return getRoad(x, y) != -1;
-	}
-	
-	/**
-	 * Get road index at (x,y).
-	 * @param x
-	 * @param y
-	 * @return road index. -1 if there are no road.
-	 */
-	private byte getRoad(int x, int y)
-	{
-		if(contains(x, y))
-			return roads[width * y + x];
-		else
-			return -1;
+		return getCell(x, y).isRoad();
 	}
 	
 	/**
@@ -130,7 +111,7 @@ public class Map
 	private void setRoad(int x, int y, byte i)
 	{
 		if(contains(x, y))
-			roads[width * y + x] = i;
+			getCell(x,y).road = i;
 	}
 	
 	/**
@@ -143,7 +124,7 @@ public class Map
 	{
 		if(canPlaceObject(x, y))
 		{
-			roads[width * y + x] = Road.getIndex(this, x, y);
+			getCell(x,y).road = Road.getIndex(this, x, y);
 			updateRoads(x, y);
 			return true;
 		}
@@ -213,7 +194,7 @@ public class Map
 		{
 			for(x = b.getX(); x <= xmax; x++)
 			{
-				buildings[width * y + x] = mark ? b.getID() : -1;
+				getCell(x,y).building = mark ? b.getID() : -1;
 			}
 		}
 		return true;
@@ -229,7 +210,7 @@ public class Map
 	{
 		if(contains(x, y))
 		{
-			return buildings[width * y + x];
+			return getCell(x,y).building;
 		}
 		return -1;
 	}
@@ -254,22 +235,14 @@ public class Map
 			for(x = range.minX; x <= range.maxX; x++)
 			{
 				if(contains(x, y))
-					renderCell(x, y, gfx);
+					getCell(x, y).render(x, y, gfx);
 			}
 		}
 		
 		if(renderGrid)
 			renderGrid(range.minX, range.minY, gc, gfx);
 	}
-	
-	private void renderCell(int x, int y, Graphics gfx)
-	{
-		getTerrain(x, y).render(gfx, x, y);
-
-		if(isRoad(x, y))
-			Road.render(roads[width * y + x], x, y, gfx);
-	}
-	
+		
 	private void renderGrid(int x0, int y0, GameContainer gc, Graphics gfx)
 	{
 		// TODO improve grid rendering
@@ -331,13 +304,7 @@ public class Map
 	{
 		if(!contains(x, y)) // invalid position
 			return false;
-		if(isRoad(x, y)) // road
-			return false;
-		if(terrain[y * width + x] == Terrain.WATER) // invalid terrain
-			return false;
-		if(buildings[y * width + x] >= 0) // building
-			return false;
-		return true; // OK !
+		return getCell(x, y).canPlaceObject();
 	}
 	
 	/**
