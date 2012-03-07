@@ -7,8 +7,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
-import simciv.buildings.House;
-
 /**
  * User build interface
  * @author Marc
@@ -37,12 +35,13 @@ public class CityBuilder
 	String modeString = "";
 	String helpString = "";
 	Building building; // building to place
+	String buildingString = "";
 	
 	public CityBuilder(World worldRef)
 	{
 		this.worldRef = worldRef;
 		setMode(MODE_BUILDING);
-		building = new House(worldRef);
+		setBuildingString("House");
 		helpString = "Mode : [R]=roads, [B]=buildings, [E]=erase";
 	}
 	
@@ -61,6 +60,16 @@ public class CityBuilder
 			modeString = "Road mode";
 		else if(mode == MODE_BUILDING)
 			modeString = "Building mode";
+	}
+	
+	/**
+	 * Sets the current building from its class name
+	 * @param bstr : class name
+	 */
+	public void setBuildingString(String bstr)
+	{
+		buildingString = bstr;
+		building = BuildingList.createBuildingFromName(bstr, worldRef);
 	}
 	
 	public int getMode()
@@ -87,10 +96,21 @@ public class CityBuilder
 		if(worldRef.map.contains(pos.x, pos.y))
 		{
 			gfx.pushTransform();
+			
 				gfx.setColor(new Color(255,255,255,64));
 				gfx.scale(Game.tilesSize, Game.tilesSize);
-				gfx.translate(pos.x, pos.y);
-				gfx.fillRect(0, 0, 1, 1);
+
+				if(mode == MODE_BUILDING)
+				{
+					gfx.translate(pos.x, pos.y);
+					gfx.fillRect(0, 0, 1, 1);
+				}
+				else
+				{
+					gfx.translate(buildingPos.x, buildingPos.y);
+					gfx.fillRect(0, 0, building.getWidth(), building.getHeight());
+				}
+				
 			gfx.popTransform();
 		}
 		
@@ -98,7 +118,11 @@ public class CityBuilder
 		gfx.resetTransform();
 		gfx.setColor(Color.white);
 		gfx.drawString(helpString, 100, 10);
-		gfx.drawString(modeString, 100, 30);
+		
+		if(mode == MODE_BUILDING)
+			gfx.drawString(modeString + " / " + buildingString, 100, 30);
+		else
+			gfx.drawString(modeString, 100, 30);
 	}
 	
 	public void cursorPressed(int button, Vector2i mapPos)
