@@ -16,9 +16,14 @@ public abstract class Building extends Entity
 	public Building(World w)
 	{
 		super(w);
-		width = 1;
-		height = 1;
+		setSize(1, 1);
 		state = CONSTRUCTION;
+	}
+	
+	protected void setSize(int w, int h)
+	{
+		width = w;
+		height = h;
 	}
 	
 	public int getWidth()
