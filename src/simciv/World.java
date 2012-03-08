@@ -6,13 +6,14 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import simciv.units.Citizen;
+import simciv.units.Nomad;
 
 public class World
 {	
-	public Map map;
-	
+	private static int tickTime = 500; // in milliseconds
+
+	public Map map;	
 	private int nbTicks;
-	private int tickTime;
 	private int nextTickTime;
 	private HashMap<Integer,Unit> units = new HashMap<Integer,Unit>();
 	private HashMap<Integer,Building> buildings = new HashMap<Integer,Building>();
@@ -20,13 +21,18 @@ public class World
 	public World(int width, int height)
 	{
 		nbTicks = 0;
-		tickTime = 500;
 		nextTickTime = tickTime;
 
 		map = new Map(width, height);
 		
 		spawnUnit(new Citizen(this), 20, 10);
+		spawnUnit(new Nomad(this), 10, 20);
 		placeBuilding(BuildingList.createBuildingFromName("House", this), 10, 10);
+	}
+	
+	public static int secondsToTicks(int s)
+	{
+		return s * 1000 / tickTime;
 	}
 	
 	/**

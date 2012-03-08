@@ -41,7 +41,7 @@ public class CityBuilder
 	{
 		this.worldRef = worldRef;
 		setMode(MODE_BUILDING);
-		setBuildingString("FarmLand");
+		setBuildingString("House");
 		helpString = "Mode : [R]=roads, [B]=buildings, [E]=erase";
 	}
 	
@@ -189,8 +189,7 @@ public class CityBuilder
 	private void placeBuilding()
 	{
 		// Create a new building
-		Building b = BuildingList.createBuildingFromName(
-				BuildingList.getBuildingString(building), worldRef);
+		Building b = BuildingList.createBuildingFromName(buildingString, worldRef);
 		
 		if(b != null)
 		{

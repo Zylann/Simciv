@@ -12,6 +12,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import simciv.buildings.FarmLand;
 import simciv.buildings.House;
 import simciv.units.Citizen;
+import simciv.units.Nomad;
 
 public class Game extends StateBasedGame
 {
@@ -72,6 +73,8 @@ public class Game extends StateBasedGame
 		House.loadContent();
 		CityBuilder.loadContent();
 		FarmLand.loadContent();
+		Building.loadContent();
+		Nomad.loadContent();
 
 		// Initialize states
     	for(GameState state : states)

@@ -19,6 +19,7 @@ public abstract class Entity
 	{
 		worldRef = w;
 		ID = nextEntityID++;
+		direction = Direction2D.SOUTH;
 	}
 		
 	public int getID()

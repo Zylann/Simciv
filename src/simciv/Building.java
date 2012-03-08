@@ -2,38 +2,48 @@ package simciv;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+
 public abstract class Building extends Entity
 {
+	private static Image constructionSprite;
+	
 	public static final byte CONSTRUCTION = 0;
 	public static final byte NORMAL = 1;
 	public static final byte FIRE = 2;
 	public static final byte RUINS = 3;
 	
-	int width;
-	int height;
 	ArrayList<Unit> units = new ArrayList<Unit>();
+	
+	public static void loadContent() throws SlickException
+	{
+		constructionSprite = new Image("data/buildplace.png");
+		constructionSprite.setFilter(Image.FILTER_NEAREST);
+	}
 	
 	public Building(World w)
 	{
 		super(w);
-		setSize(1, 1);
 		state = CONSTRUCTION;
 	}
 	
-	protected void setSize(int w, int h)
-	{
-		width = w;
-		height = h;
-	}
+	public abstract BuildingProperties getProperties();
 	
 	public int getWidth()
 	{
-		return width;
+		return getProperties().width;
 	}
 	
 	public int getHeight()
 	{
-		return height;
+		return getProperties().height;
+	}
+	
+	public void renderAsConstructing(Graphics gfx)
+	{
+		gfx.drawImage(constructionSprite, Game.tilesSize * posX, Game.tilesSize * posY);
 	}
 }
 

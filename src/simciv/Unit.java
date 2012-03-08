@@ -2,6 +2,9 @@ package simciv;
 
 import java.util.List;
 
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+
 public abstract class Unit extends Entity
 {	
 	public static final byte NORMAL = 1;
@@ -13,13 +16,6 @@ public abstract class Unit extends Entity
 		
 		direction = Direction2D.EAST;
 		count++;
-	}
-
-	@Override
-	public void tick()
-	{
-		increaseTicks();
-		move();
 	}
 	
 	protected void move()
@@ -67,6 +63,13 @@ public abstract class Unit extends Entity
 			// Choosing a direction at random
 			direction = dirs.get((byte) (dirs.size() * Math.random()));
 		}
+	}
+	
+	protected final void defaultRender(Graphics gfx, Image sprite)
+	{
+		gfx.drawImage(sprite,
+				posX * Game.tilesSize,
+				posY * Game.tilesSize - Game.tilesSize / 3);
 	}
 }
 

@@ -7,21 +7,21 @@ import org.newdawn.slick.SlickException;
 import simciv.Unit;
 import simciv.World;
 
-public class Citizen extends Unit
+public class Nomad extends Unit
 {
 	private static Image sprite = null;
 
 	public static final void loadContent() throws SlickException
 	{
-		sprite = new Image("data/citizen.png");
+		sprite = new Image("data/nomad.png");
 		sprite.setFilter(Image.FILTER_NEAREST);
 	}
-
-	public Citizen(World w)
+	
+	public Nomad(World w)
 	{
 		super(w);
 	}
-	
+
 	@Override
 	public void render(Graphics gfx)
 	{
