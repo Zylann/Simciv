@@ -12,6 +12,7 @@ public abstract class Entity
 	private int nbTicks;
 	protected byte state; // different means depending on units or buildings
 	protected short healthPoints;
+	protected byte direction;
 	transient World worldRef;
 	
 	public Entity(World w)
@@ -60,6 +61,11 @@ public abstract class Entity
 	public int getTicks()
 	{
 		return nbTicks;
+	}
+	
+	public byte getDirection()
+	{
+		return direction;
 	}
 	
 	/**

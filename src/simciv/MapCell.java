@@ -7,19 +7,19 @@ public class MapCell
 	public byte terrainID;
 	public byte road;
 	public int building;
-	
+
 	public MapCell()
 	{
 		terrainID = Terrain.GRASS;
 		road = -1;
 		building = -1;
 	}
-	
+
 	public boolean isRoad()
 	{
 		return road != -1;
 	}
-	
+
 	public boolean canPlaceObject()
 	{
 		if(isRoad()) // road

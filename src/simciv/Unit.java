@@ -6,14 +6,12 @@ public abstract class Unit extends Entity
 {	
 	public static final byte NORMAL = 1;
 	public static int count = 0;
-
-	byte dir;
 	
 	public Unit(World w)
 	{
 		super(w);
 		
-		dir = Direction2D.EAST;
+		direction = Direction2D.EAST;
 		count++;
 	}
 
@@ -33,32 +31,32 @@ public abstract class Unit extends Entity
 		{
 			if(dirs.size() == 1) // only one direction
 			{
-				dir = dirs.get(0);
+				direction = dirs.get(0);
 			}
 			else if(dirs.size() == 2) // two directions
 			{
 				// remove U-turn
-				if(dir != Direction2D.NONE)
-					dirs.remove((Byte)Direction2D.opposite[dir]);
+				if(direction != Direction2D.NONE)
+					dirs.remove((Byte)Direction2D.opposite[direction]);
 				// use the remaining direction
-				dir = dirs.get(0);
+				direction = dirs.get(0);
 			}
 			else
 			{
 				// remove U-turn
-				if(dir != Direction2D.NONE)
-					dirs.remove((Byte)Direction2D.opposite[dir]);
+				if(direction != Direction2D.NONE)
+					dirs.remove((Byte)Direction2D.opposite[direction]);
 				// Choose a direction at random
 				chooseNewDirection(dirs);
 			}
 		}
 		else
-			dir = Direction2D.NONE;
+			direction = Direction2D.NONE;
 		
-		if(dir != Direction2D.NONE)
+		if(direction != Direction2D.NONE)
 		{
-			posX += Direction2D.vectors[dir].x;
-			posY += Direction2D.vectors[dir].y;
+			posX += Direction2D.vectors[direction].x;
+			posY += Direction2D.vectors[direction].y;
 		}
 	}
 	
@@ -67,7 +65,7 @@ public abstract class Unit extends Entity
 		if(!dirs.isEmpty())
 		{
 			// Choosing a direction at random
-			dir = dirs.get((byte) (dirs.size() * Math.random()));
+			direction = dirs.get((byte) (dirs.size() * Math.random()));
 		}
 	}
 }
