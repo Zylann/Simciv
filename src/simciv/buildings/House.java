@@ -77,9 +77,9 @@ public class House extends Building
 					posX * Game.tilesSize,
 					(posY - 1)* Game.tilesSize,
 					(posX + 1) * Game.tilesSize,
-					(posY + 1)* Game.tilesSize,
+					(posY + 1) * Game.tilesSize,
 					direction * Game.tilesSize, 0,
-					(direction +1) * Game.tilesSize, 32);
+					(direction + 1) * Game.tilesSize, Game.tilesSize * 2);
 		}
 	}
 

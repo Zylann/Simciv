@@ -119,9 +119,14 @@ public abstract class Unit extends Entity
 	
 	protected final void defaultRender(Graphics gfx, Image sprite)
 	{
+		gfx.translate(0, - Game.tilesSize / 3);
 		gfx.drawImage(sprite,
 				posX * Game.tilesSize,
-				posY * Game.tilesSize - Game.tilesSize / 3);
+				posY * Game.tilesSize,
+				(posX + 1) * Game.tilesSize,
+				(posY + 1) * Game.tilesSize,
+				0, direction * Game.tilesSize,
+				Game.tilesSize, (direction + 1) * Game.tilesSize);
 	}
 }
 
