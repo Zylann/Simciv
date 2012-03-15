@@ -67,6 +67,7 @@ public class Game extends StateBasedGame
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException
 	{
+		// TODO content loading should be automated
 		Terrain.initialize();
 		Road.loadContent();
 		Citizen.loadContent();

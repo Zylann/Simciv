@@ -1,5 +1,7 @@
 package simciv;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -242,11 +244,11 @@ public class Map
 		if(renderGrid)
 			renderGrid(range.minX, range.minY, gc, gfx);
 	}
-		
+	
 	private void renderGrid(int x0, int y0, GameContainer gc, Graphics gfx)
 	{
-		// TODO improve grid rendering
-		// it don't work as expected
+		// TODO improve grid rendering (it is actually ugly and not optimized)
+		// it's just for debug purpose
 		
 		gfx.setColor(Color.black);
 		int x, y;
@@ -327,6 +329,30 @@ public class Map
 			}
 		}		
 		return true;
+	}
+	
+	public boolean isCrossable(int x, int y)
+	{
+		if(!contains(x, y))
+			return false;
+		else
+			return getCell(x, y).isCrossable();
+	}
+	
+	public ArrayList<Byte> getAvailableDirections(int x, int y)
+	{
+		ArrayList<Byte> res = new ArrayList<Byte>();
+		
+		if(isCrossable(x-1, y))
+			res.add(Direction2D.WEST);
+		if(isCrossable(x+1, y))
+			res.add(Direction2D.EAST);
+		if(isCrossable(x, y-1))
+			res.add(Direction2D.NORTH);
+		if(isCrossable(x, y+1))
+			res.add(Direction2D.SOUTH);
+		
+		return res;
 	}
 }
 

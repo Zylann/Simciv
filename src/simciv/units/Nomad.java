@@ -32,6 +32,6 @@ public class Nomad extends Unit
 	public void tick()
 	{
 		increaseTicks();
-		move();
+		move(worldRef.map.getAvailableDirections(posX, posY));
 	}
 }

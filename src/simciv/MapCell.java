@@ -30,6 +30,11 @@ public class MapCell
 			return false;
 		return true;
 	}
+	
+	public boolean isCrossable()
+	{
+		return terrainID != Terrain.WATER && building == -1;
+	}
 
 	public void render(int x, int y, Graphics gfx)
 	{
