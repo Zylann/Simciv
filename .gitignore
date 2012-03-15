@@ -1,6 +1,7 @@
 bin/
 data/
 libs/
+releases/
 .classpath
 .project
 .settings
