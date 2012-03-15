@@ -4,9 +4,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import simciv.Building;
 import simciv.BuildingProperties;
 import simciv.Game;
+import simciv.Workplace;
 import simciv.World;
 
 /**
@@ -16,7 +16,7 @@ import simciv.World;
  * @author Marc
  *
  */
-public class FarmLand extends Building
+public class FarmLand extends Workplace
 {	
 	private static BuildingProperties properties;
 	private static Image imgDirt;
@@ -73,5 +73,12 @@ public class FarmLand extends Building
 	public BuildingProperties getProperties()
 	{
 		return properties;
+	}
+
+	@Override
+	public int getProductionProgress()
+	{
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

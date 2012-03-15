@@ -88,5 +88,7 @@ public abstract class Entity
 	 * @param gfx
 	 */
 	public abstract void render(Graphics gfx);
+	
+	public abstract void onDestruction();
 }
 

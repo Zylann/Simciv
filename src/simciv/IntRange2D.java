@@ -1,5 +1,11 @@
 package simciv;
 
+/**
+ * Represents a rectangular integer selection of the world,
+ * defined by 2 points, min and max
+ * @author Marc
+ *
+ */
 public class IntRange2D
 {
 	public int minX;

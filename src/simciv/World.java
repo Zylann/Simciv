@@ -1,5 +1,6 @@
 package simciv;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.newdawn.slick.GameContainer;
@@ -45,20 +46,31 @@ public class World
 			nextTickTime += tickTime;
 			nbTicks++;
 			
+			ArrayList<Unit> unitsToRemove = new ArrayList<Unit>();
+			
 			for(Unit u : units.values())
 			{
 				u.tick();
+				if(!u.isAlive())
+				{
+					unitsToRemove.add(u);
+				}
 			}
 			for(Building b : buildings.values())
 			{
 				b.tick();
+			}
+			
+			for(Unit u : unitsToRemove)
+			{
+				u.onDestruction();
+				removeUnit(u.getID());
 			}
 		}
 	}
 	
 	/**
 	 * Spawns an unit in the world at (x,y).
-	 * Note : a unit can be in a building without being in the units map.
 	 * @param u : unit
 	 * @param x
 	 * @param y
@@ -75,16 +87,30 @@ public class World
 		return false;
 	}
 	
+	/**
+	 * Spawns a new unit to the world
+	 * @param unit
+	 */
 	public void spawnUnit(Unit unit)
 	{
 		spawnUnit(unit, unit.getX(), unit.getY());
 	}
 	
+	/**
+	 * Removes and destroys an unit in the world
+	 * @param ID : unit ID
+	 * @return true if success
+	 */
 	public boolean removeUnit(int ID)
 	{
 		if(ID >= 0)
 		{
-			return units.remove(ID) != null;
+			Unit u = units.remove(ID);
+			if(u != null)
+			{
+				u.onDestruction();
+				return true;
+			}
 		}
 		return false;
 	}
@@ -123,6 +149,7 @@ public class World
 			if(b != null)
 			{
 				map.markBuilding(b, false);
+				b.onDestruction();
 				buildings.remove(ID);
 				return true;
 			}

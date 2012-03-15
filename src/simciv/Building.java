@@ -1,7 +1,5 @@
 package simciv;
 
-import java.util.HashMap;
-
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -14,9 +12,7 @@ public abstract class Building extends Entity
 	public static final byte NORMAL = 1;
 	public static final byte FIRE = 2;
 	public static final byte RUINS = 3;
-	
-	HashMap<Integer,Unit> units = new HashMap<Integer,Unit>();
-	
+		
 	public static void loadContent() throws SlickException
 	{
 		constructionSprite = new Image("data/buildplace.png");
@@ -30,25 +26,6 @@ public abstract class Building extends Entity
 	}
 	
 	public abstract BuildingProperties getProperties();
-	
-	protected boolean addUnit(Unit u)
-	{
-		if(!units.containsKey(u.getID()))
-		{
-			units.put(u.getID(), u);
-			return true;
-		}
-		return false;
-	}
-	
-	protected boolean removeUnit(int ID)
-	{
-		if(ID >= 0)
-		{
-			return units.remove(ID) != null;
-		}
-		return false;
-	}
 	
 	public int getWidth()
 	{

@@ -1,5 +1,7 @@
 package simciv.buildings;
 
+import java.util.HashMap;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -10,6 +12,11 @@ import simciv.Game;
 import simciv.World;
 import simciv.units.Citizen;
 
+/**
+ * Every citizen need a house. Houses produce citizens.
+ * @author Marc
+ *
+ */
 public class House extends Building
 {
 	private static BuildingProperties properties;
@@ -18,9 +25,12 @@ public class House extends Building
 	static
 	{
 		properties = new BuildingProperties("House");
-		properties.setCapacity(5).setCost(50).setSize(1, 1, 1);
+		properties.setCapacity(2).setCost(50).setSize(1, 1, 1);
 	}
-	
+
+	// References to citizen living here
+	HashMap<Integer,Citizen> inhabitants = new HashMap<Integer,Citizen>();
+
 	public static void loadContent() throws SlickException
 	{
 		sprite = new Image("data/house1.png");
@@ -32,7 +42,7 @@ public class House extends Building
 		super(w);
 		direction = (byte) (4 * Math.random());
 	}
-	
+
 	@Override
 	public boolean isHouse()
 	{
@@ -48,20 +58,33 @@ public class House extends Building
 			if(getTicks() > 30)
 			{
 				state = Building.NORMAL;
-				Citizen c = new Citizen(worldRef);
-				c.setHouse(this);
-				worldRef.spawnUnit(c, posX, posY);
+				produceCitizen();
 			}
 		}
-//		else if(state == Building.NORMAL)
-//		{
-//			if(getTicks() % 30 == 0)
-//			{
-//				Citizen c = new Citizen(worldRef);
-//				c.setHouse(this);
-//				worldRef.spawnUnit(c, posX, posY);
-//			}
-//		}
+	}
+
+	protected boolean produceCitizen()
+	{
+		Citizen c = new Citizen(worldRef);
+		if(addInhabitant(c))
+		{
+			worldRef.spawnUnit(c, posX, posY);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean addInhabitant(Citizen c)
+	{
+		if(inhabitants.size() < getProperties().capacity)
+		{
+			if(inhabitants.put(c.getID(), c) == null)
+			{
+				c.setHouse(this);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -88,4 +111,17 @@ public class House extends Building
 	{
 		return properties;
 	}
+
+	@Override
+	public void onDestruction()
+	{
+		for(Citizen c : inhabitants.values())
+		{
+			c.kill();
+		}
+	}
 }
+
+
+
+

@@ -15,7 +15,6 @@ public abstract class Unit extends Entity
 	public static final byte NORMAL = 1;
 	public static int count = 0;
 	
-	Building buildingRef;
 	boolean isAlive;
 		
 	public Unit(World w)
@@ -82,38 +81,15 @@ public abstract class Unit extends Entity
 	
 	public void kill()
 	{
-		isAlive = true;
+		isAlive = false;
 	}
 	
+	/**
+	 * Is the unit outside?
+	 * @return
+	 */
 	public boolean isOut()
 	{
-		return buildingRef == null;
-	}
-		
-	protected boolean enterBuilding(Building b)
-	{
-		if(buildingRef != null)
-			return false;
-		
-		if(b.addUnit(this))
-		{
-			worldRef.removeUnit(getID());
-			return true;
-		}
-		return false;
-	}
-	
-	protected boolean exitBuilding()
-	{
-		if(buildingRef == null)
-			return false;
-				
-		if(!buildingRef.isHouse())
-			buildingRef.removeUnit(getID());
-		
-		buildingRef = null;
-		worldRef.spawnUnit(this, posX, posY);
-		
 		return true;
 	}
 	
@@ -128,5 +104,7 @@ public abstract class Unit extends Entity
 				0, direction * Game.tilesSize,
 				Game.tilesSize, (direction + 1) * Game.tilesSize);
 	}
+	
+	
 }
 

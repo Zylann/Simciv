@@ -34,4 +34,9 @@ public class Nomad extends Unit
 		increaseTicks();
 		move(worldRef.map.getAvailableDirections(posX, posY));
 	}
+
+	@Override
+	public void onDestruction()
+	{
+	}
 }
