@@ -8,6 +8,7 @@ import simciv.Building;
 import simciv.BuildingProperties;
 import simciv.Game;
 import simciv.World;
+import simciv.units.Citizen;
 
 public class House extends Building
 {
@@ -31,11 +32,36 @@ public class House extends Building
 		super(w);
 		direction = (byte) (4 * Math.random());
 	}
+	
+	@Override
+	public boolean isHouse()
+	{
+		return true;
+	}
 
 	@Override
 	public void tick()
 	{
 		increaseTicks();
+		if(state == Building.CONSTRUCTION)
+		{
+			if(getTicks() > 30)
+			{
+				state = Building.NORMAL;
+				Citizen c = new Citizen(worldRef);
+				c.setHouse(this);
+				worldRef.spawnUnit(c, posX, posY);
+			}
+		}
+//		else if(state == Building.NORMAL)
+//		{
+//			if(getTicks() % 30 == 0)
+//			{
+//				Citizen c = new Citizen(worldRef);
+//				c.setHouse(this);
+//				worldRef.spawnUnit(c, posX, posY);
+//			}
+//		}
 	}
 
 	@Override

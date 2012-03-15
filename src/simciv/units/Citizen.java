@@ -4,12 +4,16 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import simciv.Road;
 import simciv.Unit;
 import simciv.World;
+import simciv.buildings.House;
 
 public class Citizen extends Unit
 {
 	private static Image sprite = null;
+	
+	House houseRef;
 
 	public static final void loadContent() throws SlickException
 	{
@@ -32,6 +36,11 @@ public class Citizen extends Unit
 	public void tick()
 	{
 		increaseTicks();
-		move();
+		move(Road.getAvailableDirections(worldRef.map, posX, posY));
+	}
+	
+	public void setHouse(House h)
+	{
+		houseRef = h;
 	}
 }

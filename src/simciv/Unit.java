@@ -5,24 +5,34 @@ import java.util.List;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
+/**
+ * An unit can move, and is seen as a "living" thing
+ * @author Marc
+ *
+ */
 public abstract class Unit extends Entity
 {	
 	public static final byte NORMAL = 1;
 	public static int count = 0;
 	
+	Building buildingRef;
+	boolean isAlive;
+		
 	public Unit(World w)
 	{
 		super(w);
 		
 		direction = Direction2D.EAST;
 		count++;
+		isAlive = true;
 	}
 	
-	protected void move()
-	{
-		// Find available directions
-		List<Byte> dirs = Road.getAvailableDirections(worldRef.map, posX, posY);
-		
+	/**
+	 * Moves the unit according to available directions
+	 * @param dirs : available directions
+	 */
+	protected void move(List<Byte> dirs)
+	{		
 		if(!dirs.isEmpty())
 		{
 			if(dirs.size() == 1) // only one direction
@@ -63,6 +73,48 @@ public abstract class Unit extends Entity
 			// Choosing a direction at random
 			direction = dirs.get((byte) (dirs.size() * Math.random()));
 		}
+	}
+	
+	public boolean isAlive()
+	{
+		return isAlive;
+	}
+	
+	public void kill()
+	{
+		isAlive = true;
+	}
+	
+	public boolean isOut()
+	{
+		return buildingRef == null;
+	}
+		
+	protected boolean enterBuilding(Building b)
+	{
+		if(buildingRef != null)
+			return false;
+		
+		if(b.addUnit(this))
+		{
+			worldRef.removeUnit(getID());
+			return true;
+		}
+		return false;
+	}
+	
+	protected boolean exitBuilding()
+	{
+		if(buildingRef == null)
+			return false;
+				
+		if(!buildingRef.isHouse())
+			buildingRef.removeUnit(getID());
+		
+		buildingRef = null;
+		worldRef.spawnUnit(this, posX, posY);
+		
+		return true;
 	}
 	
 	protected final void defaultRender(Graphics gfx, Image sprite)

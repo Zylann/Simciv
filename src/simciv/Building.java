@@ -1,6 +1,6 @@
 package simciv;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -15,7 +15,7 @@ public abstract class Building extends Entity
 	public static final byte FIRE = 2;
 	public static final byte RUINS = 3;
 	
-	ArrayList<Unit> units = new ArrayList<Unit>();
+	HashMap<Integer,Unit> units = new HashMap<Integer,Unit>();
 	
 	public static void loadContent() throws SlickException
 	{
@@ -31,6 +31,25 @@ public abstract class Building extends Entity
 	
 	public abstract BuildingProperties getProperties();
 	
+	protected boolean addUnit(Unit u)
+	{
+		if(!units.containsKey(u.getID()))
+		{
+			units.put(u.getID(), u);
+			return true;
+		}
+		return false;
+	}
+	
+	protected boolean removeUnit(int ID)
+	{
+		if(ID >= 0)
+		{
+			return units.remove(ID) != null;
+		}
+		return false;
+	}
+	
 	public int getWidth()
 	{
 		return getProperties().width;
@@ -44,6 +63,11 @@ public abstract class Building extends Entity
 	public void renderAsConstructing(Graphics gfx)
 	{
 		gfx.drawImage(constructionSprite, Game.tilesSize * posX, Game.tilesSize * posY);
+	}
+
+	public boolean isHouse()
+	{
+		return false;
 	}
 }
 
