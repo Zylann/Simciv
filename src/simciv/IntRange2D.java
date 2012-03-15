@@ -48,4 +48,9 @@ public class IntRange2D
 		maxY *= c;
 		return this;
 	}
+
+	public boolean contains(int x, int y)
+	{
+		return x >= minX && x <= maxX && y >= minY && y <= maxY;
+	}
 }

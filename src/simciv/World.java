@@ -5,9 +5,6 @@ import java.util.HashMap;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
-import simciv.units.Citizen;
-import simciv.units.Nomad;
-
 public class World
 {	
 	private static int tickTime = 500; // in milliseconds
@@ -25,9 +22,9 @@ public class World
 
 		map = new Map(width, height);
 		
-		spawnUnit(new Citizen(this), 20, 10);
-		spawnUnit(new Nomad(this), 10, 20);
-		placeBuilding(BuildingList.createBuildingFromName("House", this), 10, 10);
+		//spawnUnit(new Citizen(this), 20, 10);
+		//spawnUnit(new Nomad(this), 10, 20);
+		//placeBuilding(BuildingList.createBuildingFromName("House", this), 10, 10);
 	}
 	
 	public static int secondsToTicks(int s)
@@ -74,6 +71,20 @@ public class World
 		{
 			units.put(u.getID(), u);
 			return true;
+		}
+		return false;
+	}
+	
+	public void spawnUnit(Unit unit)
+	{
+		spawnUnit(unit, unit.getX(), unit.getY());
+	}
+	
+	public boolean removeUnit(int ID)
+	{
+		if(ID >= 0)
+		{
+			return units.remove(ID) != null;
 		}
 		return false;
 	}
@@ -141,11 +152,27 @@ public class World
 		
 		for(Building b : buildings.values())
 		{
-			b.render(gfx);
+			if(mapRange.contains(b.getX(), b.getY()))
+				b.render(gfx);
 		}
 		for(Unit u : units.values())
 		{
-			u.render(gfx);
+			if(u.isOut() && mapRange.contains(u.getX(), u.getY()))
+			{
+				gfx.pushTransform();
+
+				// Fancy movements
+				if(u.getDirection() != Direction2D.NONE)
+				{
+					float k = -Game.tilesSize * (float)nextTickTime / (float)tickTime;
+					Vector2i dir = Direction2D.vectors[u.getDirection()];
+					gfx.translate(k * dir.x, k * dir.y);
+				}
+				
+				u.render(gfx);
+				
+				gfx.popTransform();
+			}
 		}
 	}
 }
