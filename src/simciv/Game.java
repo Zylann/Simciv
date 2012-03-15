@@ -9,6 +9,7 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import simciv.buildings.Building;
 import simciv.buildings.FarmLand;
 import simciv.buildings.House;
 import simciv.units.Citizen;

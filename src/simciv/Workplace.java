@@ -2,6 +2,7 @@ package simciv;
 
 import java.util.HashMap;
 
+import simciv.buildings.Building;
 import simciv.units.Citizen;
 
 public abstract class Workplace extends Building

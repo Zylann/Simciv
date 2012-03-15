@@ -4,11 +4,10 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import simciv.Building;
 import simciv.Road;
-import simciv.Unit;
 import simciv.Workplace;
 import simciv.World;
+import simciv.buildings.Building;
 import simciv.buildings.House;
 
 public class Citizen extends Unit

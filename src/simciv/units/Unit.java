@@ -1,9 +1,14 @@
-package simciv;
+package simciv.units;
 
 import java.util.List;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+
+import simciv.Direction2D;
+import simciv.Entity;
+import simciv.Game;
+import simciv.World;
 
 /**
  * An unit can move, and is seen as a "living" thing
@@ -95,6 +100,7 @@ public abstract class Unit extends Entity
 	
 	protected final void defaultRender(Graphics gfx, Image sprite)
 	{
+		// TODO animate units movement
 		gfx.translate(0, - Game.tilesSize / 3);
 		gfx.drawImage(sprite,
 				posX * Game.tilesSize,

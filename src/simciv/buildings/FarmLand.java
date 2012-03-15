@@ -4,7 +4,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import simciv.BuildingProperties;
 import simciv.Game;
 import simciv.Workplace;
 import simciv.World;
@@ -78,7 +77,6 @@ public class FarmLand extends Workplace
 	@Override
 	public int getProductionProgress()
 	{
-		// TODO Auto-generated method stub
 		return 0;
 	}
 }

@@ -1,9 +1,8 @@
-package simciv;
+package simciv.buildings;
 
 import java.util.HashMap;
 
-import simciv.buildings.FarmLand;
-import simciv.buildings.House;
+import simciv.World;
 
 /**
  * Associates Building classes to strings and

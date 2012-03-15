@@ -6,6 +6,9 @@ import java.util.HashMap;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
+import simciv.buildings.Building;
+import simciv.units.Unit;
+
 public class World
 {	
 	private static int tickTime = 500; // in milliseconds

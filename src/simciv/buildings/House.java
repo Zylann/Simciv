@@ -6,8 +6,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import simciv.Building;
-import simciv.BuildingProperties;
 import simciv.Game;
 import simciv.World;
 import simciv.units.Citizen;

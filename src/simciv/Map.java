@@ -6,6 +6,8 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
+import simciv.buildings.Building;
+
 /**
  * The map is a 2D array that stores terrain, plants and roads information.
  * It is also used to mark places occupied by buildings.

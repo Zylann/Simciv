@@ -7,6 +7,9 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
+import simciv.buildings.Building;
+import simciv.buildings.BuildingList;
+
 /**
  * User build interface
  * @author Marc

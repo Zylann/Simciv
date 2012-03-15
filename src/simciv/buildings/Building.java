@@ -1,8 +1,12 @@
-package simciv;
+package simciv.buildings;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+
+import simciv.Entity;
+import simciv.Game;
+import simciv.World;
 
 public abstract class Building extends Entity
 {

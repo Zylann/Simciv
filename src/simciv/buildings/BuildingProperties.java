@@ -1,4 +1,4 @@
-package simciv;
+package simciv.buildings;
 
 /**
  * Common properties for each building.

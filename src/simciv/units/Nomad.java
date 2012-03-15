@@ -4,7 +4,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import simciv.Unit;
 import simciv.World;
 
 public class Nomad extends Unit
