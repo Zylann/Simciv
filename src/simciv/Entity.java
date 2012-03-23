@@ -97,6 +97,8 @@ public abstract class Entity
 		if(nextTickTime < 0)
 		{
 			nextTickTime += getTickTime();
+			if(nextTickTime < 0)
+				nextTickTime = 0;
 			tick();
 			nbTicks++;
 		}
