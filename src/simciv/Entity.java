@@ -2,6 +2,14 @@ package simciv;
 
 import org.newdawn.slick.Graphics;
 
+/**
+ * An entity is a game element that can update and draw itself.
+ * In this game, the update is discretized into ticks :
+ * update() uses real-time parameters, tick() does not.
+ * Tick times are specific to each entity.
+ * @author Marc
+ *
+ */
 public abstract class Entity
 {
 	private static int nextEntityID = 0;
@@ -9,7 +17,9 @@ public abstract class Entity
 	protected int posX;
 	protected int posY;
 	private int ID;
+	private int lifeTime;
 	private int nbTicks;
+	private int nextTickTime;
 	protected byte state; // different means depending on units or buildings
 	protected short healthPoints;
 	protected byte direction;
@@ -20,8 +30,9 @@ public abstract class Entity
 		worldRef = w;
 		ID = nextEntityID++;
 		direction = Direction2D.SOUTH;
+		nextTickTime = getTickTime();
 	}
-		
+	
 	public int getID()
 	{
 		return ID;
@@ -58,6 +69,11 @@ public abstract class Entity
 	{
 		return posY;
 	}
+	
+	public int getLifeTime()
+	{
+		return lifeTime;
+	}
 		
 	public int getTicks()
 	{
@@ -70,18 +86,51 @@ public abstract class Entity
 	}
 	
 	/**
-	 * Increases the tick counter.
-	 * It must be called one time in tick() implementation.
+	 * Called regularly by the game update method.
+	 * @param deltaMs
 	 */
-	protected void increaseTicks()
+	public final void update(int deltaMs)
 	{
-		nbTicks++;
+		lifeTime += deltaMs;
+		nextTickTime -= deltaMs;
+		
+		if(nextTickTime < 0)
+		{
+			nextTickTime += getTickTime();
+			tick();
+			nbTicks++;
+		}
 	}
 	
 	/**
+	 * Returns the tick ratio.
+	 * This value is always increasing, reaching 1 before its tick(),
+	 * and turns back to zero after each tick().
+	 * For example, if the entity has waited the half of its time before tick again,
+	 * getK() will return 0.5.
+	 * @return ratio between 0 and 1
+	 */
+	public final float getK()
+	{
+		return (float)nextTickTime / (float)(getTickTime());
+	}
+	
+	public final int secondsToTicks(float s)
+	{
+		return (int) ((1000.f * s) / getTickTime());
+	}
+	
+	/**
+	 * Returns the time the entity take to update its behavior.
+	 * It can be used to increase its speed for example.
+	 * @return : time per tick in milliseconds
+	 */
+	protected abstract int getTickTime();
+
+	/**
 	 * Called regularly to make the entity "live" and execute its tasks.
 	 */
-	public abstract void tick();
+	protected abstract void tick();
 	
 	/**
 	 * Called to draw the entity
@@ -89,6 +138,9 @@ public abstract class Entity
 	 */
 	public abstract void render(Graphics gfx);
 	
+	/**
+	 * Called just before the entity is destroyed
+	 */
 	public abstract void onDestruction();
 }
 

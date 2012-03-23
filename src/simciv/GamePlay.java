@@ -38,7 +38,7 @@ public class GamePlay extends BasicGameState
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException
 	{		
-		world = new World(64, 64);
+		world = new World(256, 256);
 		builder = new CityBuilder(world);
 		view = new View(0, 0, 2);
 		

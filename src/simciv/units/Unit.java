@@ -111,6 +111,5 @@ public abstract class Unit extends Entity
 				Game.tilesSize, (direction + 1) * Game.tilesSize);
 	}
 	
-	
 }
 

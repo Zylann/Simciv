@@ -14,6 +14,11 @@ public class MapCell
 		road = -1;
 		building = -1;
 	}
+	
+	public void setBuildingMark(int ID)
+	{
+		building = ID;
+	}
 
 	public boolean isRoad()
 	{

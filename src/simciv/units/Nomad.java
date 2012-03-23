@@ -30,12 +30,17 @@ public class Nomad extends Unit
 	@Override
 	public void tick()
 	{
-		increaseTicks();
 		move(worldRef.map.getAvailableDirections(posX, posY));
 	}
 
 	@Override
 	public void onDestruction()
 	{
+	}
+
+	@Override
+	protected int getTickTime()
+	{
+		return 500;
 	}
 }

@@ -23,8 +23,8 @@ public class FarmLand extends Workplace
 	private static byte MAX_LEVEL = 7;
 	
 	byte level;
-	int levelTicks;
-	int nextLevelTicks;
+	int levelTicks; // how many ticks are needed to increase crops level?
+	int nextLevelTicks; // how many ticks remains before the next level?
 	
 	static
 	{
@@ -35,7 +35,7 @@ public class FarmLand extends Workplace
 	public FarmLand(World w)
 	{
 		super(w);
-		levelTicks = World.secondsToTicks(60);
+		levelTicks = secondsToTicks(60);
 		nextLevelTicks = levelTicks;
 		level = MIN_LEVEL;
 	}
@@ -49,8 +49,6 @@ public class FarmLand extends Workplace
 	@Override
 	public void tick()
 	{
-		increaseTicks();
-		
 		if(level != MAX_LEVEL)
 		{
 			nextLevelTicks--;
@@ -78,5 +76,11 @@ public class FarmLand extends Workplace
 	public int getProductionProgress()
 	{
 		return 0;
+	}
+
+	@Override
+	protected int getTickTime()
+	{
+		return 500;
 	}
 }

@@ -50,7 +50,6 @@ public class House extends Building
 	@Override
 	public void tick()
 	{
-		increaseTicks();
 		if(state == Building.CONSTRUCTION)
 		{
 			if(getTicks() > 30)
@@ -117,6 +116,12 @@ public class House extends Building
 		{
 			c.kill();
 		}
+	}
+
+	@Override
+	protected int getTickTime()
+	{
+		return 500;
 	}
 }
 

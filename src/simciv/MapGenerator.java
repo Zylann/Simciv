@@ -18,7 +18,7 @@ public class MapGenerator
     	{
     		for(x = 0; x < map.getWidth(); x++)
     		{
-    			n = Noise.getPerlin((float)x, (float)y, seed, 2, 0.5f, 16.f);
+    			n = Noise.getPerlin((float)x, (float)y, seed, 3, 0.5f, 32.f);
     			if(n > 0.5)
     				map.setTerrain(x, y, Terrain.GRASS);
     			else

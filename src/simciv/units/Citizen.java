@@ -10,6 +10,14 @@ import simciv.World;
 import simciv.buildings.Building;
 import simciv.buildings.House;
 
+/**
+ * A citizen is a city member.
+ * He lives in a House and can have a job.
+ * If his house get destroyed, he die.
+ * If he lose his job, he has to find another one.
+ * @author Marc
+ *
+ */
 public class Citizen extends Unit
 {
 	private static Image sprite = null;
@@ -38,7 +46,6 @@ public class Citizen extends Unit
 	@Override
 	public void tick()
 	{
-		increaseTicks();
 		move(Road.getAvailableDirections(worldRef.map, posX, posY));
 	}
 	
@@ -89,6 +96,11 @@ public class Citizen extends Unit
 	@Override
 	public void onDestruction()
 	{
+	}
 
+	@Override
+	protected int getTickTime()
+	{
+		return 500;
 	}
 }

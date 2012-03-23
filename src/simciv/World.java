@@ -9,33 +9,27 @@ import org.newdawn.slick.Graphics;
 import simciv.buildings.Building;
 import simciv.units.Unit;
 
+/**
+ * The world contains the terrain, the city and every game element (except UI)
+ * @author Marc
+ *
+ */
 public class World
 {	
-	private static int tickTime = 500; // in milliseconds
-
 	public Map map;	
-	private int nbTicks;
-	private int nextTickTime;
+	int time;
 	private HashMap<Integer,Unit> units = new HashMap<Integer,Unit>();
 	private HashMap<Integer,Building> buildings = new HashMap<Integer,Building>();
 
 	public World(int width, int height)
 	{
-		nbTicks = 0;
-		nextTickTime = tickTime;
-
 		map = new Map(width, height);
 		
 		//spawnUnit(new Citizen(this), 20, 10);
 		//spawnUnit(new Nomad(this), 10, 20);
 		//placeBuilding(BuildingList.createBuildingFromName("House", this), 10, 10);
 	}
-	
-	public static int secondsToTicks(int s)
-	{
-		return s * 1000 / tickTime;
-	}
-	
+		
 	/**
 	 * Updates the world, and calls the tick() method on buildings
 	 * and units at each time interval (tickTime).
@@ -43,32 +37,27 @@ public class World
 	 */
 	public void update(int delta)
 	{
-		nextTickTime -= delta;
-		if(nextTickTime < 0)
+		time += delta;
+
+		ArrayList<Unit> unitsToRemove = new ArrayList<Unit>();
+		
+		for(Unit u : units.values())
 		{
-			nextTickTime += tickTime;
-			nbTicks++;
-			
-			ArrayList<Unit> unitsToRemove = new ArrayList<Unit>();
-			
-			for(Unit u : units.values())
+			u.update(delta);
+			if(!u.isAlive())
 			{
-				u.tick();
-				if(!u.isAlive())
-				{
-					unitsToRemove.add(u);
-				}
+				unitsToRemove.add(u);
 			}
-			for(Building b : buildings.values())
-			{
-				b.tick();
-			}
-			
-			for(Unit u : unitsToRemove)
-			{
-				u.onDestruction();
-				removeUnit(u.getID());
-			}
+		}
+		for(Building b : buildings.values())
+		{
+			b.update(delta);
+		}
+		// TODO buildings to remove
+		for(Unit u : unitsToRemove)
+		{
+			u.onDestruction();
+			removeUnit(u.getID());
 		}
 	}
 	
@@ -194,7 +183,7 @@ public class World
 				// Fancy movements
 				if(u.getDirection() != Direction2D.NONE)
 				{
-					float k = -Game.tilesSize * (float)nextTickTime / (float)tickTime;
+					float k = -Game.tilesSize * u.getK();
 					Vector2i dir = Direction2D.vectors[u.getDirection()];
 					gfx.translate(k * dir.x, k * dir.y);
 				}
