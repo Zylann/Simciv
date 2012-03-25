@@ -25,6 +25,7 @@ public class Citizen extends Unit
 	Building buildingRef; // reference to the building the citizen currently is in
 	Workplace workplaceRef;
 	House houseRef;
+	int tickTime;
 
 	public static final void loadContent() throws SlickException
 	{
@@ -35,6 +36,7 @@ public class Citizen extends Unit
 	public Citizen(World w)
 	{
 		super(w);
+		tickTime = 500 + (int)(100.f * Math.random()) - 50;
 	}
 	
 	@Override
@@ -101,6 +103,6 @@ public class Citizen extends Unit
 	@Override
 	protected int getTickTime()
 	{
-		return 500;
+		return tickTime;
 	}
 }
