@@ -87,12 +87,17 @@ public class GamePlay extends UIBasicGameState
 		ToolButton foodBuildsButton = new ToolButton(ui, 82, 10, buildCategoryButtonsGroup);
 
 		Menu foodBuildsMenu = new Menu(ui, 10, 34, 128);
+		MenuItem waterSourceItem = new MenuItem(foodBuildsMenu, "Water source");
+		MenuItem farmlandItem = new MenuItem(foodBuildsMenu, "Farm land");
+		MenuItem huntersItem = new MenuItem(foodBuildsMenu, "Hunters");
+		waterSourceItem.setEnabled(false);
+		huntersItem.setEnabled(false);
 		foodBuildsMenu
-			.add(new MenuItem(foodBuildsMenu, "Water source"), new SelectBuildAction(foodBuildsButton, "House"))
-			.add(new MenuItem(foodBuildsMenu, "Hunters"), new SelectBuildAction(foodBuildsButton, "House"))
-			.add(new MenuItem(foodBuildsMenu, "Farm land"), new SelectBuildAction(foodBuildsButton, "FarmLand"))
-			.setNullActionListener(new SelectBuildAction(foodBuildsButton, null));
-		foodBuildsMenu.setVisible(false);
+			.add(waterSourceItem, new SelectBuildAction(foodBuildsButton, "House"))
+			.add(farmlandItem, new SelectBuildAction(foodBuildsButton, "Farmland"))
+			.add(huntersItem, new SelectBuildAction(foodBuildsButton, "House"))
+			.setNullActionListener(new SelectBuildAction(foodBuildsButton, null))
+			.setVisible(false);
 		ui.add(foodBuildsMenu);
 
 		foodBuildsButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_ROAD, foodBuildsMenu));

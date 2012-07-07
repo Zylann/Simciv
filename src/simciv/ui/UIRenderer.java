@@ -69,7 +69,7 @@ public class UIRenderer
 		int y = w.getAbsoluteY();
 		
 		int srcOff = 0;
-		if(w.isMouseOver())
+		if(w.isMouseOver() && w.isEnabled())
 			srcOff = w.getHeight();
 		
 		if(w.isPressed())
@@ -89,7 +89,10 @@ public class UIRenderer
 		
 		if(text != null)
 		{
-			gfx.setColor(Color.black);
+			if(w.isEnabled())
+				gfx.setColor(Color.black);
+			else
+				gfx.setColor(Color.gray);
 			gfx.drawString(text, x + 4, y + 2);
 		}
 	}

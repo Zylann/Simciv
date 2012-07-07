@@ -6,12 +6,14 @@ public abstract class Button extends Widget
 {
 	private boolean mouseOver;
 	private boolean pressed;
+	private boolean enabled;
 	
 	public Button(WidgetContainer parent, int x, int y, int width, int height)
 	{
 		super(parent, x, y, width, height);
 		mouseOver = false;
 		pressed = false;
+		enabled = true;
 	}
 	
 	public boolean isPressed()
@@ -22,6 +24,22 @@ public abstract class Button extends Widget
 	public boolean isMouseOver()
 	{
 		return mouseOver;
+	}
+	
+	public boolean isEnabled()
+	{
+		return enabled;
+	}
+	
+	/**
+	 * Sets the button's enabled state.
+	 * @param e : enables the button if true, disables if false
+	 * @return the button itself for chaining
+	 */
+	public Button setEnabled(boolean e)
+	{
+		enabled = e;
+		return this;
 	}
 
 	protected abstract void onPress();
@@ -51,7 +69,7 @@ public abstract class Button extends Widget
 	{
 		if(contains(x, y))
 		{
-			if(button == Input.MOUSE_LEFT_BUTTON)
+			if(enabled && button == Input.MOUSE_LEFT_BUTTON)
 				press(true);
 			return true;
 		}
