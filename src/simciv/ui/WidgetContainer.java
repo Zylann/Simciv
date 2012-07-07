@@ -55,7 +55,10 @@ public class WidgetContainer extends Widget
 		for(Widget child : children)
 		{
 			if(child.visible && child.mousePressed(button, x, y))
-				res = true;
+			{
+				if(!res)
+					res = true;
+			}
 		}
 		return res;
 	}

@@ -2,6 +2,11 @@ package simciv.ui;
 
 import org.newdawn.slick.Graphics;
 
+/**
+ * Base class for all GUI elements (graphical user interface)
+ * @author Marc
+ *
+ */
 public abstract class Widget
 {
 	protected int x;
@@ -103,6 +108,10 @@ public abstract class Widget
 			x < selfX + this.width &&
 			y < selfY + this.height ;
 	}
+	
+	// Each of these methods below return a boolean.
+	// If true, the event will be consumed by the GUI.
+	// If false, it will be forwarded to the game.
 	
 	public abstract boolean mouseMoved(int oldX, int oldY, int newX, int newY);
 	public abstract boolean mouseDragged(int oldX, int oldY, int newX, int newY);

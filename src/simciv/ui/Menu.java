@@ -56,12 +56,9 @@ public class Menu extends WidgetContainer
 				if(nullActionListener != null)
 					nullActionListener.actionPerformed();
 				setVisible(false);
-				return false;
 			}
-			else
-				return true;
 		}
-		return false;
+		return true;
 	}	
 
 }
