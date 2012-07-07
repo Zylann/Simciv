@@ -9,10 +9,13 @@ import org.newdawn.slick.Graphics;
  */
 public abstract class Widget
 {
+	// Relative position towards its parent
 	protected int x;
 	protected int y;
+	// Size (all widgets are rectangular)
 	protected int width;
 	protected int height;
+	
 	protected boolean visible;
 	protected WidgetContainer parent;
 	

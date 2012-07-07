@@ -21,7 +21,7 @@ public class Menu extends WidgetContainer
 		if(!MenuItem.class.isInstance(child))
 			throw new SlickException("Menu : Cannot add a child which is not a MenuItem.");
 		
-		child.x = this.x;
+		child.x = 0;
 		child.y = this.height;
 		child.width = this.width;
 		this.height += child.height;
