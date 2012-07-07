@@ -87,10 +87,11 @@ public class GamePlay extends UIBasicGameState
 		ToolButton foodBuildsButton = new ToolButton(ui, 82, 10, buildCategoryButtonsGroup);
 
 		Menu foodBuildsMenu = new Menu(ui, 10, 34, 128);
-		foodBuildsMenu.add(new MenuItem(foodBuildsMenu, "Water source"), new SelectBuildAction(foodBuildsButton, "House"));
-		foodBuildsMenu.add(new MenuItem(foodBuildsMenu, "Hunters"), new SelectBuildAction(foodBuildsButton, "House"));
-		foodBuildsMenu.add(new MenuItem(foodBuildsMenu, "Farm land"), new SelectBuildAction(foodBuildsButton, "FarmLand"));
-		foodBuildsMenu.setNullActionListener(new SelectBuildAction(foodBuildsButton, null));
+		foodBuildsMenu
+			.add(new MenuItem(foodBuildsMenu, "Water source"), new SelectBuildAction(foodBuildsButton, "House"))
+			.add(new MenuItem(foodBuildsMenu, "Hunters"), new SelectBuildAction(foodBuildsButton, "House"))
+			.add(new MenuItem(foodBuildsMenu, "Farm land"), new SelectBuildAction(foodBuildsButton, "FarmLand"))
+			.setNullActionListener(new SelectBuildAction(foodBuildsButton, null));
 		foodBuildsMenu.setVisible(false);
 		ui.add(foodBuildsMenu);
 
@@ -227,12 +228,6 @@ public class GamePlay extends UIBasicGameState
 			world.map.toggleRenderGrid();
 		if(key == Input.KEY_P)
 			paused = !paused;
-		if(key == Input.KEY_B)
-			builder.setMode(CityBuilder.MODE_HOUSE);
-		if(key == Input.KEY_E)
-			builder.setMode(CityBuilder.MODE_ERASE);
-		if(key == Input.KEY_R)
-			builder.setMode(CityBuilder.MODE_ROAD);
 		if(key == Input.KEY_F3)
 		{
 			debugInfoVisible = !debugInfoVisible;

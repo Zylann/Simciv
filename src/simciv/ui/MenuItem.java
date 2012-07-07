@@ -2,11 +2,15 @@ package simciv.ui;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
+
+import simciv.ContentManager;
 
 public class MenuItem extends Button
 {
 	// All menu items have a common height
 	public static final int HEIGHT = 16;
+	private static Sound selectSound;
 	
 	private IActionListener actionListener;
 	private String text;
@@ -16,6 +20,8 @@ public class MenuItem extends Button
 		super(parent, 0, 0, 0, HEIGHT);
 		if(!Menu.class.isInstance(parent))
 			throw new SlickException("The parent of a MenuItem must be a Menu.");
+		if(selectSound == null)
+			selectSound = ContentManager.instance().getSound("ui.menuItemSelect");
 		this.text = text;
 	}
 	
@@ -27,6 +33,7 @@ public class MenuItem extends Button
 	@Override
 	protected void onPress()
 	{
+		selectSound.play(1.f, 0.5f);
 	}
 
 	@Override

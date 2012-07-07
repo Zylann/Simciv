@@ -38,7 +38,6 @@ public class CityBuilder
 	// State
 	private int mode;
 	private String modeString = "";
-	private String helpString = "";
 	private Building building; // building to place
 	private String buildingString = "";
 	private boolean cursorPress = false;
@@ -49,7 +48,6 @@ public class CityBuilder
 		this.worldRef = worldRef;
 		setMode(MODE_HOUSE);
 		setBuildingString("House");
-		helpString = "Mode : [R]=roads, [B]=buildings, [E]=erase";
 	}
 	
 	public static void loadContent() throws SlickException
@@ -125,9 +123,7 @@ public class CityBuilder
 	
 	public void renderDebugInfo(Graphics gfx)
 	{
-		gfx.setColor(Color.white);
-		gfx.drawString(helpString, 100, 10);
-		
+		gfx.setColor(Color.white);		
 		if(mode == MODE_HOUSE)
 			gfx.drawString(modeString + " / " + buildingString, 100, 30);
 		else

@@ -29,18 +29,21 @@ public class Menu extends WidgetContainer
 		super.add(child);
 	}
 	
-	public void add(MenuItem item, IActionListener actionListener) throws SlickException
+	public Menu add(MenuItem item, IActionListener actionListener) throws SlickException
 	{
 		item.setActionListener(actionListener);
 		add(item);
+		return this;
 	}
 	
 	/**
-	 * Sets action performed if the menu disappears with no item being selected
+	 * Sets action performed if the menu disappears with no item being selected.
+	 * @return the object itself for chaining
 	 */
-	public void setNullActionListener(IActionListener listener)
+	public Menu setNullActionListener(IActionListener listener)
 	{
 		nullActionListener = listener;
+		return this;
 	}
 
 	@Override
