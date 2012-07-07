@@ -35,21 +35,30 @@ public class View
 		Vector2f va = new Vector2f();
 		int border = 4;
 		
+		// Mouse-at-border scrolling is disabled in windowed mode
 		if(!gc.isFullscreen())
 			border = -1;
 		
 		/* Move the view with keyboard or mouse */
 		
-		if(input.isKeyDown(Input.KEY_Q) || input.getMouseX() < border)
+		if(input.isKeyDown(Input.KEY_Q) || 
+				input.isKeyDown(Input.KEY_LEFT) || 
+				input.getMouseX() < border)
 			va.x = -a;
-		else if(input.isKeyDown(Input.KEY_D) || input.getMouseX() > gc.getWidth() - border)
+		else if(input.isKeyDown(Input.KEY_D) || 
+				input.isKeyDown(Input.KEY_RIGHT) || 
+				input.getMouseX() > gc.getWidth() - border)
 			va.x = a;
 		else
 			velocity.x = MathHelper.diminishVelocity(velocity.x, a);
 		
-		if(input.isKeyDown(Input.KEY_Z) || input.getMouseY() < border)
+		if(input.isKeyDown(Input.KEY_Z) || 
+				input.isKeyDown(Input.KEY_UP) ||
+				input.getMouseY() < border)
 			va.y = -a;
-		else if(input.isKeyDown(Input.KEY_S) || input.getMouseY() > gc.getHeight() - border)
+		else if(input.isKeyDown(Input.KEY_S) ||
+				input.isKeyDown(Input.KEY_DOWN) ||
+				input.getMouseY() > gc.getHeight() - border)
 			va.y = a;
 		else
 			velocity.y = MathHelper.diminishVelocity(velocity.y, a);
