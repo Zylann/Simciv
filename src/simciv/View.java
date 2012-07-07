@@ -45,14 +45,14 @@ public class View
 		else if(input.isKeyDown(Input.KEY_D) || input.getMouseX() > gc.getWidth() - border)
 			va.x = a;
 		else
-			velocity.x = diminishVelocity(velocity.x, a);
+			velocity.x = MathHelper.diminishVelocity(velocity.x, a);
 		
 		if(input.isKeyDown(Input.KEY_Z) || input.getMouseY() < border)
 			va.y = -a;
 		else if(input.isKeyDown(Input.KEY_S) || input.getMouseY() > gc.getHeight() - border)
 			va.y = a;
 		else
-			velocity.y = diminishVelocity(velocity.y, a);
+			velocity.y = MathHelper.diminishVelocity(velocity.y, a);
 		
 		velocity.add(va);
 		
@@ -67,36 +67,19 @@ public class View
 		// Apply movement
 		origin.x += velocity.x * delta;
 		origin.y += velocity.y * delta;
-	}
-	
-	/**
-	 * Reduces a velocity parameter until it reach 0
-	 * @param x : parameter
-	 * @param a : reduction
-	 * @return reduced parameter
-	 */
-	private float diminishVelocity(float x, float a)
-	{
-		if(x > 0)
-		{
-			x -= a;
-			if(x < 0)
-				x = 0;
-		}
-		else if(x < 0)
-		{
-			x += a;
-			if(x > 0)
-				x = 0;
-		}
-		return x;
+		
+		// Limit origin to world bounds
+		if(origin.x < 0)
+			origin.x = 0;
+		if(origin.y < 0)
+			origin.y = 0;
 	}
 
 	/**
 	 * Configures the drawing context before rendering the world.
 	 * @param gfx : context
 	 */
-	public void look(Graphics gfx)
+	public void configureGraphicsForWorldRendering(Graphics gfx)
 	{
 		gfx.resetTransform();
 		gfx.translate(-origin.x, -origin.y);

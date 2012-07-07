@@ -22,9 +22,9 @@ public class Terrain
 		terrains = new Terrain[count];
 		
 		// Create terrains
-		set(new Terrain(VOID, "void", ""));
-		set(new Terrain(WATER, "water", "data/water.png"));
-		set(new Terrain(GRASS, "grass", "data/grass.png"));
+		set(new Terrain(VOID, "void"));
+		set(new Terrain(WATER, "water"));
+		set(new Terrain(GRASS, "grass"));
 		
 		// Load content		
 		for(int i = 0; i < count; i++)
@@ -58,20 +58,18 @@ public class Terrain
 	Color minimapColor;
 	String name;
 	
-	Terrain(byte ID, String name, String texName)
+	Terrain(byte ID, String name)
 	{
 		this.ID = ID;
-		this.textureName = texName;
+		if(!name.equals("void")) // void terrains have no texture
+			this.textureName = "terrain." + name;
 		this.name = name;
 	}
 	
 	private void loadContent() throws SlickException
 	{
-		if(!textureName.isEmpty())
-		{
-			texture = new Image(textureName);
-			texture.setFilter(Image.FILTER_NEAREST);
-		}
+		if(textureName != null)
+			texture = ContentManager.instance().getImage(textureName);
 	}
 	
 	public void update(int delta)

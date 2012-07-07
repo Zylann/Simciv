@@ -1,8 +1,8 @@
-package simciv;
+package simciv.buildings;
 
 import java.util.HashMap;
 
-import simciv.buildings.Building;
+import simciv.World;
 import simciv.units.Citizen;
 
 public abstract class Workplace extends Building
@@ -16,7 +16,7 @@ public abstract class Workplace extends Building
 		employees = new HashMap<Integer,Citizen>();
 	}
 	
-	public abstract int getProductionProgress();
+	public abstract int getProductionProgress(); // returns a value between 0 and 100
 		
 	protected int getMaxEmployees()
 	{
@@ -42,14 +42,21 @@ public abstract class Workplace extends Building
 		return false;
 	}
 
+	public void removeEmployee(int id)
+	{
+		employees.remove(id);
+	}
+
 	@Override
 	public void onDestruction()
 	{
+		// All citizen working here are made redundant
 		for(Citizen c : employees.values())
 		{
 			c.setWorkplace(null);
 		}
 	}
+
 }
 
 

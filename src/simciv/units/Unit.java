@@ -2,6 +2,7 @@ package simciv.units;
 
 import java.util.List;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
@@ -17,8 +18,8 @@ import simciv.World;
  */
 public abstract class Unit extends Entity
 {	
-	public static final byte NORMAL = 1;
-	public static int count = 0;
+	//public static final byte NORMAL = 1; // what is it?
+	public static int count = 0; // Counts all the units
 	
 	boolean isAlive;
 		
@@ -63,6 +64,7 @@ public abstract class Unit extends Entity
 		else
 			direction = Direction2D.NONE;
 		
+		// Apply movement
 		if(direction != Direction2D.NONE)
 		{
 			posX += Direction2D.vectors[direction].x;
@@ -100,13 +102,21 @@ public abstract class Unit extends Entity
 	
 	protected final void defaultRender(Graphics gfx, Image sprite)
 	{
-		// TODO animate units movement
-		gfx.translate(0, - Game.tilesSize / 3);
-		gfx.drawImage(sprite,
+		gfx.translate(
 				posX * Game.tilesSize,
-				posY * Game.tilesSize,
-				(posX + 1) * Game.tilesSize,
-				(posY + 1) * Game.tilesSize,
+				posY * Game.tilesSize - Game.tilesSize / 3);
+
+		if(sprite == null)
+		{
+			gfx.setColor(Color.red);
+			gfx.drawRect(0, 0, Game.tilesSize, Game.tilesSize);
+			return;
+		}
+		
+		// TODO animate units movement
+		gfx.drawImage(sprite,
+				0, 0,
+				Game.tilesSize, Game.tilesSize,
 				0, direction * Game.tilesSize,
 				Game.tilesSize, (direction + 1) * Game.tilesSize);
 	}

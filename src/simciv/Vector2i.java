@@ -1,5 +1,10 @@
 package simciv;
 
+/**
+ * A simple class for handling 2D integer coordinates
+ * @author Marc
+ *
+ */
 public class Vector2i
 {
 	public int x;
@@ -23,16 +28,16 @@ public class Vector2i
 		this.y = y;
 	}
 
-	public void multiply(int s)
-	{
-		this.x *= s;
-		this.y *= s;
-	}
-
 	public void set(Vector2i v)
 	{
 		this.x = v.x;
 		this.y = v.y;
+	}
+
+	public void multiply(int s)
+	{
+		this.x *= s;
+		this.y *= s;
 	}
 
 	public boolean equals(Vector2i other)

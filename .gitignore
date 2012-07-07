@@ -1,5 +1,6 @@
 bin/
 data/
+data_src/
 libs/
 releases/
 modelio/

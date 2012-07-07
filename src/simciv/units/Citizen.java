@@ -2,13 +2,13 @@ package simciv.units;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-
+import simciv.ContentManager;
+import simciv.Job;
 import simciv.Road;
-import simciv.Workplace;
 import simciv.World;
 import simciv.buildings.Building;
 import simciv.buildings.House;
+import simciv.buildings.Workplace;
 
 /**
  * A citizen is a city member.
@@ -20,29 +20,30 @@ import simciv.buildings.House;
  */
 public class Citizen extends Unit
 {
-	private static Image sprite = null;
+	private static Image sprite = null; // default appearance
 	
 	Building buildingRef; // reference to the building the citizen currently is in
-	Workplace workplaceRef;
-	House houseRef;
-	int tickTime;
-
-	public static final void loadContent() throws SlickException
-	{
-		sprite = new Image("data/citizen.png");
-		sprite.setFilter(Image.FILTER_NEAREST);
-	}
+	Workplace workplaceRef; // if null, the Citizen is redundant
+	House houseRef; // if null, the Citizen is homeless
+	Job job; // Job of the Citizen
+	int tickTime; // Tick time interval in milliseconds
 
 	public Citizen(World w)
 	{
 		super(w);
+		if(sprite == null)
+			sprite = ContentManager.instance().getImage("city.citizen");			
+		// Each citizen have a slightly different tickTime
 		tickTime = 500 + (int)(100.f * Math.random()) - 50;
 	}
 	
 	@Override
 	public void render(Graphics gfx)
 	{
-		defaultRender(gfx, sprite);
+		if(job == null)
+			defaultRender(gfx, sprite);
+		else
+			defaultRender(gfx, job.getSprites());
 	}
 
 	@Override
@@ -89,15 +90,24 @@ public class Citizen extends Unit
 	protected boolean exitBuilding()
 	{
 		if(buildingRef == null)
-			return false;				
+			return false;
 		buildingRef = null;
 		return true;
 		//return buildingRef.removeCitizen(getID());
 	}
 
+	/**
+	 * When a Citizen is destroyed, it must also be removed from his
+	 * workplace, his house and eventually the building where he currently is.
+	 */
 	@Override
 	public void onDestruction()
 	{
+		exitBuilding();
+		if(workplaceRef != null)
+			workplaceRef.removeEmployee(this.getID());
+		if(houseRef != null)
+			houseRef.removeInhabitant(this.getID());
 	}
 
 	@Override

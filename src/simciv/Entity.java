@@ -3,7 +3,7 @@ package simciv;
 import org.newdawn.slick.Graphics;
 
 /**
- * An entity is a game element that can update and draw itself.
+ * An entity is a located game element that can update and draw itself.
  * In this game, the update is discretized into ticks :
  * update() uses real-time parameters, tick() does not.
  * Tick times are specific to each entity.
@@ -12,14 +12,14 @@ import org.newdawn.slick.Graphics;
  */
 public abstract class Entity
 {
-	private static int nextEntityID = 0;
+	private static int nextEntityID = 0; // used to generate unique IDs
 	
 	protected int posX;
 	protected int posY;
 	private int ID;
 	private int lifeTime;
 	private int nbTicks;
-	private int nextTickTime;
+	private int timeBeforeNextTick;
 	protected byte state; // different means depending on units or buildings
 	protected short healthPoints;
 	protected byte direction;
@@ -30,7 +30,7 @@ public abstract class Entity
 		worldRef = w;
 		ID = nextEntityID++;
 		direction = Direction2D.SOUTH;
-		nextTickTime = getTickTime();
+		timeBeforeNextTick = getTickTime();
 	}
 	
 	public int getID()
@@ -92,13 +92,13 @@ public abstract class Entity
 	public final void update(int deltaMs)
 	{
 		lifeTime += deltaMs;
-		nextTickTime -= deltaMs;
+		timeBeforeNextTick -= deltaMs;
 		
-		if(nextTickTime < 0)
+		if(timeBeforeNextTick < 0)
 		{
-			nextTickTime += getTickTime();
-			if(nextTickTime < 0)
-				nextTickTime = 0;
+			timeBeforeNextTick += getTickTime();
+			if(timeBeforeNextTick < 0)
+				timeBeforeNextTick = 0;
 			tick();
 			nbTicks++;
 		}
@@ -114,16 +114,21 @@ public abstract class Entity
 	 */
 	public final float getK()
 	{
-		return (float)nextTickTime / (float)(getTickTime());
+		return (float)timeBeforeNextTick / (float)(getTickTime());
 	}
 	
+	/**
+	 * Converts seconds into ticks looking towards the entity
+	 * @param s : seconds
+	 * @return
+	 */
 	public final int secondsToTicks(float s)
 	{
 		return (int) ((1000.f * s) / getTickTime());
 	}
 	
 	/**
-	 * Returns the time the entity take to update its behavior.
+	 * Returns the time interval between each behavior update.
 	 * It can be used to increase its speed for example.
 	 * @return : time per tick in milliseconds
 	 */
@@ -139,7 +144,7 @@ public abstract class Entity
 	 * @param gfx
 	 */
 	public abstract void render(Graphics gfx);
-	
+		
 	/**
 	 * Called just before the entity is destroyed
 	 */

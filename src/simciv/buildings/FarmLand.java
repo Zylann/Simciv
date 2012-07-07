@@ -2,10 +2,8 @@ package simciv.buildings;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-
+import simciv.ContentManager;
 import simciv.Game;
-import simciv.Workplace;
 import simciv.World;
 
 /**
@@ -19,12 +17,13 @@ public class FarmLand extends Workplace
 {	
 	private static BuildingProperties properties;
 	private static Image imgDirt;
+	//private static Image imgCrops;
 	private static byte MIN_LEVEL = 0;
 	private static byte MAX_LEVEL = 7;
 	
 	byte level;
-	int levelTicks; // how many ticks are needed to increase crops level?
-	int nextLevelTicks; // how many ticks remains before the next level?
+	int ticksPerLevel; // how many ticks are needed to increase crops level?
+	int ticksBeforeNextLevel; // how many ticks remains before the next level?
 	
 	static
 	{
@@ -35,27 +34,25 @@ public class FarmLand extends Workplace
 	public FarmLand(World w)
 	{
 		super(w);
-		levelTicks = secondsToTicks(60);
-		nextLevelTicks = levelTicks;
+		if(imgDirt == null)
+			imgDirt = ContentManager.instance().getImage("city.farmland");
+		ticksPerLevel = secondsToTicks(60);
+		ticksBeforeNextLevel = ticksPerLevel;
 		level = MIN_LEVEL;
 	}
 	
-	public static void loadContent() throws SlickException
-	{
-		imgDirt = new Image("data/farmland.png");
-		imgDirt.setFilter(Image.FILTER_NEAREST);
-	}
-
 	@Override
 	public void tick()
 	{
+		if(employees.isEmpty())
+			return;
 		if(level != MAX_LEVEL)
 		{
-			nextLevelTicks--;
-			if(nextLevelTicks == 0)
+			ticksBeforeNextLevel--;
+			if(ticksBeforeNextLevel == 0)
 			{
 				level++;
-				nextLevelTicks = levelTicks;
+				ticksBeforeNextLevel = ticksPerLevel;
 			}
 		}
 	}
@@ -63,7 +60,10 @@ public class FarmLand extends Workplace
 	@Override
 	public void render(Graphics gfx)
 	{
+		// Soil
 		gfx.drawImage(imgDirt, posX * Game.tilesSize, posY * Game.tilesSize);
+		// Crops
+		// TODO FarmLand: render crops
 	}
 
 	@Override

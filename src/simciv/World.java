@@ -10,24 +10,22 @@ import simciv.buildings.Building;
 import simciv.units.Unit;
 
 /**
- * The world contains the terrain, the city and every game element (except UI)
+ * The world contains the terrain and the city (units and buildings)
  * @author Marc
  *
  */
 public class World
-{	
+{
+	public static boolean renderFancyUnitsMovements = true;
+	
 	public Map map;	
-	int time;
 	private HashMap<Integer,Unit> units = new HashMap<Integer,Unit>();
 	private HashMap<Integer,Building> buildings = new HashMap<Integer,Building>();
+	private int time; // World time in milliseconds
 
 	public World(int width, int height)
 	{
 		map = new Map(width, height);
-		
-		//spawnUnit(new Citizen(this), 20, 10);
-		//spawnUnit(new Nomad(this), 10, 20);
-		//placeBuilding(BuildingList.createBuildingFromName("House", this), 10, 10);
 	}
 		
 	/**
@@ -169,11 +167,19 @@ public class World
 	{
 		map.render(mapRange, gc, gfx);
 		
+		//GL11.glEnable(GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_DEPTH_TEST);
+		
 		for(Building b : buildings.values())
 		{
 			if(mapRange.contains(b.getX(), b.getY()))
+			{
+				//GL11.glTranslatef(0, 0, 0.9f);
 				b.render(gfx);
+				//GL11.glTranslatef(0, 0, -0.9f);
+			}
 		}
+		//GL11.glDisable(GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_DEPTH_TEST);
+
 		for(Unit u : units.values())
 		{
 			if(u.isOut() && mapRange.contains(u.getX(), u.getY()))
@@ -181,7 +187,7 @@ public class World
 				gfx.pushTransform();
 
 				// Fancy movements
-				if(u.getDirection() != Direction2D.NONE)
+				if(renderFancyUnitsMovements && u.getDirection() != Direction2D.NONE)
 				{
 					float k = -Game.tilesSize * u.getK();
 					Vector2i dir = Direction2D.vectors[u.getDirection()];

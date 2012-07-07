@@ -11,7 +11,7 @@ import simciv.World;
  * @author Marc
  * 
  */
-public class BuildingList
+public class BuildingFactory
 {
 	@SuppressWarnings("rawtypes")
 	private static HashMap<String,Class> stringToClassMapping = new HashMap<String,Class>();
@@ -59,3 +59,6 @@ public class BuildingList
 		return (String) classToStringMapping.get(b.getClass());
 	}
 }
+
+
+

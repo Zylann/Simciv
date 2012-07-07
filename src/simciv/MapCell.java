@@ -2,6 +2,11 @@ package simciv;
 
 import org.newdawn.slick.Graphics;
 
+/**
+ * This class represents one cell of the map
+ * @author Marc
+ *
+ */
 public class MapCell
 {
 	public byte terrainID;

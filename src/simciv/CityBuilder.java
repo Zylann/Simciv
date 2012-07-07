@@ -8,10 +8,10 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
 import simciv.buildings.Building;
-import simciv.buildings.BuildingList;
+import simciv.buildings.BuildingFactory;
 
 /**
- * User build interface
+ * User build engine
  * @author Marc
  *
  */
@@ -22,36 +22,40 @@ public class CityBuilder
  	
  	public static final int MODE_ERASE = 0;
  	public static final int MODE_ROAD = 1;
- 	public static final int MODE_BUILDING = 2;
- 	public static final int MODE_COUNT = 3; // used to count modes
+ 	public static final int MODE_HOUSE = 2;
+	public static final int MODE_BUILDS = 3;
+ 	public static final int MODE_COUNT = 4; // used to count modes
 
  	// Map cursors
-	Vector2i pos = new Vector2i(); // current pointed cell
-	Vector2i lastPos = new Vector2i(); // last pointed cell (last cell change)
- 	Vector2i lastClickPos = new Vector2i(); // last pointed cell on click
- 	Vector2i buildingPos = new Vector2i();
- 		 	
-	World worldRef;
+	private Vector2i pos = new Vector2i(); // current pointed cell
+	private Vector2i lastPos = new Vector2i(); // last pointed cell (last cell change)
+ 	private Vector2i lastClickPos = new Vector2i(); // last pointed cell on click
+ 	private Vector2i buildingPos = new Vector2i();
+ 	
+ 	// World access
+	private transient World worldRef;
 	
 	// State
-	int mode;
-	String modeString = "";
-	String helpString = "";
-	Building building; // building to place
-	String buildingString = "";
+	private int mode;
+	private String modeString = "";
+	private String helpString = "";
+	private Building building; // building to place
+	private String buildingString = "";
+	private boolean cursorPress = false;
+	private int cursorButton;
 	
 	public CityBuilder(World worldRef)
 	{
 		this.worldRef = worldRef;
-		setMode(MODE_BUILDING);
+		setMode(MODE_HOUSE);
 		setBuildingString("House");
 		helpString = "Mode : [R]=roads, [B]=buildings, [E]=erase";
 	}
 	
 	public static void loadContent() throws SlickException
 	{
-		placeSound = new Sound("data/place.ogg");
-		eraseSound = new Sound("data/erase.ogg");
+		placeSound = ContentManager.instance().getSound("ui.place");
+		eraseSound = ContentManager.instance().getSound("ui.erase");
 	}
 	
 	public void setMode(int mode)
@@ -61,7 +65,7 @@ public class CityBuilder
 			modeString = "Erase mode";
 		else if(mode == MODE_ROAD)
 			modeString = "Road mode";
-		else if(mode == MODE_BUILDING)
+		else if(mode == MODE_HOUSE)
 			modeString = "Building mode";
 	}
 	
@@ -72,7 +76,7 @@ public class CityBuilder
 	public void setBuildingString(String bstr)
 	{
 		buildingString = bstr;
-		building = BuildingList.createBuildingFromName(bstr, worldRef);
+		building = BuildingFactory.createBuildingFromName(bstr, worldRef);
 	}
 	
 	public int getMode()
@@ -82,13 +86,11 @@ public class CityBuilder
 	
 	public void update(GameContainer gc)
 	{
-		Input input = gc.getInput();
-		
-		if(mode == MODE_ROAD)
+		if(mode == MODE_ROAD && cursorPress)
 		{
-			if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
+			if(cursorButton == Input.MOUSE_LEFT_BUTTON)
 				placeRoad();
-			else if(input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON))
+			else if(cursorButton == Input.MOUSE_RIGHT_BUTTON)
 				erase();
 		}
 	}
@@ -100,29 +102,33 @@ public class CityBuilder
 		{
 			gfx.pushTransform();
 			
-				gfx.setColor(new Color(255,255,255,64));
-				gfx.scale(Game.tilesSize, Game.tilesSize);
+			gfx.setColor(new Color(255,255,255,64));
 
-				if(mode == MODE_BUILDING)
-				{
-					gfx.translate(buildingPos.x, buildingPos.y);
-					gfx.fillRect(0, 0, building.getWidth(), building.getHeight());
-				}
-				else
-				{
-					gfx.translate(pos.x, pos.y);
-					gfx.fillRect(0, 0, 1, 1);
-				}
+			if(mode == MODE_HOUSE)
+			{
+				gfx.scale(Game.tilesSize, Game.tilesSize);
+				gfx.translate(buildingPos.x, buildingPos.y);
+				gfx.fillRect(0, 0, building.getWidth(), building.getHeight());
+				//building.setPosition(buildingPos.x, buildingPos.y);					
+				//building.render(gfx);
+			}
+			else
+			{
+				gfx.scale(Game.tilesSize, Game.tilesSize);
+				gfx.translate(pos.x, pos.y);
+				gfx.fillRect(0, 0, 1, 1);
+			}
 				
 			gfx.popTransform();
 		}
-		
-		// Strings
-		gfx.resetTransform();
+	}
+	
+	public void renderDebugInfo(Graphics gfx)
+	{
 		gfx.setColor(Color.white);
 		gfx.drawString(helpString, 100, 10);
 		
-		if(mode == MODE_BUILDING)
+		if(mode == MODE_HOUSE)
 			gfx.drawString(modeString + " / " + buildingString, 100, 30);
 		else
 			gfx.drawString(modeString, 100, 30);
@@ -130,18 +136,23 @@ public class CityBuilder
 	
 	public void cursorPressed(int button, Vector2i mapPos)
 	{
+		cursorPress = true;
+		cursorButton = button;
 		lastClickPos.set(mapPos);
 		
-		if(mode == MODE_BUILDING)
+		if(mode == MODE_HOUSE)
 		{
 			if(button == Input.MOUSE_LEFT_BUTTON)
 				placeBuilding();
-			else if(button == Input.MOUSE_RIGHT_BUTTON)
-				erase();
 		}
 		else if(mode == MODE_ERASE)
 		{
 			erase();
+		}
+		else if(mode == MODE_BUILDS)
+		{
+			if(button == Input.MOUSE_LEFT_BUTTON)
+				placeBuilding();
 		}
 	}
 	
@@ -162,6 +173,7 @@ public class CityBuilder
 	
 	public void cursorReleased()
 	{
+		cursorPress = false;
 	}
 	
 	/*
@@ -192,7 +204,7 @@ public class CityBuilder
 	private void placeBuilding()
 	{
 		// Create a new building
-		Building b = BuildingList.createBuildingFromName(buildingString, worldRef);
+		Building b = BuildingFactory.createBuildingFromName(buildingString, worldRef);
 		
 		if(b != null)
 		{

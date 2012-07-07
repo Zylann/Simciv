@@ -7,24 +7,21 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.state.GameState;
-import org.newdawn.slick.state.StateBasedGame;
+import simciv.states.GamePlay;
+import simciv.states.LoadingScreen;
+import simciv.ui.UIStateBasedGame;
 
-import simciv.buildings.Building;
-import simciv.buildings.FarmLand;
-import simciv.buildings.House;
-import simciv.units.Citizen;
-import simciv.units.Nomad;
-
-public class Game extends StateBasedGame
+public class Game extends UIStateBasedGame
 {
 	// Game constants
-    public static final int screenWidth = 800;
-    public static final int screenHeight = 600;
+    public static final int screenWidth = 1000;
+    public static final int screenHeight = 750;
     public static final int framerate = 60;
     public static final String title = "Simciv - indev";
     public static final int tilesSize = 16;
     
     // States
+    public static final int STATE_LOADING = 1;
     public static final int STATE_GAMEPLAY = 4;
     
     List<GameState> states = new ArrayList<GameState>();
@@ -33,13 +30,16 @@ public class Game extends StateBasedGame
 	{
 		try
 		{
-			AppGameContainer app = new AppGameContainer(new Game(title));
+			//CanvasGameContainer gc = new CanvasGameContainer(new Game(title));
+			AppGameContainer gc = new AppGameContainer(new Game(title));
 			// Note : fullscreen works with 800x600 and 1600x1200
-			app.setDisplayMode(screenWidth, screenHeight, false);
-			app.setTargetFrameRate(framerate);
-			app.setVSync(true);
-			app.setSmoothDeltas(true);
-			app.start();
+			//gc.setSize(screenWidth, screenHeight);
+			gc.setDisplayMode(screenWidth, screenHeight, false);
+			gc.setTargetFrameRate(framerate);
+			gc.setVSync(true);
+			gc.setSmoothDeltas(true);
+
+			gc.start();
 		}
 		catch (SlickException e)
 		{
@@ -52,10 +52,8 @@ public class Game extends StateBasedGame
 		super(title);
 		
 		// Create states
+    	addState(new LoadingScreen(STATE_LOADING));    	
     	addState(new GamePlay(STATE_GAMEPLAY));
-    	
-    	// Enter first state
-    	enterState(STATE_GAMEPLAY);
 	}
     
     @Override
@@ -67,17 +65,13 @@ public class Game extends StateBasedGame
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException
-	{
-		// TODO content loading should be automated
-		Terrain.initialize();
-		Road.loadContent();
-		Citizen.loadContent();
-		House.loadContent();
-		CityBuilder.loadContent();
-		FarmLand.loadContent();
-		Building.loadContent();
-		Nomad.loadContent();
+	{	
+		// Load minimal content
+		ContentManager.instance().loadFont("ui.font", "arial8px.fnt", "arial8px_0.png");
 
+		// Index content
+		ContentManager.instance().loadRessources("data/content.xml", true);
+				
 		// Initialize states
     	for(GameState state : states)
     	{
@@ -85,8 +79,9 @@ public class Game extends StateBasedGame
     	}
     	
     	// Enter first state
-    	enterState(STATE_GAMEPLAY);
+    	enterState(STATE_LOADING);
 	}
+
 }
 
 

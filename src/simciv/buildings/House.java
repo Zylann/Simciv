@@ -4,8 +4,7 @@ import java.util.HashMap;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-
+import simciv.ContentManager;
 import simciv.Game;
 import simciv.World;
 import simciv.units.Citizen;
@@ -29,15 +28,11 @@ public class House extends Building
 	// References to citizen living here
 	HashMap<Integer,Citizen> inhabitants = new HashMap<Integer,Citizen>();
 
-	public static void loadContent() throws SlickException
-	{
-		sprite = new Image("data/house1.png");
-		sprite.setFilter(Image.FILTER_NEAREST);
-	}
-
 	public House(World w)
 	{
 		super(w);
+		if(sprite == null)
+			sprite = ContentManager.instance().getImage("city.smallHouse");
 		direction = (byte) (4 * Math.random());
 	}
 
@@ -84,6 +79,11 @@ public class House extends Building
 		return false;
 	}
 
+	public void removeInhabitant(int id)
+	{
+		inhabitants.remove(id);
+	}
+
 	@Override
 	public void render(Graphics gfx)
 	{
@@ -123,6 +123,7 @@ public class House extends Building
 	{
 		return 500;
 	}
+
 }
 
 

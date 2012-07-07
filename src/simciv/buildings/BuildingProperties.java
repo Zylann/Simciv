@@ -11,7 +11,7 @@ public class BuildingProperties
 	public int width;
 	public int height;
 	public int zHeight;
-	public int capacity;
+	public int capacity; // How many citizen can be contained?
 	public int cost;
 	
 	public BuildingProperties(String name)
