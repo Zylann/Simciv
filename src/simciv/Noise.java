@@ -17,21 +17,34 @@ public class Noise
 	private static final int RAND_SEQ3 = 423005601;
 	
 	/**
-	 * Generates a random value between 0 and 1.
+	 * Generates a random value between 0 and maxint.
 	 * The same parameters will return the same value.
 	 * @param x : X position
 	 * @param y : Y position
 	 * @param seed : random seed
-	 * @return value between 0 and 1.
+	 * @return value between 0 and maxint.
 	 */
-    public static float get(int x, int y, int seed)
+    public static int get(int x, int y, int seed)
     {
         int n = RAND_SEQ_X * x + RAND_SEQ_Y * y + RAND_SEQ_SEED * seed;
         n &= 0x7fffffff;
         n = (n >> 13) ^ n;
         n = n * (n * n * RAND_SEQ1 + RAND_SEQ2) + RAND_SEQ3;
         n &= 0x7fffffff;
-        return (float)n / 0x7fffffff;
+        return n;
+    }
+    
+    /**
+     * Uses get to generate a random float value between 0 and 1.
+     * The same parameters will return the same value.
+     * @param x
+     * @param y
+     * @param seed
+     * @return
+     */
+    public static float getf(int x, int y, int seed)
+    {
+    	return (float)get(x, y, seed) / 0x7fffffff;
     }
     
     static float getGradient(float x, float y, int seed)
@@ -45,10 +58,10 @@ public class Noise
         float yl = y - (float)y0;
         
         // Get values for corners of square
-        float v00 = get(x0, y0, seed);
-        float v10 = get(x0+1, y0, seed);
-        float v01 = get(x0, y0+1, seed);
-        float v11 = get(x0+1, y0+1, seed);
+        float v00 = getf(x0, y0, seed);
+        float v10 = getf(x0+1, y0, seed);
+        float v01 = getf(x0, y0+1, seed);
+        float v11 = getf(x0+1, y0+1, seed);
         
         // Interpolate
         return MathHelper.biLinearInterpolation(v00, v10, v01, v11, xl, yl);
