@@ -8,9 +8,25 @@ Description :
 	
 Current features :
 
-	Map generation (grass and water)
-	Placing buildings and roads
-	Simple citizen behavior on roads
+	- Map generation (grass and water)
+	- Graphical user interface + debug info when hitting F3
+	- Placing buildings and roads
+	- Simple citizen behavior on roads
+	- Farmlands (with growing crops), houses, warehouses (more in the future)
+	
+Some planned features and ideas :
+
+	- Job system and economy
+	- Resources (food, raw materials, ores...)
+	- Ability to save/load a game
+	- Minimap
+	- Savage units
+	- Moar builds
+	- Technological tree ?
+	- Random natural events (weather...)
+	- World view (foreign cities...)
+	- Citizen social levels
+	- Tutorial mode, compaigns...
 
 Dependencies :
 
@@ -20,5 +36,7 @@ Dependencies :
 
 Download data files :
 	
-	http://dl.dropbox.com/u/60408088/INFO/Simciv/data.zip
+	(Not available yet)
 
+	Note : I think I will include data files soon in the repo, as they are not
+		so big (currently only 90,7ko).
