@@ -67,11 +67,15 @@ public class GamePlay extends UIBasicGameState
 		
 		buildCategoryButtonsGroup = new ToolButtonGroup();
 		
+		// Erase
+		
 		ToolButton eraseButton = new ToolButton(ui, 10, 10, buildCategoryButtonsGroup);
 		eraseButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_ERASE));
 		eraseButton.icon = ContentManager.instance().getImage("ui.categErase");
 		buildCategoryButtonsGroup.add(eraseButton);
 		ui.add(eraseButton);
+		
+		// Roads
 
 		ToolButton traceRoadsButton = new ToolButton(ui, 34, 10, buildCategoryButtonsGroup);
 		traceRoadsButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_ROAD));
@@ -79,11 +83,15 @@ public class GamePlay extends UIBasicGameState
 		buildCategoryButtonsGroup.add(traceRoadsButton);
 		ui.add(traceRoadsButton);
 		
+		// Houses
+		
 		ToolButton buildHousesButton = new ToolButton(ui, 58, 10, buildCategoryButtonsGroup);
 		buildHousesButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_HOUSE, "House"));
 		buildHousesButton.icon = ContentManager.instance().getImage("ui.categHouse");
 		buildCategoryButtonsGroup.add(buildHousesButton);
 		ui.add(buildHousesButton);
+		
+		// Food
 		
 		ToolButton foodBuildsButton = new ToolButton(ui, 82, 10, buildCategoryButtonsGroup);
 
@@ -101,9 +109,26 @@ public class GamePlay extends UIBasicGameState
 			.setVisible(false);
 		ui.add(foodBuildsMenu);
 
-		foodBuildsButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_ROAD, foodBuildsMenu));
+		foodBuildsButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_BUILDS, foodBuildsMenu));
+		foodBuildsButton.icon = ContentManager.instance().getImage("ui.categFood");
 		buildCategoryButtonsGroup.add(foodBuildsButton);
 		ui.add(foodBuildsButton);
+		
+		// Industry
+		
+		ToolButton industryBuildsButton = new ToolButton(ui, 106, 10, buildCategoryButtonsGroup);
+		
+		Menu industryBuildsMenu = new Menu(ui, 10, 34, 128);
+		industryBuildsMenu
+			.add(new MenuItem(industryBuildsMenu, "Warehouse"), new SelectBuildAction(industryBuildsButton, "Warehouse"))
+			.setNullActionListener(new SelectBuildAction(industryBuildsButton, null))
+			.setVisible(false);
+		ui.add(industryBuildsMenu);
+		
+		industryBuildsButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_BUILDS, industryBuildsMenu));
+		industryBuildsButton.icon = ContentManager.instance().getImage("ui.categIndustry");
+		buildCategoryButtonsGroup.add(industryBuildsButton);
+		ui.add(industryBuildsButton);
 	}
 
 	@Override
