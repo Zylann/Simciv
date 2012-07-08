@@ -20,7 +20,7 @@ public abstract class Workplace extends Building
 		
 	protected int getMaxEmployees()
 	{
-		return getProperties().capacity;
+		return getProperties().unitsCapacity;
 	}
 	
 	public int getNbEmployees()

@@ -16,7 +16,7 @@ public abstract class Building extends Entity
 	public static final byte NORMAL = 1;
 	public static final byte FIRE = 2;
 	public static final byte RUINS = 3;
-		
+	
 	public Building(World w)
 	{
 		super(w);

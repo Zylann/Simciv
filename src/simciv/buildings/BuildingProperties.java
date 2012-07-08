@@ -11,7 +11,7 @@ public class BuildingProperties
 	public int width;
 	public int height;
 	public int zHeight;
-	public int capacity; // How many citizen can be contained?
+	public int unitsCapacity; // How many citizen can be contained?
 	public int cost;
 	
 	public BuildingProperties(String name)
@@ -20,7 +20,7 @@ public class BuildingProperties
 		width = 1;
 		height = 1;
 		zHeight = 1;
-		capacity = 0;
+		unitsCapacity = 0;
 		cost = 0;
 	}
 	
@@ -40,7 +40,7 @@ public class BuildingProperties
 	
 	public BuildingProperties setCapacity(int capacity)
 	{
-		this.capacity = capacity >= 0 ? capacity : 0;
+		this.unitsCapacity = capacity >= 0 ? capacity : 0;
 		return this;
 	}
 }

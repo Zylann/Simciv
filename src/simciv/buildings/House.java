@@ -68,7 +68,7 @@ public class House extends Building
 
 	public boolean addInhabitant(Citizen c)
 	{
-		if(inhabitants.size() < getProperties().capacity)
+		if(inhabitants.size() < getProperties().unitsCapacity)
 		{
 			if(inhabitants.put(c.getID(), c) == null)
 			{
