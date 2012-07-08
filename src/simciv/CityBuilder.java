@@ -75,7 +75,6 @@ public class CityBuilder
 	{
 		buildingString = bstr;
 		building = BuildingFactory.createBuildingFromName(bstr, worldRef);
-		System.out.println(building.getWidth());
 	}
 	
 	public int getMode()

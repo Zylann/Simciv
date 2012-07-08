@@ -168,6 +168,7 @@ public class World
 		map.render(mapRange, gc, gfx);
 		
 		//GL11.glEnable(GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_DEPTH_TEST);
+		// TODO rendering: use the depth-buffer to align all tiles
 		
 		for(Building b : buildings.values())
 		{
