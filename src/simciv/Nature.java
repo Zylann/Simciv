@@ -34,15 +34,15 @@ public class Nature
 	{
 		if(cell.nature == TREE)
 		{
-			// Apply a little offset to seem more "natural"
+			// Apply a small offset to seem more "natural"
 			if((cell.noise & 0x01) != 0) // 0000 0001
-				gx -= 2;
+				gx -= 1;
 			else if((cell.noise & 0x02) != 0) // 0000 0010
-				gx += 2;
+				gx += 1;
 			else if((cell.noise & 0x03) != 0) // 0000 0011
-				gy -= 2;
+				gy -= 1;
 			else if((cell.noise & 0x04) != 0) // 0000 0100
-				gy += 2;
+				gy += 1;
 			
 			// Visual variants
 			int i = 0;
