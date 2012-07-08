@@ -9,15 +9,26 @@ import org.newdawn.slick.Graphics;
  */
 public class MapCell
 {
-	public byte terrainID;
-	public byte road;
-	public int building;
-
+	public byte terrainID;	// Ground information
+	public byte nature;		// Natural objects
+	public byte road;		// Road configuration
+	public byte noise;		// Random bits for fancy renderings
+	public int building;	// ID of the building occupying the cell (fast access)
+	
 	public MapCell()
 	{
 		terrainID = Terrain.GRASS;
 		road = -1;
 		building = -1;
+	}
+	
+	public void set(MapCell other)
+	{
+		terrainID = other.terrainID;
+		nature = other.nature;
+		road = other.road;
+		building = other.building;
+		noise = other.noise;
 	}
 	
 	public void setBuildingMark(int ID)
@@ -32,6 +43,8 @@ public class MapCell
 
 	public boolean canPlaceObject()
 	{
+		if(nature != 0)
+			return false;
 		if(isRoad()) // road
 			return false;
 		if(terrainID == Terrain.WATER) // invalid terrain
@@ -48,11 +61,18 @@ public class MapCell
 
 	public void render(int x, int y, Graphics gfx)
 	{
+		int gx = x * Game.tilesSize;
+		int gy = y * Game.tilesSize;
+		
 		Terrain.get(terrainID).render(gfx, x, y);
 
 		if(isRoad())
-			Road.render(road, x, y, gfx);
+			Road.render(gfx, road, gx, gy);
+		
+		if(nature != Nature.NONE)
+			Nature.render(gfx, this, gx, gy);
 	}
+	
 }
 
 

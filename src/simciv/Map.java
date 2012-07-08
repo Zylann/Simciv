@@ -51,11 +51,11 @@ public class Map
 		return width * height;
 	}
 	
-	private MapCell getCell(int x, int y)
+	public MapCell getCell(int x, int y)
 	{
 		return cells[width * y + x];
 	}
-	
+		
 	/*
 	 * Terrain
 	 */
@@ -79,11 +79,16 @@ public class Map
 	 * @param x
 	 * @param y
 	 * @param t : terrain type (ID)
+	 * @param nature : natural element
 	 */
-	public void setTerrain(int x, int y, byte t)
+	public void setTerrain(int x, int y, byte t, byte nature)
 	{
 		if(contains(x, y))
-			getCell(x,y).terrainID = t;
+		{
+			MapCell c = getCell(x, y);
+			c.terrainID = t;
+			c.nature = nature;
+		}
 	}
 	
 	/**

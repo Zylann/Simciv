@@ -11,6 +11,7 @@ import simciv.CityBuilder;
 import simciv.ContentManager;
 import simciv.IntRange2D;
 import simciv.MapGenerator;
+import simciv.Nature;
 import simciv.Road;
 import simciv.Terrain;
 import simciv.Vector2i;
@@ -94,7 +95,7 @@ public class GamePlay extends UIBasicGameState
 		huntersItem.setEnabled(false);
 		foodBuildsMenu
 			.add(waterSourceItem, new SelectBuildAction(foodBuildsButton, "House"))
-			.add(farmlandItem, new SelectBuildAction(foodBuildsButton, "Farmland"))
+			.add(farmlandItem, new SelectBuildAction(foodBuildsButton, "FarmLand"))
 			.add(huntersItem, new SelectBuildAction(foodBuildsButton, "House"))
 			.setNullActionListener(new SelectBuildAction(foodBuildsButton, null))
 			.setVisible(false);
@@ -111,8 +112,9 @@ public class GamePlay extends UIBasicGameState
 		Terrain.initialize();
 		Road.loadContent();
 		CityBuilder.loadContent();
+		Nature.loadContent();
 
-		world = new World(64, 64);
+		world = new World(128, 128);
 		builder = new CityBuilder(world);
 		view = new View(0, 0, 2);
 		

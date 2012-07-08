@@ -109,12 +109,9 @@ public class Road
 		return res;
 	}
 		
-	public static void render(byte index, int x, int y, Graphics gfx)
+	public static void render(Graphics gfx, byte index, int gx, int gy)
 	{
-		gfx.drawImage(
-				tiles[index],
-				x * Game.tilesSize,
-				y * Game.tilesSize);
+		gfx.drawImage(tiles[index], gx, gy);
 	}
 
 
