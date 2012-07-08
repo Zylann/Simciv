@@ -75,6 +75,7 @@ public class CityBuilder
 	{
 		buildingString = bstr;
 		building = BuildingFactory.createBuildingFromName(bstr, worldRef);
+		System.out.println(building.getWidth());
 	}
 	
 	public int getMode()
@@ -102,13 +103,22 @@ public class CityBuilder
 			
 			gfx.setColor(new Color(255,255,255,64));
 
-			if(mode == MODE_HOUSE)
+			if(mode == MODE_HOUSE || mode == MODE_BUILDS)
 			{
 				gfx.scale(Game.tilesSize, Game.tilesSize);
 				gfx.translate(buildingPos.x, buildingPos.y);
 				gfx.fillRect(0, 0, building.getWidth(), building.getHeight());
-				//building.setPosition(buildingPos.x, buildingPos.y);					
+				//building.setPosition(buildingPos.x, buildingPos.y);
 				//building.render(gfx);
+			}
+			else if(mode == MODE_ERASE)
+			{
+				gfx.setColor(new Color(255,0,0,255));
+				gfx.scale(Game.tilesSize, Game.tilesSize);
+				gfx.translate(pos.x, pos.y);
+				gfx.setLineWidth(8);
+				gfx.drawLine(0, 0, 1, 1);
+				gfx.drawLine(0, 1, 1, 0);
 			}
 			else
 			{
