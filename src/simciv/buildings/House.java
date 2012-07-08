@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Sound;
+
 import simciv.ContentManager;
 import simciv.Game;
 import simciv.World;
@@ -18,6 +20,7 @@ public class House extends Building
 {
 	private static BuildingProperties properties;
 	private static Image sprite;
+	private static Sound newCitizenSound;
 	
 	static
 	{
@@ -33,6 +36,8 @@ public class House extends Building
 		super(w);
 		if(sprite == null)
 			sprite = ContentManager.instance().getImage("city.smallHouse");
+		if(newCitizenSound == null)
+			newCitizenSound = ContentManager.instance().getSound("city.openDoor");
 		direction = (byte) (4 * Math.random());
 	}
 
@@ -61,6 +66,7 @@ public class House extends Building
 		if(addInhabitant(c))
 		{
 			worldRef.spawnUnit(c, posX, posY);
+			newCitizenSound.play(1.f, 0.25f);
 			return true;
 		}
 		return false;
