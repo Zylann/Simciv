@@ -12,7 +12,9 @@ import org.newdawn.slick.Graphics;
  */
 public abstract class Entity
 {
-	private static int nextEntityID = 0; // used to generate unique IDs
+	// Used to generate unique IDs
+	// It MUST start with 1 (map storage convenience)
+	private static int nextEntityID = 1;
 	
 	protected int posX;
 	protected int posY;
@@ -78,6 +80,11 @@ public abstract class Entity
 	public int getTicks()
 	{
 		return nbTicks;
+	}
+	
+	public void setDirection(byte dir)
+	{
+		direction = dir;
 	}
 	
 	public byte getDirection()

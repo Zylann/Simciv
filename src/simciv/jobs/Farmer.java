@@ -2,14 +2,16 @@ package simciv.jobs;
 
 import org.newdawn.slick.Image;
 
+import simciv.Direction2D;
 import simciv.Job;
+import simciv.buildings.FarmLand;
 import simciv.units.Citizen;
 
 public class Farmer extends Job
 {
-	public Farmer(Citizen citizen)
+	public Farmer(Citizen citizen, FarmLand farmland)
 	{
-		super(citizen);
+		super(citizen, farmland);
 	}
 
 	@Override
@@ -21,6 +23,12 @@ public class Farmer extends Job
 	public Image getSprites()
 	{
 		return null;
+	}
+	
+	@Override
+	public void onBegin()
+	{
+		me.setDirection(Direction2D.NONE);
 	}
 
 	@Override

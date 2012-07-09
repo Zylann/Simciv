@@ -10,6 +10,8 @@ public class BuildingProperties
 	public String name;
 	public int width;
 	public int height;
+	public int entryX;
+	public int entryY;
 	public int zHeight;
 	public int unitsCapacity; // How many citizen can be contained?
 	public int cost;
@@ -24,6 +26,13 @@ public class BuildingProperties
 		cost = 0;
 	}
 	
+	/**
+	 * Sets the dimensions of the building.
+	 * @param width
+	 * @param height
+	 * @param zHeight : virtual height (as we are in 2D), but may be useful later (for rendering).
+	 * @return
+	 */
 	public BuildingProperties setSize(int width, int height, int zHeight)
 	{
 		this.width = width >= 1 ? width : 1;
@@ -38,9 +47,22 @@ public class BuildingProperties
 		return this;
 	}
 	
-	public BuildingProperties setCapacity(int capacity)
+	public BuildingProperties setUnitsCapacity(int capacity)
 	{
 		this.unitsCapacity = capacity >= 0 ? capacity : 0;
+		return this;
+	}
+	
+	/**
+	 * Sets the entry point of the building.
+	 * @param x : X-coordinate relative to origin
+	 * @param y : Y-coordinate relative to origin
+	 * @return properties object itself for chaining
+	 */
+	public BuildingProperties setEntryPoint(int x, int y)
+	{
+		entryX = x;
+		entryY = y;
 		return this;
 	}
 }

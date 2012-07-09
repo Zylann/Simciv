@@ -25,7 +25,7 @@ public class House extends Building
 	static
 	{
 		properties = new BuildingProperties("House");
-		properties.setCapacity(2).setCost(50).setSize(1, 1, 1);
+		properties.setUnitsCapacity(2).setCost(50).setSize(1, 1, 1);
 	}
 
 	// References to citizen living here
@@ -128,6 +128,11 @@ public class House extends Building
 	protected int getTickTime()
 	{
 		return 500;
+	}
+
+	public int getNbInhabitants()
+	{
+		return inhabitants.size();
 	}
 
 }

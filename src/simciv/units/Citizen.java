@@ -1,5 +1,7 @@
 package simciv.units;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import simciv.ContentManager;
@@ -22,11 +24,10 @@ public class Citizen extends Unit
 {
 	private static Image sprite = null; // default appearance
 	
-	Building buildingRef; // reference to the building the citizen currently is in
-	Workplace workplaceRef; // if null, the Citizen is redundant
-	House houseRef; // if null, the Citizen is homeless
-	Job job; // Job of the Citizen
-	int tickTime; // Tick time interval in milliseconds
+	private Building buildingRef; // reference to the building the citizen currently is in
+	private House houseRef; // if null, the Citizen is homeless
+	private Job job; // Job of the Citizen
+	private int tickTime; // Tick time interval in milliseconds
 
 	public Citizen(World w)
 	{
@@ -49,17 +50,45 @@ public class Citizen extends Unit
 	@Override
 	public void tick()
 	{
-		move(Road.getAvailableDirections(worldRef.map, posX, posY));
+		if(job == null)
+		{
+			move(Road.getAvailableDirections(worldRef.map, posX, posY));
+			searchJob();
+		}
+		else
+			job.tick();
+	}
+	
+	/**
+	 * Searches a job by querying all buildings around the current position.
+	 * (Will modify the job attribute.)
+	 */
+	private void searchJob()
+	{
+		if(job != null)
+			return;
+		ArrayList<Building> builds = worldRef.map.getBuildingsAround(worldRef, posX, posY);
+		for(Building b : builds)
+		{
+			if(b.isWorkplace())
+			{
+				Workplace workplace = (Workplace)b;
+				if(workplace.needEmployees())
+				{
+					job = workplace.giveNextJob(this);
+					if(job != null)
+					{
+						job.onBegin();
+						break;
+					}
+				}
+			}
+		}
 	}
 	
 	public void setHouse(House h)
 	{
 		houseRef = h;
-	}
-	
-	public void setWorkplace(Workplace wp)
-	{
-		workplaceRef = wp;
 	}
 
 	@Override
@@ -95,6 +124,13 @@ public class Citizen extends Unit
 		return true;
 		//return buildingRef.removeCitizen(getID());
 	}
+	
+	public void quitJob(boolean notifyWorkplace)
+	{
+		if(job != null)
+			job.onQuit(notifyWorkplace);
+		job = null;
+	}
 
 	/**
 	 * When a Citizen is destroyed, it must also be removed from his
@@ -104,8 +140,7 @@ public class Citizen extends Unit
 	public void onDestruction()
 	{
 		exitBuilding();
-		if(workplaceRef != null)
-			workplaceRef.removeEmployee(this.getID());
+		quitJob(true); // true : notify the workplace
 		if(houseRef != null)
 			houseRef.removeInhabitant(this.getID());
 	}

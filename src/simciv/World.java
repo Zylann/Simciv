@@ -2,6 +2,7 @@ package simciv;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -21,6 +22,7 @@ public class World
 	public Map map;	
 	private HashMap<Integer,Unit> units = new HashMap<Integer,Unit>();
 	private HashMap<Integer,Building> buildings = new HashMap<Integer,Building>();
+	private List<VisualEffect> graphicalEffects = new ArrayList<VisualEffect>();
 	private int time; // World time in milliseconds
 
 	public World(int width, int height)
@@ -57,6 +59,21 @@ public class World
 			u.onDestruction();
 			removeUnit(u.getID());
 		}
+		
+		// Update graphical effects
+		ArrayList<VisualEffect> finishedGraphicalEffects = new ArrayList<VisualEffect>();
+		for(VisualEffect e : graphicalEffects)
+		{
+			e.update(delta);
+			if(e.finished)
+				finishedGraphicalEffects.add(e);
+		}
+		graphicalEffects.removeAll(finishedGraphicalEffects);
+	}
+	
+	public void addGraphicalEffect(VisualEffect e)
+	{
+		graphicalEffects.add(e);
 	}
 	
 	/**
@@ -147,14 +164,26 @@ public class World
 		return false;
 	}
 	
-	Unit getUnit(int ID)
+	public Unit getUnit(int ID)
 	{
 		return units.get(ID);
 	}
 	
-	Building getBuilding(int ID)
+	public Building getBuilding(int ID)
 	{
 		return buildings.get(ID);
+	}
+	
+	/**
+	 * Get the building occupying the cell at (x, y), 
+	 * returns null if there is no building.
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public Building getBuilding(int x, int y)
+	{
+		return map.getBuilding(this, x, y);
 	}
 	
 	/**
@@ -170,6 +199,7 @@ public class World
 		//GL11.glEnable(GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_DEPTH_TEST);
 		// TODO rendering: use the depth-buffer to align all tiles
 		
+		// Draw buildings
 		for(Building b : buildings.values())
 		{
 			if(mapRange.contains(b.getX(), b.getY()))
@@ -181,6 +211,7 @@ public class World
 		}
 		//GL11.glDisable(GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_DEPTH_TEST);
 
+		// Draw units
 		for(Unit u : units.values())
 		{
 			if(u.isOut() && mapRange.contains(u.getX(), u.getY()))
@@ -200,6 +231,13 @@ public class World
 				gfx.popTransform();
 			}
 		}
+		
+		// Draw effects
+		for(VisualEffect e : graphicalEffects)
+		{
+			e.render(gfx);
+		}
 	}
+	
 }
 

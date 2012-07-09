@@ -18,6 +18,7 @@ import simciv.Vector2i;
 import simciv.View;
 import simciv.World;
 import simciv.ui.IActionListener;
+import simciv.ui.InfoBar;
 import simciv.ui.Menu;
 import simciv.ui.MenuItem;
 import simciv.ui.RootPane;
@@ -37,6 +38,7 @@ public class GamePlay extends UIBasicGameState
 	private View view;
 	private World world;
 	private CityBuilder builder;
+	private InfoBar infoBar;
 	private String debugText = "";
 	private Vector2i pointedCell = new Vector2i();
 	private ToolButtonGroup buildCategoryButtonsGroup;
@@ -63,7 +65,9 @@ public class GamePlay extends UIBasicGameState
 	@Override
 	protected void createUI(GameContainer container, final StateBasedGame game) throws SlickException
 	{
-		ui = new RootPane(1200, 900);
+		UIRenderer.instance().setGlobalScale(2);
+		int gs = UIRenderer.instance().getGlobalScale();
+		ui = new RootPane(container.getWidth() / gs, container.getHeight() / gs);
 		
 		buildCategoryButtonsGroup = new ToolButtonGroup();
 		
@@ -129,6 +133,9 @@ public class GamePlay extends UIBasicGameState
 		industryBuildsButton.icon = ContentManager.instance().getImage("ui.categIndustry");
 		buildCategoryButtonsGroup.add(industryBuildsButton);
 		ui.add(industryBuildsButton);
+
+		infoBar = new InfoBar(ui, 0, 0, 300);
+		ui.add(infoBar);
 	}
 
 	@Override
@@ -203,13 +210,15 @@ public class GamePlay extends UIBasicGameState
 		
 		/* HUD */
 				
-		UIRenderer.instance().setGlobalScale(2);
 		gfx.resetTransform();
 		gfx.setColor(Color.white);
 
 		gc.setShowFPS(debugInfoVisible);
 		if(debugInfoVisible)
 			renderDebugInfo(gc, gfx);
+		
+		infoBar.setPosition(0, ui.getHeight() - infoBar.getHeight());
+		infoBar.setText(builder.getInfoText());
 
 		if(paused)
 			gfx.drawString("PAUSE", 10, 70);

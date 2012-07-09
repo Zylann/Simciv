@@ -10,7 +10,7 @@ import simciv.buildings.Building;
 
 /**
  * The map is a 2D array that stores terrain, plants and roads information.
- * It is also used to mark places occupied by buildings.
+ * It is also used to mark places occupied by buildings (see MapCell).
  * @author Marc
  *
  */
@@ -51,11 +51,17 @@ public class Map
 		return width * height;
 	}
 	
-	public MapCell getCell(int x, int y)
+	/**
+	 * Returns the cell at position (x,y). This position MUST be valid.
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public MapCell getCellExisting(int x, int y)
 	{
 		return cells[width * y + x];
 	}
-		
+			
 	/*
 	 * Terrain
 	 */
@@ -69,7 +75,7 @@ public class Map
 	public Terrain getTerrain(int x, int y)
 	{
 		if(contains(x, y))
-			return Terrain.get(getCell(x,y).terrainID);
+			return Terrain.get(getCellExisting(x,y).terrainID);
 		else
 			return Terrain.get(Terrain.VOID);
 	}
@@ -85,7 +91,7 @@ public class Map
 	{
 		if(contains(x, y))
 		{
-			MapCell c = getCell(x, y);
+			MapCell c = getCellExisting(x, y);
 			c.terrainID = t;
 			c.nature = nature;
 		}
@@ -108,7 +114,7 @@ public class Map
 	
 	public boolean isRoad(int x, int y)
 	{
-		return getCell(x, y).isRoad();
+		return getCellExisting(x, y).isRoad();
 	}
 	
 	/**
@@ -120,7 +126,7 @@ public class Map
 	private void setRoad(int x, int y, byte i)
 	{
 		if(contains(x, y))
-			getCell(x,y).road = i;
+			getCellExisting(x,y).road = i;
 	}
 	
 	/**
@@ -133,7 +139,7 @@ public class Map
 	{
 		if(canPlaceObject(x, y))
 		{
-			getCell(x,y).road = Road.getIndex(this, x, y);
+			getCellExisting(x,y).road = Road.getIndex(this, x, y);
 			updateRoads(x, y);
 			return true;
 		}
@@ -198,12 +204,24 @@ public class Map
 		int x, y;
 		int xmax = b.getX() + b.getWidth() - 1;
 		int ymax = b.getY() + b.getHeight() - 1;
+		boolean isOrigin = true;
+		boolean isEntryPoint = false;
 		
 		for(y = b.getY(); y <= ymax; y++)
 		{
 			for(x = b.getX(); x <= xmax; x++)
 			{
-				getCell(x,y).building = mark ? b.getID() : -1;
+				if(mark)
+				{
+					isEntryPoint =
+							x == b.getX() + b.getProperties().entryX && 
+							y == b.getY() + b.getProperties().entryY;
+					getCellExisting(x, y).setBuildingInfo(b.getID(), isOrigin, isEntryPoint);
+					if(isOrigin)
+						isOrigin = false;
+				}
+				else
+					getCellExisting(x, y).eraseBuildingInfo();
 			}
 		}
 		return true;
@@ -219,7 +237,7 @@ public class Map
 	{
 		if(contains(x, y))
 		{
-			return getCell(x,y).building;
+			return getCellExisting(x,y).getBuildingID();
 		}
 		return -1;
 	}
@@ -244,7 +262,7 @@ public class Map
 			for(x = range.minX; x <= range.maxX; x++)
 			{
 				if(contains(x, y))
-					getCell(x, y).render(x, y, gfx);
+					getCellExisting(x, y).render(x, y, gfx);
 			}
 		}
 		
@@ -313,7 +331,7 @@ public class Map
 	{
 		if(!contains(x, y)) // invalid position
 			return false;
-		return getCell(x, y).canPlaceObject();
+		return getCellExisting(x, y).canPlaceObject();
 	}
 	
 	/**
@@ -343,7 +361,7 @@ public class Map
 		if(!contains(x, y))
 			return false;
 		else
-			return getCell(x, y).isCrossable();
+			return getCellExisting(x, y).isCrossable();
 	}
 	
 	public ArrayList<Byte> getAvailableDirections(int x, int y)
@@ -360,6 +378,49 @@ public class Map
 			res.add(Direction2D.SOUTH);
 		
 		return res;
+	}
+	
+	/**
+	 * Get the building occupying the cell at (x, y).
+	 * Returns null if there are no building.
+	 * @param worldRef
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public Building getBuilding(World worldRef, int x, int y)
+	{
+		if(!contains(x, y))
+			return null;
+		return worldRef.getBuilding(getCellExisting(x, y).getBuildingID());
+	}
+	
+	/**
+	 * Get a list of buildings around the given position
+	 * @param worldRef
+	 * @param x
+	 * @param y
+	 * @return list of buildings
+	 */
+	public ArrayList<Building> getBuildingsAround(World worldRef, int x, int y)
+	{
+		Building b;
+		ArrayList<Building> list = new ArrayList<Building>();
+		
+		b = getBuilding(worldRef, x-1, y);
+		if(b != null)
+			list.add(b);
+		b = getBuilding(worldRef, x+1, y);
+		if(b != null)
+			list.add(b);
+		b = getBuilding(worldRef, x, y-1);
+		if(b != null)
+			list.add(b);
+		b = getBuilding(worldRef, x, y+1);
+		if(b != null)
+			list.add(b);
+		
+		return list;
 	}
 }
 

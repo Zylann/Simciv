@@ -5,7 +5,9 @@ import org.newdawn.slick.Image;
 
 import simciv.ContentManager;
 import simciv.Game;
+import simciv.Job;
 import simciv.World;
+import simciv.units.Citizen;
 
 public class Warehouse extends Workplace
 {
@@ -17,7 +19,7 @@ public class Warehouse extends Workplace
 	static
 	{
 		properties = new BuildingProperties("Farmland");
-		properties.setCapacity(4).setSize(3, 3, 0).setCost(100);
+		properties.setUnitsCapacity(4).setSize(3, 3, 0).setCost(100);
 	}
 	
 	public Warehouse(World w)
@@ -25,6 +27,7 @@ public class Warehouse extends Workplace
 		super(w);
 		if(backSprite == null)
 			backSprite = ContentManager.instance().getImage("city.warehouse");
+		state = Building.NORMAL;
 	}
 
 	@Override
@@ -60,6 +63,13 @@ public class Warehouse extends Workplace
 				posY * Game.tilesSize - 16);
 		// Resources
 		//...
+	}
+
+	@Override
+	public Job giveNextJob(Citizen citizen)
+	{
+		// TODO give a job
+		return null;
 	}
 
 }

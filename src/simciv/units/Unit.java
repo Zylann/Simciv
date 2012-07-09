@@ -2,7 +2,6 @@ package simciv.units;
 
 import java.util.List;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
@@ -108,8 +107,10 @@ public abstract class Unit extends Entity
 
 		if(sprite == null)
 		{
-			gfx.setColor(Color.red);
-			gfx.drawRect(0, 0, Game.tilesSize, Game.tilesSize);
+			// For debug
+//			gfx.setLineWidth(1);
+//			gfx.setColor(Color.red);
+//			gfx.drawRect(0, 0, Game.tilesSize, Game.tilesSize);
 			return;
 		}
 		

@@ -9,6 +9,8 @@ import org.newdawn.slick.Sound;
 
 import simciv.buildings.Building;
 import simciv.buildings.BuildingFactory;
+import simciv.buildings.House;
+import simciv.buildings.Workplace;
 
 /**
  * User build engine
@@ -39,7 +41,9 @@ public class CityBuilder
 	private int mode;
 	private String modeString = "";
 	private Building building; // building to place
+	private Building pointedBuilding;
 	private String buildingString = "";
+	private String infoText = "Testing 1234";
 	private boolean cursorPress = false;
 	private int cursorButton;
 	
@@ -54,6 +58,11 @@ public class CityBuilder
 	{
 		placeSound = ContentManager.instance().getSound("ui.place");
 		eraseSound = ContentManager.instance().getSound("ui.erase");
+	}
+	
+	public String getInfoText()
+	{
+		return infoText;
 	}
 	
 	public void setMode(int mode)
@@ -91,6 +100,7 @@ public class CityBuilder
 			else if(cursorButton == Input.MOUSE_RIGHT_BUTTON)
 				erase();
 		}
+		this.updateInfoText();
 	}
 	
 	public void render(Graphics gfx)
@@ -164,8 +174,11 @@ public class CityBuilder
 	public void cursorMoved(Vector2i mapPos)
 	{
 		if(!pos.equals(mapPos))
+		{
 			lastPos.set(pos);
-		pos.set(mapPos);
+			pos.set(mapPos);
+			onPointedCellChanged();
+		}
 		
 		if(building != null)
 		{
@@ -176,6 +189,39 @@ public class CityBuilder
 		}
 	}
 	
+	private void onPointedCellChanged()
+	{
+		pointedBuilding = worldRef.getBuilding(pos.x, pos.y);
+		updateInfoText();
+	}
+	
+	protected void updateInfoText()
+	{
+		if(pointedBuilding == null)
+		{
+			infoText = "";
+		}
+		else
+		{
+			String pointedBuildingString = BuildingFactory.getBuildingString(pointedBuilding);
+			infoText = "[" + pointedBuildingString + "]";
+			if(pointedBuilding.isWorkplace())
+			{
+				Workplace wp = (Workplace)pointedBuilding;
+				infoText += " employees : " + wp.getNbEmployees() + "/" + wp.getMaxEmployees();
+				if(wp.getState() == Building.ACTIVE)
+				{
+					infoText += ", production : " + wp.getProductionProgress() + "%";
+				}
+			}
+			else if(pointedBuilding.isHouse())
+			{
+				House h = (House)pointedBuilding;
+				infoText += " inhabitants : " + h.getNbInhabitants();
+			}
+		}
+	}
+
 	public void cursorReleased()
 	{
 		cursorPress = false;
@@ -216,6 +262,7 @@ public class CityBuilder
 			if(worldRef.placeBuilding(b, buildingPos.x, buildingPos.y))
 			{
 				placeSound.play();
+				onPointedCellChanged();
 			}
 		}
 	}

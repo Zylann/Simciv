@@ -14,8 +14,9 @@ public abstract class Building extends Entity
 	// Common states
 	public static final byte CONSTRUCTION = 0;
 	public static final byte NORMAL = 1;
-	public static final byte FIRE = 2;
-	public static final byte RUINS = 3;
+	public static final byte ACTIVE = 2;
+	public static final byte FIRE = 3;
+	public static final byte RUINS = 4;
 	
 	public Building(World w)
 	{
@@ -43,6 +44,11 @@ public abstract class Building extends Entity
 	}
 
 	public boolean isHouse()
+	{
+		return false;
+	}
+
+	public boolean isWorkplace()
 	{
 		return false;
 	}

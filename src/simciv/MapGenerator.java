@@ -40,7 +40,7 @@ public class MapGenerator
     			
     			c.noise = (byte)(255.f*n3);
     			
-    			map.getCell(x, y).set(c);
+    			map.getCellExisting(x, y).set(c);
     		}
     	}
     }

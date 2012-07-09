@@ -2,6 +2,7 @@ package simciv.buildings;
 
 import java.util.HashMap;
 
+import simciv.Job;
 import simciv.World;
 import simciv.units.Citizen;
 
@@ -16,9 +17,14 @@ public abstract class Workplace extends Building
 		employees = new HashMap<Integer,Citizen>();
 	}
 	
-	public abstract int getProductionProgress(); // returns a value between 0 and 100
+	/**
+	 * May return a value between 0 and 100 indicating the production progress.
+	 * (This is only required for production workplaces.)
+	 * @return
+	 */
+	public abstract int getProductionProgress();
 		
-	protected int getMaxEmployees()
+	public int getMaxEmployees()
 	{
 		return getProperties().unitsCapacity;
 	}
@@ -32,8 +38,22 @@ public abstract class Workplace extends Building
 	{
 		return getNbEmployees() < getMaxEmployees();
 	}
+	
+	/**
+	 * Creates a job from the workplace (depending on available tasks).
+	 * If the job is available, the given citizen is added as an employee to the workplace.
+	 * Otherwise, the method returns null.
+	 * @param citizen : citizen who wants the job
+	 * @return : a new job if available, null if not
+	 */
+	public abstract Job giveNextJob(Citizen citizen);
 
-	public boolean addEmployee(Citizen citizen)
+	/**
+	 * Adds an employee to the workplace (he should have been given a job before)
+	 * @param citizen
+	 * @return : true if success, false otherwise
+	 */
+	protected boolean addEmployee(Citizen citizen)
 	{
 		if(needEmployees())
 		{
@@ -41,10 +61,22 @@ public abstract class Workplace extends Building
 		}
 		return false;
 	}
-
-	public void removeEmployee(int id)
+	
+	/**
+	 * Removes an employee (a citizen) from the workplace, also make it redundant.
+	 * @param id : ID of the citizen
+	 */
+	public void removeEmployeeAndMakeRedundant(int id)
 	{
-		employees.remove(id);
+		Citizen oldEmployee = employees.remove(id);
+		if(oldEmployee != null)
+			oldEmployee.quitJob(false); // false : don't notify the workplace, this is already done.
+	}
+	
+	@Override
+	public final boolean isWorkplace()
+	{
+		return true;
 	}
 
 	@Override
@@ -53,7 +85,7 @@ public abstract class Workplace extends Building
 		// All citizen working here are made redundant
 		for(Citizen c : employees.values())
 		{
-			c.setWorkplace(null);
+			c.quitJob(false); // false : don't notify the workplace, this is already done.
 		}
 	}
 
