@@ -44,6 +44,12 @@ public abstract class Widget
 		this.height = height <= 0 ? 1 : height;
 	}
 	
+	public void setPosition(int x, int y)
+	{
+		this.x = x;
+		this.y = y;
+	}
+	
 	public void setX(int x)
 	{
 		this.x = x;
