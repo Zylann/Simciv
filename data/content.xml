@@ -24,6 +24,7 @@
 	<resource type="image" id="ui.categErase">ui_erase.png</resource>
 	<resource type="image" id="ui.categFood">ui_bread.png</resource>
 	<resource type="image" id="ui.categIndustry">ui_factory.png</resource>
+	<resource type="image" id="ui.categCursor">ui_categMouse.png</resource>
 	<resource type="image" id="ui.menuItem">ui_menu_item.png</resource>
 	<resource type="image" id="effect.greenStar">green_star.png</resource>
 	<resource type="image" id="test">test.png</resource>

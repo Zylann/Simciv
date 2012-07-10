@@ -71,9 +71,17 @@ public class GamePlay extends UIBasicGameState
 		
 		buildCategoryButtonsGroup = new ToolButtonGroup();
 		
+		// Mouse
+		
+		ToolButton mouseButton = new ToolButton(ui, 10, 10, buildCategoryButtonsGroup);
+		mouseButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_CURSOR));
+		mouseButton.icon = ContentManager.instance().getImage("ui.categCursor");
+		buildCategoryButtonsGroup.add(mouseButton);
+		ui.add(mouseButton);
+		
 		// Erase
 		
-		ToolButton eraseButton = new ToolButton(ui, 10, 10, buildCategoryButtonsGroup);
+		ToolButton eraseButton = new ToolButton(ui, 34, 10, buildCategoryButtonsGroup);
 		eraseButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_ERASE));
 		eraseButton.icon = ContentManager.instance().getImage("ui.categErase");
 		buildCategoryButtonsGroup.add(eraseButton);
@@ -81,7 +89,7 @@ public class GamePlay extends UIBasicGameState
 		
 		// Roads
 
-		ToolButton traceRoadsButton = new ToolButton(ui, 34, 10, buildCategoryButtonsGroup);
+		ToolButton traceRoadsButton = new ToolButton(ui, 58, 10, buildCategoryButtonsGroup);
 		traceRoadsButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_ROAD));
 		traceRoadsButton.icon = ContentManager.instance().getImage("ui.categRoad");
 		buildCategoryButtonsGroup.add(traceRoadsButton);
@@ -89,7 +97,7 @@ public class GamePlay extends UIBasicGameState
 		
 		// Houses
 		
-		ToolButton buildHousesButton = new ToolButton(ui, 58, 10, buildCategoryButtonsGroup);
+		ToolButton buildHousesButton = new ToolButton(ui, 82, 10, buildCategoryButtonsGroup);
 		buildHousesButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_HOUSE, "House"));
 		buildHousesButton.icon = ContentManager.instance().getImage("ui.categHouse");
 		buildCategoryButtonsGroup.add(buildHousesButton);
@@ -97,7 +105,7 @@ public class GamePlay extends UIBasicGameState
 		
 		// Food
 		
-		ToolButton foodBuildsButton = new ToolButton(ui, 82, 10, buildCategoryButtonsGroup);
+		ToolButton foodBuildsButton = new ToolButton(ui, 106, 10, buildCategoryButtonsGroup);
 
 		Menu foodBuildsMenu = new Menu(ui, 10, 34, 128);
 		MenuItem waterSourceItem = new MenuItem(foodBuildsMenu, "Water source");
@@ -120,7 +128,7 @@ public class GamePlay extends UIBasicGameState
 		
 		// Industry
 		
-		ToolButton industryBuildsButton = new ToolButton(ui, 106, 10, buildCategoryButtonsGroup);
+		ToolButton industryBuildsButton = new ToolButton(ui, 130, 10, buildCategoryButtonsGroup);
 		
 		Menu industryBuildsMenu = new Menu(ui, 10, 34, 128);
 		industryBuildsMenu

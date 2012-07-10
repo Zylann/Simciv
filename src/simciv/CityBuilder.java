@@ -22,11 +22,12 @@ public class CityBuilder
  	private static Sound placeSound;
  	private static Sound eraseSound;
  	
- 	public static final int MODE_ERASE = 0;
- 	public static final int MODE_ROAD = 1;
- 	public static final int MODE_HOUSE = 2;
-	public static final int MODE_BUILDS = 3;
- 	public static final int MODE_COUNT = 4; // used to count modes
+ 	public static final int MODE_CURSOR = 0;
+ 	public static final int MODE_ERASE = 1;
+ 	public static final int MODE_ROAD = 2;
+ 	public static final int MODE_HOUSE = 3;
+	public static final int MODE_BUILDS = 4;
+ 	public static final int MODE_COUNT = 5; // used to count modes
 
  	// Map cursors
 	private Vector2i pos = new Vector2i(); // current pointed cell
@@ -50,7 +51,7 @@ public class CityBuilder
 	public CityBuilder(World worldRef)
 	{
 		this.worldRef = worldRef;
-		setMode(MODE_HOUSE);
+		setMode(MODE_CURSOR);
 		setBuildingString("House");
 	}
 	
@@ -129,7 +130,7 @@ public class CityBuilder
 				gfx.drawLine(0, 0, 1, 1);
 				gfx.drawLine(0, 1, 1, 0);
 			}
-			else
+			else if(mode == MODE_ROAD)
 			{
 				gfx.scale(Game.tilesSize, Game.tilesSize);
 				gfx.translate(pos.x, pos.y);
