@@ -1,4 +1,4 @@
-package simciv.states;
+package simciv.gamestates;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;

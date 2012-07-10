@@ -1,4 +1,4 @@
-package simciv.states;
+package simciv.gamestates;
 
 import java.io.IOException;
 

@@ -7,8 +7,9 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.state.GameState;
-import simciv.states.GamePlay;
-import simciv.states.LoadingScreen;
+
+import simciv.gamestates.GamePlay;
+import simciv.gamestates.LoadingScreen;
 import simciv.ui.UIStateBasedGame;
 
 public class Game extends UIStateBasedGame
