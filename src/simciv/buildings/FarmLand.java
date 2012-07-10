@@ -7,8 +7,7 @@ import simciv.ContentManager;
 import simciv.Game;
 import simciv.Job;
 import simciv.World;
-import simciv.effects.RisingIcon;
-import simciv.jobs.Farmer;
+import simciv.jobs.InternalJob;
 import simciv.units.Citizen;
 
 /**
@@ -139,13 +138,8 @@ public class FarmLand extends Workplace
 	{
 		if(needEmployees())
 		{
-			Job job = new Farmer(citizen, this);
+			Job job = new InternalJob(citizen, this, Job.FARMER);
 			addEmployee(citizen);
-			// Visual feedback
-			worldRef.addGraphicalEffect(
-					new RisingIcon(
-							posX + 1, posY + 1,
-							ContentManager.instance().getImage("effect.greenStar")));
 			return job;
 		}
 		return null;

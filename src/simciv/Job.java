@@ -14,9 +14,10 @@ public abstract class Job
 {
 	// Job IDs
 	public static final byte FARMER = 1;
+	public static final byte WAREHOUSE_INTERNAL = 2;
 	
 	protected Citizen me; // The Citizen doing the job
-	Workplace workplaceRef; // must not be null (otherwise the job may be useless)
+	protected Workplace workplaceRef; // must not be null (otherwise the job may be useless)
 	
 	public Job(Citizen citizen, Workplace workplace)
 	{
@@ -27,6 +28,11 @@ public abstract class Job
 	public abstract void tick();
 	public abstract Image getSprites();
 	public abstract byte getID();
+	
+	public Workplace getWorkplace()
+	{
+		return workplaceRef;
+	}
 	
 	public void onBegin()
 	{

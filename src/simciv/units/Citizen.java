@@ -11,6 +11,7 @@ import simciv.World;
 import simciv.buildings.Building;
 import simciv.buildings.House;
 import simciv.buildings.Workplace;
+import simciv.effects.RisingIcon;
 
 /**
  * A citizen is a city member.
@@ -76,10 +77,15 @@ public class Citizen extends Unit
 				if(workplace.needEmployees())
 				{
 					job = workplace.giveNextJob(this);
-					if(job != null)
+					if(job != null) // I got the job !
 					{
 						job.onBegin();
-						break;
+						// Visual feedback
+						worldRef.addGraphicalEffect(
+								new RisingIcon(
+										workplace.getX(), workplace.getY(),
+										ContentManager.instance().getImage("effect.greenStar")));
+						break; // stop searching
 					}
 				}
 			}
