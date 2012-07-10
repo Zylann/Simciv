@@ -18,7 +18,7 @@ public class InfoBar extends Widget
 	public InfoBar(WidgetContainer parent, int x, int y, int width)
 	{
 		super(parent, x, y, width, HEIGHT);
-		backColor = new Color(0, 0, 0, 128);
+		backColor = new Color(0, 0, 0, 96);
 	}
 	
 	public void setText(String text)
