@@ -135,6 +135,12 @@ public class House extends Building
 		return inhabitants.size();
 	}
 
+	@Override
+	public String getInfoString()
+	{
+		return "[" + getProperties().name + "] inhabitants : " + getNbInhabitants();
+	}
+
 }
 
 

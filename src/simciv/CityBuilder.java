@@ -9,8 +9,6 @@ import org.newdawn.slick.Sound;
 
 import simciv.buildings.Building;
 import simciv.buildings.BuildingFactory;
-import simciv.buildings.House;
-import simciv.buildings.Workplace;
 
 /**
  * User build engine
@@ -199,28 +197,9 @@ public class CityBuilder
 	protected void updateInfoText()
 	{
 		if(pointedBuilding == null)
-		{
 			infoText = "";
-		}
 		else
-		{
-			String pointedBuildingString = BuildingFactory.getBuildingString(pointedBuilding);
-			infoText = "[" + pointedBuildingString + "]";
-			if(pointedBuilding.isWorkplace())
-			{
-				Workplace wp = (Workplace)pointedBuilding;
-				infoText += " employees : " + wp.getNbEmployees() + "/" + wp.getMaxEmployees();
-				if(wp.getState() == Building.ACTIVE)
-				{
-					infoText += ", production : " + wp.getProductionProgress() + "%";
-				}
-			}
-			else if(pointedBuilding.isHouse())
-			{
-				House h = (House)pointedBuilding;
-				infoText += " inhabitants : " + h.getNbInhabitants();
-			}
-		}
+			infoText = pointedBuilding.getInfoString();
 	}
 
 	public void cursorReleased()

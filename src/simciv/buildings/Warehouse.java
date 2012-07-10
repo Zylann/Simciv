@@ -95,7 +95,13 @@ public class Warehouse extends Workplace
 		}
 		return null;
 	}
-
+	
+	@Override
+	public String getInfoString()
+	{
+		return "[" + getProperties().name + "] employees : " + getNbEmployees() + "/" + getMaxEmployees();
+	}
+	
 }
 
 

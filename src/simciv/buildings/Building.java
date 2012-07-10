@@ -52,5 +52,11 @@ public abstract class Building extends Entity
 	{
 		return false;
 	}
+	
+	/**
+	 * Returns a brief information about the building
+	 * @return
+	 */
+	public abstract String getInfoString();
 }
 

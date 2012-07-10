@@ -88,7 +88,16 @@ public abstract class Workplace extends Building
 			c.quitJob(false); // false : don't notify the workplace, this is already done.
 		}
 	}
-
+	
+	@Override
+	public String getInfoString()
+	{
+		String info = "[" + getProperties().name + "] employees : " + getNbEmployees() + "/" + getMaxEmployees();
+		if(state == ACTIVE)
+			info += ", production : " + getProductionProgress() + "%";
+		return info;
+	}
+	
 }
 
 
