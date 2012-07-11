@@ -39,6 +39,26 @@ public class Vector2i
 		this.x *= s;
 		this.y *= s;
 	}
+	
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(!(obj instanceof Vector2i))
+        {
+            return false;
+        }
+        else
+        {
+            Vector2i vec = (Vector2i)obj;
+            return x == vec.x && y == vec.y;
+        }
+    }
+    
+    @Override
+    public int hashCode()
+    {
+        return x | (y << 16);
+    }
 
 	public boolean equals(Vector2i other)
 	{
