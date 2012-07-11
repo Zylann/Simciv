@@ -16,15 +16,23 @@ public class View
 	static final float acceleration = 5000.f;
 	static final float velocityMax = 750.f;
 	
-	Vector2f origin;
+	Vector2f origin; // in pixels
 	Vector2f velocity;
+	Vector2i worldSize;
 	int scale;
 	
 	public View(float x, float y, int scale)
 	{
 		origin = new Vector2f(x, y);
 		velocity = new Vector2f();
+		worldSize = new Vector2i();
 		this.scale = scale;
+	}
+	
+	public void setWorldSize(int sizeX, int sizeY)
+	{
+		worldSize.x = scale * Game.tilesSize * (sizeX > 0 ? sizeX : 0);
+		worldSize.y = scale * Game.tilesSize * (sizeY > 0 ? sizeY : 0);
 	}
 	
 	public void update(GameContainer gc, float delta)
@@ -82,6 +90,10 @@ public class View
 			origin.x = 0;
 		if(origin.y < 0)
 			origin.y = 0;
+		if(origin.x >= worldSize.x - gc.getWidth())
+			origin.x = worldSize.x - gc.getWidth();
+		if(origin.y >= worldSize.y - gc.getHeight())
+			origin.y = worldSize.y - gc.getHeight();
 	}
 
 	/**

@@ -155,11 +155,12 @@ public class GamePlay extends UIBasicGameState
 		Nature.loadContent();
 
 		world = new World(128, 128);
-		builder = new CityBuilder(world);
-		view = new View(0, 0, 2);
-		
 		MapGenerator mapgen = new MapGenerator(131183);
 		mapgen.generate(world.map);
+		
+		builder = new CityBuilder(world);
+		view = new View(0, 0, 2);
+		view.setWorldSize(world.map.getWidth(), world.map.getHeight());
 		
 		super.enter(gc, game);
 	}
