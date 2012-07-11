@@ -100,7 +100,7 @@ public class MapCell
 	
 	public boolean isCrossable()
 	{
-		return terrainID != Terrain.WATER && buildingInfo == -1;
+		return terrainID != Terrain.WATER && !isBuilding();
 	}
 
 	public void render(int x, int y, Graphics gfx)
