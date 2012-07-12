@@ -204,7 +204,11 @@ public class World
 		// Register buildings
 		for(Building b : buildings.values())
 		{
-			if(mapRange.contains(b.getX(), b.getY()))
+			if(mapRange.intersects(
+					b.getX(),
+					b.getY(),
+					b.getX() + b.getWidth() - 1,
+					b.getY() + b.getHeight() - 1))
 				renderMgr.add(b);
 		}
 
