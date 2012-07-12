@@ -3,6 +3,7 @@ data_src/
 libs/
 releases/
 modelio/
+src_old/
 .classpath
 .project
 .settings
