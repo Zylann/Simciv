@@ -96,8 +96,10 @@ public class CityBuilder
 		{
 			if(cursorButton == Input.MOUSE_LEFT_BUTTON)
 				placeRoad();
-			else if(cursorButton == Input.MOUSE_RIGHT_BUTTON)
-				erase();
+		}
+		else if(mode == MODE_ERASE && cursorPress)
+		{
+			erase();
 		}
 		this.updateInfoText();
 	}
