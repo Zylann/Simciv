@@ -35,6 +35,16 @@ public class View
 		worldSize.y = scale * Game.tilesSize * (sizeY > 0 ? sizeY : 0);
 	}
 	
+	public int getMapX()
+	{
+		return ((int)origin.x) / scale / Game.tilesSize;
+	}
+	
+	public int getMapY()
+	{
+		return ((int)origin.y) / scale / Game.tilesSize;
+	}
+		
 	public void update(GameContainer gc, float delta)
 	{
 		Input input = gc.getInput();
@@ -135,6 +145,11 @@ public class View
 		IntRange2D r = getRange(gc);
 		r.divide(Game.tilesSize);
 		return r;
+	}
+
+	public int getScale()
+	{
+		return scale;
 	}
 }
 
