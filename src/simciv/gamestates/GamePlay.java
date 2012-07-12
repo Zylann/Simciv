@@ -194,7 +194,7 @@ public class GamePlay extends UIBasicGameState
 			// Pointed cell
 			pointedCell = view.convertCoordsToMap(input.getMouseX(), input.getMouseY());
 
-			world.update(delta);
+			world.update(gc, game, delta);
 			builder.update(gc);
 		}
 		
@@ -211,7 +211,7 @@ public class GamePlay extends UIBasicGameState
 		
 		/* World */
 		
-		world.render(mapRange, gc, gfx);
+		world.render(gc, game, gfx, mapRange);
 		
 		/* Builder */
 		

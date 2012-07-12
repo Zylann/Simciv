@@ -40,7 +40,7 @@ public class Citizen extends Unit
 	}
 	
 	@Override
-	public void render(Graphics gfx)
+	public void renderUnit(Graphics gfx)
 	{
 		if(job == null)
 			defaultRender(gfx, sprite);
@@ -156,4 +156,10 @@ public class Citizen extends Unit
 	{
 		return tickTime;
 	}
+
+	@Override
+	public void onInit()
+	{
+	}
+	
 }

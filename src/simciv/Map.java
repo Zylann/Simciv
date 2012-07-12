@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-
 import simciv.buildings.Building;
+import simciv.rendering.RenderNatureElements;
+import simciv.rendering.SortedRender;
 
 /**
  * The map is a 2D array that stores terrain, plants and roads information.
@@ -16,6 +17,8 @@ import simciv.buildings.Building;
  */
 public class Map
 {
+	// TODO remove redundant methods
+	
 	// Map layers :
 	// 2D access is made using (width * y + x).
 	MapCell cells[];
@@ -252,7 +255,7 @@ public class Map
 	 * @param gc
 	 * @param gfx
 	 */
-	public void render(IntRange2D range, GameContainer gc, Graphics gfx)
+	public void renderGround(IntRange2D range, GameContainer gc, Graphics gfx)
 	{
 		gfx.setColor(Color.white);
 		int x, y;
@@ -262,12 +265,20 @@ public class Map
 			for(x = range.minX; x <= range.maxX; x++)
 			{
 				if(contains(x, y))
-					getCellExisting(x, y).render(x, y, gfx);
+					getCellExisting(x, y).renderGround(x, y, gfx);
 			}
 		}
 		
 		if(renderGrid)
 			renderGrid(range.minX, range.minY, gc, gfx);
+	}
+	
+	public void registerElementsForSortedRender(IntRange2D range, SortedRender mgr)
+	{
+		for(int y = range.minY; y <= range.maxY; y++)
+		{
+			mgr.add(new RenderNatureElements(this, range.minX, y, range.maxX));
+		}
 	}
 	
 	private void renderGrid(int x0, int y0, GameContainer gc, Graphics gfx)
@@ -422,5 +433,6 @@ public class Map
 		
 		return list;
 	}
+
 }
 

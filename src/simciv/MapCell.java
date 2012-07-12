@@ -103,7 +103,7 @@ public class MapCell
 		return terrainID != Terrain.WATER && !isBuilding();
 	}
 
-	public void render(int x, int y, Graphics gfx)
+	public void renderGround(int x, int y, Graphics gfx)
 	{
 		int gx = x * Game.tilesSize;
 		int gy = y * Game.tilesSize;
@@ -112,7 +112,10 @@ public class MapCell
 
 		if(isRoad())
 			Road.render(gfx, road, gx, gy);
-		
+	}
+	
+	public void renderNatureElement(int gx, int gy, Graphics gfx)
+	{
 		if(nature != Nature.NONE)
 			Nature.render(gfx, this, gx, gy);
 	}

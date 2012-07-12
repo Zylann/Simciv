@@ -1,7 +1,9 @@
 package simciv.buildings;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.ContentManager;
 import simciv.Game;
@@ -73,7 +75,7 @@ public class Warehouse extends Workplace
 	}
 
 	@Override
-	public void render(Graphics gfx)
+	public void render(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		int i = state == Building.ACTIVE ? 1 : 0;
 		// Floor
@@ -100,6 +102,11 @@ public class Warehouse extends Workplace
 	public String getInfoString()
 	{
 		return "[" + getProperties().name + "] employees : " + getNbEmployees() + "/" + getMaxEmployees();
+	}
+
+	@Override
+	public void onInit()
+	{
 	}
 	
 }

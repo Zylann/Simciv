@@ -6,8 +6,10 @@ import java.util.List;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.buildings.Building;
+import simciv.rendering.SortedRender;
 import simciv.units.Unit;
 
 /**
@@ -35,15 +37,14 @@ public class World
 	 * and units at each time interval (tickTime).
 	 * @param delta
 	 */
-	public void update(int delta)
+	public void update(GameContainer gc, StateBasedGame game, int delta)
 	{
 		time += delta;
-
-		ArrayList<Unit> unitsToRemove = new ArrayList<Unit>();
 		
+		ArrayList<Unit> unitsToRemove = new ArrayList<Unit>();
 		for(Unit u : units.values())
 		{
-			u.update(delta);
+			u.update(gc, game, delta);
 			if(!u.isAlive())
 			{
 				unitsToRemove.add(u);
@@ -51,7 +52,7 @@ public class World
 		}
 		for(Building b : buildings.values())
 		{
-			b.update(delta);
+			b.update(gc, game, delta);
 		}
 		// TODO buildings to remove
 		for(Unit u : unitsToRemove)
@@ -86,8 +87,10 @@ public class World
 	public boolean spawnUnit(Unit u, int x, int y)
 	{
 		u.setPosition(x, y);
+		
 		if(!units.containsKey(u.getID()))
 		{
+			u.onInit();
 			units.put(u.getID(), u);
 			return true;
 		}
@@ -192,51 +195,39 @@ public class World
 	 * @param gc
 	 * @param gfx
 	 */
-	public void render(IntRange2D mapRange, GameContainer gc, Graphics gfx)
-	{
-		map.render(mapRange, gc, gfx);
-		
-		//GL11.glEnable(GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_DEPTH_TEST);
-		// TODO rendering: use the depth-buffer to align all tiles
-		
-		// Draw buildings
+	public void render(GameContainer gc, StateBasedGame game, Graphics gfx, IntRange2D mapRange)
+	{		
+		SortedRender renderMgr = new SortedRender();		
+				
+		map.registerElementsForSortedRender(mapRange, renderMgr);
+
+		// Register buildings
 		for(Building b : buildings.values())
 		{
 			if(mapRange.contains(b.getX(), b.getY()))
-			{
-				//GL11.glTranslatef(0, 0, 0.9f);
-				b.render(gfx);
-				//GL11.glTranslatef(0, 0, -0.9f);
-			}
+				renderMgr.add(b);
 		}
-		//GL11.glDisable(GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_DEPTH_TEST);
 
-		// Draw units
+		// Register units
 		for(Unit u : units.values())
 		{
-			if(u.isOut() && mapRange.contains(u.getX(), u.getY()))
-			{
-				gfx.pushTransform();
-
-				// Fancy movements
-				if(renderFancyUnitsMovements && u.getDirection() != Direction2D.NONE)
-				{
-					float k = -Game.tilesSize * u.getK();
-					Vector2i dir = Direction2D.vectors[u.getDirection()];
-					gfx.translate(k * dir.x, k * dir.y);
-				}
-				
-				u.render(gfx);
-				
-				gfx.popTransform();
-			}
+			if(u.isVisible() && mapRange.contains(u.getX(), u.getY()))
+				renderMgr.add(u);
 		}
 		
-		// Draw effects
+//		long timeBefore = System.currentTimeMillis(); // for debug
+		
+		// Draw elements in the right order
+		map.renderGround(mapRange, gc, gfx); // Ground at first
+		renderMgr.render(gc, game, gfx);
+		
+		// Draw effects on the top
 		for(VisualEffect e : graphicalEffects)
-		{
 			e.render(gfx);
-		}
+		
+//		long time = System.currentTimeMillis() - timeBefore; // for debug
+//		if(gc.getInput().isKeyDown(Input.KEY_T))
+//			System.out.println(time);
 	}
 	
 }

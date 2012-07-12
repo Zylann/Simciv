@@ -15,11 +15,15 @@ import simciv.ui.UIStateBasedGame;
 public class Game extends UIStateBasedGame
 {
 	// Game constants
+    public static final String title = "Simciv - indev";
+    public static final int tilesSize = 16;
+
+    // Game settings
     public static final int screenWidth = 1000;
     public static final int screenHeight = 750;
     public static final int framerate = 60;
-    public static final String title = "Simciv - indev";
-    public static final int tilesSize = 16;
+    // Graphics settings
+    public static boolean renderFancyUnitMovements = true;
     
     // States
     public static final int STATE_LOADING = 1;

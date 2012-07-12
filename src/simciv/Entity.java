@@ -1,6 +1,7 @@
 package simciv;
 
-import org.newdawn.slick.Graphics;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.state.StateBasedGame;
 
 /**
  * An entity is a located game element that can update and draw itself.
@@ -10,15 +11,10 @@ import org.newdawn.slick.Graphics;
  * @author Marc
  *
  */
-public abstract class Entity
-{
-	// Used to generate unique IDs
-	// It MUST start with 1 (map storage convenience)
-	private static int nextEntityID = 1;
-	
+public abstract class Entity extends GameComponent
+{	
 	protected int posX;
 	protected int posY;
-	private int ID;
 	private int lifeTime;
 	private int nbTicks;
 	private int timeBeforeNextTick;
@@ -29,15 +25,10 @@ public abstract class Entity
 	
 	public Entity(World w)
 	{
+		super();
 		worldRef = w;
-		ID = nextEntityID++;
 		direction = Direction2D.SOUTH;
 		timeBeforeNextTick = getTickTime();
-	}
-	
-	public int getID()
-	{
-		return ID;
 	}
 	
 	public byte getState()
@@ -91,15 +82,18 @@ public abstract class Entity
 	{
 		return direction;
 	}
-	
-	/**
-	 * Called regularly by the game update method.
-	 * @param deltaMs
-	 */
-	public final void update(int deltaMs)
+
+	@Override
+	public int getDrawOrder()
 	{
-		lifeTime += deltaMs;
-		timeBeforeNextTick -= deltaMs;
+		return posY;
+	}
+
+	@Override
+	public void update(GameContainer gc, StateBasedGame game, int delta)
+	{
+		lifeTime += delta;
+		timeBeforeNextTick -= delta;
 		
 		if(timeBeforeNextTick < 0)
 		{
@@ -145,16 +139,6 @@ public abstract class Entity
 	 * Called regularly to make the entity "live" and execute its tasks.
 	 */
 	protected abstract void tick();
-	
-	/**
-	 * Called to draw the entity
-	 * @param gfx
-	 */
-	public abstract void render(Graphics gfx);
-		
-	/**
-	 * Called just before the entity is destroyed
-	 */
-	public abstract void onDestruction();
+
 }
 

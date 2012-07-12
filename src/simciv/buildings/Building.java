@@ -53,6 +53,12 @@ public abstract class Building extends Entity
 		return false;
 	}
 	
+	@Override
+	public boolean isVisible()
+	{
+		return true;
+	}
+	
 	/**
 	 * Returns a brief information about the building
 	 * @return

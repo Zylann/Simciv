@@ -17,7 +17,7 @@ public class Nomad extends Unit
 	}
 
 	@Override
-	public void render(Graphics gfx)
+	public void renderUnit(Graphics gfx)
 	{
 		defaultRender(gfx, sprite);
 	}
@@ -37,5 +37,10 @@ public class Nomad extends Unit
 	protected int getTickTime()
 	{
 		return 500;
+	}
+
+	@Override
+	public void onInit()
+	{
 	}
 }

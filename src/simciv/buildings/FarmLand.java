@@ -1,7 +1,9 @@
 package simciv.buildings;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.ContentManager;
 import simciv.Game;
@@ -82,7 +84,7 @@ public class FarmLand extends Workplace
 	}
 
 	@Override
-	public void render(Graphics gfx)
+	public void render(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		int gx = posX * Game.tilesSize;
 		int gy = posY * Game.tilesSize;
@@ -143,6 +145,11 @@ public class FarmLand extends Workplace
 			return job;
 		}
 		return null;
+	}
+
+	@Override
+	public void onInit()
+	{
 	}
 }
 

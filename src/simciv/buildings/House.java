@@ -2,9 +2,11 @@ package simciv.buildings;
 
 import java.util.HashMap;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Sound;
+import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.ContentManager;
 import simciv.Game;
@@ -91,7 +93,7 @@ public class House extends Building
 	}
 
 	@Override
-	public void render(Graphics gfx)
+	public void render(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		if(state == CONSTRUCTION)
 		{
@@ -139,6 +141,11 @@ public class House extends Building
 	public String getInfoString()
 	{
 		return "[" + getProperties().name + "] inhabitants : " + getNbInhabitants();
+	}
+
+	@Override
+	public void onInit()
+	{
 	}
 
 }

@@ -2,12 +2,15 @@ package simciv.units;
 
 import java.util.List;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Direction2D;
 import simciv.Entity;
 import simciv.Game;
+import simciv.Vector2i;
 import simciv.World;
 
 /**
@@ -99,8 +102,46 @@ public abstract class Unit extends Entity
 		return true;
 	}
 	
-	protected final void defaultRender(Graphics gfx, Image sprite)
+	@Override
+	public boolean isVisible()
 	{
+		return isOut();
+	}
+		
+	protected final void beginRenderForFancyMovements(Graphics gfx)
+	{
+		if(getDirection() != Direction2D.NONE)
+		{
+			float k = -Game.tilesSize * getK();
+			Vector2i dir = Direction2D.vectors[getDirection()];
+			gfx.translate(k * dir.x, k * dir.y);
+		}
+	}
+	
+	@Override
+	public void render(GameContainer gc, StateBasedGame game, Graphics gfx)
+	{
+		gfx.pushTransform();
+		
+		if(Game.renderFancyUnitMovements)
+			beginRenderForFancyMovements(gfx);
+		
+		renderUnit(gfx);
+		
+		gfx.popTransform();
+	}
+
+	protected abstract void renderUnit(Graphics gfx);
+
+	@Override
+	protected int getTickTime()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	protected final void defaultRender(Graphics gfx, Image sprite)
+	{		
 		gfx.translate(
 				posX * Game.tilesSize,
 				posY * Game.tilesSize - Game.tilesSize / 3);
@@ -114,7 +155,6 @@ public abstract class Unit extends Entity
 			return;
 		}
 		
-		// TODO animate units movement
 		gfx.drawImage(sprite,
 				0, 0,
 				Game.tilesSize, Game.tilesSize,
