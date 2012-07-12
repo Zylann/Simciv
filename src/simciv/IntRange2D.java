@@ -59,4 +59,11 @@ public class IntRange2D
 	{
 		return x >= minX && x <= maxX && y >= minY && y <= maxY;
 	}
+
+	public boolean intersects(int minX, int minY, int maxX, int maxY)
+	{
+        if(maxX < this.minX || minX > this.maxX)
+            return false;
+        return maxY >= this.minY && minY <= this.maxY;
+	}
 }
