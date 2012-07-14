@@ -160,6 +160,7 @@ public class GamePlay extends UIBasicGameState
 		minimapWindow.add(minimap);
 		ui.add(minimapWindow);
 		minimapWindow.alignToCenter();
+		minimapWindow.setVisible(false);
 		
 		// Info bar
 
@@ -175,7 +176,7 @@ public class GamePlay extends UIBasicGameState
 		CityBuilder.loadContent();
 		Nature.loadContent();
 
-		world = new World(128, 128);
+		world = new World(256, 256);
 		MapGenerator mapgen = new MapGenerator(131183);
 		mapgen.generate(world.map);
 		
