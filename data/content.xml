@@ -9,6 +9,7 @@
 	<resource type="image" id="city.farmland">farmland.png</resource>
 	<resource type="image" id="city.activeFarmland">farmland_active.png</resource>
 	<resource type="image" id="city.farmland.crops">crops.png</resource>
+	<resource type="image" id="city.farmland.rottenCrops">rotten_crops.png</resource>
 	<resource type="image" id="city.smallHouse">house1.png</resource>
 	<resource type="image" id="city.nomad">nomad.png</resource>
 	<resource type="image" id="city.road">road.png</resource>
