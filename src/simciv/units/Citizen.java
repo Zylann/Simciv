@@ -24,6 +24,7 @@ import simciv.effects.RisingIcon;
 public class Citizen extends Unit
 {
 	private static Image sprite = null; // default appearance
+	public static int totalCount = 0;
 	
 	private Building buildingRef; // reference to the building the citizen currently is in
 	private House houseRef; // if null, the Citizen is homeless
@@ -149,6 +150,7 @@ public class Citizen extends Unit
 		quitJob(true); // true : notify the workplace
 		if(houseRef != null)
 			houseRef.removeInhabitant(this.getID());
+		totalCount--;
 	}
 
 	@Override
@@ -160,6 +162,7 @@ public class Citizen extends Unit
 	@Override
 	public void onInit()
 	{
+		totalCount++;
 	}
 	
 }

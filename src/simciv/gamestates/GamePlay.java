@@ -24,11 +24,13 @@ import simciv.ui.Menu;
 import simciv.ui.MenuItem;
 import simciv.ui.Minimap;
 import simciv.ui.Panel;
+import simciv.ui.ResourceBar;
 import simciv.ui.RootPane;
 import simciv.ui.ToolButton;
 import simciv.ui.ToolButtonGroup;
 import simciv.ui.UIBasicGameState;
 import simciv.ui.UIRenderer;
+import simciv.units.Citizen;
 
 /**
  * Main state of the game
@@ -48,6 +50,7 @@ public class GamePlay extends UIBasicGameState
 	private Panel minimapWindow;
 	private Minimap minimap;
 	private MinimapUpdater minimapUpdater;
+	private ResourceBar resourceBar;
 	private boolean closeRequested = false;
 	private boolean paused = false;
 	private boolean debugInfoVisible = false;
@@ -150,7 +153,7 @@ public class GamePlay extends UIBasicGameState
 		
 		// Minimap
 		
-		minimapWindow = new Panel(ui, 0, 0, 200, 200);
+		minimapWindow = new Panel(ui, 0, 0, 0, 0);
 
 		minimap = new Minimap(minimapWindow, 10, 10, 0, 0);
 		minimap.setView(view);
@@ -161,6 +164,11 @@ public class GamePlay extends UIBasicGameState
 		ui.add(minimapWindow);
 		minimapWindow.alignToCenter();
 		minimapWindow.setVisible(false);
+		
+		// Resource bar
+		
+		resourceBar = new ResourceBar(ui, 400, 10);
+		ui.add(resourceBar);
 		
 		// Info bar
 
@@ -176,7 +184,7 @@ public class GamePlay extends UIBasicGameState
 		CityBuilder.loadContent();
 		Nature.loadContent();
 
-		world = new World(256, 256);
+		world = new World(128, 128);
 		MapGenerator mapgen = new MapGenerator(131183);
 		mapgen.generate(world.map);
 		
@@ -213,15 +221,6 @@ public class GamePlay extends UIBasicGameState
 		builder.cursorMoved(pointedCell);
 		Terrain.updateTerrains(delta);
 		
-		if(input.isKeyDown(Input.KEY_NUMPAD6))
-			minimapWindow.setSize(minimapWindow.getWidth()+1, minimapWindow.getHeight());
-		if(input.isKeyDown(Input.KEY_NUMPAD2))
-			minimapWindow.setSize(minimapWindow.getWidth(), minimapWindow.getHeight()+1);
-		if(input.isKeyDown(Input.KEY_NUMPAD4))
-			minimapWindow.setSize(minimapWindow.getWidth()-1, minimapWindow.getHeight());
-		if(input.isKeyDown(Input.KEY_NUMPAD8))
-			minimapWindow.setSize(minimapWindow.getWidth(), minimapWindow.getHeight()-1);
-		
 		if(!paused)
 		{
 			// Pointed cell
@@ -234,7 +233,9 @@ public class GamePlay extends UIBasicGameState
 		minimapUpdater.update(delta);
 		minimap.setViz(minimapUpdater.getViz());
 		
-		debugText = "x=" + pointedCell.x + ", y=" + pointedCell.y;
+		resourceBar.update(Citizen.totalCount);
+		
+		debugText = "x=" + pointedCell.x + ", y=" + pointedCell.y; // debug
 	}
 
 	@Override
