@@ -11,10 +11,12 @@ public class Minimap extends Widget
 {
 	private Image vizRef;
 	private View viewRef;
+	private boolean pressed;
 	
 	public Minimap(WidgetContainer parent, int x, int y, int width, int height)
 	{
 		super(parent, x, y, width, height);
+		pressed = true;
 	}
 	
 	public void setView(View view)
@@ -30,7 +32,6 @@ public class Minimap extends Widget
 	
 	public void update(GameContainer gc, int delta)
 	{
-		
 	}
 	
 	@Override
@@ -58,18 +59,34 @@ public class Minimap extends Widget
 	@Override
 	public boolean mouseDragged(int oldX, int oldY, int newX, int newY)
 	{
+		if(pressed)
+		{
+			int mapX = newX - getAbsoluteX();
+			int mapY = newY - getAbsoluteY();
+			viewRef.setCenter(mapX, mapY);
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean mousePressed(int button, int x, int y)
 	{
+		if(contains(x, y))
+		{
+			int mapX = x - getAbsoluteX();
+			int mapY = y - getAbsoluteY();
+			viewRef.setCenter(mapX, mapY);
+			pressed = true;
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean mouseReleased(int button, int x, int y)
 	{
+		pressed = false;
 		return false;
 	}
 

@@ -151,6 +151,14 @@ public class View
 	{
 		return scale;
 	}
+
+	public void setCenter(int mapX, int mapY)
+	{
+		// TODO use real center
+		origin.set(
+				scale * Game.tilesSize * (mapX - 16),
+				scale * Game.tilesSize * (mapY - 16));
+	}
 }
 
 
