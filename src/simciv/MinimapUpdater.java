@@ -12,6 +12,9 @@ import org.newdawn.slick.SlickException;
  */
 public class MinimapUpdater
 {
+	private static Image mapMask;
+	private static final int MASK_BASE = 16;
+	
 	private Map mapRef;
 	private ImageBuffer pixels;
 	private Image viz;
@@ -23,6 +26,9 @@ public class MinimapUpdater
 		this.mapRef = mapRef;
 		pixels = new ImageBuffer(mapRef.getWidth(), mapRef.getHeight());
 		viz = pixels.getImage(Image.FILTER_NEAREST);
+		
+		if(mapMask == null)
+			mapMask = ContentManager.instance().getImage("ui.minimap.mask");
 	}
 	
 	public void update(int delta) throws SlickException
@@ -31,11 +37,7 @@ public class MinimapUpdater
 				
 		for(int n = 0; n < nbCellsToUpdate; n++)
 		{
-			Color clr = mapRef.getCellExisting(cursorX, cursorY).getMinimapColor();
-			pixels.setRGBA(cursorX, cursorY,
-					(int)(255.f * clr.r),
-					(int)(255.f * clr.g),
-					(int)(255.f * clr.b), 255);
+			updateCellExisting(cursorX, cursorY);
 			
 			cursorX++;
 			if(cursorX >= mapRef.getWidth())
@@ -49,6 +51,35 @@ public class MinimapUpdater
 				}
 			}
 		}
+	}
+	
+	public void updateCellExisting(int x, int y)
+	{		
+		int b = MASK_BASE;
+		int maskX, maskY;
+		
+		if(x >= viz.getWidth() - b)
+			maskX = b * 2 + x % b;
+		else if(x >= b)
+			maskX = b + x % b;
+		else
+			maskX = x;
+		
+		if(y >= viz.getWidth() - b)
+			maskY = b * 2 + y % b;
+		else if(y >= b)
+			maskY = b + y % b;
+		else
+			maskY = y;
+				
+		Color clr = mapRef.getCellExisting(x, y).getMinimapColor();
+		clr = clr.multiply(mapMask.getColor(maskX, maskY));
+		
+		pixels.setRGBA(x, y,
+				(int)(255.f * clr.r),
+				(int)(255.f * clr.g),
+				(int)(255.f * clr.b),
+				(int)(255.f * clr.a));
 	}
 
 	public Image getViz()
