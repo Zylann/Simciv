@@ -1,5 +1,6 @@
 package simciv.ui;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 public class Panel extends WidgetContainer
@@ -30,9 +31,9 @@ public class Panel extends WidgetContainer
 	}
 
 	@Override
-	public void render(Graphics gfx)
+	public void render(GameContainer gc, Graphics gfx)
 	{
-		UIRenderer.instance().renderFrame(gfx, this);
-		super.render(gfx);
+		UIRenderer.instance().renderPanel(gfx, this);
+		super.render(gc, gfx);
 	}
 }

@@ -22,9 +22,9 @@ public class Terrain
 		terrains = new Terrain[count];
 		
 		// Create terrains
-		set(new Terrain(VOID, "void"));
-		set(new Terrain(WATER, "water"));
-		set(new Terrain(GRASS, "grass"));
+		set(new Terrain(VOID, "void")).setMinimapColor(Color.black);
+		set(new Terrain(WATER, "water")).setMinimapColor(Color.blue);
+		set(new Terrain(GRASS, "grass")).setMinimapColor(Color.green);
 		
 		// Load content		
 		for(int i = 0; i < count; i++)
@@ -39,9 +39,10 @@ public class Terrain
 			terrains[i].update(delta);
 	}
 	
-	private static void set(Terrain t)
+	private static Terrain set(Terrain t)
 	{
 		terrains[t.ID] = t;
+		return t;
 	}
 	
 	public static Terrain get(byte ID)
@@ -64,6 +65,12 @@ public class Terrain
 		if(!name.equals("void")) // void terrains have no texture
 			this.textureName = "terrain." + name;
 		this.name = name;
+	}
+	
+	public Terrain setMinimapColor(Color clr)
+	{
+		minimapColor = clr;
+		return this;
 	}
 	
 	private void loadContent() throws SlickException

@@ -1,5 +1,6 @@
 package simciv.ui;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Sound;
@@ -73,7 +74,7 @@ public class ToolButton extends Button
 	}
 
 	@Override
-	public void render(Graphics gfx)
+	public void render(GameContainer gc, Graphics gfx)
 	{
 		UIRenderer.instance().renderToolButton(gfx, this);
 	}

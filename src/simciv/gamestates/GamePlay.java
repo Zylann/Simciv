@@ -11,6 +11,7 @@ import simciv.CityBuilder;
 import simciv.ContentManager;
 import simciv.IntRange2D;
 import simciv.MapGenerator;
+import simciv.MinimapUpdater;
 import simciv.Nature;
 import simciv.Road;
 import simciv.Terrain;
@@ -21,6 +22,8 @@ import simciv.ui.IActionListener;
 import simciv.ui.InfoBar;
 import simciv.ui.Menu;
 import simciv.ui.MenuItem;
+import simciv.ui.Minimap;
+import simciv.ui.Panel;
 import simciv.ui.RootPane;
 import simciv.ui.ToolButton;
 import simciv.ui.ToolButtonGroup;
@@ -42,6 +45,9 @@ public class GamePlay extends UIBasicGameState
 	private String debugText = "";
 	private Vector2i pointedCell = new Vector2i();
 	private ToolButtonGroup buildCategoryButtonsGroup;
+	private Panel minimapWindow;
+	private Minimap minimap;
+	private MinimapUpdater minimapUpdater;
 	private boolean closeRequested = false;
 	private boolean paused = false;
 	private boolean debugInfoVisible = false;
@@ -141,6 +147,21 @@ public class GamePlay extends UIBasicGameState
 		industryBuildsButton.icon = ContentManager.instance().getImage("ui.categIndustry");
 		buildCategoryButtonsGroup.add(industryBuildsButton);
 		ui.add(industryBuildsButton);
+		
+		// Minimap
+		
+		minimapWindow = new Panel(ui, 0, 0, 200, 200);
+
+		minimap = new Minimap(minimapWindow, 10, 10, 0, 0);
+		minimap.setView(view);
+		minimap.setViz(minimapUpdater.getViz());
+		
+		minimapWindow.setSize(minimap.getWidth() + 20, minimap.getHeight() + 20);
+		minimapWindow.add(minimap);
+		ui.add(minimapWindow);
+		minimapWindow.alignToCenter();
+		
+		// Info bar
 
 		infoBar = new InfoBar(ui, 0, 0, 300);
 		ui.add(infoBar);
@@ -157,6 +178,8 @@ public class GamePlay extends UIBasicGameState
 		world = new World(128, 128);
 		MapGenerator mapgen = new MapGenerator(131183);
 		mapgen.generate(world.map);
+		
+		minimapUpdater = new MinimapUpdater(world.map);
 		
 		builder = new CityBuilder(world);
 		view = new View(0, 0, 2);
@@ -189,6 +212,15 @@ public class GamePlay extends UIBasicGameState
 		builder.cursorMoved(pointedCell);
 		Terrain.updateTerrains(delta);
 		
+		if(input.isKeyDown(Input.KEY_NUMPAD6))
+			minimapWindow.setSize(minimapWindow.getWidth()+1, minimapWindow.getHeight());
+		if(input.isKeyDown(Input.KEY_NUMPAD2))
+			minimapWindow.setSize(minimapWindow.getWidth(), minimapWindow.getHeight()+1);
+		if(input.isKeyDown(Input.KEY_NUMPAD4))
+			minimapWindow.setSize(minimapWindow.getWidth()-1, minimapWindow.getHeight());
+		if(input.isKeyDown(Input.KEY_NUMPAD8))
+			minimapWindow.setSize(minimapWindow.getWidth(), minimapWindow.getHeight()-1);
+		
 		if(!paused)
 		{
 			// Pointed cell
@@ -197,6 +229,9 @@ public class GamePlay extends UIBasicGameState
 			world.update(gc, game, delta);
 			builder.update(gc);
 		}
+		
+		minimapUpdater.update(delta);
+		minimap.setViz(minimapUpdater.getViz());
 		
 		debugText = "x=" + pointedCell.x + ", y=" + pointedCell.y;
 	}
@@ -230,7 +265,7 @@ public class GamePlay extends UIBasicGameState
 		infoBar.setText(builder.getInfoText());
 
 		if(paused)
-			gfx.drawString("PAUSE", 10, 70);
+			gfx.drawString("PAUSE", 10, 70);		
 	}
 	
 	public void renderDebugInfo(GameContainer gc, Graphics gfx)
@@ -286,6 +321,8 @@ public class GamePlay extends UIBasicGameState
 			else
 				ui.setY(0);
 		}
+		if(key == Input.KEY_TAB)
+			minimapWindow.setVisible(!minimapWindow.isVisible());
 	}
 	
 	// UI Actions

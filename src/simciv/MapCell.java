@@ -1,5 +1,6 @@
 package simciv;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 /**
@@ -118,6 +119,17 @@ public class MapCell
 	{
 		if(nature != Nature.NONE)
 			Nature.render(gfx, this, gx, gy);
+	}
+
+	public Color getMinimapColor()
+	{
+		if(isBuilding())
+			return new Color(255, 128, 0);
+		if(isRoad())
+			return new Color(224, 224, 224);
+		if(nature != Nature.NONE)
+			return new Color(0, 128, 0);
+		return Terrain.get(terrainID).minimapColor;
 	}
 	
 }

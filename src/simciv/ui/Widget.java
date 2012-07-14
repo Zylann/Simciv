@@ -1,5 +1,6 @@
 package simciv.ui;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 /**
@@ -42,6 +43,12 @@ public abstract class Widget
 		this.y = y;
 		this.width = width <= 0 ? 1 : width;
 		this.height = height <= 0 ? 1 : height;
+	}
+	
+	public void setSize(int x, int y)
+	{
+		width = x > 0 ? x : 0;
+		height = y > 0 ? y : 0;
 	}
 	
 	public void setPosition(int x, int y)
@@ -118,6 +125,14 @@ public abstract class Widget
 			y < selfY + this.height ;
 	}
 	
+	public void alignToCenter()
+	{
+		if(parent == null)
+			return;
+		x = (parent.getWidth() - getWidth()) / 2;
+		y = (parent.getHeight() - getHeight()) / 2;
+	}
+	
 	// Each of these methods below return a boolean.
 	// If true, the event will be consumed by the GUI.
 	// If false, it will be forwarded to the game.
@@ -131,5 +146,5 @@ public abstract class Widget
 	public abstract boolean keyPressed(int key, char c);
 	public abstract boolean keyReleased(int key, char c);
 	
-	public abstract void render(Graphics gfx);
+	public abstract void render(GameContainer gc, Graphics gfx);
 }

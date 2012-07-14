@@ -41,7 +41,7 @@ public abstract class UIStateBasedGame extends StateBasedGame
 		if (ui != null)
 		{
 			UIRenderer.instance().beginRender(gfx);
-			ui.render(gfx);
+			ui.render(container, gfx);
 			UIRenderer.instance().endRender(gfx);
 		}
 	}

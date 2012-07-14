@@ -18,7 +18,7 @@ public class Game extends UIStateBasedGame
     public static final String title = "Simciv - indev";
     public static final int tilesSize = 16;
 
-    // Game settings
+    // Video settings
     public static final int screenWidth = 1000;
     public static final int screenHeight = 750;
     public static final int framerate = 60;

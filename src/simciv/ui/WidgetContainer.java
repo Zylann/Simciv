@@ -2,6 +2,7 @@ package simciv.ui;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
@@ -116,14 +117,14 @@ public class WidgetContainer extends Widget
 	}
 	
 	@Override
-	public void render(Graphics gfx)
+	public void render(GameContainer gc, Graphics gfx)
 	{
 		if(!visible)
 			return;
 		for(int i = children.size() - 1; i >= 0; i--)
 		{
 			if(children.get(i).isVisible())
-				children.get(i).render(gfx);
+				children.get(i).render(gc, gfx);
 		}
 	}
 

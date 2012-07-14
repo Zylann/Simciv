@@ -17,8 +17,6 @@ import simciv.rendering.SortedRender;
  */
 public class Map
 {
-	// TODO remove redundant methods
-	
 	// Map layers :
 	// 2D access is made using (width * y + x).
 	MapCell cells[];
@@ -117,7 +115,9 @@ public class Map
 	
 	public boolean isRoad(int x, int y)
 	{
-		return getCellExisting(x, y).isRoad();
+		if(contains(x, y))
+			return getCellExisting(x, y).isRoad();
+		return false;
 	}
 	
 	/**

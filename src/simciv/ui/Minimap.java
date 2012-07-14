@@ -3,45 +3,50 @@ package simciv.ui;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import simciv.Game;
+import simciv.View;
 
-/**
- * A simple text display line.
- * @author Marc
- *
- */
-public class InfoBar extends Widget
+public class Minimap extends Widget
 {
-	public static final int HEIGHT = 16;
-
-	public Color backColor;
-	private String text;
+	private Image vizRef;
+	private View viewRef;
 	
-	public InfoBar(WidgetContainer parent, int x, int y, int width)
+	public Minimap(WidgetContainer parent, int x, int y, int width, int height)
 	{
-		super(parent, x, y, width, HEIGHT);
-		backColor = new Color(0, 0, 0, 96);
+		super(parent, x, y, width, height);
 	}
 	
-	public void setText(String text)
+	public void setView(View view)
 	{
-		this.text = text;
+		viewRef = view;
 	}
 	
+	public void setViz(Image viz)
+	{
+		vizRef = viz;
+		setSize(viz.getWidth(), viz.getHeight());
+	}
+	
+	public void update(GameContainer gc, int delta)
+	{
+		
+	}
+	
+	@Override
 	public void render(GameContainer gc, Graphics gfx)
 	{
-		if(text != null)
-		{
-			if(text.length() != 0)
-			{
-				int gx = getAbsoluteX();
-				int gy = getAbsoluteY();
-				
-				gfx.setColor(backColor);
-				gfx.fillRect(gx, gy, getWidth(), getHeight());
-				gfx.setColor(Color.white);
-				gfx.drawString(text, gx + 2, gy + 2);
-			}
-		}
+		int x = getAbsoluteX();
+		int y = getAbsoluteY();
+		int viewX = viewRef.getMapX();
+		int viewY = viewRef.getMapY();
+		int viewWidth = gc.getWidth() / viewRef.getScale() / Game.tilesSize;
+		int viewHeight = gc.getHeight() / viewRef.getScale() / Game.tilesSize;
+		
+		gfx.setColor(Color.red);
+		gfx.setLineWidth(2);
+		gfx.drawImage(vizRef, x, y);
+		gfx.drawRect(x + viewX, y + viewY, viewWidth, viewHeight);
 	}
 
 	@Override
@@ -91,7 +96,11 @@ public class InfoBar extends Widget
 	{
 		return false;
 	}
-	
+
 }
+
+
+
+
 
 

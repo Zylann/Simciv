@@ -1,5 +1,6 @@
 package simciv.ui;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
@@ -45,7 +46,7 @@ public class MenuItem extends Button
 	}
 
 	@Override
-	public void render(Graphics gfx)
+	public void render(GameContainer gc, Graphics gfx)
 	{
 		UIRenderer.instance().renderMenuItem(gfx, this);
 	}
