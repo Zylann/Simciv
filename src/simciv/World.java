@@ -57,7 +57,6 @@ public class World
 		// TODO buildings to remove
 		for(Unit u : unitsToRemove)
 		{
-			u.onDestruction();
 			removeUnit(u.getID());
 		}
 		
