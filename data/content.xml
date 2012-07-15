@@ -6,6 +6,7 @@
 
 	<resource type="image" id="city.buildingPlace">buildplace.png</resource>
 	<resource type="image" id="city.citizen">citizen.png</resource>
+	<resource type="image" id="city.conveyer">transporter.png</resource>
 	<resource type="image" id="city.farmland">farmland.png</resource>
 	<resource type="image" id="city.activeFarmland">farmland_active.png</resource>
 	<resource type="image" id="city.farmland.crops">crops.png</resource>
@@ -15,6 +16,7 @@
 	<resource type="image" id="city.road">road.png</resource>
 	<resource type="image" id="city.warehouse">warehouse.png</resource>
 	<resource type="image" id="city.activeWarehouse">warehouse_active.png</resource>
+	<resource type="image" id="resource.wheat">res_wheat.png</resource>
 	<resource type="image" id="terrain.grass">grass.png</resource>
 	<resource type="image" id="terrain.water">water.png</resource>
 	<resource type="image" id="nature.tree">tree.png</resource>

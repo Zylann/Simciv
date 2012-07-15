@@ -8,6 +8,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import simciv.ContentManager;
 import simciv.Game;
 import simciv.Job;
+import simciv.ResourceSlot;
 import simciv.World;
 import simciv.jobs.InternalJob;
 import simciv.units.Citizen;
@@ -21,8 +22,9 @@ public class Warehouse extends Workplace
 {
 	private static BuildingProperties properties;
 	private static Image backSprite[] = new Image[2]; // inactive, active
+	private static int NB_SLOTS = 8;
 	
-	// TODO Warehouse: add 8 resource slots
+	private ResourceSlot resourceSlots[] = new ResourceSlot[NB_SLOTS];
 
 	static
 	{
@@ -38,6 +40,9 @@ public class Warehouse extends Workplace
 		if(backSprite[1] == null)
 			backSprite[1] = ContentManager.instance().getImage("city.activeWarehouse");
 		state = Building.NORMAL;
+		
+		for(int i = 0; i < resourceSlots.length; i++)
+			resourceSlots[i] = new ResourceSlot();
 	}
 
 	@Override
@@ -51,6 +56,17 @@ public class Warehouse extends Workplace
 	public BuildingProperties getProperties()
 	{
 		return properties;
+	}
+	
+	public void storeResource(ResourceSlot r)
+	{
+		// Iterate over slots
+		for(ResourceSlot slot : resourceSlots)
+		{
+			slot.addFrom(r);
+			if(r.isEmpty())
+				break;
+		}
 	}
 
 	@Override
@@ -78,14 +94,32 @@ public class Warehouse extends Workplace
 	public void render(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		int i = state == Building.ACTIVE ? 1 : 0;
+		int gx = posX * Game.tilesSize;
+		int gy = posY * Game.tilesSize;
+		
 		// Floor
-		gfx.drawImage(backSprite[i],
-				posX * Game.tilesSize,
-				posY * Game.tilesSize - 16);
+		
+		gfx.drawImage(backSprite[i], gx, gy - Game.tilesSize);
+		
 		// Resources
-		//...
-	}
+		
+		renderSlot(gfx, 0, gx + Game.tilesSize, 	gy);
+		renderSlot(gfx, 1, gx + Game.tilesSize * 2, gy);
+		
+		renderSlot(gfx, 2, gx, 						gy + Game.tilesSize);
+		renderSlot(gfx, 3, gx + Game.tilesSize, 	gy + Game.tilesSize);
+		renderSlot(gfx, 4, gx + Game.tilesSize * 2, gy + Game.tilesSize);
 
+		renderSlot(gfx, 5, gx, 						gy + Game.tilesSize * 2);
+		renderSlot(gfx, 6, gx + Game.tilesSize, 	gy + Game.tilesSize * 2);
+		renderSlot(gfx, 7, gx + Game.tilesSize * 2, gy + Game.tilesSize * 2);
+	}
+	
+	private void renderSlot(Graphics gfx, int i, int gx, int gy)
+	{
+		resourceSlots[i].renderStorage(gfx, gx, gy);
+	}
+	
 	@Override
 	public Job giveNextJob(Citizen citizen)
 	{
@@ -98,10 +132,20 @@ public class Warehouse extends Workplace
 		return null;
 	}
 	
+	public int getLoad()
+	{
+		float k = 0;
+		for(ResourceSlot slot : resourceSlots)
+			k += slot.getLoad();
+		return (int) (100.f * k);
+	}
+	
 	@Override
 	public String getInfoString()
 	{
-		return "[" + getProperties().name + "] employees : " + getNbEmployees() + "/" + getMaxEmployees();
+		return "[" + getProperties().name + "] employees : "
+			+ getNbEmployees() + "/" + getMaxEmployees()
+			+ ", load : " + getLoad() + "%";
 	}
 
 	@Override

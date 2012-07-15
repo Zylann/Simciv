@@ -13,6 +13,7 @@ import simciv.IntRange2D;
 import simciv.MapGenerator;
 import simciv.MinimapUpdater;
 import simciv.Nature;
+import simciv.Resource;
 import simciv.Road;
 import simciv.Terrain;
 import simciv.Vector2i;
@@ -180,6 +181,7 @@ public class GamePlay extends UIBasicGameState
 	public void enter(GameContainer gc, StateBasedGame game) throws SlickException
 	{
 		Terrain.initialize();
+		Resource.initialize();
 		Road.loadContent();
 		CityBuilder.loadContent();
 		Nature.loadContent();
