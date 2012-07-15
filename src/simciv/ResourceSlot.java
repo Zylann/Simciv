@@ -64,7 +64,9 @@ public class ResourceSlot
 		if(type == other.type || isEmpty())
 		{
 			// Put resources in it as much as possible
-			int spaceLeft = Resource.get(type).getStackLimit() - amount;
+			int spaceLeft = Resource.get(other.type).getStackLimit() - amount;
+			type = other.type;
+			
 			if(other.amount > spaceLeft)
 			{
 				amount += spaceLeft;
@@ -78,7 +80,7 @@ public class ResourceSlot
 				other.amount = 0;
 				other.type = Resource.NONE;
 			}
-		}		
+		}
 	}
 	
 	public void renderCarriage(Graphics gfx, int x, int y)
