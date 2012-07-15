@@ -21,4 +21,28 @@ public class Direction2D
 		vectors[NORTH] = new Vector2i(0, -1);
 		vectors[SOUTH] = new Vector2i(0, 1);
 	}
+	
+	public static byte toDirection(Vector2i from, Vector2i to)
+	{
+		int dx = to.x - from.x;
+		int dy = to.y - from.y;
+		
+		if(dy == 0)
+		{
+			if(dx < 0)
+				return WEST;
+			if(dx > 0)
+				return EAST;
+		}
+		else if(dx == 0)
+		{
+			if(dy < 0)
+				return NORTH;
+			if(dy > 0)
+				return SOUTH;
+		}
+		
+		return NONE;
+	}
+	
 }
