@@ -54,6 +54,11 @@ public class Vector2i
         }
     }
     
+    public int manhattanDistanceFrom(Vector2i other)
+    {
+    	return Math.abs(x - other.x) + Math.abs(y - other.y);
+    }
+    
     @Override
     public int hashCode()
     {
