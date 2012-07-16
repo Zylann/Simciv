@@ -17,13 +17,10 @@ import simciv.rendering.SortedRender;
  */
 public class Map
 {
-	// Map layers :
-	// 2D access is made using (width * y + x).
-	MapCell cells[];
-
-	int width;
-	int height;	
-	boolean renderGrid;
+	private MapCell cells[]; // 2D access is made using (width * y + x).
+	private int width;
+	private int height;	
+	private boolean renderGrid;
 
 	/**
 	 * Creates an empty map
@@ -63,9 +60,7 @@ public class Map
 		return cells[width * y + x];
 	}
 			
-	/*
-	 * Terrain
-	 */
+	// Terrain
 	
 	/**
 	 * Get terrain's properties at (x,y)
@@ -109,9 +104,7 @@ public class Map
 			cells[i].terrainID = value;
 	}
 	
-	/*
-	 * Roads
-	 */
+	// Roads
 	
 	public boolean isRoad(int x, int y)
 	{
@@ -185,9 +178,7 @@ public class Map
 		return false;
 	}
 	
-	/*
-	 * Buildings
-	 */
+	// Buildings
 	
 	/**
 	 * Marks cells as occupied by a building, if possible,
@@ -239,15 +230,74 @@ public class Map
 	public int getBuildingID(int x, int y)
 	{
 		if(contains(x, y))
-		{
 			return getCellExisting(x,y).getBuildingID();
-		}
 		return -1;
 	}
-
-	/*
-	 * Render
+	
+	/**
+	 * Get the building occupying the cell at (x, y).
+	 * Returns null if there are no building.
+	 * @param worldRef
+	 * @param x
+	 * @param y
+	 * @return
 	 */
+	public Building getBuilding(World worldRef, int x, int y)
+	{
+		if(!contains(x, y))
+			return null;
+		return worldRef.getBuilding(getCellExisting(x, y).getBuildingID());
+	}
+	
+	/**
+	 * Get a list of buildings around the given position
+	 * @param worldRef
+	 * @param x
+	 * @param y
+	 * @return list of buildings
+	 */
+	public ArrayList<Building> getBuildingsAround(World worldRef, int x, int y)
+	{
+		Building b;
+		ArrayList<Building> list = new ArrayList<Building>();
+		
+		b = getBuilding(worldRef, x-1, y);
+		if(b != null)
+			list.add(b);
+		b = getBuilding(worldRef, x+1, y);
+		if(b != null)
+			list.add(b);
+		b = getBuilding(worldRef, x, y-1);
+		if(b != null)
+			list.add(b);
+		b = getBuilding(worldRef, x, y+1);
+		if(b != null)
+			list.add(b);
+		
+		return list;
+	}
+	
+	/**
+	 * Tests if a building with the given ID is around the given position
+	 * @param ID : building ID
+	 * @param x
+	 * @param y
+	 * @return true if the building is detected, false if not
+	 */
+	public boolean isBuildingAroundWithID(int ID, int x, int y)
+	{
+		if(getBuildingID(x-1, y) == ID)
+			return true;
+		if(getBuildingID(x+1, y) == ID)
+			return true;
+		if(getBuildingID(x, y-1) == ID)
+			return true;
+		if(getBuildingID(x, y+1) == ID)
+			return true;
+		return false;
+	}
+
+	// Rendering
 	
 	/**
 	 * Renders the map within the specified range.
@@ -292,13 +342,9 @@ public class Map
 		y0 *= Game.tilesSize;
 		
 		for(x = 0; x < gc.getWidth(); x += Game.tilesSize)
-		{
 			gfx.drawLine(x0 + x, 0, x0 + x, gc.getHeight());
-		}
 		for(y = 0; y < gc.getHeight(); y += Game.tilesSize)
-		{
 			gfx.drawLine(0, y0 + y, gc.getWidth(), y0 + y);
-		}
 	}
 	
 	public void toggleRenderGrid()
@@ -306,9 +352,7 @@ public class Map
 		renderGrid = !renderGrid;
 	}
 	
-	/*
-	 * Miscellaneous / tests
-	 */
+	// Miscellaneous / tests
 
 	public int getWidth()
 	{
@@ -389,49 +433,6 @@ public class Map
 			res.add(Direction2D.SOUTH);
 		
 		return res;
-	}
-	
-	/**
-	 * Get the building occupying the cell at (x, y).
-	 * Returns null if there are no building.
-	 * @param worldRef
-	 * @param x
-	 * @param y
-	 * @return
-	 */
-	public Building getBuilding(World worldRef, int x, int y)
-	{
-		if(!contains(x, y))
-			return null;
-		return worldRef.getBuilding(getCellExisting(x, y).getBuildingID());
-	}
-	
-	/**
-	 * Get a list of buildings around the given position
-	 * @param worldRef
-	 * @param x
-	 * @param y
-	 * @return list of buildings
-	 */
-	public ArrayList<Building> getBuildingsAround(World worldRef, int x, int y)
-	{
-		Building b;
-		ArrayList<Building> list = new ArrayList<Building>();
-		
-		b = getBuilding(worldRef, x-1, y);
-		if(b != null)
-			list.add(b);
-		b = getBuilding(worldRef, x+1, y);
-		if(b != null)
-			list.add(b);
-		b = getBuilding(worldRef, x, y-1);
-		if(b != null)
-			list.add(b);
-		b = getBuilding(worldRef, x, y+1);
-		if(b != null)
-			list.add(b);
-		
-		return list;
 	}
 
 }

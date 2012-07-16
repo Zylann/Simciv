@@ -36,6 +36,16 @@ public abstract class Entity extends GameComponent
 		return state;
 	}
 	
+	public World getWorld()
+	{
+		return worldRef;
+	}
+	
+	public void setState(byte newState)
+	{
+		state = newState;
+	}
+	
 	public short getHealthPoints()
 	{
 		return healthPoints;

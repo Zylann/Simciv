@@ -8,7 +8,10 @@ import org.newdawn.slick.state.StateBasedGame;
 import simciv.ContentManager;
 import simciv.Game;
 import simciv.Job;
+import simciv.Resource;
+import simciv.ResourceSlot;
 import simciv.World;
+import simciv.jobs.Conveyer;
 import simciv.jobs.InternalJob;
 import simciv.units.Citizen;
 
@@ -37,7 +40,7 @@ public class FarmLand extends Workplace
 	static
 	{
 		properties = new BuildingProperties("Farmland");
-		properties.setUnitsCapacity(3).setSize(3, 3, 0).setCost(100);
+		properties.setUnitsCapacity(5).setSize(3, 3, 0).setCost(100);
 	}
 	
 	public FarmLand(World w)
@@ -68,7 +71,7 @@ public class FarmLand extends Workplace
 		else if(state == Building.ACTIVE)
 		{
 			if(needEmployees())
-				state = Building.NORMAL;			
+				state = Building.NORMAL;
 		}
 		
 		// Crops are growing
@@ -79,7 +82,7 @@ public class FarmLand extends Workplace
 			ticksBeforeNextLevel = ticksPerLevel;
 		}
 	}
-	
+		
 	private void onLevelUp()
 	{
 		if(state == Building.ACTIVE)
@@ -89,13 +92,28 @@ public class FarmLand extends Workplace
 			else if(cropsLevel != MAX_LEVEL)
 				cropsLevel++; // Crops are growing normally
 			else
-			{
-				// TODO Generate resources...
-				cropsLevel = 0; // The field is cleaned up
-			}
+				harvest();
 		}
 		else if(cropsLevel != 0)
 			cropsLevel = ROTTEN_LEVEL; // Not enough employees to take care of the field...
+	}
+	
+	private void harvest()
+	{
+		if(cropsLevel != MAX_LEVEL)
+			return;
+		
+		for(Citizen emp : employees.values())
+		{
+			if(emp.getJob().getID() == Job.CONVEYER && !emp.isOut())
+			{
+				Conveyer job = (Conveyer)(emp.getJob());
+				job.addResourceCarriage(new ResourceSlot(Resource.WHEAT, 100));
+				emp.exitBuilding();
+			}
+		}
+
+		cropsLevel = 0; // The field is cleaned up
 	}
 
 	@Override
@@ -162,7 +180,12 @@ public class FarmLand extends Workplace
 	{
 		if(needEmployees())
 		{
-			Job job = new InternalJob(citizen, this, Job.FARMER);
+			// 3 farmers, 2 conveyers
+			Job job;
+			if(employees.size() <= 3)
+				job = new InternalJob(citizen, this, Job.FARMER);
+			else
+				job = new Conveyer(citizen, this);
 			addEmployee(citizen);
 			return job;
 		}

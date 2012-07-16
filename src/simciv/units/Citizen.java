@@ -6,7 +6,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import simciv.ContentManager;
 import simciv.Job;
-import simciv.Road;
 import simciv.World;
 import simciv.buildings.Building;
 import simciv.buildings.House;
@@ -54,11 +53,16 @@ public class Citizen extends Unit
 	{
 		if(job == null)
 		{
-			move(Road.getAvailableDirections(worldRef.map, posX, posY));
 			searchJob();
+			moveAtRandomFollowingRoads();
 		}
 		else
 			job.tick();
+	}
+	
+	public Job getJob()
+	{
+		return job;
 	}
 	
 	/**
@@ -110,7 +114,7 @@ public class Citizen extends Unit
 	 * @param b : building
 	 * @return true if success
 	 */
-	protected boolean enterBuilding(Building b, boolean keepReference)
+	public boolean enterBuilding(Building b)
 	{
 		if(buildingRef != null)
 			return false;
@@ -123,7 +127,7 @@ public class Citizen extends Unit
 	 * Makes the unit come out a building
 	 * @return true if the unit was in a building
 	 */
-	protected boolean exitBuilding()
+	public boolean exitBuilding()
 	{
 		if(buildingRef == null)
 			return false;

@@ -5,6 +5,7 @@ import org.newdawn.slick.Image;
 import simciv.ContentManager;
 import simciv.Entity;
 import simciv.Game;
+import simciv.ResourceSlot;
 import simciv.World;
 
 public abstract class Building extends Entity
@@ -64,5 +65,24 @@ public abstract class Building extends Entity
 	 * @return
 	 */
 	public abstract String getInfoString();
+
+	/**
+	 * Return true if the building can store resources
+	 * @return
+	 */
+	public boolean isAcceptResources()
+	{
+		return false;
+	}
+
+	/**
+	 * Stores a resource in the building. Depending on if the building is accepting
+	 * resources, the given slot will or will not be modified.
+	 * @param carriedResource
+	 */
+	public void storeResource(ResourceSlot r)
+	{
+	}
+	
 }
 

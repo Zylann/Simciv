@@ -10,6 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import simciv.Direction2D;
 import simciv.Entity;
 import simciv.Game;
+import simciv.Road;
 import simciv.Vector2i;
 import simciv.World;
 
@@ -20,8 +21,12 @@ import simciv.World;
  */
 public abstract class Unit extends Entity
 {	
-	//public static final byte NORMAL = 1; // what is it?
-	public static int count = 0; // Counts all the units
+	// States
+	public static final byte NORMAL = 1;
+	public static final byte THINKING = 2;
+	
+	 // Counts all the units
+	public static int count = 0;
 	
 	boolean isAlive;
 		
@@ -32,10 +37,49 @@ public abstract class Unit extends Entity
 		direction = Direction2D.EAST;
 		count++;
 		isAlive = true;
+		state = NORMAL;
 	}
 	
 	/**
-	 * Moves the unit according to available directions
+	 * Moves the entity using its current direction, if possible.
+	 * @return true if the unit moved, false if not
+	 */
+	public boolean moveIfPossible()
+	{
+		if(direction != Direction2D.NONE)
+		{
+			int nextPosX = posX + Direction2D.vectors[direction].x;
+			int nextPosY = posY + Direction2D.vectors[direction].y;
+			
+			if(worldRef.map.isCrossable(nextPosX, nextPosY) && 
+					worldRef.map.isRoad(nextPosX, nextPosY))
+			{
+				move();
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Makes the unit move to its current direction (anyways)
+	 */
+	protected void move()
+	{
+		if(direction != Direction2D.NONE)
+		{
+			posX += Direction2D.vectors[direction].x;
+			posY += Direction2D.vectors[direction].y;
+		}
+	}
+	
+	public void moveAtRandomFollowingRoads()
+	{
+		move(Road.getAvailableDirections(worldRef.map, posX, posY));
+	}
+	
+	/**
+	 * Moves the unit according to given available directions
 	 * @param dirs : available directions
 	 */
 	protected void move(List<Byte> dirs)
@@ -67,11 +111,7 @@ public abstract class Unit extends Entity
 			direction = Direction2D.NONE;
 		
 		// Apply movement
-		if(direction != Direction2D.NONE)
-		{
-			posX += Direction2D.vectors[direction].x;
-			posY += Direction2D.vectors[direction].y;
-		}
+		move();
 	}
 	
 	protected void chooseNewDirection(List<Byte> dirs)
@@ -136,7 +176,6 @@ public abstract class Unit extends Entity
 	@Override
 	protected int getTickTime()
 	{
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

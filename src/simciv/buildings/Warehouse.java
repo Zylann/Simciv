@@ -58,6 +58,13 @@ public class Warehouse extends Workplace
 		return properties;
 	}
 	
+	@Override
+	public boolean isAcceptResources()
+	{
+		return !needEmployees();
+	}
+
+	@Override
 	public void storeResource(ResourceSlot r)
 	{
 		// Iterate over slots
@@ -100,7 +107,6 @@ public class Warehouse extends Workplace
 		// Floor
 		
 		gfx.drawImage(backSprite[i], gx, gy - Game.tilesSize);
-		
 		// Resources
 		
 		renderSlot(gfx, 0, gx + Game.tilesSize, 	gy);
