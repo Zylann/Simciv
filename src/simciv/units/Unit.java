@@ -23,9 +23,8 @@ public abstract class Unit extends Entity
 {	
 	// States
 	public static final byte NORMAL = 1;
-	public static final byte THINKING = 2;
-	
-	 // Counts all the units
+	public static final byte THINKING = 2;	
+	// Counts all the units
 	public static int count = 0;
 	
 	boolean isAlive;
@@ -180,7 +179,7 @@ public abstract class Unit extends Entity
 	}
 
 	protected final void defaultRender(Graphics gfx, Image sprite)
-	{		
+	{
 		gfx.translate(
 				posX * Game.tilesSize,
 				posY * Game.tilesSize - Game.tilesSize / 3);
@@ -200,6 +199,6 @@ public abstract class Unit extends Entity
 				0, direction * Game.tilesSize,
 				Game.tilesSize, (direction + 1) * Game.tilesSize);
 	}
-	
+		
 }
 

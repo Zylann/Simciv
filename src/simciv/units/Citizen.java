@@ -4,7 +4,10 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SpriteSheet;
+
 import simciv.ContentManager;
+import simciv.Game;
 import simciv.Job;
 import simciv.World;
 import simciv.buildings.Building;
@@ -23,6 +26,7 @@ import simciv.effects.RisingIcon;
 public class Citizen extends Unit
 {
 	private static Image sprite = null; // default appearance
+	private static SpriteSheet thinkingAnim = null;
 	public static int totalCount = 0;
 	
 	private Building buildingRef; // reference to the building the citizen currently is in
@@ -35,6 +39,12 @@ public class Citizen extends Unit
 		super(w);
 		if(sprite == null)
 			sprite = ContentManager.instance().getImage("city.citizen");			
+		if(thinkingAnim == null)
+		{
+			Image thinkingSprite = ContentManager.instance().getImage("unit.thinking");
+			int b = thinkingSprite.getHeight();
+			thinkingAnim = new SpriteSheet(thinkingSprite, b, b);
+		}
 		// Each citizen have a slightly different tickTime
 		tickTime = 500 + (int)(100.f * Math.random()) - 50;
 	}
@@ -46,6 +56,15 @@ public class Citizen extends Unit
 			defaultRender(gfx, sprite);
 		else
 			defaultRender(gfx, job.getSprites());
+		if(state == Unit.THINKING)
+			renderThinkingIcon(gfx);
+	}
+	
+	public void renderThinkingIcon(Graphics gfx)
+	{
+		// Note : the context must be translated to (posX * Game.tilesSize, posY * Game.tilesSize) before
+		int gx = Game.tilesSize - thinkingAnim.getWidth() / thinkingAnim.getHorizontalCount();
+		gfx.drawImage(thinkingAnim.getSprite(getTicks() % 2 == 0 ? 0 : 1, 0), gx, 0);
 	}
 
 	@Override
