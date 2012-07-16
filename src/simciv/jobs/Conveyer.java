@@ -24,7 +24,7 @@ import simciv.units.Unit;
 public class Conveyer extends Job
 {
 	// Sprites
-	private static Image unitSprites;
+	private static Image unitSprites; // TODO separate the carriage and the carrier to render what he is carrying
 	
 	private Building targetBuildingRef;
 	private PathFinder pathFinder;
@@ -35,7 +35,7 @@ public class Conveyer extends Job
 	{
 		super(citizen, workplace);
 		if(unitSprites == null)
-			unitSprites = ContentManager.instance().getImage("city.conveyer");
+			unitSprites = ContentManager.instance().getImage("unit.conveyer");
 		carriedResource = new ResourceSlot();
 	}
 	

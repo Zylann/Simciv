@@ -14,7 +14,7 @@ public class Road
 	
 	public static void loadContent() throws SlickException
 	{
-		tileset = ContentManager.instance().getImage("city.road");
+		tileset = ContentManager.instance().getImage("terrain.road");
 		
 		int nbTiles = 16;		
 		int tilePos[][] =

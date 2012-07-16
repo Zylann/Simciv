@@ -38,7 +38,7 @@ public class Citizen extends Unit
 	{
 		super(w);
 		if(sprite == null)
-			sprite = ContentManager.instance().getImage("city.citizen");			
+			sprite = ContentManager.instance().getImage("unit.citizen");			
 		if(thinkingAnim == null)
 		{
 			Image thinkingSprite = ContentManager.instance().getImage("unit.thinking");

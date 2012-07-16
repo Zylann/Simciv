@@ -13,7 +13,7 @@ public class Nomad extends Unit
 	{
 		super(w);
 		if(sprite == null)
-			sprite = ContentManager.instance().getImage("city.nomad");
+			sprite = ContentManager.instance().getImage("unit.nomad");
 	}
 
 	@Override

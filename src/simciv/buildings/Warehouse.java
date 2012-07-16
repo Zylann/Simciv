@@ -36,9 +36,9 @@ public class Warehouse extends Workplace
 	{
 		super(w);
 		if(backSprite[0] == null)
-			backSprite[0] = ContentManager.instance().getImage("city.warehouse");
+			backSprite[0] = ContentManager.instance().getImage("build.warehouse");
 		if(backSprite[1] == null)
-			backSprite[1] = ContentManager.instance().getImage("city.activeWarehouse");
+			backSprite[1] = ContentManager.instance().getImage("build.activeWarehouse");
 		state = Building.NORMAL;
 		
 		for(int i = 0; i < resourceSlots.length; i++)

@@ -23,7 +23,7 @@ public abstract class Building extends Entity
 	{
 		super(w);
 		if(constructionSprite == null)
-			constructionSprite = ContentManager.instance().getImage("city.buildingPlace");
+			constructionSprite = ContentManager.instance().getImage("build.buildingPlace");
 		state = CONSTRUCTION;
 	}
 	

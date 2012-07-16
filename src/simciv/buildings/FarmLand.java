@@ -48,13 +48,13 @@ public class FarmLand extends Workplace
 	{
 		super(w);
 		if(imgDirt[0] == null)
-			imgDirt[0] = ContentManager.instance().getImage("city.farmland");
+			imgDirt[0] = ContentManager.instance().getImage("build.farmland");
 		if(imgDirt[1] == null)
-			imgDirt[1] = ContentManager.instance().getImage("city.activeFarmland");
+			imgDirt[1] = ContentManager.instance().getImage("build.activeFarmland");
 		if(imgCrops == null)
-			imgCrops = ContentManager.instance().getImage("city.farmland.crops");
+			imgCrops = ContentManager.instance().getImage("build.farmland.crops");
 		if(imgRottenCrops == null)
-			imgRottenCrops = ContentManager.instance().getImage("city.farmland.rottenCrops");
+			imgRottenCrops = ContentManager.instance().getImage("build.farmland.rottenCrops");
 		ticksPerLevel = secondsToTicks(60);
 		ticksBeforeNextLevel = ticksPerLevel;
 		cropsLevel = MIN_LEVEL;

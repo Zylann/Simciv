@@ -38,9 +38,9 @@ public class House extends Building
 	{
 		super(w);
 		if(sprite == null)
-			sprite = ContentManager.instance().getImage("city.smallHouse");
+			sprite = ContentManager.instance().getImage("build.smallHouse");
 		if(newCitizenSound == null)
-			newCitizenSound = ContentManager.instance().getSound("city.openDoor");
+			newCitizenSound = ContentManager.instance().getSound("build.openDoor");
 		direction = (byte) (4 * Math.random());
 	}
 
