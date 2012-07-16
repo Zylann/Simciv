@@ -105,9 +105,11 @@ public class ResourceSlot
 		return amount + " " + resourceName;
 	}
 
-	public float getLoad()
+	public float getLoadRatio()
 	{
-		return (float)amount / getSpecs().getStackLimit();
+		if(type == Resource.NONE)
+			return 0;
+		return (float)amount / (float)(getSpecs().getStackLimit());
 	}
 	
 }

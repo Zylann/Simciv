@@ -142,8 +142,8 @@ public class Warehouse extends Workplace
 	{
 		float k = 0;
 		for(ResourceSlot slot : resourceSlots)
-			k += slot.getLoad();
-		return (int) (100.f * k);
+			k += slot.getLoadRatio();
+		return (int) (100.f * k / (float)NB_SLOTS);
 	}
 	
 	@Override

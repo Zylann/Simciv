@@ -166,7 +166,7 @@ public class FarmLand extends Workplace
 	{
 		if(cropsLevel == ROTTEN_LEVEL)
 			return 0;
-		return (int) (100.f * ((cropsLevel + 1.f - (float)ticksBeforeNextLevel / ticksPerLevel) / MAX_LEVEL));
+		return (int) (100.f * ((cropsLevel + 1.f - (float)ticksBeforeNextLevel / ticksPerLevel) / (MAX_LEVEL+1)));
 	}
 
 	@Override
