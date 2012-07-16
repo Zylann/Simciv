@@ -152,7 +152,7 @@ public class Conveyer extends Job
 		{
 			if(b.isAcceptResources())
 			{
-				System.out.println("R distributed");
+				//System.out.println("R distributed"); // debug
 				b.storeResource(carriedResource);
 			}
 		}
@@ -160,7 +160,7 @@ public class Conveyer extends Job
 
 	private void restartPathFinding()
 	{
-		System.out.println("Restarting path finding");
+		//System.out.println("Restarting path finding"); // debug
 		if(targetBuildingRef == null)
 			targetBuildingRef = workplaceRef;
 		pathFinder = new PathFinder(me.getWorld().map, me.getX(), me.getY(), targetBuildingRef.getID());
