@@ -8,6 +8,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.StateBasedGame;
 
+import simciv.Cheats;
 import simciv.ContentManager;
 import simciv.Game;
 import simciv.World;
@@ -54,7 +55,7 @@ public class House extends Building
 	{
 		if(state == Building.CONSTRUCTION)
 		{
-			if(getTicks() > 30)
+			if(getTicks() > 30 || Cheats.isFastCitizenProduction())
 			{
 				state = Building.NORMAL;
 				produceCitizen();

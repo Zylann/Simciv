@@ -5,6 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.state.StateBasedGame;
 
+import simciv.Cheats;
 import simciv.ContentManager;
 import simciv.Game;
 import simciv.Job;
@@ -79,7 +80,10 @@ public class FarmLand extends Workplace
 		if(ticksBeforeNextLevel == 0)
 		{
 			onLevelUp();
-			ticksBeforeNextLevel = ticksPerLevel;
+			if(Cheats.isFastFarmlandGrow())
+				ticksBeforeNextLevel = secondsToTicks(1);
+			else
+				ticksBeforeNextLevel = ticksPerLevel;
 		}
 	}
 		
