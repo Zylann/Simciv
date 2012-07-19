@@ -192,9 +192,7 @@ public class Map
 		// Check if we can place a mark
 		if(mark && !canPlaceObject(b.getX(), b.getY(), b.getWidth(), b.getHeight()))
 			return false;
-		
-		// TODO check if we are not erasing marks of different buildings
-		
+				
 		int x, y;
 		int xmax = b.getX() + b.getWidth() - 1;
 		int ymax = b.getY() + b.getHeight() - 1;
@@ -374,6 +372,11 @@ public class Map
 	{
 		return x >= 0 && y >= 0 && x < width && y < height;
 	}
+	
+	public boolean contains(int x, int y, int w, int h)
+	{
+		return x >= 0 && y >= 0 && x + w < width && y + h < height;
+	}
 
 	/**
 	 * Tests if we can place an object at (x,y).
@@ -433,6 +436,21 @@ public class Map
 			res.add(Direction2D.SOUTH);
 		
 		return res;
+	}
+	
+	public boolean isArable(int x0, int y0, int w, int h)
+	{
+		if(!contains(x0, y0, w, h))
+			return false;
+		for(int y = 0; y < h; y++)
+		{
+			for(int x = 0; x < w; x++)
+			{
+				if(!getCellExisting(x0 + x, y0 + y).isArable())
+					return false;
+			}
+		}
+		return true;
 	}
 
 }

@@ -135,10 +135,13 @@ public class World
 	public boolean placeBuilding(Building b, int x, int y)
 	{
 		b.setPosition(x, y);
-		if(map.markBuilding(b, true) && !buildings.containsKey(b.getID()))
+		if(b.canBePlaced(map, x, y))
 		{
-			buildings.put(b.getID(), b);
-			return true;
+			if(map.markBuilding(b, true) && !buildings.containsKey(b.getID()))
+			{
+				buildings.put(b.getID(), b);
+				return true;
+			}
 		}
 		return false;
 	}

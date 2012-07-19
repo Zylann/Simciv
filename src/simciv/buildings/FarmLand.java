@@ -9,6 +9,7 @@ import simciv.Cheats;
 import simciv.ContentManager;
 import simciv.Game;
 import simciv.Job;
+import simciv.Map;
 import simciv.Resource;
 import simciv.ResourceSlot;
 import simciv.World;
@@ -199,6 +200,12 @@ public class FarmLand extends Workplace
 	@Override
 	public void onInit()
 	{
+	}
+
+	@Override
+	public boolean canBePlaced(Map map, int x, int y)
+	{
+		return super.canBePlaced(map, x, y) && map.isArable(x, y, getWidth(), getHeight());
 	}
 	
 }

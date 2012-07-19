@@ -5,6 +5,7 @@ import org.newdawn.slick.Image;
 import simciv.ContentManager;
 import simciv.Entity;
 import simciv.Game;
+import simciv.Map;
 import simciv.ResourceSlot;
 import simciv.World;
 
@@ -82,6 +83,11 @@ public abstract class Building extends Entity
 	 */
 	public void storeResource(ResourceSlot r)
 	{
+	}
+	
+	public boolean canBePlaced(Map map, int x, int y)
+	{
+		return map.canPlaceObject(x, y, getWidth(), getHeight());
 	}
 	
 }

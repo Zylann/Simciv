@@ -66,6 +66,11 @@ public class MapCell
 	{
 		return (buildingInfo & BUILDING_INFO_ENTRY_MASK) != 0;
 	}
+	
+	public boolean isArable()
+	{
+		return terrainID == Terrain.GRASS;
+	}
 
 	public void set(MapCell other)
 	{
