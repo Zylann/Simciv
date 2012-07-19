@@ -28,12 +28,19 @@ public class MapGenerator
     			{
         			n2 = Noise.getPerlin((float)x, (float)y, seed+1, 4, 0.3f, 16.f);
         			
-    				if(n2 < 0.4 && n3 < 0.7)
-    					c.nature = Nature.TREE;
-    				else if(n2 < 0.45 && n3 < 0.1)
-    					c.nature = Nature.TREE;
-    				
-    				c.terrainID = Terrain.GRASS;
+        			if(n < 0.6 && n2 > 0.5)
+        			{
+        				c.terrainID = Terrain.DUST;
+        			}
+        			else
+        			{
+        				c.terrainID = Terrain.GRASS;
+        				
+        				if(n2 < 0.4 && n3 < 0.7)
+        					c.nature = Nature.TREE;
+        				else if(n2 < 0.45 && n3 < 0.1)
+        					c.nature = Nature.TREE;
+           			}        			
     			}
     			else
     				c.terrainID = Terrain.WATER;

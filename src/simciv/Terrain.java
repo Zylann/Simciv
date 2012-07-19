@@ -13,9 +13,10 @@ public class Terrain
 	public static final byte VOID = 0;
 	public static final byte WATER = 1;
 	public static final byte GRASS = 2;
-	public static final int count = 3;
+	public static final byte DUST = 3;
+	public static final int count = 4;
 	
-	static Terrain terrains[];
+	private static Terrain terrains[];
 	
 	public static void initialize() throws SlickException
 	{
@@ -25,6 +26,7 @@ public class Terrain
 		set(new Terrain(VOID, "void")).setMinimapColor(Color.black);
 		set(new Terrain(WATER, "water")).setMinimapColor(Color.blue);
 		set(new Terrain(GRASS, "grass")).setMinimapColor(Color.green);
+		set(new Terrain(DUST, "dust")).setMinimapColor(new Color(232, 215, 103));
 		
 		// Load content		
 		for(int i = 0; i < count; i++)
