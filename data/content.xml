@@ -16,11 +16,13 @@
 	<resource type="image" id="build.activeWarehouse">warehouse_active.png</resource>
 	
 	<resource type="image" id="unit.citizen">citizen.png</resource>
-	<resource type="image" id="unit.conveyer">transporter.png</resource>
+	<resource type="image" id="unit.conveyer">transporter_only.png</resource>
 	<resource type="image" id="unit.nomad">nomad.png</resource>
 	<resource type="image" id="unit.thinking">think.png</resource>
 	
+	<resource type="image" id="resource.emptyCarriage">carriage.png</resource>
 	<resource type="image" id="resource.wheat">res_wheat.png</resource>
+	<resource type="image" id="resource.wheatCarriage">carriage_wheat.png</resource>
 	
 	<resource type="image" id="terrain.road">road.png</resource>
 	<resource type="image" id="terrain.grass">grass.png</resource>

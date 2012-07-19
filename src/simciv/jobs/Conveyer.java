@@ -3,10 +3,12 @@ package simciv.jobs;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import simciv.ContentManager;
 import simciv.Direction2D;
+import simciv.Game;
 import simciv.Job;
 import simciv.PathFinder;
 import simciv.ResourceSlot;
@@ -170,12 +172,6 @@ public class Conveyer extends Job
 	}
 
 	@Override
-	public Image getSprites()
-	{
-		return unitSprites;
-	}
-
-	@Override
 	public byte getID()
 	{
 		return Job.CONVEYER;
@@ -184,6 +180,24 @@ public class Conveyer extends Job
 	public void addResourceCarriage(ResourceSlot r)
 	{
 		carriedResource.addFrom(r);
+	}
+
+	@Override
+	public void renderUnit(Graphics gfx)
+	{
+		int gx = me.getX() * Game.tilesSize;
+		int gy = me.getY() * Game.tilesSize;
+		
+		if(me.getDirection() == Direction2D.NORTH)
+		{
+			carriedResource.renderCarriage(gfx, gx, gy, me.getDirection());
+			me.defaultRender(gfx, unitSprites);
+		}
+		else
+		{
+			me.defaultRender(gfx, unitSprites);
+			carriedResource.renderCarriage(gfx, gx, gy, me.getDirection());
+		}
 	}
 
 }

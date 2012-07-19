@@ -83,9 +83,9 @@ public class ResourceSlot
 		}
 	}
 	
-	public void renderCarriage(Graphics gfx, int x, int y)
+	public void renderCarriage(Graphics gfx, int x, int y, byte direction)
 	{
-		Resource.get(type).renderCarriage(gfx, x, y, amount);
+		Resource.get(type).renderCarriage(gfx, x, y, amount, direction);
 	}
 	
 	public void renderStorage(Graphics gfx, int x, int y)

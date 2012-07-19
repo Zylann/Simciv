@@ -147,24 +147,25 @@ public abstract class Unit extends Entity
 		return isOut();
 	}
 		
-	protected final void beginRenderForFancyMovements(Graphics gfx)
-	{
-		if(getDirection() != Direction2D.NONE)
-		{
-			float k = -Game.tilesSize * getK();
-			Vector2i dir = Direction2D.vectors[getDirection()];
-			gfx.translate(k * dir.x, k * dir.y);
-		}
-	}
-	
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		gfx.pushTransform();
 		
 		if(Game.renderFancyUnitMovements)
-			beginRenderForFancyMovements(gfx);
+		{
+			if(getDirection() != Direction2D.NONE)
+			{
+				float k = -Game.tilesSize * getK();
+				Vector2i dir = Direction2D.vectors[getDirection()];
+				gfx.translate(k * dir.x, k * dir.y);
+			}
+		}
 		
+		gfx.translate(
+				posX * Game.tilesSize,
+				posY * Game.tilesSize - Game.tilesSize / 3);
+
 		renderUnit(gfx);
 		
 		gfx.popTransform();
@@ -178,15 +179,11 @@ public abstract class Unit extends Entity
 		return 0;
 	}
 
-	protected final void defaultRender(Graphics gfx, Image sprite)
+	public final void defaultRender(Graphics gfx, Image sprite)
 	{
-		gfx.translate(
-				posX * Game.tilesSize,
-				posY * Game.tilesSize - Game.tilesSize / 3);
-
 		if(sprite == null)
 		{
-			// For debug
+			// For debug : draws a red quad in place of the sprite
 //			gfx.setLineWidth(1);
 //			gfx.setColor(Color.red);
 //			gfx.drawRect(0, 0, Game.tilesSize, Game.tilesSize);

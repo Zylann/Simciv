@@ -50,12 +50,12 @@ public class Citizen extends Unit
 	}
 	
 	@Override
-	public void renderUnit(Graphics gfx)
+	protected void renderUnit(Graphics gfx)
 	{
 		if(job == null)
 			defaultRender(gfx, sprite);
 		else
-			defaultRender(gfx, job.getSprites());
+			job.renderUnit(gfx);
 		if(state == Unit.THINKING)
 			renderThinkingIcon(gfx);
 	}

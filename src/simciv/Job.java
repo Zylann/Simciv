@@ -1,7 +1,6 @@
 package simciv;
 
-import org.newdawn.slick.Image;
-
+import org.newdawn.slick.Graphics;
 import simciv.buildings.Workplace;
 import simciv.units.Citizen;
 
@@ -32,13 +31,6 @@ public abstract class Job
 	public abstract void tick();
 	
 	/**
-	 * Each job modifies the appearance of citizens.
-	 * This method may return their new appearance.
-	 * @return
-	 */
-	public abstract Image getSprites();
-	
-	/**
 	 * Gets the numeric identifier of the job (its type)
 	 * @return
 	 */
@@ -66,4 +58,15 @@ public abstract class Job
 		if(workplaceRef != null && notifyWorkplace)
 			workplaceRef.removeEmployeeAndMakeRedundant(me.getID());
 	}
+
+	/**
+	 * Overrides the default rendering of the citizen
+	 * @param citizen
+	 */
+	public abstract void renderUnit(Graphics gfx);
+	
 }
+
+
+
+

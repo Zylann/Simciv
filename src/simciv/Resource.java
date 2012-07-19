@@ -25,13 +25,15 @@ public class Resource
 	
 	public static void initialize()
 	{
+		ContentManager content = ContentManager.instance();
+
 		list = new Resource[COUNT];
 		
-		ContentManager content = ContentManager.instance();
-		
-		set(new Resource(NONE, "None", 0));
+		set(new Resource(NONE, "None", 0))
+			.setSprites(content.getImage("resource.emptyCarriage"), null);
 		set(new Resource(WOOD, "Wood", 100));
-		set(new Resource(WHEAT, "Wheat", 100)).setSprites(content.getImage("resource.wheat"));
+		set(new Resource(WHEAT, "Wheat", 100))
+			.setSprites(content.getImage("resource.wheatCarriage"), content.getImage("resource.wheat"));
 		set(new Resource(STRAW, "Straw", 100));
 		set(new Resource(CLAY, "Clay", 100));
 		//...
@@ -57,23 +59,26 @@ public class Resource
 		this.stackLimit = (short) stackLimit;
 	}
 		
-	private Resource setSprites(Image sprites)
+	private Resource setSprites(Image carriageSpr, Image storageSpr)
 	{
 		// TODO split images with a spritesheet
-		carriageSprite = sprites;
-		storageSprite = sprites;
+		carriageSprite = carriageSpr;
+		storageSprite = storageSpr;
 		return this;
 	}
 	
-	public void renderCarriage(Graphics gfx, int x, int y, int amount)
+	public void renderCarriage(Graphics gfx, int x, int y, int amount, byte direction)
 	{
-		if(ID != NONE)
-			gfx.drawImage(carriageSprite, x, y);
+		gfx.drawImage(carriageSprite,
+				0, 0,
+				Game.tilesSize, Game.tilesSize,
+				0, direction * Game.tilesSize,
+				Game.tilesSize, (direction + 1) * Game.tilesSize);
 	}
 	
 	public void renderStorage(Graphics gfx, int x, int y, int amount)
 	{
-		if(ID != NONE)
+		if(storageSprite != null)
 		{
 			if(amount > 0)
 				gfx.drawImage(storageSprite, x, y);

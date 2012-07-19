@@ -75,15 +75,15 @@ public class FarmLand extends Workplace
 				state = Building.NORMAL;
 		}
 		
+		if(Cheats.isFastFarmlandGrow() && ticksBeforeNextLevel > secondsToTicks(1))
+			ticksBeforeNextLevel = secondsToTicks(1);
+
 		// Crops are growing
 		ticksBeforeNextLevel--;
-		if(ticksBeforeNextLevel == 0)
+		if(ticksBeforeNextLevel <= 0)
 		{
 			onLevelUp();
-			if(Cheats.isFastFarmlandGrow())
-				ticksBeforeNextLevel = secondsToTicks(1);
-			else
-				ticksBeforeNextLevel = ticksPerLevel;
+			ticksBeforeNextLevel = ticksPerLevel;
 		}
 	}
 		

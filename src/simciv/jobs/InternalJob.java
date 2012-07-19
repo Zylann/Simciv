@@ -1,7 +1,6 @@
 package simciv.jobs;
 
-import org.newdawn.slick.Image;
-
+import org.newdawn.slick.Graphics;
 import simciv.Direction2D;
 import simciv.Job;
 import simciv.buildings.Workplace;
@@ -29,12 +28,6 @@ public class InternalJob extends Job
 	}
 
 	@Override
-	public Image getSprites()
-	{
-		return null;
-	}
-
-	@Override
 	public void onBegin()
 	{
 		me.setDirection(Direction2D.NONE);
@@ -44,6 +37,12 @@ public class InternalJob extends Job
 	public byte getID()
 	{
 		return jobID;
+	}
+
+	@Override
+	public final void renderUnit(Graphics gfx)
+	{
+		// Nothing
 	}
 
 }
