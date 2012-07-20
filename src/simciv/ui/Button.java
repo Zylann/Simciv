@@ -79,9 +79,11 @@ public abstract class Button extends Widget
 	@Override
 	public boolean mouseReleased(int button, int x, int y)
 	{
-		pressed = false;
-		if(contains(x, y))
+		if(pressed && contains(x, y))
+		{
+			pressed = false;
 			onRelease();
+		}
 		return false;
 	}
 		
@@ -116,3 +118,5 @@ public abstract class Button extends Widget
 	}
 
 }
+
+

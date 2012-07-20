@@ -24,13 +24,13 @@ import simciv.ui.InfoBar;
 import simciv.ui.Menu;
 import simciv.ui.MenuItem;
 import simciv.ui.Minimap;
-import simciv.ui.Panel;
 import simciv.ui.ResourceBar;
 import simciv.ui.RootPane;
 import simciv.ui.ToolButton;
 import simciv.ui.ToolButtonGroup;
 import simciv.ui.UIBasicGameState;
 import simciv.ui.UIRenderer;
+import simciv.ui.Window;
 import simciv.units.Citizen;
 
 /**
@@ -48,8 +48,8 @@ public class GamePlay extends UIBasicGameState
 	private String debugText = "";
 	private Vector2i pointedCell = new Vector2i();
 	private ToolButtonGroup buildCategoryButtonsGroup;
-	private Panel minimapWindow;
 	private Minimap minimap;
+	private Window minimapWindow;
 	private MinimapUpdater minimapUpdater;
 	private ResourceBar resourceBar;
 	private boolean closeRequested = false;
@@ -154,17 +154,15 @@ public class GamePlay extends UIBasicGameState
 		
 		// Minimap
 		
-		minimapWindow = new Panel(ui, 0, 0, 0, 0);
-
-		minimap = new Minimap(minimapWindow, 10, 10, 0, 0);
+		minimapWindow = new Window(ui, 0, 0, 134, 134, "Minimap");
+		minimap = new Minimap(minimapWindow, 0, 0, 0, 0);
 		minimap.setView(view);
 		minimap.setViz(minimapUpdater.getViz());
-		
-		minimapWindow.setSize(minimap.getWidth() + 20, minimap.getHeight() + 20);
+		minimap.setVisible(true);
+		minimap.alignToCenter(true, false);
 		minimapWindow.add(minimap);
-		ui.add(minimapWindow);
 		minimapWindow.alignToCenter();
-		minimapWindow.setVisible(false);
+		ui.add(minimapWindow);
 		
 		// Resource bar
 		
@@ -291,9 +289,13 @@ public class GamePlay extends UIBasicGameState
 	
 	@Override
 	public void mousePressed(int button, int x, int y)
-	{		
+	{
 		if(!paused)
+		{
 			builder.cursorPressed(button, pointedCell);
+			if(button == Input.MOUSE_MIDDLE_BUTTON && !minimapWindow.isVisible())
+				toggleShowMinimap();
+		}
 	}
 	
 	@Override
@@ -326,7 +328,13 @@ public class GamePlay extends UIBasicGameState
 				ui.setY(0);
 		}
 		if(key == Input.KEY_TAB)
-			minimapWindow.setVisible(!minimapWindow.isVisible());
+			toggleShowMinimap();
+	}
+	
+	public void toggleShowMinimap()
+	{
+		minimapWindow.alignToCenter();
+		minimapWindow.setVisible(!minimapWindow.isVisible());
 	}
 	
 	// UI Actions

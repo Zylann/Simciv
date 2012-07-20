@@ -11,8 +11,8 @@ import org.newdawn.slick.Graphics;
 public abstract class Widget
 {
 	// Relative position towards its parent
-	protected int x;
-	protected int y;
+	protected int posX;
+	protected int posY;
 	// Size (all widgets are rectangular)
 	protected int width;
 	protected int height;
@@ -26,7 +26,7 @@ public abstract class Widget
 		visible = true;
 		setGeometry(x, y, width, height);
 	}
-	
+		
 	public void setVisible(boolean visible)
 	{
 		this.visible = visible;
@@ -39,8 +39,8 @@ public abstract class Widget
 	
 	public void setGeometry(int x, int y, int width, int height)
 	{
-		this.x = x;
-		this.y = y;
+		this.posX = x;
+		this.posY = y;
 		this.width = width <= 0 ? 1 : width;
 		this.height = height <= 0 ? 1 : height;
 	}
@@ -53,42 +53,42 @@ public abstract class Widget
 	
 	public void setPosition(int x, int y)
 	{
-		this.x = x;
-		this.y = y;
+		this.posX = x;
+		this.posY = y;
 	}
 	
 	public void setX(int x)
 	{
-		this.x = x;
+		this.posX = x;
 	}
 	
 	public void setY(int y)
 	{
-		this.y = y;
+		this.posY = y;
 	}
 	
 	public int getX()
 	{
-		return x;
+		return posX;
 	}
 
 	public int getY()
 	{
-		return y;
+		return posY;
 	}
 	
 	public int getAbsoluteX()
 	{
 		if(parent != null)
-			return x + parent.getAbsoluteX();
-		return x;
+			return posX + parent.getAbsoluteX();
+		return posX;
 	}
 
 	public int getAbsoluteY()
 	{
 		if(parent != null)
-			return y + parent.getAbsoluteY();
-		return y;
+			return posY + parent.getAbsoluteY();
+		return posY;
 	}
 	
 	public int getWidth()
@@ -127,10 +127,17 @@ public abstract class Widget
 	
 	public void alignToCenter()
 	{
+		alignToCenter(true, true);
+	}
+	
+	public void alignToCenter(boolean onX, boolean onY)
+	{
 		if(parent == null)
 			return;
-		x = (parent.getWidth() - getWidth()) / 2;
-		y = (parent.getHeight() - getHeight()) / 2;
+		if(onX)
+			posX = (parent.getWidth() - getWidth()) / 2;
+		if(onY)
+			posY = (parent.getHeight() - getHeight()) / 2;
 	}
 	
 	// Each of these methods below return a boolean.

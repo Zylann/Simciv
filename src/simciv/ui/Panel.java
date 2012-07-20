@@ -36,4 +36,8 @@ public class Panel extends WidgetContainer
 		UIRenderer.instance().renderPanel(gfx, this);
 		super.render(gc, gfx);
 	}
+	
 }
+
+
+

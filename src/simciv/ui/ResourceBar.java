@@ -38,12 +38,15 @@ public class ResourceBar extends Widget
 		int y = getAbsoluteY();
 		int b = height;
 		
+		// Background
 		gfx.drawImage(background.getSprite(0, 0), x, y);
 		UIRenderer.instance().renderImageRepeatXY(gfx, background.getSprite(1, 0), x + b, y, width - 3 * b, b);
 		gfx.drawImage(background.getSprite(2, 0), x + width - 2 * b, y);
 		
+		// Icon
 		gfx.drawImage(populationIcon, x+4, y+4);
 		
+		// Text
 		String populationText = "" + population;
 		gfx.setColor(Color.black);
 		gfx.drawString(populationText, x + 24, y + 6);

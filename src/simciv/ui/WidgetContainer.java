@@ -18,6 +18,8 @@ public class WidgetContainer extends Widget
 	
 	public void add(Widget child) throws SlickException
 	{
+		if(child == null)
+			throw new SlickException("Cannot add a null child widget");
 		children.add(child);
 	}
 	

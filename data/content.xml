@@ -41,7 +41,9 @@
 	<resource type="image" id="ui.categIndustry">ui_factory.png</resource>
 	<resource type="image" id="ui.categCursor">ui_categMouse.png</resource>
 	<resource type="image" id="ui.menuItem">ui_menu_item.png</resource>
-	<resource type="image" id="ui.frame">window.png</resource>
+	<resource type="image" id="ui.frame">ui_frame.png</resource>
+	<resource type="image" id="ui.window.titleBar">ui_winbar.png</resource>
+	<resource type="image" id="ui.window.closeButton">ui_winclosebtn.png</resource>
 	<resource type="image" id="ui.minimap.mask">minimap_mask.png</resource>
 	<resource type="image" id="ui.indicators.population">citizen_icon.png</resource>
 	<resource type="image" id="ui.resourceBar">resource_bar.png</resource>

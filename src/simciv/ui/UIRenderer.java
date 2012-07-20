@@ -15,13 +15,18 @@ import simciv.ContentManager;
  */
 public class UIRenderer
 {
+	// Unique instance
 	protected static UIRenderer instance;
-	private static int FRAME_BASE = 16;
+	// Constants
+	private static final int FRAME_BASE = 16;
+	private static final int WINDOW_SHADOW_SIZE = 2;
 	
 	private int globalScale;
 	private Image toolButtonBackground;
 	private Image menuItemBackground;
+	private Image winCloseBtnBG;
 	private SpriteSheet frameBackground;
+	private SpriteSheet windowTitleBarBackground;
 	private Font font;
 	
 	public static UIRenderer instance()
@@ -33,13 +38,28 @@ public class UIRenderer
 	
 	private UIRenderer()
 	{
-		globalScale = 1;
-		font = ContentManager.instance().getFont("ui.font");
-		toolButtonBackground = ContentManager.instance().getImage("ui.toolButton");
-		menuItemBackground = ContentManager.instance().getImage("ui.menuItem");
+		globalScale = 1;		
+		loadContent();
+	}
+	
+	private void loadContent()
+	{
+		ContentManager content = ContentManager.instance();		
+
+		font = content.getFont("ui.font");
+		toolButtonBackground = content.getImage("ui.toolButton");
+		menuItemBackground = content.getImage("ui.menuItem");
 		
-		Image frameBackgroundImg = ContentManager.instance().getImage("ui.frame");
-		frameBackground = new SpriteSheet(frameBackgroundImg, FRAME_BASE, FRAME_BASE);		
+		Image frameBackgroundImg = content.getImage("ui.frame");
+		frameBackground = new SpriteSheet(frameBackgroundImg, FRAME_BASE, FRAME_BASE);
+		
+		Image windowTitleBarBackgroundImg = content.getImage("ui.window.titleBar");
+		windowTitleBarBackground =
+			new SpriteSheet(windowTitleBarBackgroundImg,
+					windowTitleBarBackgroundImg.getHeight(),
+					windowTitleBarBackgroundImg.getHeight());
+		
+		winCloseBtnBG = content.getImage("ui.window.closeButton");
 	}
 	
 	public void setGlobalScale(int s)
@@ -112,35 +132,72 @@ public class UIRenderer
 	 * @param w
 	 * @param h
 	 */
-	public void renderFrame(Graphics gfx, int posX, int posY, int w, int h)
+	public void renderFrame(Graphics gfx, SpriteSheet sheet, int posX, int posY, int w, int h, int b)
 	{		
-		Image top = frameBackground.getSprite(1, 0);
-		Image left = frameBackground.getSprite(0, 1);
-		Image right = frameBackground.getSprite(2, 1);
-		Image bottom = frameBackground.getSprite(1, 2);
-		Image center = frameBackground.getSprite(1, 1);
-		
-		int b = FRAME_BASE;
+		Image top = sheet.getSprite(1, 0);
+		Image left = sheet.getSprite(0, 1);
+		Image right = sheet.getSprite(2, 1);
+		Image bottom = sheet.getSprite(1, 2);
+		Image center = sheet.getSprite(1, 1);
 		
 		// Corners
-		gfx.drawImage(frameBackground.getSprite(0, 0), posX, posY);
-		gfx.drawImage(frameBackground.getSprite(2, 0), posX + w - b, posY);
-		gfx.drawImage(frameBackground.getSprite(0, 2), posX, posY + h - b);
-		gfx.drawImage(frameBackground.getSprite(2, 2), posX + w - b, posY + h - b);
+		gfx.drawImage(sheet.getSprite(0, 0), posX, posY);
+		gfx.drawImage(sheet.getSprite(2, 0), posX + w - b, posY);
+		gfx.drawImage(sheet.getSprite(0, 2), posX, posY + h - b);
+		gfx.drawImage(sheet.getSprite(2, 2), posX + w - b, posY + h - b);
 		// Borders
-		renderImageRepeatXY(gfx, top, posX + b, posY, w - 2 * b, b);
-		renderImageRepeatXY(gfx, left, posX, posY + b, b, h - 2 * b);
-		renderImageRepeatXY(gfx, right, posX + w - b, posY + b, b, h - 2 * b);
-		renderImageRepeatXY(gfx, bottom, posX + b, posY + h - b, w - 2 * b, b);
+		renderImageRepeatXY(gfx, top, 		posX + b,		posY, 			w - 2 * b, 	b);
+		renderImageRepeatXY(gfx, left, 		posX, 			posY + b, 		b, 			h - 2 * b);
+		renderImageRepeatXY(gfx, right, 	posX + w - b, 	posY + b, 		b, 			h - 2 * b);
+		renderImageRepeatXY(gfx, bottom, 	posX + b,		posY + h - b, 	w - 2 * b, 	b);
 		// Center
 		renderImageRepeatXY(gfx, center, posX + b, posY + b, w - 2 * b, h - 2 * b);
 	}
-	
+		
 	public void renderPanel(Graphics gfx, Panel w)
 	{
-		renderFrame(gfx, w.getX(), w.getY(), w.getWidth(), w.getHeight());
+		renderFrame(gfx, frameBackground,
+				w.getAbsoluteX(), w.getAbsoluteY(),
+				w.getWidth() + WINDOW_SHADOW_SIZE, 
+				w.getHeight() + WINDOW_SHADOW_SIZE, 
+				FRAME_BASE);
 	}
 	
+	public void renderWindow(Graphics gfx, Window w)
+	{
+		renderFrame(gfx, frameBackground,
+				w.getAbsoluteX(), w.getAbsoluteY(),
+				w.getWidth() + WINDOW_SHADOW_SIZE, 
+				w.getHeight() + WINDOW_SHADOW_SIZE, 
+				FRAME_BASE);
+	}
+	
+	public void renderWindowTitleBar(Graphics gfx, WindowTitleBar w)
+	{
+		int x = w.getAbsoluteX();
+		int y = w.getAbsoluteY();
+		int b = WindowTitleBar.height;
+		
+		// Left
+		gfx.drawImage(windowTitleBarBackground.getSprite(0, 0), x, y);
+		// Middle
+		renderImageRepeatXY(gfx, windowTitleBarBackground.getSprite(1, 0), x + b, y, w.getWidth() - 3 * b, b);
+		// Right
+		gfx.drawImage(windowTitleBarBackground.getSprite(2, 0), x + w.getWidth() - 2 * b, y);
+		
+		// Title
+		if(w.getText() != null)
+		{
+			gfx.setColor(Color.white);
+			gfx.drawString(w.getText(), x + b, y + 2);
+		}
+	}
+
+	public void renderWindowCloseButton(Graphics gfx, WindowCloseButton w)
+	{
+		renderButton(gfx, w, winCloseBtnBG, null, null, 0);
+	}
+
 	private void renderButton(Graphics gfx, Button w, Image sprite, Image icon, String text, int pressOffset)
 	{
 		int x = w.getAbsoluteX();
@@ -174,7 +231,7 @@ public class UIRenderer
 			gfx.drawString(text, x + 4, y + 2);
 		}
 	}
-
+	
 	public void renderMenuItem(Graphics gfx, MenuItem w)
 	{
 		renderButton(gfx, w, menuItemBackground, null, w.getText(), 1);
@@ -189,5 +246,6 @@ public class UIRenderer
 	{
 		return globalScale;
 	}
+
 }
 
