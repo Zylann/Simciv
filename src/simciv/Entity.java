@@ -30,7 +30,7 @@ public abstract class Entity extends GameComponent
 		direction = Direction2D.SOUTH;
 		timeBeforeNextTick = getTickTime();
 	}
-	
+		
 	public byte getState()
 	{
 		return state;
@@ -110,9 +110,16 @@ public abstract class Entity extends GameComponent
 			timeBeforeNextTick += getTickTime();
 			if(timeBeforeNextTick < 0)
 				timeBeforeNextTick = 0;
-			tick();
+			
+			tickEntity();
+			
 			nbTicks++;
 		}
+	}
+	
+	protected void tickEntity()
+	{
+		tick();
 	}
 	
 	/**

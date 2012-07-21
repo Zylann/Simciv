@@ -27,7 +27,8 @@ public abstract class Unit extends Entity
 	// Counts all the units
 	public static int count = 0;
 	
-	boolean isAlive;
+	private boolean isAlive;
+	private boolean isMoving;
 		
 	public Unit(World w)
 	{
@@ -37,6 +38,17 @@ public abstract class Unit extends Entity
 		count++;
 		isAlive = true;
 		state = NORMAL;
+	}
+	
+	@Override
+	protected void tickEntity()
+	{
+		int lastPosX = posX;
+		int lastPosY = posY;
+		
+		tick();
+		
+		isMoving = posX != lastPosX || posY != lastPosY;
 	}
 	
 	/**
@@ -127,6 +139,11 @@ public abstract class Unit extends Entity
 		return isAlive;
 	}
 	
+	public boolean isMoving()
+	{
+		return isMoving;
+	}
+	
 	public void kill()
 	{
 		isAlive = false;
@@ -154,7 +171,7 @@ public abstract class Unit extends Entity
 		
 		if(Game.renderFancyUnitMovements)
 		{
-			if(getDirection() != Direction2D.NONE)
+			if(getDirection() != Direction2D.NONE && isMoving())
 			{
 				float k = -Game.tilesSize * getK();
 				Vector2i dir = Direction2D.vectors[getDirection()];
@@ -176,7 +193,7 @@ public abstract class Unit extends Entity
 	@Override
 	protected int getTickTime()
 	{
-		return 0;
+		return 500;
 	}
 
 	public final void defaultRender(Graphics gfx, Image sprite)

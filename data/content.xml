@@ -18,6 +18,7 @@
 	<resource type="image" id="unit.citizen">citizen.png</resource>
 	<resource type="image" id="unit.conveyer">transporter_only.png</resource>
 	<resource type="image" id="unit.nomad">nomad.png</resource>
+	<resource type="image" id="unit.duck">duck.png</resource>
 	<resource type="image" id="unit.thinking">think.png</resource>
 	
 	<resource type="image" id="resource.emptyCarriage">carriage.png</resource>
