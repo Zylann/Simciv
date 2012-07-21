@@ -162,11 +162,13 @@ public class GamePlay extends UIBasicGameState
 		minimap.alignToCenter(true, false);
 		minimapWindow.add(minimap);
 		minimapWindow.alignToCenter();
+		minimapWindow.setVisible(false);
 		ui.add(minimapWindow);
 		
 		// Resource bar
 		
-		resourceBar = new ResourceBar(ui, 400, 10);
+		resourceBar = new ResourceBar(ui, 0, 0);
+		resourceBar.setPosition(ui.getWidth() - resourceBar.getWidth() - 10, 10);
 		ui.add(resourceBar);
 		
 		// Info bar
