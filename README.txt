@@ -8,18 +8,19 @@ Description :
 	
 Current features :
 
-	- Map generation (grass and water)
+	- Map generation (grass, trees, water)
 	- Graphical user interface + debug info when hitting F3
 	- Placing buildings and roads
-	- Simple citizen behavior on roads
+	- Path finding
+	- Draggable minimap
+	- Job system
 	- Farmlands (with growing crops), houses, warehouses (more in the future)
 	
 Some planned features and ideas :
 
-	- Job system and economy
+	- Economy system
 	- Resources (food, raw materials, ores...)
 	- Ability to save/load a game
-	- Minimap
 	- Savage units
 	- Moar builds
 	- Technological tree ?
@@ -27,16 +28,12 @@ Some planned features and ideas :
 	- World view (foreign cities...)
 	- Citizen social levels
 	- Tutorial mode, compaigns...
+	- Multiplayer mode (inter-city only)
 
 Dependencies :
 
 	Slick2D library : http://slick.cokeandcode.com/
 	
-	Data files are needed to execute the game (see section below).
-
-Download data files :
+	Data files are needed to execute the game (see data/).
 	
-	(Not available yet)
 
-	Note : I think I will include data files soon in the repo, as they are not
-		so big (currently only 90,7ko).
