@@ -45,4 +45,9 @@ public class Direction2D
 		return NONE;
 	}
 	
+	public static byte random()
+	{
+		return (byte) (4 * Math.random());
+	}
+	
 }

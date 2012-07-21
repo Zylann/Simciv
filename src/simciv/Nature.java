@@ -18,9 +18,10 @@ public class Nature
 	
 	public static void loadContent()
 	{
-		treeSprites[0] = ContentManager.instance().getImage("nature.tree");
-		treeSprites[1] = ContentManager.instance().getImage("nature.tree2");
-		treeSprites[2] = ContentManager.instance().getImage("nature.tree3");
+		ContentManager content = ContentManager.instance();
+		treeSprites[0] = content.getImage("nature.tree");
+		treeSprites[1] = content.getImage("nature.tree2");
+		treeSprites[2] = content.getImage("nature.tree3");
 	}
 	
 	/**
@@ -54,6 +55,7 @@ public class Nature
 			gfx.drawImage(treeSprites[i], gx, gy - (treeSprites[i].getHeight() - Game.tilesSize));
 		}
 	}
+	
 }
 
 

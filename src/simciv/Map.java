@@ -298,7 +298,7 @@ public class Map
 	// Rendering
 	
 	/**
-	 * Renders the map within the specified range.
+	 * Renders the map ground within the specified range.
 	 * @param range : map range (in cells)
 	 * @param gc
 	 * @param gfx

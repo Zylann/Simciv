@@ -26,7 +26,7 @@ import simciv.units.Unit;
 public class Conveyer extends Job
 {
 	// Sprites
-	private static Image unitSprites; // TODO separate the carriage and the carrier to render what he is carrying
+	private static Image unitSprites;
 	
 	private Building targetBuildingRef;
 	private PathFinder pathFinder;
