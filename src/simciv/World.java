@@ -9,6 +9,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.buildings.Building;
+import simciv.buildings.Warehouse;
+import simciv.effects.VisualEffect;
 import simciv.rendering.SortedRender;
 import simciv.units.Unit;
 
@@ -65,7 +67,7 @@ public class World
 		for(VisualEffect e : graphicalEffects)
 		{
 			e.update(delta);
-			if(e.finished)
+			if(e.isFinished())
 				finishedGraphicalEffects.add(e);
 		}
 		graphicalEffects.removeAll(finishedGraphicalEffects);
@@ -180,17 +182,19 @@ public class World
 	}
 	
 	/**
-	 * Get the building occupying the cell at (x, y), 
-	 * returns null if there is no building.
+	 * Get the building occupying the cell at (x, y).
+	 * Returns null if there are no building.
+	 * @param worldRef
 	 * @param x
 	 * @param y
 	 * @return
 	 */
 	public Building getBuilding(int x, int y)
 	{
-		return map.getBuilding(this, x, y);
-	}
-	
+		if(!map.contains(x, y))
+			return null;
+		return getBuilding(map.getCellExisting(x, y).getBuildingID());
+	}	
 	/**
 	 * Draws a part of the world within the specified map range
 	 * @param mapRange
@@ -234,6 +238,48 @@ public class World
 //		long time = System.currentTimeMillis() - timeBefore; // for debug
 //		if(gc.getInput().isKeyDown(Input.KEY_T))
 //			System.out.println(time);
+	}
+
+	public Warehouse getFreeWarehouse(int x, int y)
+	{
+		List<Building> list = getBuildingsAround(x, y);
+		for(Building b : list)
+		{
+			if(Warehouse.class.isInstance(b))
+			{
+				if(b.isAcceptResources())
+					return (Warehouse) b;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Get a list of buildings around the given position
+	 * @param worldRef
+	 * @param x
+	 * @param y
+	 * @return list of buildings
+	 */
+	public ArrayList<Building> getBuildingsAround(int x, int y)
+	{
+		Building b;
+		ArrayList<Building> list = new ArrayList<Building>();
+		
+		b = getBuilding(x-1, y);
+		if(b != null)
+			list.add(b);
+		b = getBuilding(x+1, y);
+		if(b != null)
+			list.add(b);
+		b = getBuilding(x, y-1);
+		if(b != null)
+			list.add(b);
+		b = getBuilding(x, y+1);
+		if(b != null)
+			list.add(b);
+		
+		return list;
 	}
 	
 }

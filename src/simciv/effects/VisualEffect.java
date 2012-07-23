@@ -1,6 +1,8 @@
-package simciv;
+package simciv.effects;
 
 import org.newdawn.slick.Graphics;
+
+import simciv.Game;
 
 public abstract class VisualEffect
 {

@@ -233,49 +233,6 @@ public class Map
 	}
 	
 	/**
-	 * Get the building occupying the cell at (x, y).
-	 * Returns null if there are no building.
-	 * @param worldRef
-	 * @param x
-	 * @param y
-	 * @return
-	 */
-	public Building getBuilding(World worldRef, int x, int y)
-	{
-		if(!contains(x, y))
-			return null;
-		return worldRef.getBuilding(getCellExisting(x, y).getBuildingID());
-	}
-	
-	/**
-	 * Get a list of buildings around the given position
-	 * @param worldRef
-	 * @param x
-	 * @param y
-	 * @return list of buildings
-	 */
-	public ArrayList<Building> getBuildingsAround(World worldRef, int x, int y)
-	{
-		Building b;
-		ArrayList<Building> list = new ArrayList<Building>();
-		
-		b = getBuilding(worldRef, x-1, y);
-		if(b != null)
-			list.add(b);
-		b = getBuilding(worldRef, x+1, y);
-		if(b != null)
-			list.add(b);
-		b = getBuilding(worldRef, x, y-1);
-		if(b != null)
-			list.add(b);
-		b = getBuilding(worldRef, x, y+1);
-		if(b != null)
-			list.add(b);
-		
-		return list;
-	}
-	
-	/**
 	 * Tests if a building with the given ID is around the given position
 	 * @param ID : building ID
 	 * @param x

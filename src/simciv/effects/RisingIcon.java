@@ -4,7 +4,6 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
-import simciv.VisualEffect;
 
 /**
  * Displays an image rising and fading
