@@ -13,6 +13,7 @@ public class RandomRoadMovement implements IMovement
 	@Override
 	public void tick(Unit u)
 	{
+		// TODO memorize intersections to not always take same directions
 		u.move(Road.getAvailableDirections(u.getWorld().map, u.getX(), u.getY()));
 	}
 

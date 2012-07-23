@@ -1,15 +1,16 @@
 package simciv;
 
 /**
- * Well...
+ * Well... originally, this was for debug :D
+ * This is a set of flags that make things happen quicker.
  * @author Marc
  *
  */
 public class Cheats
 {
-	private static boolean enabled = true;
-	private static boolean fastCitizenProduction = false;
-	private static boolean fastFarmlandGrow = false;
+	private static boolean enabled = false;
+	private static boolean fastCitizenProduction = true;
+	private static boolean fastFarmlandGrow = true;
 	
 	public static void onCommand(String cmd)
 	{

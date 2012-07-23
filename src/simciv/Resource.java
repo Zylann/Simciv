@@ -61,7 +61,6 @@ public class Resource
 		
 	private Resource setSprites(Image carriageSpr, Image storageSpr)
 	{
-		// TODO split images with a spritesheet
 		carriageSprite = carriageSpr;
 		storageSprite = storageSpr;
 		return this;

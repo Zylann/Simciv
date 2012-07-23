@@ -47,7 +47,7 @@ public abstract class Job
 	public void onBegin()
 	{
 	}
-	
+		
 	/**
 	 * Called when the citizen quits his job or is fired.
 	 * Overrides must call this superclass method in order to allow workplace notification.

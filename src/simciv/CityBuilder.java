@@ -146,7 +146,7 @@ public class CityBuilder
 					
 				gfx.fillRect(0, 0, 1, 1);
 			}
-				
+			
 			gfx.popTransform();
 		}
 	}
