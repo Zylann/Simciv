@@ -19,6 +19,8 @@ public class CityBuilder
 {
  	private static Sound placeSound;
  	private static Sound eraseSound;
+ 	private static Color canPlaceColor = new Color(64, 255, 64, 128);
+ 	private static Color cannotPlaceColor = new Color(255, 64, 64, 128);
  	
  	public static final int MODE_CURSOR = 0;
  	public static final int MODE_ERASE = 1;
@@ -111,15 +113,17 @@ public class CityBuilder
 		{
 			gfx.pushTransform();
 			
-			gfx.setColor(new Color(255,255,255,64));
-
 			if(mode == MODE_HOUSE || mode == MODE_BUILDS)
 			{
 				gfx.scale(Game.tilesSize, Game.tilesSize);
 				gfx.translate(buildingPos.x, buildingPos.y);
+				
+				if(building.canBePlaced(worldRef.map, buildingPos.x, buildingPos.y))
+					gfx.setColor(canPlaceColor);
+				else
+					gfx.setColor(cannotPlaceColor);
+				
 				gfx.fillRect(0, 0, building.getWidth(), building.getHeight());
-				//building.setPosition(buildingPos.x, buildingPos.y);
-				//building.render(gfx);
 			}
 			else if(mode == MODE_ERASE)
 			{
@@ -134,6 +138,12 @@ public class CityBuilder
 			{
 				gfx.scale(Game.tilesSize, Game.tilesSize);
 				gfx.translate(pos.x, pos.y);
+				
+				if(worldRef.map.canPlaceObject(pos.x, pos.y))
+					gfx.setColor(canPlaceColor);
+				else
+					gfx.setColor(cannotPlaceColor);
+					
 				gfx.fillRect(0, 0, 1, 1);
 			}
 				
