@@ -133,7 +133,7 @@ public class MapCell
 		if(isRoad())
 			return new Color(224, 224, 224);
 		if(nature != Nature.NONE)
-			return new Color(0, 128, 0);
+			return new Color(0, 64, 0);
 		return Terrain.get(terrainID).minimapColor;
 	}
 	

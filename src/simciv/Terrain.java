@@ -24,9 +24,9 @@ public class Terrain
 		
 		// Create terrains
 		set(new Terrain(VOID, "void")).setMinimapColor(Color.black);
-		set(new Terrain(WATER, "water")).setMinimapColor(Color.blue);
-		set(new Terrain(GRASS, "grass")).setMinimapColor(Color.green);
-		set(new Terrain(DUST, "dust")).setMinimapColor(new Color(232, 215, 103));
+		set(new Terrain(WATER, "water"));
+		set(new Terrain(GRASS, "grass"));
+		set(new Terrain(DUST, "dust"));
 		
 		// Load content		
 		for(int i = 0; i < count; i++)
@@ -78,7 +78,10 @@ public class Terrain
 	private void loadContent() throws SlickException
 	{
 		if(textureName != null)
+		{
 			texture = ContentManager.instance().getImage(textureName);
+			minimapColor = MathHelper.mean(texture);
+		}
 	}
 	
 	public void update(int delta)

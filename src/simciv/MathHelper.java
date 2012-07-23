@@ -1,5 +1,8 @@
 package simciv;
 
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Image;
+
 public class MathHelper
 {
     public static float smoothCurve(float x)
@@ -67,4 +70,35 @@ public class MathHelper
 		return x;
 	}
 	
+	/**
+	 * Computes the color mean of an image
+	 * @param img
+	 * @return
+	 */
+	public static Color mean(Image img)
+	{
+		Color m = new Color(0,0,0,255);
+		
+		int x, y;
+		for(y = 0; y < img.getHeight(); y++)
+		{
+			for(x = 0; x < img.getWidth(); x++)
+			{
+				Color pix = img.getColor(x, y);
+				m.r += pix.r;
+				m.g += pix.g;
+				m.b += pix.b;
+			}
+		}
+		
+		float d = img.getWidth() * img.getHeight();
+		m.r /= d;
+		m.g /= d;
+		m.b /= d;
+		
+		return m;
+	}
+	
 }
+
+
