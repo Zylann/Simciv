@@ -25,6 +25,7 @@ public class Warehouse extends Workplace
 	private static int NB_SLOTS = 8;
 	
 	private ResourceSlot resourceSlots[] = new ResourceSlot[NB_SLOTS];
+	private boolean full;
 
 	static
 	{
@@ -40,6 +41,7 @@ public class Warehouse extends Workplace
 		if(backSprite[1] == null)
 			backSprite[1] = ContentManager.instance().getImage("build.activeWarehouse");
 		state = Building.NORMAL;
+		full = false;
 		
 		for(int i = 0; i < resourceSlots.length; i++)
 			resourceSlots[i] = new ResourceSlot();
@@ -61,7 +63,7 @@ public class Warehouse extends Workplace
 	@Override
 	public boolean isAcceptResources()
 	{
-		return !needEmployees();
+		return !needEmployees() && !full;
 	}
 
 	@Override
@@ -72,8 +74,9 @@ public class Warehouse extends Workplace
 		{
 			slot.addFrom(r);
 			if(r.isEmpty())
-				break;
+				return;
 		}
+		full = true;
 	}
 
 	@Override

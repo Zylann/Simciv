@@ -15,6 +15,10 @@ import simciv.ResourceSlot;
 import simciv.Vector2i;
 import simciv.buildings.Building;
 import simciv.buildings.Workplace;
+import simciv.maptargets.BuildingMapTarget;
+import simciv.maptargets.FreeWarehouseMapTarget;
+import simciv.maptargets.IMapTarget;
+import simciv.movements.PathMovement;
 import simciv.units.Citizen;
 import simciv.units.Unit;
 
@@ -28,9 +32,7 @@ public class Conveyer extends Job
 	// Sprites
 	private static Image unitSprites;
 	
-	private Building targetBuildingRef;
 	private PathFinder pathFinder;
-	private LinkedList<Vector2i> path;
 	private ResourceSlot carriedResource;
 	
 	public Conveyer(Citizen citizen, Workplace workplace)
@@ -45,6 +47,7 @@ public class Conveyer extends Job
 	public void onBegin()
 	{
 		me.enterBuilding(workplaceRef);
+		me.setMovement(null);
 	}
 	
 	@Override
@@ -52,6 +55,17 @@ public class Conveyer extends Job
 	{
 		me.setState(Unit.NORMAL);
 		super.onQuit(notifyWorkplace);
+	}
+	
+	@Override
+	public byte getID()
+	{
+		return Job.CONVEYER;
+	}
+
+	public void addResourceCarriage(ResourceSlot r)
+	{
+		carriedResource.addFrom(r);
 	}
 
 	@Override
@@ -65,121 +79,124 @@ public class Conveyer extends Job
 		// He moves at random, distributing resources.
 		// When he distributed all his resources, he goes back to its workplace.
 		
-		//System.out.println("--- " + me.getX() + ", " + me.getY() + " at time " + me.getTicks()); // debug
+//		System.out.println("--- " + me.getX() + ", " + me.getY() + " at time " + me.getTicks()); // debug
 		if(me.getState() == Unit.THINKING && pathFinder != null)
-			tickPathFinding();
-		else if(path == null || path.isEmpty()) // I finished my path
-			tickNoPathMovement();
-		else // I have to follow my path
-			tickPathDrivenMovement();
+			tickPathFinding(); // I am searching for a path
+		else if(me.isMovementFinished())
+			onPathFinished();
+		else if(me.isMovementBlocked())
+			restartPathFinding(me.getMovementTarget());
+		else
+			tickDefault();
 	}
 	
 	private void tickPathFinding()
 	{
-		//System.out.println("Thinking..."); // debug
+//		System.out.println("Thinking..."); // debug
 		pathFinder.step(8);
 		if(pathFinder.isFinished())
 		{
 			if(pathFinder.getState() == PathFinder.FOUND)
 			{
-				path = pathFinder.retrievePath();
-				//System.out.println("Path found"); // debug
+				// I found a path !
+				LinkedList<Vector2i> path = pathFinder.retrievePath();
+//				System.out.println("Path found"); // debug
+				
+				// Remove first pos if we already are on
 				if(path != null && !path.isEmpty())
 				{
 					if(path.getFirst().equals(me.getX(), me.getY()))
 						path.pop();
 				}
 				
-				pathFinder = null;
+				// Start following the path
 				me.setState(Unit.NORMAL);
+				me.setMovement(new PathMovement(path, pathFinder.getTarget()));
+				pathFinder = null;
 			}
 			else
-				restartPathFinding();
+				restartPathFinding(pathFinder.getTarget());
 		}
 	}
 	
 	/**
-	 * Called when the conveyer has no path to follow (or finished the last one)
+	 * Called when the conveyer is on his way
 	 */
-	protected void tickNoPathMovement()
+	protected void tickDefault()
 	{
 		if(carriedResource.isEmpty()) // I have no resource to distribute
 		{
-			//System.out.println("R empty"); // debug
-			if(targetBuildingRef == workplaceRef)
-			{
-				// End of mission, ready for the next
-				//System.out.println("End of mission"); // debug
-				targetBuildingRef = null;
-				me.enterBuilding(workplaceRef);
-			}
-			else
-			{
-				// Go back to workplace
-				//System.out.println("Back to workplace"); // debug
-				targetBuildingRef = workplaceRef;
-				restartPathFinding();
-			}
+			// Go back to workplace
+//			System.out.println("Back to workplace"); // debug
+			if(me.getMovementTarget() == null || getTargetBuildingID() != workplaceRef.getID())
+				setTarget(workplaceRef);
 		}
 		else // I have resource to distribute
 		{
-			//System.out.println("Random move"); // debug
-			distributeResources();
-			me.moveAtRandomFollowingRoads();
+//			System.out.println("Random move"); // debug
+			distributeResources(); // distribute it
 		}
 	}
-	
-	private void tickPathDrivenMovement()
+		
+	protected void onPathFinished()
 	{
-		Vector2i pos = new Vector2i(me.getX(), me.getY());
-		Vector2i nextPos = path.pop();
-		//System.out.println("Following path (next is " + nextPos + ")"); // debug
+		if(!carriedResource.isEmpty())
+			distributeResources(); // distribute resources
+		if(!carriedResource.isEmpty()) // if still left, search another warehouse
+			restartPathFinding(new FreeWarehouseMapTarget());
 		
-		me.setDirection(Direction2D.toDirection(pos, nextPos));
-		if(!me.moveIfPossible())
+		if(getTargetBuildingID() == workplaceRef.getID())
 		{
-			//System.out.println("Can't move (d=" + me.getDirection() + ")"); // debug
-			restartPathFinding();
+//			System.out.println("End of mission"); // debug
+			// End of mission, ready for the next
+			me.setMovement(null);
+			me.enterBuilding(workplaceRef);
 		}
-		
-		// Debug
-//		if(path.isEmpty())
-//			System.out.println("End of path");
 	}
 	
 	private void distributeResources()
 	{
-		List<Building> buildingsAround = me.getWorld().map.getBuildingsAround(me.getWorld(), me.getX(), me.getY());
+		List<Building> buildingsAround = me.getWorld().getBuildingsAround(me.getX(), me.getY());
 		for(Building b : buildingsAround)
 		{
 			if(b.isAcceptResources())
 			{
-				//System.out.println("R distributed"); // debug
+//				System.out.println("R distributed"); // debug
 				b.storeResource(carriedResource);
 			}
 		}
+		if(carriedResource.isEmpty()) // if no resources left,
+			setTarget(workplaceRef); // Back to my workplace
 	}
-
-	private void restartPathFinding()
+	
+	private int getTargetBuildingID()
 	{
-		//System.out.println("Restarting path finding"); // debug
-		if(targetBuildingRef == null)
-			targetBuildingRef = workplaceRef;
-		pathFinder = new PathFinder(me.getWorld().map, me.getX(), me.getY(), targetBuildingRef.getID());
-		pathFinder.setMaxSteps(-1); // Infinite
+		if(BuildingMapTarget.class.isInstance(me.getMovementTarget()))
+			return ((BuildingMapTarget)(me.getMovementTarget())).buildingID;
+		return -1;
+	}
+	
+	public void setTarget(Building b)
+	{
+		setTarget(new BuildingMapTarget(b.getID()));
+	}
+	
+	public void setTarget(IMapTarget target)
+	{
+		restartPathFinding(target);
+	}
+		
+	private void restartPathFinding(IMapTarget target)
+	{
+//		System.out.println("Restarting path finding"); // debug
+		if(target == null)
+			target = new BuildingMapTarget(workplaceRef.getID());
+		
+		pathFinder = new PathFinder(me.getWorld(), me.getX(), me.getY(), target);
+		
 		me.setState(Unit.THINKING);
 		me.setDirection(Direction2D.NONE);
-	}
-
-	@Override
-	public byte getID()
-	{
-		return Job.CONVEYER;
-	}
-
-	public void addResourceCarriage(ResourceSlot r)
-	{
-		carriedResource.addFrom(r);
+		me.setMovement(null);
 	}
 
 	@Override

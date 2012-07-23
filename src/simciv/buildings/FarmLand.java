@@ -15,6 +15,7 @@ import simciv.ResourceSlot;
 import simciv.World;
 import simciv.jobs.Conveyer;
 import simciv.jobs.InternalJob;
+import simciv.maptargets.FreeWarehouseMapTarget;
 import simciv.units.Citizen;
 
 /**
@@ -108,12 +109,14 @@ public class FarmLand extends Workplace
 		if(cropsLevel != MAX_LEVEL)
 			return;
 		
+		// Tell free conveyers to distribute crops
 		for(Citizen emp : employees.values())
 		{
 			if(emp.getJob().getID() == Job.CONVEYER && !emp.isOut())
 			{
 				Conveyer job = (Conveyer)(emp.getJob());
 				job.addResourceCarriage(new ResourceSlot(Resource.WHEAT, 100));
+				job.setTarget(new FreeWarehouseMapTarget());
 				emp.exitBuilding();
 			}
 		}

@@ -8,10 +8,12 @@ import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
+import simciv.maptargets.IMapTarget;
+
 /**
  * Path finder for 2D matrix allowing step-by-step execution.
  * This one is inspired on the Dijkstra algorithm, and will
- * find the better path from startPos to targetPos.
+ * find the better path from startPos until targetPredicate is true.
  * @author Marc
  *
  */
@@ -23,15 +25,17 @@ public class PathFinder
 	public static final byte FOUND = 2;
 	public static final byte NOT_FOUND = 3;
 	
+	private static final int defaultMaxSteps = -1; // infinite
+	
 	private Vector2i startPos;
-	private Vector2i targetPos;
-	private int targetBuildingID;
+	private Vector2i lastPos;
+	private IMapTarget target;
 	private byte state;
 	private int step;
 	private int maxSteps;
 	private HashMap<Vector2i, Byte> visited; // at, fromDirection
 	private ArrayList<Vector2i> leaves;
-	private transient Map mapRef;
+	private transient World worldRef;
 	
 	/**
 	 * Constructs and initializes the path finder.
@@ -41,30 +45,23 @@ public class PathFinder
 	 * @param targetX
 	 * @param targetY
 	 */
-	public PathFinder(Map map, int startX, int startY, int targetX, int targetY)
+	public PathFinder(World world, int startX, int startY, IMapTarget target)
 	{
-		init(startX, startY, targetX, targetY);
-		mapRef = map;
-		maxSteps = 100;
+		init(startX, startY, target);
+		worldRef = world;
+		maxSteps = defaultMaxSteps;
 	}
-	
-	public PathFinder(Map map, int startX, int startY, int targetBuildingID)
-	{
-		init(startX, startY, targetBuildingID);
-		mapRef = map;
-		maxSteps = 100;
-	}
-	
+		
 	public void setMaxSteps(int maxSteps)
 	{
 		this.maxSteps = maxSteps;
 	}
 	
-	public void init(int startX, int startY, int targetX, int targetY)
+	private void init(int startX, int startY, IMapTarget mapTarget)
 	{
 		startPos = new Vector2i(startX, startY);
-		targetPos = new Vector2i(targetX, targetY);
-		targetBuildingID = -1;
+		target = mapTarget;
+		lastPos = null;
 		state = INIT;
 		step = 0;
 		visited = new HashMap<Vector2i, Byte>();
@@ -72,22 +69,10 @@ public class PathFinder
 		leaves.add(new Vector2i(startPos.x, startPos.y));
 		visited.put(new Vector2i(startPos.x, startPos.y), (byte) -1);
 	}
-	
-	public void init(int startX, int startY, int targetBuildingID)
-	{
-		init(startX, startY, 0, 0);
-		targetPos = null;
-		this.targetBuildingID = targetBuildingID;
-	}
-	
+		
 	public byte getState()
 	{
 		return state;
-	}
-	
-	public Vector2i getTargetPos()
-	{
-		return targetPos;
 	}
 	
 	/**
@@ -101,10 +86,7 @@ public class PathFinder
 	
 	protected boolean isTargetPos(Vector2i pos)
 	{
-		if(targetBuildingID == -1)
-			return pos.equals(targetPos);
-		else
-			return mapRef.isBuildingAroundWithID(targetBuildingID, pos.x, pos.y);
+		return target.evaluate(worldRef, pos.x, pos.y);
 	}
 	
 	/**
@@ -145,7 +127,7 @@ public class PathFinder
 			if(isTargetPos(leafPos))
 			{
 				state = FOUND;
-				targetPos = leafPos;
+				lastPos = leafPos;
 				return isFinished();
 			}
 			
@@ -187,7 +169,7 @@ public class PathFinder
 			return null;
 		
 		LinkedList<Vector2i> path = new LinkedList<Vector2i>();
-		Vector2i pos = targetPos;
+		Vector2i pos = lastPos;
 		path.add(new Vector2i(pos.x, pos.y));
 		
 		// From target to start pos
@@ -239,7 +221,7 @@ public class PathFinder
 	 */
 	protected boolean canPass(int x, int y)
 	{
-		return mapRef.isCrossable(x, y) && mapRef.isRoad(x, y);
+		return worldRef.map.isCrossable(x, y) && worldRef.map.isRoad(x, y);
 	}
 	
 	// Debug
@@ -257,9 +239,6 @@ public class PathFinder
 		
 		gfx.setColor(new Color(255, 0, 128));
 		gfx.fillRect(startPos.x, startPos.y, 1, 1);
-		
-		gfx.setColor(new Color(0, 255, 255, 128));
-		gfx.fillRect(targetPos.x, targetPos.y, 1, 1);
 		
 		gfx.setColor(new Color(0, 255, 0, 128));
 		for(Vector2i pos : visited.keySet())
@@ -289,6 +268,11 @@ public class PathFinder
 			gfx.fillRect(pos.x, pos.y, 1, 1);
 				
 		gfx.popTransform();
+	}
+
+	public IMapTarget getTarget()
+	{
+		return target;
 	}
 	
 }

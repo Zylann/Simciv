@@ -10,12 +10,15 @@ import org.newdawn.slick.state.StateBasedGame;
 import simciv.Direction2D;
 import simciv.Entity;
 import simciv.Game;
-import simciv.Road;
 import simciv.Vector2i;
 import simciv.World;
+import simciv.maptargets.IMapTarget;
+import simciv.movements.IMovement;
 
 /**
- * An unit can move, and is seen as a "living" thing
+ * An unit can move, and is seen as a "living" thing.
+ * Note : don't move the unit in subclasses, movement is automatically handled by Unit.
+ * use setMovement(mvt) to define it.
  * @author Marc
  *
  */
@@ -29,7 +32,8 @@ public abstract class Unit extends Entity
 	
 	private boolean isAlive;
 	private boolean isMoving;
-		
+	private IMovement movement;
+	
 	public Unit(World w)
 	{
 		super(w);
@@ -41,14 +45,42 @@ public abstract class Unit extends Entity
 	}
 	
 	@Override
-	protected void tickEntity()
+	protected final void tickEntity()
 	{
-		int lastPosX = posX;
-		int lastPosY = posY;
-		
 		tick();
-		
-		isMoving = posX != lastPosX || posY != lastPosY;
+		if(movement != null)
+		{
+			int lastPosX = posX;
+			int lastPosY = posY;
+			movement.tick(this);
+			isMoving = posX != lastPosX || posY != lastPosY;
+		}
+	}
+	
+	public void setMovement(IMovement mvt)
+	{
+		movement = mvt;
+	}
+	
+	public IMapTarget getMovementTarget()
+	{
+		if(movement == null)
+			return null;
+		return movement.getTarget();
+	}
+	
+	public boolean isMovementFinished()
+	{
+		if(movement == null)
+			return true;
+		return movement.isFinished();
+	}
+	
+	public boolean isMovementBlocked()
+	{
+		if(movement == null)
+			return false;
+		return movement.isBlocked();
 	}
 	
 	/**
@@ -73,7 +105,7 @@ public abstract class Unit extends Entity
 	}
 	
 	/**
-	 * Makes the unit move to its current direction (anyways)
+	 * Makes the unit move to its current direction (anyways, no collision test !)
 	 */
 	protected void move()
 	{
@@ -84,16 +116,16 @@ public abstract class Unit extends Entity
 		}
 	}
 	
-	public void moveAtRandomFollowingRoads()
-	{
-		move(Road.getAvailableDirections(worldRef.map, posX, posY));
-	}
+//	public void moveAtRandomFollowingRoads()
+//	{
+//		move(Road.getAvailableDirections(worldRef.map, posX, posY));
+//	}
 	
 	/**
 	 * Moves the unit according to given available directions
 	 * @param dirs : available directions
 	 */
-	protected void move(List<Byte> dirs)
+	public void move(List<Byte> dirs)
 	{		
 		if(!dirs.isEmpty())
 		{
@@ -125,13 +157,14 @@ public abstract class Unit extends Entity
 		move();
 	}
 	
+	/**
+	 * Sets the direction at random from the given list
+	 * @param dirs
+	 */
 	protected void chooseNewDirection(List<Byte> dirs)
 	{
 		if(!dirs.isEmpty())
-		{
-			// Choosing a direction at random
 			direction = dirs.get((byte) (dirs.size() * Math.random()));
-		}
 	}
 	
 	public boolean isAlive()
@@ -188,6 +221,10 @@ public abstract class Unit extends Entity
 		gfx.popTransform();
 	}
 
+	/**
+	 * Draws the unit, assuming that graphics are already translated to the good position
+	 * @param gfx
+	 */
 	protected abstract void renderUnit(Graphics gfx);
 
 	@Override
@@ -196,6 +233,11 @@ public abstract class Unit extends Entity
 		return 500;
 	}
 
+	/**
+	 * Renders the unit using a commonly used sprite scheme
+	 * @param gfx
+	 * @param sprite
+	 */
 	public final void defaultRender(Graphics gfx, Image sprite)
 	{
 		if(sprite == null)

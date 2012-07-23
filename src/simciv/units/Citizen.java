@@ -14,6 +14,7 @@ import simciv.buildings.Building;
 import simciv.buildings.House;
 import simciv.buildings.Workplace;
 import simciv.effects.RisingIcon;
+import simciv.movements.RandomRoadMovement;
 
 /**
  * A citizen is a city member.
@@ -47,6 +48,8 @@ public class Citizen extends Unit
 		}
 		// Each citizen have a slightly different tickTime
 		tickTime = 500 + (int)(100.f * Math.random()) - 50;
+		
+		setMovement(new RandomRoadMovement());
 	}
 	
 	@Override
@@ -62,7 +65,6 @@ public class Citizen extends Unit
 	
 	public void renderThinkingIcon(Graphics gfx)
 	{
-		// Note : the context must be translated to (posX * Game.tilesSize, posY * Game.tilesSize) before
 		int gx = Game.tilesSize - thinkingAnim.getWidth() / thinkingAnim.getHorizontalCount();
 		gfx.drawImage(thinkingAnim.getSprite(getTicks() % 2 == 0 ? 0 : 1, 0), gx, 0);
 	}
@@ -71,10 +73,7 @@ public class Citizen extends Unit
 	public void tick()
 	{
 		if(job == null)
-		{
 			searchJob();
-			moveAtRandomFollowingRoads();
-		}
 		else
 			job.tick();
 	}
@@ -92,7 +91,7 @@ public class Citizen extends Unit
 	{
 		if(job != null)
 			return;
-		ArrayList<Building> builds = worldRef.map.getBuildingsAround(worldRef, posX, posY);
+		ArrayList<Building> builds = worldRef.getBuildingsAround(posX, posY);
 		for(Building b : builds)
 		{
 			if(b.isWorkplace())

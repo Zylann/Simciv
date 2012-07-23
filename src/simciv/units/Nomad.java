@@ -4,6 +4,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import simciv.ContentManager;
 import simciv.World;
+import simciv.movements.RandomMovement;
 
 public class Nomad extends Unit
 {
@@ -14,6 +15,7 @@ public class Nomad extends Unit
 		super(w);
 		if(sprite == null)
 			sprite = ContentManager.instance().getImage("unit.nomad");
+		setMovement(new RandomMovement());
 	}
 
 	@Override
@@ -25,7 +27,6 @@ public class Nomad extends Unit
 	@Override
 	public void tick()
 	{
-		move(worldRef.map.getAvailableDirections(posX, posY));
 	}
 
 	@Override
@@ -43,4 +44,7 @@ public class Nomad extends Unit
 	public void onInit()
 	{
 	}
+	
 }
+
+
