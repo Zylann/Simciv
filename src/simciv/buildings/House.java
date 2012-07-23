@@ -11,6 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import simciv.Cheats;
 import simciv.ContentManager;
 import simciv.Game;
+import simciv.Road;
 import simciv.World;
 import simciv.units.Citizen;
 
@@ -55,7 +56,8 @@ public class House extends Building
 	{
 		if(state == Building.CONSTRUCTION)
 		{
-			if(getTicks() > 30 || Cheats.isFastCitizenProduction())
+			if((getTicks() > 30 || Cheats.isFastCitizenProduction()) && 
+					Road.isAvailableDirections(worldRef.map, posX, posY))
 			{
 				state = Building.NORMAL;
 				produceCitizen();
