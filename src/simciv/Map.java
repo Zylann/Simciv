@@ -273,7 +273,7 @@ public class Map
 		}
 		
 		if(renderGrid)
-			renderGrid(range.minX, range.minY, gc, gfx);
+			renderGrid(range, gc, gfx);
 	}
 	
 	public void registerElementsForSortedRender(IntRange2D range, SortedRender mgr)
@@ -284,20 +284,24 @@ public class Map
 		}
 	}
 	
-	private void renderGrid(int x0, int y0, GameContainer gc, Graphics gfx)
+	private void renderGrid(IntRange2D range, GameContainer gc, Graphics gfx)
 	{
 		// TODO improve grid rendering (it is actually ugly and not optimized)
 		// it's just for debug purpose
 		
-		gfx.setColor(Color.black);
-		int x, y;
-		x0 *= Game.tilesSize;
-		y0 *= Game.tilesSize;
+		gfx.pushTransform();
 		
-		for(x = 0; x < gc.getWidth(); x += Game.tilesSize)
-			gfx.drawLine(x0 + x, 0, x0 + x, gc.getHeight());
-		for(y = 0; y < gc.getHeight(); y += Game.tilesSize)
-			gfx.drawLine(0, y0 + y, gc.getWidth(), y0 + y);
+		gfx.setColor(Color.black);
+		gfx.setLineWidth(1);
+		gfx.scale(Game.tilesSize, Game.tilesSize);
+		
+		for(int x = range.minX; x <= range.maxX; x++)
+			gfx.drawLine(x, range.minY, x, range.maxY);
+		
+		for(int y = range.minY; y <= range.maxY; y++)
+			gfx.drawLine(range.minX, y, range.maxX, y);
+		
+		gfx.popTransform();
 	}
 	
 	public void toggleRenderGrid()
