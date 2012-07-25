@@ -12,6 +12,7 @@
 	<resource type="image" id="build.farmland.crops">crops.png</resource>
 	<resource type="image" id="build.farmland.rottenCrops">rotten_crops.png</resource>
 	<resource type="image" id="build.smallHouse">house1.png</resource>
+	<resource type="image" id="build.houseLv2">house2_2x2.png</resource>
 	<resource type="image" id="build.warehouse">warehouse.png</resource>
 	<resource type="image" id="build.activeWarehouse">warehouse_active.png</resource>
 	

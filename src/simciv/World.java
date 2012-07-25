@@ -47,20 +47,23 @@ public class World
 		for(Unit u : units.values())
 		{
 			u.update(gc, game, delta);
-			if(!u.isAlive())
-			{
+			if(!u.isAlive() || u.isDisposed())
 				unitsToRemove.add(u);
-			}
 		}
+		
+		ArrayList<Building> buildingsToRemove = new ArrayList<Building>();
 		for(Building b : buildings.values())
 		{
 			b.update(gc, game, delta);
+			if(b.isDisposed())
+				buildingsToRemove.add(b);
 		}
-		// TODO buildings to remove
+		
+		for(Building b : buildingsToRemove)
+			removeBuilding(b.getID());
+		
 		for(Unit u : unitsToRemove)
-		{
 			removeUnit(u.getID());
-		}
 		
 		// Update graphical effects
 		ArrayList<VisualEffect> finishedGraphicalEffects = new ArrayList<VisualEffect>();
@@ -72,7 +75,7 @@ public class World
 		}
 		graphicalEffects.removeAll(finishedGraphicalEffects);
 	}
-	
+
 	public void addGraphicalEffect(VisualEffect e)
 	{
 		graphicalEffects.add(e);
@@ -114,12 +117,26 @@ public class World
 	 */
 	public boolean removeUnit(int ID)
 	{
-		if(ID >= 0)
+		if(ID > 0)
 		{
 			Unit u = units.remove(ID);
 			if(u != null)
 			{
 				u.onDestruction();
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean removeBuilding(int ID)
+	{
+		if(ID > 0)
+		{
+			Building b = buildings.remove(ID);
+			if(b != null)
+			{
+				b.onDestruction();
 				return true;
 			}
 		}
@@ -139,8 +156,9 @@ public class World
 		b.setPosition(x, y);
 		if(b.canBePlaced(map, x, y))
 		{
-			if(map.markBuilding(b, true) && !buildings.containsKey(b.getID()))
+			if(!buildings.containsKey(b.getID()))
 			{
+				map.markBuilding(b, true);
 				buildings.put(b.getID(), b);
 				return true;
 			}
@@ -183,7 +201,7 @@ public class World
 	
 	/**
 	 * Get the building occupying the cell at (x, y).
-	 * Returns null if there are no building.
+	 * Returns null if there is no building.
 	 * @param worldRef
 	 * @param x
 	 * @param y

@@ -6,6 +6,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import simciv.buildings.Building;
+import simciv.maptargets.IMapTarget;
 import simciv.rendering.RenderNatureElements;
 import simciv.rendering.SortedRender;
 
@@ -181,17 +182,15 @@ public class Map
 	// Buildings
 	
 	/**
-	 * Marks cells as occupied by a building, if possible,
-	 * or clears marked cells.
+	 * Marks cells as occupied by a building, or clears marked cells.
 	 * @param b : building to mark
 	 * @param mark : true to mark, false to clear marks.
-	 * @return : false if there is no room for the building
 	 */
-	public boolean markBuilding(Building b, boolean mark)
+	public void markBuilding(Building b, boolean mark)
 	{
-		// Check if we can place a mark
-		if(mark && !canPlaceObject(b.getX(), b.getY(), b.getWidth(), b.getHeight()))
-			return false;
+//		// Check if we can place a mark
+//		if(mark && !canPlaceObject(b.getX(), b.getY(), b.getWidth(), b.getHeight()))
+//			return false;
 				
 		int x, y;
 		int xmax = b.getX() + b.getWidth() - 1;
@@ -216,7 +215,6 @@ public class Map
 					getCellExisting(x, y).eraseBuildingInfo();
 			}
 		}
-		return true;
 	}
 	
 	/**
@@ -379,6 +377,12 @@ public class Map
 			return getCellExisting(x, y).isCrossable();
 	}
 	
+	/**
+	 * Returns available directions complying with the default test
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public ArrayList<Byte> getAvailableDirections(int x, int y)
 	{
 		ArrayList<Byte> res = new ArrayList<Byte>();
@@ -393,6 +397,58 @@ public class Map
 			res.add(Direction2D.SOUTH);
 		
 		return res;
+	}
+	
+	/**
+	 * Returns positions complying with the given target around a rectangular zone on the map.
+	 * @param x0 : rectangle origin X
+	 * @param y0 : rectangle origin Y
+	 * @param w : rectangle width ( > 0)
+	 * @param h : rectangle height ( > 0)
+	 * @param target : target to comply
+	 * @param world : world reference if needed by the target (Set to null if not)
+	 * @return list of positions
+	 */
+	public ArrayList<Vector2i> getAvailablePositionsAround(int x0, int y0, int w, int h, IMapTarget target, World world)
+	{
+		ArrayList<Vector2i> p = new ArrayList<Vector2i>();
+		int x, y;
+		
+		//	  X X  
+		//	Y     Y
+		//	Y     Y
+		//	  X X  
+		
+		for(x = x0; x < x0 + w; x++) // X
+		{
+			// Top
+			y = y0 - 1;
+			if(contains(x, y) && target.evaluate(world, x, y))
+				p.add(new Vector2i(x, y));			
+			// Bottom
+			y = y0 + h;
+			if(contains(x, y) && target.evaluate(world, x, y))
+				p.add(new Vector2i(x, y));
+		}
+
+		for(y = y0; y < y0 + h; y++) // Y
+		{
+			// Left
+			x = x0 - 1;
+			if(contains(x, y) && target.evaluate(world, x, y))
+				p.add(new Vector2i(x, y));
+			// Right
+			x = x0 + w;
+			if(contains(x, y) && target.evaluate(world, x, y))
+				p.add(new Vector2i(x, y));
+		}
+		
+		return p;
+	}
+	
+	public ArrayList<Vector2i> getAvailablePositionsAround(Building b, IMapTarget target, World world)
+	{
+		return getAvailablePositionsAround(b.getX(), b.getY(), b.getWidth(), b.getHeight(), target, world);
 	}
 	
 	public boolean isArable(int x0, int y0, int w, int h)

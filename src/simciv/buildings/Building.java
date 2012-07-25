@@ -40,6 +40,11 @@ public abstract class Building extends Entity
 		return getProperties().height;
 	}
 	
+	public boolean is1x1()
+	{
+		return getProperties().width == 1 && getProperties().height == 1;
+	}
+	
 	public void renderAsConstructing(Graphics gfx)
 	{
 		gfx.drawImage(constructionSprite, Game.tilesSize * posX, Game.tilesSize * posY);
