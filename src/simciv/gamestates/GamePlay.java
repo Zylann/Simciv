@@ -210,6 +210,9 @@ public class GamePlay extends UIBasicGameState
 	public void update(GameContainer gc, StateBasedGame game, int delta)
 			throws SlickException
 	{
+		// Debug
+		long beginUpdateTime = gc.getTime();
+		
 		// Prevent too large update intervals
 		if(delta > 100)
 			delta = 100;
@@ -218,7 +221,7 @@ public class GamePlay extends UIBasicGameState
 		
 		if(closeRequested)
 			gc.exit();
-		
+				
 		view.update(gc, delta / 1000.f);
 		builder.cursorMoved(pointedCell);
 		Terrain.updateTerrains(delta);
@@ -237,7 +240,10 @@ public class GamePlay extends UIBasicGameState
 		
 		resourceBar.update(Citizen.totalCount);
 		
-		debugText = "x=" + pointedCell.x + ", y=" + pointedCell.y; // debug
+		// debug
+		long updateTime = gc.getTime() - beginUpdateTime;
+		debugText = "x=" + pointedCell.x + ", y=" + pointedCell.y;
+		debugText += "  updateTime=" + updateTime;
 	}
 
 	@Override
