@@ -286,9 +286,6 @@ public class Map
 	
 	private void renderGrid(IntRange2D range, GameContainer gc, Graphics gfx)
 	{
-		// TODO improve grid rendering (it is actually ugly and not optimized)
-		// it's just for debug purpose
-		
 		gfx.pushTransform();
 		
 		gfx.setColor(Color.black);
