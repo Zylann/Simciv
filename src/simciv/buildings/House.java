@@ -160,26 +160,29 @@ public class House extends Building
 		if(level == 0)
 		{
 			// Check if 4 1x1 houses are forming a quad
-			
 			Building b[] = new Building[3]; // quad neighbors
+			int nxy[][] = {{1, 0}, {0, 1}, {1, 1}}; // neighboring
+			for(int i = 0; i < 3; i++)
+			{
+				b[i] = worldRef.getBuilding(posX + nxy[i][0], posY + nxy[i][1]);
+				if(b[i] == null ||
+					!b[i].isHouse() ||
+					!b[i].is1x1() ||
+					b[i].getState() != Building.NORMAL)
+				{
+					return false;
+				}
+			}
 			
-			b[0] = worldRef.getBuilding(posX+1, posY);
-			if(b[0] == null || !b[0].isHouse() || !b[0].is1x1() || b[0].getState() != Building.NORMAL)
-				return false;
-
-			b[1] = worldRef.getBuilding(posX, posY+1);
-			if(b[1] == null || !b[1].isHouse() || !b[1].is1x1() || b[1].getState() != Building.NORMAL)
-				return false;
-			
-			b[2] = worldRef.getBuilding(posX+1, posY+1);
-			if(b[2] == null || !b[2].isHouse() || !b[2].is1x1() || b[2].getState() != Building.NORMAL)
+			// Check if the future 2x2 house will have roads nearby
+			RoadMapTarget roads = new RoadMapTarget();
+			if(worldRef.map.getAvailablePositionsAround(posX, posY, 2, 2, roads, worldRef).isEmpty())
 				return false;
 			
 			// Merge houses			
 			House housesToMerge[] = new House[3];
 			for(int i = 0; i < 3; i++)
 				housesToMerge[i] = (House)(b[i]);
-			
 			for(House h : housesToMerge)
 			{
 				h.mergeTo(this);
