@@ -46,7 +46,8 @@ public class World
 		ArrayList<Unit> unitsToRemove = new ArrayList<Unit>();
 		for(Unit u : units.values())
 		{
-			u.update(gc, game, delta);
+			if(!u.isDisposed())
+				u.update(gc, game, delta);
 			if(!u.isAlive() || u.isDisposed())
 				unitsToRemove.add(u);
 		}
@@ -54,7 +55,8 @@ public class World
 		ArrayList<Building> buildingsToRemove = new ArrayList<Building>();
 		for(Building b : buildings.values())
 		{
-			b.update(gc, game, delta);
+			if(!b.isDisposed())
+				b.update(gc, game, delta);
 			if(b.isDisposed())
 				buildingsToRemove.add(b);
 		}
