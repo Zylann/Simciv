@@ -263,9 +263,9 @@ public class Map
 		gfx.setColor(Color.white);
 		int x, y;
 		
-		for(y = range.minY; y <= range.maxY; y++)
+		for(y = range.minY(); y <= range.maxY(); y++)
 		{
-			for(x = range.minX; x <= range.maxX; x++)
+			for(x = range.minX(); x <= range.maxX(); x++)
 			{
 				if(contains(x, y))
 					getCellExisting(x, y).renderGround(x, y, gfx);
@@ -278,9 +278,9 @@ public class Map
 	
 	public void registerElementsForSortedRender(IntRange2D range, SortedRender mgr)
 	{
-		for(int y = range.minY; y <= range.maxY; y++)
+		for(int y = range.minY(); y <= range.maxY(); y++)
 		{
-			mgr.add(new RenderNatureElements(this, range.minX, y, range.maxX));
+			mgr.add(new RenderNatureElements(this, range.minX(), y, range.maxX()));
 		}
 	}
 	
@@ -292,11 +292,11 @@ public class Map
 		gfx.setLineWidth(1);
 		gfx.scale(Game.tilesSize, Game.tilesSize);
 		
-		for(int x = range.minX; x <= range.maxX; x++)
-			gfx.drawLine(x, range.minY, x, range.maxY);
+		for(int x = range.minX(); x <= range.maxX(); x++)
+			gfx.drawLine(x, range.minY(), x, range.maxY());
 		
-		for(int y = range.minY; y <= range.maxY; y++)
-			gfx.drawLine(range.minX, y, range.maxX, y);
+		for(int y = range.minY(); y <= range.maxY(); y++)
+			gfx.drawLine(range.minX(), y, range.maxX(), y);
 		
 		gfx.popTransform();
 	}
