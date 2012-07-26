@@ -33,6 +33,15 @@ public class MapCell
 		buildingInfo = 0;
 	}
 	
+	@Override
+	public String toString()
+	{
+		String str = "TID=" + terrainID + ", N=" + nature + ", R=" + road + ", BID=" + getBuildingID();
+		if(isBuildingOrigin())
+			str += "o";
+		return str;
+	}
+	
 	public void eraseBuildingInfo()
 	{
 		buildingInfo = 0;
