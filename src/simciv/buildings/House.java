@@ -135,8 +135,7 @@ public class House extends Building
 	}
 	
 	/**
-	 * Puts all the content of this house into another
-	 * (Then this House remains completely empty and useless)
+	 * Puts all the content of this house into another, and destroys it
 	 * @param other
 	 */
 	protected void mergeTo(House other)
@@ -146,6 +145,7 @@ public class House extends Building
 		other.inhabitants.putAll(this.inhabitants);
 		this.inhabitants.clear();
 		other.nbCitizensToProduce += this.nbCitizensToProduce;
+		dispose();
 	}
 	
 	/**
@@ -184,10 +184,7 @@ public class House extends Building
 			for(int i = 0; i < 3; i++)
 				housesToMerge[i] = (House)(b[i]);
 			for(House h : housesToMerge)
-			{
 				h.mergeTo(this);
-				h.dispose();
-			}
 			
 			level++;
 
