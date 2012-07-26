@@ -123,7 +123,7 @@ public class CityBuilder
 			else if(mode == MODE_ERASE)
 			{
 				if(!cursorPress)
-					renderPlaceCursor(gfx, buildPos.x, buildPos.y);
+					renderPlaceCursor(gfx, pos.x, pos.y);
 				else
 					renderPlaceZone(gfx);
 				
@@ -151,26 +151,38 @@ public class CityBuilder
 	
 	private void renderPlaceCursor(Graphics gfx, int x, int y)
 	{
+		int w = 1;
+		int h = 1;
 		if(mode == MODE_ERASE)
 		{
 			gfx.setColor(cannotPlaceColor);
 		}
-		else
+		else if(mode == MODE_BUILDS || mode == MODE_HOUSE)
 		{
+			w = building.getWidth();
+			h = building.getHeight();
+			
 			if(building.canBePlaced(worldRef.map, x, y))
 				gfx.setColor(canPlaceColor);
 			else
 				gfx.setColor(cannotPlaceColor);
 		}
 		
-		gfx.fillRect(x, y, building.getWidth(), building.getHeight());
+		gfx.fillRect(x, y, w, h);
 	}
 	
 	private void renderPlaceZone(Graphics gfx)
 	{
-		for(int y = buildZone.minY(); y <= buildZone.maxY(); y += building.getHeight())
+		int w = 1;
+		int h = 1;
+		if(mode == MODE_HOUSE || mode == MODE_BUILDS)
 		{
-			for(int x = buildZone.minX(); x <= buildZone.maxX(); x += building.getWidth())
+			w = building.getWidth();
+			h = building.getHeight();
+		}
+		for(int y = buildZone.minY(); y <= buildZone.maxY(); y += h)
+		{
+			for(int x = buildZone.minX(); x <= buildZone.maxX(); x += w)
 				renderPlaceCursor(gfx, x, y);
 		}
 	}
@@ -237,21 +249,25 @@ public class CityBuilder
 	{
 		int w = 1;
 		int h = 1;
+		Vector2i startPos = lastClickPos;
+		Vector2i endPos = pos;
 		if(mode == MODE_BUILDS || mode == MODE_HOUSE)
 		{
 			w = building.getWidth();
 			h = building.getHeight();
+			startPos = lastClickBuildPos;
+			endPos = buildPos;
 		}
-		int nbX = Math.abs(lastClickBuildPos.x - buildPos.x) / w;
-		int nbY = Math.abs(lastClickBuildPos.y - buildPos.y) / h;
+		int nbX = Math.abs(startPos.x - endPos.x) / w;
+		int nbY = Math.abs(startPos.y - endPos.y) / h;
 		
-		int kx = lastClickBuildPos.x <= buildPos.x ? 1 : -1;
-		int ky = lastClickBuildPos.y <= buildPos.y ? 1 : -1;
+		int kx = startPos.x <= endPos.x ? 1 : -1;
+		int ky = startPos.y <= endPos.y ? 1 : -1;
 		
-		int endX = lastClickBuildPos.x + kx * nbX * building.getWidth();
-		int endY = lastClickBuildPos.y + ky * nbY * building.getHeight();
+		int endX = startPos.x + kx * nbX * w;
+		int endY = startPos.y + ky * nbY * h;
 				
-		buildZone.set(lastClickBuildPos.x, lastClickBuildPos.y, endX, endY);		
+		buildZone.set(startPos.x, startPos.y, endX, endY);		
 	}
 	
 	protected void updateInfoText()
