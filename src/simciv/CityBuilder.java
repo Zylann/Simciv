@@ -317,7 +317,6 @@ public class CityBuilder
 		}
 		if(nbErased != 0)
 			eraseSound.play();
-		System.out.println(nbErased);
 		return nbErased;
 	}
 	
