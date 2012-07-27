@@ -20,7 +20,8 @@ public class Content
 	// Direct access
 	public static Images images;
 	public static Sounds sounds;
-	public static AngelCodeFont globalFont; // global font (currently statically loaded)
+	// Static content (loading is hardcoded)
+	public static AngelCodeFont globalFont;
 	
 	// Files mapping : path => file
 	public static Map<String, Image> imageMap = new HashMap<String, Image>();
@@ -30,7 +31,7 @@ public class Content
 	public static ContentSettings settings = new ContentSettings();
 	
 	/**
-	 * Loads content from an XML file.
+	 * Loads content from an XML file and put it in the mapping only.
 	 * Note that if deferred loading is enabled, content will not be available until
 	 * we don't call LoadingList methods.
 	 * @param filename
@@ -47,6 +48,11 @@ public class Content
 		Image fontImage = new Image(settings.contentDir + "arial8px_0.png");
 		fontImage.setFilter(Content.settings.defaultImageFilter);
 		globalFont = new AngelCodeFont(Content.settings.contentDir + "arial8px.fnt", fontImage);
+	}
+	
+	public static int getTotalCount()
+	{
+		return imageMap.size() + soundMap.size();
 	}
 
 	/**
@@ -71,6 +77,7 @@ public class Content
 			Image img = imageMap.get(imgID);
 			if(img == null)
 				throw new SlickException("Image not found (ID = " + imgID + ")");
+			img.setFilter(settings.defaultImageFilter);
 			try
 			{
 				field.set(newImages, img);

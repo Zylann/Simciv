@@ -120,7 +120,7 @@ public class ContentLoader
 			// clear loading list and enable deferred loading
 			LoadingList.setDeferredLoading(true);
 		}
-		
+			
 		// fetching nodes
 		for(int resourceIndex = 0; resourceIndex < nbResources; resourceIndex++)
 		{
@@ -129,8 +129,7 @@ public class ContentLoader
 			// if the node is an element
 			if(resourceNode.getNodeType() == Node.ELEMENT_NODE)
 			{
-				Element resourceElement = (Element)resourceNode;
-				
+				Element resourceElement = (Element)resourceNode;				
 				String type = resourceElement.getAttribute("type");
 				
 				// load resource from its type
@@ -139,7 +138,7 @@ public class ContentLoader
 				else if(type.equals("sound"))
 					addElementAsSound(resourceElement);
 			}
-		}
+		}		
 	}
 	
 	/**
@@ -179,9 +178,7 @@ public class ContentLoader
 		}
 		
 		// index sound
-		this.soundMapRef.put(id, sound);
-		
-		return sound;
+		return soundMapRef.put(id, sound);
 	}
 
 	/**
@@ -214,16 +211,13 @@ public class ContentLoader
 		try
 		{
 			image = new Image(settingsRef.contentDir + path);
-			image.setFilter(settingsRef.defaultImageFilter);
 		}
 		catch(SlickException e)
 		{
 			throw new SlickException("Could not load image", e);
 		}
 		
-		this.imageMapRef.put(id, image);
-		
-		return image;
+		return imageMapRef.put(id, image);		
 	}
 	
 }

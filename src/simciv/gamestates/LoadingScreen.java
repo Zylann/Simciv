@@ -16,8 +16,9 @@ import simciv.content.Content;
 
 public class LoadingScreen extends BasicGameState
 {
-	int stateID = -1;	
-	String lastLoaded = "";
+	private int stateID = -1;
+	private int totalLoaded = 0;
+	private String lastLoaded = "";
 	
 	public LoadingScreen(int stateID)
 	{
@@ -34,8 +35,20 @@ public class LoadingScreen extends BasicGameState
 	public void render(GameContainer gc, StateBasedGame game, Graphics gfx)
 			throws SlickException
 	{
+		// Display what is being loaded
 		gfx.setColor(Color.white);
 		gfx.drawString("Loading : " + lastLoaded, 100, 100);
+		
+		// Progress bar
+		int w = 400;
+		int h = 8;
+		int x = 100;
+		int y = 150;
+		int t = (int) (w * (float)totalLoaded / (float)Content.getTotalCount());
+		gfx.setColor(Color.green);
+		gfx.fillRect(x, y, t, h);
+		gfx.setColor(Color.gray);
+		gfx.fillRect(x + t, y, w - t, h);
 	}
 
 	@Override
@@ -54,11 +67,13 @@ public class LoadingScreen extends BasicGameState
 			{
 				throw new SlickException("Could not load resource", e);
 			}
+			totalLoaded++;
 			lastLoaded = nextResource.getDescription();
 		}
 		else
 		{
 			// loading finished, entering next state
+			LoadingList.setDeferredLoading(false);
 			Content.indexAll();
 			game.enterState(Game.STATE_GAMEPLAY);
 		}
