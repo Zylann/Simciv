@@ -11,11 +11,11 @@ import org.newdawn.slick.state.StateBasedGame;
 public abstract class GameComponent implements IRenderable
 {
 	// Used to generate unique IDs
-	// It MUST start with 1 (map storage convenience)
+	// It MUST start with 1, 0 is reserved for "null" (map storage convenience)
 	private static int nextID = 1;
 	
 	private int ID = -1;
-	private transient boolean dispose = false;
+	private transient boolean disposed;
 	
 	public static final int makeUniqueID()
 	{
@@ -25,6 +25,7 @@ public abstract class GameComponent implements IRenderable
 	public GameComponent()
 	{
 		ID = makeUniqueID();
+		disposed = false;
 	}
 	
 	public final int getID()
@@ -34,19 +35,21 @@ public abstract class GameComponent implements IRenderable
 	
 	public void dispose()
 	{
-		dispose = true;
+		disposed = true;
 	}
 	
 	public boolean isDisposed()
 	{
-		return dispose;
+		return disposed;
 	}
-
+	
 	/**
 	 * Called when we start using the component
 	 * (Note that it is always the first method to be called after construction)
 	 */
-	public abstract void onInit();
+	public void onInit()
+	{
+	}
 	
 	public abstract void update(GameContainer gc, StateBasedGame game, int delta);
 	

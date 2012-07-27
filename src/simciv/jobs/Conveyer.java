@@ -6,7 +6,6 @@ import java.util.List;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
-import simciv.ContentManager;
 import simciv.Direction2D;
 import simciv.Game;
 import simciv.Job;
@@ -15,6 +14,7 @@ import simciv.ResourceSlot;
 import simciv.Vector2i;
 import simciv.buildings.Building;
 import simciv.buildings.Workplace;
+import simciv.content.Content;
 import simciv.maptargets.BuildingMapTarget;
 import simciv.maptargets.FreeWarehouseMapTarget;
 import simciv.maptargets.IMapTarget;
@@ -39,7 +39,7 @@ public class Conveyer extends Job
 	{
 		super(citizen, workplace);
 		if(unitSprites == null)
-			unitSprites = ContentManager.instance().getImage("unit.conveyer");
+			unitSprites = Content.images.unitConveyer;
 		carriedResource = new ResourceSlot();
 	}
 	

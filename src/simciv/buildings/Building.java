@@ -2,12 +2,12 @@ package simciv.buildings;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import simciv.ContentManager;
 import simciv.Entity;
 import simciv.Game;
 import simciv.Map;
 import simciv.ResourceSlot;
 import simciv.World;
+import simciv.content.Content;
 
 public abstract class Building extends Entity
 {
@@ -24,7 +24,7 @@ public abstract class Building extends Entity
 	{
 		super(w);
 		if(constructionSprite == null)
-			constructionSprite = ContentManager.instance().getImage("build.buildingPlace");
+			constructionSprite = Content.images.buildConstructing1x1;
 		state = CONSTRUCTION;
 	}
 	

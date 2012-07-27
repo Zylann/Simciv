@@ -3,14 +3,12 @@ package simciv.ui;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
-import simciv.ContentManager;
+import simciv.content.Content;
 
 public class ResourceBar extends Widget
 {
-	private static Image populationIcon;
 	private static SpriteSheet background;
 	private static final int HEIGHT = 24;
 	private static final int WIDTH = 100;
@@ -20,10 +18,8 @@ public class ResourceBar extends Widget
 	public ResourceBar(WidgetContainer parent, int x, int y)
 	{
 		super(parent, x, y, WIDTH, HEIGHT);
-		if(populationIcon == null)
-			populationIcon = ContentManager.instance().getImage("ui.indicators.population");
 		if(background == null)
-			background = new SpriteSheet(ContentManager.instance().getImage("ui.resourceBar"), HEIGHT, HEIGHT);
+			background = new SpriteSheet(Content.images.uiResourceBar, HEIGHT, HEIGHT);
 	}
 	
 	public void update(int population)
@@ -44,7 +40,7 @@ public class ResourceBar extends Widget
 		gfx.drawImage(background.getSprite(2, 0), x + width - 2 * b, y);
 		
 		// Icon
-		gfx.drawImage(populationIcon, x+4, y+4);
+		gfx.drawImage(Content.images.uiIndicatorsPopulation, x+4, y+4);
 		
 		// Text
 		String populationText = "" + population;

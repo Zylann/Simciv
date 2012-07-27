@@ -6,6 +6,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import simciv.content.Content;
+
 public class Terrain
 {
 	/* Static part */
@@ -23,16 +25,14 @@ public class Terrain
 		terrains = new Terrain[count];
 		
 		// Create terrains
-		set(new Terrain(VOID, "void")).setMinimapColor(Color.black);
-		set(new Terrain(WATER, "water"));
-		set(new Terrain(GRASS, "grass"));
-		set(new Terrain(DUST, "dust"));
+		set(new Terrain(VOID, "void", null)).setMinimapColor(Color.black);
+		set(new Terrain(WATER, "water", Content.images.terrainWater));
+		set(new Terrain(GRASS, "grass", Content.images.terrainGrass));
+		set(new Terrain(DUST, "dust", Content.images.terrainDust));
 		
 		// Load content		
 		for(int i = 0; i < count; i++)
-		{
 			terrains[i].loadContent();
-		}
 	}
 	
 	public static void updateTerrains(int delta)
@@ -56,16 +56,14 @@ public class Terrain
 
 	byte ID;
 	Image texture;
-	String textureName;
 	Animation anim;
 	Color minimapColor;
 	String name;
 	
-	Terrain(byte ID, String name)
+	Terrain(byte ID, String name, Image texture)
 	{
 		this.ID = ID;
-		if(!name.equals("void")) // void terrains have no texture
-			this.textureName = "terrain." + name;
+		this.texture = texture;
 		this.name = name;
 	}
 	
@@ -77,11 +75,8 @@ public class Terrain
 	
 	private void loadContent() throws SlickException
 	{
-		if(textureName != null)
-		{
-			texture = ContentManager.instance().getImage(textureName);
+		if(texture != null)
 			minimapColor = MathHelper.mean(texture);
-		}
 	}
 	
 	public void update(int delta)

@@ -5,15 +5,14 @@ import java.util.HashMap;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Cheats;
-import simciv.ContentManager;
 import simciv.Game;
 import simciv.Vector2i;
 import simciv.World;
+import simciv.content.Content;
 import simciv.maptargets.RoadMapTarget;
 import simciv.units.Citizen;
 
@@ -26,7 +25,6 @@ public class House extends Building
 {
 	private static BuildingProperties properties[];
 	private static SpriteSheet sprites[];
-	private static Sound newCitizenSound;
 	private static byte MAX_LEVEL = 1;
 	
 	static
@@ -48,25 +46,24 @@ public class House extends Building
 	public House(World w)
 	{
 		super(w);
+		
 		if(sprites == null)
 		{
 			sprites = new SpriteSheet[MAX_LEVEL+1];
-			ContentManager content = ContentManager.instance();
 			Image img;
-			
-			img = content.getImage("build.smallHouse");
+				
+			img = Content.images.buildHouseLv1;
 			sprites[0] = new SpriteSheet(img, properties[0].width * Game.tilesSize, img.getHeight());
-			
-			img = content.getImage("build.houseLv2");
+				
+			img = Content.images.buildHouseLv2;
 			sprites[1] = new SpriteSheet(img, properties[1].width * Game.tilesSize, img.getHeight());
 		}
-		if(newCitizenSound == null)
-			newCitizenSound = ContentManager.instance().getSound("build.openDoor");
+		
 		direction = (byte) (4 * Math.random());
 		level = 0;
 		nbCitizensToProduce = 1;
 	}
-
+	
 	@Override
 	public boolean isHouse()
 	{
@@ -129,7 +126,7 @@ public class House extends Building
 		}
 		
 		if(citizensProduced != 0)
-			newCitizenSound.play(1.f, 0.25f);
+			Content.sounds.unitNewCitizen.play(1.f, 0.25f);
 		
 		return citizensProduced;
 	}
@@ -271,11 +268,6 @@ public class House extends Building
 	public String getInfoString()
 	{
 		return "[" + getProperties().name + "] inhabitants : " + getNbInhabitants();
-	}
-
-	@Override
-	public void onInit()
-	{
 	}
 
 }

@@ -2,14 +2,13 @@ package simciv.buildings;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.state.StateBasedGame;
 
-import simciv.ContentManager;
 import simciv.Game;
 import simciv.Job;
 import simciv.ResourceSlot;
 import simciv.World;
+import simciv.content.Content;
 import simciv.jobs.InternalJob;
 import simciv.units.Citizen;
 
@@ -21,7 +20,6 @@ import simciv.units.Citizen;
 public class Warehouse extends Workplace
 {
 	private static BuildingProperties properties;
-	private static Image backSprite[] = new Image[2]; // inactive, active
 	private static int NB_SLOTS = 8;
 	
 	private ResourceSlot resourceSlots[] = new ResourceSlot[NB_SLOTS];
@@ -36,17 +34,13 @@ public class Warehouse extends Workplace
 	public Warehouse(World w)
 	{
 		super(w);
-		if(backSprite[0] == null)
-			backSprite[0] = ContentManager.instance().getImage("build.warehouse");
-		if(backSprite[1] == null)
-			backSprite[1] = ContentManager.instance().getImage("build.activeWarehouse");
 		state = Building.NORMAL;
 		full = false;
 		
 		for(int i = 0; i < resourceSlots.length; i++)
 			resourceSlots[i] = new ResourceSlot();
 	}
-
+	
 	@Override
 	public int getProductionProgress()
 	{
@@ -103,13 +97,16 @@ public class Warehouse extends Workplace
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
-		int i = state == Building.ACTIVE ? 1 : 0;
 		int gx = posX * Game.tilesSize;
 		int gy = posY * Game.tilesSize;
 		
 		// Floor
 		
-		gfx.drawImage(backSprite[i], gx, gy - Game.tilesSize);
+		if(state == Building.ACTIVE)
+			gfx.drawImage(Content.images.buildActiveWarehouse, gx, gy - Game.tilesSize);
+		else
+			gfx.drawImage(Content.images.buildInactiveWarehouse, gx, gy - Game.tilesSize);
+			
 		// Resources
 		
 		renderSlot(gfx, 0, gx + Game.tilesSize, 	gy);
@@ -155,11 +152,6 @@ public class Warehouse extends Workplace
 		return "[" + getProperties().name + "] employees : "
 			+ getNbEmployees() + "/" + getMaxEmployees()
 			+ ", load : " + getLoad() + "%";
-	}
-
-	@Override
-	public void onInit()
-	{
 	}
 	
 }

@@ -6,7 +6,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
-import simciv.ContentManager;
 import simciv.Game;
 import simciv.Job;
 import simciv.World;
@@ -15,6 +14,8 @@ import simciv.buildings.House;
 import simciv.buildings.Workplace;
 import simciv.effects.RisingIcon;
 import simciv.movements.RandomRoadMovement;
+
+import simciv.content.Content;
 
 /**
  * A citizen is a city member.
@@ -26,7 +27,6 @@ import simciv.movements.RandomRoadMovement;
  */
 public class Citizen extends Unit
 {
-	private static Image sprite = null; // default appearance
 	private static SpriteSheet thinkingAnim = null;
 	public static int totalCount = 0;
 	
@@ -38,25 +38,23 @@ public class Citizen extends Unit
 	public Citizen(World w)
 	{
 		super(w);
-		if(sprite == null)
-			sprite = ContentManager.instance().getImage("unit.citizen");			
+		// Each citizen have a slightly different tickTime
+		tickTime = 500 + (int)(100.f * Math.random()) - 50;		
+		setMovement(new RandomRoadMovement());
+		
 		if(thinkingAnim == null)
 		{
-			Image thinkingSprite = ContentManager.instance().getImage("unit.thinking");
+			Image thinkingSprite = Content.images.unitThinking;
 			int b = thinkingSprite.getHeight();
 			thinkingAnim = new SpriteSheet(thinkingSprite, b, b);
 		}
-		// Each citizen have a slightly different tickTime
-		tickTime = 500 + (int)(100.f * Math.random()) - 50;
-		
-		setMovement(new RandomRoadMovement());
 	}
-	
+		
 	@Override
 	protected void renderUnit(Graphics gfx)
 	{
 		if(job == null)
-			defaultRender(gfx, sprite);
+			defaultRender(gfx, Content.images.unitCitizen);
 		else
 			job.renderUnit(gfx);
 		if(state == Unit.THINKING)
@@ -107,7 +105,7 @@ public class Citizen extends Unit
 						worldRef.addGraphicalEffect(
 								new RisingIcon(
 										workplace.getX(), workplace.getY(),
-										ContentManager.instance().getImage("effect.greenStar")));
+										Content.images.effectGreenStar));
 						break; // stop searching
 					}
 				}
@@ -184,7 +182,10 @@ public class Citizen extends Unit
 	@Override
 	public void onInit()
 	{
+		super.onInit();
 		totalCount++;
 	}
 	
 }
+
+

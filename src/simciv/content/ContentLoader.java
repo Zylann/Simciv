@@ -1,4 +1,4 @@
-package simciv;
+package simciv.content;
 
 import java.io.File;
 import java.io.DataInputStream;
@@ -7,13 +7,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
-import java.util.HashMap;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
@@ -25,42 +22,25 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * Singleton class used to get access to resources (sounds, pictures, strings...).
- * It makes abstraction of physical filenames by creating IDs.
- * These IDs are specified in an XML file.
- * Then, if we change a sound, we don't have to modify each code line we have used it.
+ * This loaders parses an XML file listing content files to be loaded.
  * @author Marc
  *
  */
-public class ContentManager
+public class ContentLoader
 {
-	// unique instance
-	private static ContentManager instance = new ContentManager();
+	// Indexed data storage
+	private Map<String, Image> imageMapRef;
+	private Map<String, Sound> soundMapRef;
+	private ContentSettings settingsRef;
 	
-	// indexed data storage
-	private Map<String, Sound> soundMap;
-	private Map<String, Image> imageMap;
-	private Map<String, AngelCodeFont> fontMap;
-	private Map<String, String> textMap;
-	
-	int defaultImageFilter = Image.FILTER_NEAREST;
-	String contentDirectory = "data/";
-	
-	private ContentManager()
+	public ContentLoader(
+			Map<String, Image> imageMap,
+			Map<String, Sound> soundMap,
+			ContentSettings settings)
 	{
-		soundMap = new HashMap<String, Sound>();
-		imageMap = new HashMap<String, Image>();
-		fontMap = new HashMap<String, AngelCodeFont>();
-		textMap = new HashMap<String, String>();
-	}
-	
-	/**
-	 * Get the resource manager
-	 * @return unique instance
-	 */
-	public final static ContentManager instance()
-	{
-		return instance;
+		this.imageMapRef = imageMap;
+		this.soundMapRef = soundMap;
+		this.settingsRef = settings;
 	}
 	
 	/**
@@ -69,7 +49,7 @@ public class ContentManager
 	 * @param deferred : if true, content will be added to a LoadingList. If not, content will be loaded directly.
 	 * @throws SlickException
 	 */
-	public void loadRessources(String filename, boolean deferred) throws SlickException
+	public void loadRessources(String filename) throws SlickException
 	{
         // open resources file
         File file = new File(filename);
@@ -78,7 +58,7 @@ public class ContentManager
         {
 			is = new DataInputStream(new FileInputStream(file));
 			// load resources
-			loadResources(is, deferred);
+			loadResources(is);
 			is.close();
 		}
         catch(FileNotFoundException e)
@@ -97,7 +77,7 @@ public class ContentManager
 	 * @param deferred : if true, content will be added to a LoadingList. If not, content will be loaded directly.
 	 * @throws SlickException
 	 */
-	public void loadResources(InputStream is, boolean deferred) throws SlickException
+	public void loadResources(InputStream is) throws SlickException
 	{
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = null;
@@ -135,7 +115,7 @@ public class ContentManager
 		NodeList listResources = doc.getElementsByTagName("resource");
 		int nbResources = listResources.getLength();
 		
-		if(deferred)
+		if(settingsRef.deferredLoading)
 		{
 			// clear loading list and enable deferred loading
 			LoadingList.setDeferredLoading(true);
@@ -158,37 +138,8 @@ public class ContentManager
 					addElementAsImage(resourceElement);
 				else if(type.equals("sound"))
 					addElementAsSound(resourceElement);
-				else if(type.equals("text"))
-					addElementAsText(resourceElement);
 			}
 		}
-	}
-
-	/**
-	 * load text from XML node
-	 * @param resourceElement XML text resource node
-	 * @throws SlickException
-	 */
-	private final void addElementAsText(Element resourceElement) throws SlickException
-	{
-		loadText(resourceElement.getAttribute("id"),
-				resourceElement.getTextContent());
-	}
-	
-	/**
-	 * load and index a text
-	 * @param id : unique text identifier
-	 * @param value : the text
-	 * @throws SlickException
-	 */
-	private String loadText(String id, String value) throws SlickException
-	{	
-		if(value == null)
-			throw new SlickException("Text resource [" + id + "] has invalid value");
-		
-		textMap.put(id, value);
-		
-		return value;
 	}
 	
 	/**
@@ -220,7 +171,7 @@ public class ContentManager
 		// load sound
 		try
 		{
-			sound = new Sound(contentDirectory + path);
+			sound = new Sound(settingsRef.contentDir + path);
 		}
 		catch(SlickException e)
 		{
@@ -228,7 +179,7 @@ public class ContentManager
 		}
 		
 		// index sound
-		this.soundMap.put(id, sound);
+		this.soundMapRef.put(id, sound);
 		
 		return sound;
 	}
@@ -262,70 +213,19 @@ public class ContentManager
 		// loading image
 		try
 		{
-			image = new Image(contentDirectory + path);
-			image.setFilter(defaultImageFilter);
+			image = new Image(settingsRef.contentDir + path);
+			image.setFilter(settingsRef.defaultImageFilter);
 		}
 		catch(SlickException e)
 		{
 			throw new SlickException("Could not load image", e);
 		}
 		
-		this.imageMap.put(id, image);
+		this.imageMapRef.put(id, image);
 		
 		return image;
 	}
 	
-	/**
-	 * Loads a font based on BMFont from AngelCode
-	 * @param id
-	 * @param fntFilePath
-	 * @param imagePath
-	 * @return
-	 * @throws SlickException
-	 */
-	public AngelCodeFont loadFont(String id, String fntFilePath, String imagePath) throws SlickException
-	{
-		Image fontImage = new Image(contentDirectory + imagePath);
-		fontImage.setFilter(defaultImageFilter);
-		AngelCodeFont font = new AngelCodeFont(contentDirectory + fntFilePath, fontImage);
-		fontMap.put(id, font);
-		return font;
-	}
-	
-	public final AngelCodeFont getFont(String id)
-	{
-		return fontMap.get(id);
-	}
-	
-	/**
-	 * 
-	 * @param id image unique identifier
-	 * @return wanted image
-	 */
-	public final Image getImage(String id)
-	{
-		return imageMap.get(id);
-	}
-	
-	/**
-	 * get a sound
-	 * @param id : sound unique identifier
-	 * @return wanted sound
-	 */
-	public Sound getSound(String id)
-	{
-		return soundMap.get(id);
-	}
-	
-	/**
-	 * get at text from id
-	 * @param id : unique identifier
-	 * @return the text
-	 */
-	public String getText(String id)
-	{
-		return textMap.get(id);
-	}
 }
 
 

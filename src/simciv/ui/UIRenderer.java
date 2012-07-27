@@ -6,7 +6,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
-import simciv.ContentManager;
+import simciv.content.Content;
 
 /**
  * Defines how widgets are rendered (defines the graphical theme)
@@ -22,9 +22,6 @@ public class UIRenderer
 	private static final int WINDOW_SHADOW_SIZE = 2;
 	
 	private int globalScale;
-	private Image toolButtonBackground;
-	private Image menuItemBackground;
-	private Image winCloseBtnBG;
 	private SpriteSheet frameBackground;
 	private SpriteSheet windowTitleBarBackground;
 	private Font font;
@@ -44,22 +41,16 @@ public class UIRenderer
 	
 	private void loadContent()
 	{
-		ContentManager content = ContentManager.instance();		
-
-		font = content.getFont("ui.font");
-		toolButtonBackground = content.getImage("ui.toolButton");
-		menuItemBackground = content.getImage("ui.menuItem");
+		font = Content.globalFont;
 		
-		Image frameBackgroundImg = content.getImage("ui.frame");
+		Image frameBackgroundImg = Content.images.uiFrame;
 		frameBackground = new SpriteSheet(frameBackgroundImg, FRAME_BASE, FRAME_BASE);
 		
-		Image windowTitleBarBackgroundImg = content.getImage("ui.window.titleBar");
+		Image windowTitleBarBackgroundImg = Content.images.uiWindowTitleBar;
 		windowTitleBarBackground =
 			new SpriteSheet(windowTitleBarBackgroundImg,
 					windowTitleBarBackgroundImg.getHeight(),
 					windowTitleBarBackgroundImg.getHeight());
-		
-		winCloseBtnBG = content.getImage("ui.window.closeButton");
 	}
 	
 	public void setGlobalScale(int s)
@@ -195,7 +186,7 @@ public class UIRenderer
 
 	public void renderWindowCloseButton(Graphics gfx, WindowCloseButton w)
 	{
-		renderButton(gfx, w, winCloseBtnBG, null, null, 0);
+		renderButton(gfx, w, Content.images.uiWindowCloseButton, null, null, 0);
 	}
 
 	private void renderButton(Graphics gfx, Button w, Image sprite, Image icon, String text, int pressOffset)
@@ -234,12 +225,12 @@ public class UIRenderer
 	
 	public void renderMenuItem(Graphics gfx, MenuItem w)
 	{
-		renderButton(gfx, w, menuItemBackground, null, w.getText(), 1);
+		renderButton(gfx, w, Content.images.uiMenuItem, null, w.getText(), 1);
 	}
 	
 	public void renderToolButton(Graphics gfx, ToolButton w)
 	{
-		renderButton(gfx, w, toolButtonBackground, w.icon, null, 2);
+		renderButton(gfx, w, Content.images.uiToolButton, w.icon, null, 2);
 	}
 
 	public int getGlobalScale()

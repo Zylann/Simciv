@@ -9,6 +9,7 @@ import org.newdawn.slick.Sound;
 
 import simciv.buildings.Building;
 import simciv.buildings.BuildingFactory;
+import simciv.content.Content;
 
 /**
  * User build engine
@@ -28,7 +29,7 @@ public class CityBuilder
  	public static final int MODE_ROAD = 2;
  	public static final int MODE_HOUSE = 3;
 	public static final int MODE_BUILDS = 4;
- 	public static final int MODE_COUNT = 5; // used to count modes
+ 	//public static final int MODE_COUNT = 5; // used to count modes
 
  	// Map cursors
 	private Vector2i pos = new Vector2i(); // current pointed cell
@@ -60,8 +61,8 @@ public class CityBuilder
 	
 	public static void loadContent() throws SlickException
 	{
-		placeSound = ContentManager.instance().getSound("ui.place");
-		eraseSound = ContentManager.instance().getSound("ui.erase");
+		placeSound = Content.sounds.uiPlace;
+		eraseSound = Content.sounds.uiErase;
 	}
 	
 	public String getInfoText()
@@ -127,6 +128,7 @@ public class CityBuilder
 				else
 					renderPlaceZone(gfx);
 				
+				// Red cross
 				gfx.setColor(new Color(255,0,0,255));
 				gfx.translate(pos.x, pos.y);
 				gfx.setLineWidth(8);

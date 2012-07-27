@@ -8,10 +8,16 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.state.GameState;
 
+import simciv.content.Content;
 import simciv.gamestates.GamePlay;
 import simciv.gamestates.LoadingScreen;
 import simciv.ui.UIStateBasedGame;
 
+/**
+ * The main class
+ * @author Marc
+ *
+ */
 public class Game extends UIStateBasedGame
 {
 	// Game constants
@@ -19,8 +25,8 @@ public class Game extends UIStateBasedGame
     public static final int tilesSize = 16;
 
     // Video settings
-    public static final int screenWidth = 1000;
-    public static final int screenHeight = 750;
+    public static final int screenWidth = 1200;
+    public static final int screenHeight = 900;
     public static final int framerate = 60;
     // Graphics settings
     public static boolean renderFancyUnitMovements = true;
@@ -43,6 +49,7 @@ public class Game extends UIStateBasedGame
 			gc.setTargetFrameRate(framerate);
 			gc.setVSync(true);
 			gc.setSmoothDeltas(true);
+			gc.setUpdateOnlyWhenVisible(true);
 
 			gc.start();
 		}
@@ -71,12 +78,12 @@ public class Game extends UIStateBasedGame
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException
 	{	
-		// Load minimal content
-		ContentManager.instance().loadFont("ui.font", "arial8px.fnt", "arial8px_0.png");
+		// Load global font (minimal)
+		Content.loadMinimalContent();
 
-		// Index content
-		ContentManager.instance().loadRessources("data/content.xml", true);
-				
+		// Load content (deferred)
+		Content.loadFromContentFile("data/content.xml");
+		
 		// Initialize states
     	for(GameState state : states)
     	{

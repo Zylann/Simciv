@@ -3,9 +3,7 @@ package simciv.ui;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Sound;
-
-import simciv.ContentManager;
+import simciv.content.Content;
 
 /**
  * A ToolButton remains pressed after the first click.
@@ -15,7 +13,6 @@ import simciv.ContentManager;
  */
 public class ToolButton extends Button
 {
-	private static Sound pressSound;
 	private static final int SIZE = 24;
 	
 	private IActionListener actionListener;
@@ -25,8 +22,6 @@ public class ToolButton extends Button
 	public ToolButton(WidgetContainer parent, int x, int y, ToolButtonGroup group)
 	{
 		super(parent, x, y, SIZE, SIZE);
-		if(pressSound == null)
-			pressSound = ContentManager.instance().getSound("ui.click");
 		this.group = group;
 	}
 		
@@ -61,7 +56,7 @@ public class ToolButton extends Button
 	@Override
 	protected void onPress()
 	{
-		pressSound.play(1.f, 0.5f);
+		Content.sounds.uiClick.play(1.f, 0.5f);
 		if(group != null)
 			group.unselectAllExcept(this);
 		if(actionListener != null)

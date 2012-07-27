@@ -12,6 +12,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Game;
+import simciv.content.Content;
 
 public class LoadingScreen extends BasicGameState
 {
@@ -58,6 +59,7 @@ public class LoadingScreen extends BasicGameState
 		else
 		{
 			// loading finished, entering next state
+			Content.indexAll();
 			game.enterState(Game.STATE_GAMEPLAY);
 		}
 	}

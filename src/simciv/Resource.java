@@ -3,6 +3,8 @@ package simciv;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
+import simciv.content.Content;
+
 public class Resource
 {
 	// IDs
@@ -25,15 +27,13 @@ public class Resource
 	
 	public static void initialize()
 	{
-		ContentManager content = ContentManager.instance();
-
 		list = new Resource[COUNT];
 		
 		set(new Resource(NONE, "None", 0))
-			.setSprites(content.getImage("resource.emptyCarriage"), null);
+			.setSprites(Content.images.resourceEmptyCarriage, null);
 		set(new Resource(WOOD, "Wood", 100));
 		set(new Resource(WHEAT, "Wheat", 100))
-			.setSprites(content.getImage("resource.wheatCarriage"), content.getImage("resource.wheat"));
+			.setSprites(Content.images.resourceWheatCarriage, Content.images.resourceWheat);
 		set(new Resource(STRAW, "Straw", 100));
 		set(new Resource(CLAY, "Clay", 100));
 		//...

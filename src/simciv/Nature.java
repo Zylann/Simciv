@@ -3,6 +3,8 @@ package simciv;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
+import simciv.content.Content;
+
 /**
  * Natural elements on the map
  * @author Marc
@@ -18,10 +20,9 @@ public class Nature
 	
 	public static void loadContent()
 	{
-		ContentManager content = ContentManager.instance();
-		treeSprites[0] = content.getImage("nature.tree");
-		treeSprites[1] = content.getImage("nature.tree2");
-		treeSprites[2] = content.getImage("nature.tree3");
+		treeSprites[0] = Content.images.natureTree;
+		treeSprites[1] = Content.images.natureTree2;
+		treeSprites[2] = Content.images.natureTree3;
 	}
 	
 	/**

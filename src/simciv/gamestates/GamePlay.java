@@ -8,7 +8,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.CityBuilder;
-import simciv.ContentManager;
 import simciv.IntRange2D;
 import simciv.MapGenerator;
 import simciv.MinimapUpdater;
@@ -19,6 +18,7 @@ import simciv.Terrain;
 import simciv.Vector2i;
 import simciv.View;
 import simciv.World;
+import simciv.content.Content;
 import simciv.ui.IActionListener;
 import simciv.ui.InfoBar;
 import simciv.ui.Menu;
@@ -85,7 +85,7 @@ public class GamePlay extends UIBasicGameState
 		
 		ToolButton mouseButton = new ToolButton(ui, 10, 10, buildCategoryButtonsGroup);
 		mouseButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_CURSOR));
-		mouseButton.icon = ContentManager.instance().getImage("ui.categCursor");
+		mouseButton.icon = Content.images.uiCategCursor;
 		buildCategoryButtonsGroup.add(mouseButton);
 		ui.add(mouseButton);
 		
@@ -93,7 +93,7 @@ public class GamePlay extends UIBasicGameState
 		
 		ToolButton eraseButton = new ToolButton(ui, 34, 10, buildCategoryButtonsGroup);
 		eraseButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_ERASE));
-		eraseButton.icon = ContentManager.instance().getImage("ui.categErase");
+		eraseButton.icon = Content.images.uiCategErase;
 		buildCategoryButtonsGroup.add(eraseButton);
 		ui.add(eraseButton);
 		
@@ -101,7 +101,7 @@ public class GamePlay extends UIBasicGameState
 
 		ToolButton traceRoadsButton = new ToolButton(ui, 58, 10, buildCategoryButtonsGroup);
 		traceRoadsButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_ROAD));
-		traceRoadsButton.icon = ContentManager.instance().getImage("ui.categRoad");
+		traceRoadsButton.icon = Content.images.uiCategRoad;
 		buildCategoryButtonsGroup.add(traceRoadsButton);
 		ui.add(traceRoadsButton);
 		
@@ -109,7 +109,7 @@ public class GamePlay extends UIBasicGameState
 		
 		ToolButton buildHousesButton = new ToolButton(ui, 82, 10, buildCategoryButtonsGroup);
 		buildHousesButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_HOUSE, "House"));
-		buildHousesButton.icon = ContentManager.instance().getImage("ui.categHouse");
+		buildHousesButton.icon = Content.images.uiCategHouse;
 		buildCategoryButtonsGroup.add(buildHousesButton);
 		ui.add(buildHousesButton);
 		
@@ -132,7 +132,7 @@ public class GamePlay extends UIBasicGameState
 		ui.add(foodBuildsMenu);
 
 		foodBuildsButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_BUILDS, foodBuildsMenu));
-		foodBuildsButton.icon = ContentManager.instance().getImage("ui.categFood");
+		foodBuildsButton.icon = Content.images.uiCategFood;
 		buildCategoryButtonsGroup.add(foodBuildsButton);
 		ui.add(foodBuildsButton);
 		
@@ -148,7 +148,7 @@ public class GamePlay extends UIBasicGameState
 		ui.add(industryBuildsMenu);
 		
 		industryBuildsButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_BUILDS, industryBuildsMenu));
-		industryBuildsButton.icon = ContentManager.instance().getImage("ui.categIndustry");
+		industryBuildsButton.icon = Content.images.uiCategIndustry;
 		buildCategoryButtonsGroup.add(industryBuildsButton);
 		ui.add(industryBuildsButton);
 		
@@ -275,7 +275,7 @@ public class GamePlay extends UIBasicGameState
 		infoBar.setText(builder.getInfoText());
 
 		if(paused)
-			gfx.drawString("PAUSE", 10, 70);		
+			gfx.drawString("PAUSE", 10, 70);
 	}
 	
 	public void renderDebugInfo(GameContainer gc, Graphics gfx)

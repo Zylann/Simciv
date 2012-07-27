@@ -2,17 +2,16 @@ package simciv.buildings;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Cheats;
-import simciv.ContentManager;
 import simciv.Game;
 import simciv.Job;
 import simciv.Map;
 import simciv.Resource;
 import simciv.ResourceSlot;
 import simciv.World;
+import simciv.content.Content;
 import simciv.jobs.Conveyer;
 import simciv.jobs.InternalJob;
 import simciv.maptargets.FreeWarehouseMapTarget;
@@ -28,10 +27,7 @@ import simciv.units.Citizen;
 public class FarmLand extends Workplace
 {	
 	private static BuildingProperties properties;
-	private static Image imgDirt[] = new Image[2];
-	private static Image imgCrops;
-	private static Image imgRottenCrops;
-	//private static Image imgCrops;
+
 	private static byte MIN_LEVEL = 0;
 	private static byte MAX_LEVEL = 7;
 	private static byte ROTTEN_LEVEL = 8;
@@ -49,14 +45,6 @@ public class FarmLand extends Workplace
 	public FarmLand(World w)
 	{
 		super(w);
-		if(imgDirt[0] == null)
-			imgDirt[0] = ContentManager.instance().getImage("build.farmland");
-		if(imgDirt[1] == null)
-			imgDirt[1] = ContentManager.instance().getImage("build.activeFarmland");
-		if(imgCrops == null)
-			imgCrops = ContentManager.instance().getImage("build.farmland.crops");
-		if(imgRottenCrops == null)
-			imgRottenCrops = ContentManager.instance().getImage("build.farmland.rottenCrops");
 		ticksPerLevel = secondsToTicks(60);
 		ticksBeforeNextLevel = ticksPerLevel;
 		cropsLevel = MIN_LEVEL;
@@ -132,9 +120,9 @@ public class FarmLand extends Workplace
 
 		// Soil
 		if(state == Building.NORMAL || needEmployees())
-			gfx.drawImage(imgDirt[0], gx, gy);
+			gfx.drawImage(Content.images.buildInactiveFarmland, gx, gy);
 		else
-			gfx.drawImage(imgDirt[1], gx, gy);
+			gfx.drawImage(Content.images.buildActiveFarmland, gx, gy);
 		
 		// Crops
 		if(state == Building.ACTIVE || cropsLevel != 0)
@@ -145,7 +133,7 @@ public class FarmLand extends Workplace
 				{
 					if(cropsLevel != ROTTEN_LEVEL)
 					{
-						gfx.drawImage(imgCrops,
+						gfx.drawImage(Content.images.buildFarmlandCrops,
 								gx + i * Game.tilesSize,
 								gy + j * Game.tilesSize,
 								gx + (i+1) * Game.tilesSize,
@@ -157,7 +145,8 @@ public class FarmLand extends Workplace
 						);
 					}
 					else
-						gfx.drawImage(imgRottenCrops, gx + i * Game.tilesSize, gy + j * Game.tilesSize);
+						gfx.drawImage(Content.images.buildFarmlandRottenCrops, 
+								gx + i * Game.tilesSize, gy + j * Game.tilesSize);
 				}
 			}
 		}
@@ -198,11 +187,6 @@ public class FarmLand extends Workplace
 			return job;
 		}
 		return null;
-	}
-
-	@Override
-	public void onInit()
-	{
 	}
 
 	@Override

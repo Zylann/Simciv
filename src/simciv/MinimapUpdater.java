@@ -5,6 +5,8 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.ImageBuffer;
 import org.newdawn.slick.SlickException;
 
+import simciv.content.Content;
+
 /**
  * Updates an image representing a map where one cell is a pixel
  * @author Marc
@@ -27,8 +29,7 @@ public class MinimapUpdater
 		pixels = new ImageBuffer(mapRef.getWidth(), mapRef.getHeight());
 		viz = pixels.getImage(Image.FILTER_NEAREST);
 		
-		if(mapMask == null)
-			mapMask = ContentManager.instance().getImage("ui.minimap.mask");
+		mapMask = Content.images.uiMinimapMask;
 	}
 	
 	public void update(int delta) throws SlickException

@@ -96,8 +96,8 @@ public class World
 		
 		if(!units.containsKey(u.getID()))
 		{
-			u.onInit();
 			units.put(u.getID(), u);
+			u.onInit();
 			return true;
 		}
 		return false;
@@ -162,6 +162,7 @@ public class World
 			{
 				map.markBuilding(b, true);
 				buildings.put(b.getID(), b);
+				b.onInit();
 				return true;
 			}
 		}

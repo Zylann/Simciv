@@ -116,11 +116,6 @@ public abstract class Unit extends Entity
 		}
 	}
 	
-//	public void moveAtRandomFollowingRoads()
-//	{
-//		move(Road.getAvailableDirections(worldRef.map, posX, posY));
-//	}
-	
 	/**
 	 * Moves the unit according to given available directions
 	 * @param dirs : available directions
