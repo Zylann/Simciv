@@ -7,7 +7,7 @@ import org.newdawn.slick.SpriteSheet;
 
 import simciv.content.Content;
 
-public class ResourceBar extends Widget
+public class ResourceBar extends BasicWidget
 {
 	private static SpriteSheet background;
 	private static final int HEIGHT = 24;
@@ -69,54 +69,6 @@ public class ResourceBar extends Widget
 		}
 		
 		gfx.popTransform();
-	}
-
-	@Override
-	public boolean mouseMoved(int oldX, int oldY, int newX, int newY)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean mouseDragged(int oldX, int oldY, int newX, int newY)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean mousePressed(int button, int x, int y)
-	{
-		return contains(x, y);
-	}
-
-	@Override
-	public boolean mouseReleased(int button, int x, int y)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean mouseClicked(int button, int x, int y, int clickCount)
-	{
-		return contains(x, y);
-	}
-
-	@Override
-	public boolean mouseWheelMoved(int change)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean keyPressed(int key, char c)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean keyReleased(int key, char c)
-	{
-		return false;
 	}
 
 }
