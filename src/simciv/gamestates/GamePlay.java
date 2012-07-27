@@ -238,7 +238,7 @@ public class GamePlay extends UIBasicGameState
 		minimapUpdater.update(delta);
 		minimap.setViz(minimapUpdater.getViz());
 		
-		resourceBar.update(Citizen.totalCount);
+		resourceBar.update(Citizen.totalCount, Citizen.totalWithJob);
 		
 		// debug
 		long updateTime = gc.getTime() - beginUpdateTime;

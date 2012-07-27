@@ -29,6 +29,7 @@ public class Citizen extends Unit
 {
 	private static SpriteSheet thinkingAnim = null;
 	public static int totalCount = 0;
+	public static int totalWithJob = 0;
 	
 	private Building buildingRef; // reference to the building the citizen currently is in
 	private House houseRef; // if null, the Citizen is homeless
@@ -49,7 +50,7 @@ public class Citizen extends Unit
 			thinkingAnim = new SpriteSheet(thinkingSprite, b, b);
 		}
 	}
-		
+	
 	@Override
 	protected void renderUnit(Graphics gfx)
 	{
@@ -98,6 +99,7 @@ public class Citizen extends Unit
 				if(workplace.needEmployees())
 				{
 					job = workplace.giveNextJob(this);
+					totalWithJob++;
 					if(job != null) // I got the job !
 					{
 						job.onBegin();
@@ -157,6 +159,7 @@ public class Citizen extends Unit
 		if(job != null)
 			job.onQuit(notifyWorkplace);
 		job = null;
+		totalWithJob--;
 	}
 
 	/**

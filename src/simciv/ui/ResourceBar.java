@@ -14,6 +14,7 @@ public class ResourceBar extends Widget
 	private static final int WIDTH = 100;
 	
 	private int population;
+	private int populationAtWork;
 	
 	public ResourceBar(WidgetContainer parent, int x, int y)
 	{
@@ -22,30 +23,52 @@ public class ResourceBar extends Widget
 			background = new SpriteSheet(Content.images.uiResourceBar, HEIGHT, HEIGHT);
 	}
 	
-	public void update(int population)
+	public void update(int population, int populationAtWork)
 	{
 		this.population = population;
+		this.populationAtWork = populationAtWork;
 	}
 
 	@Override
 	public void render(GameContainer gc, Graphics gfx)
-	{
-		int x = getAbsoluteX();
-		int y = getAbsoluteY();
+	{		
+		gfx.pushTransform();
+		gfx.translate(getAbsoluteX(), getAbsoluteY());
+
 		int b = height;
-		
+	
 		// Background
-		gfx.drawImage(background.getSprite(0, 0), x, y);
-		UIRenderer.instance().renderImageRepeatXY(gfx, background.getSprite(1, 0), x + b, y, width - 3 * b, b);
-		gfx.drawImage(background.getSprite(2, 0), x + width - 2 * b, y);
+		gfx.drawImage(background.getSprite(0, 0), 0, 0);
+		UIRenderer.instance().renderImageRepeatXY(gfx, background.getSprite(1, 0), b, 0, width - 3 * b, b);
+		gfx.drawImage(background.getSprite(2, 0), width - 2 * b, 0);
 		
 		// Icon
-		gfx.drawImage(Content.images.uiIndicatorsPopulation, x+4, y+4);
+		gfx.drawImage(Content.images.uiIndicatorsPopulation, 4, 4);
 		
 		// Text
 		String populationText = "" + population;
 		gfx.setColor(Color.black);
-		gfx.drawString(populationText, x + 24, y + 6);
+		gfx.drawString(populationText, 24, 6);
+		
+		// Work ratio
+		int h = height - 7;
+		int x = 20;
+		int y = height - 4;
+		if(population != 0)
+		{
+			int t = (int) (h * (float)populationAtWork / (float)population);
+			gfx.setColor(new Color(0, 224, 0));
+			gfx.fillRect(x, y - t, 2, t);
+			gfx.setColor(new Color(224, 160, 0));
+			gfx.fillRect(x, y - h, 2, h - t);
+		}
+		else
+		{
+			gfx.setColor(Color.darkGray);
+			gfx.fillRect(x, y - h, 2, h);
+		}
+		
+		gfx.popTransform();
 	}
 
 	@Override
