@@ -23,6 +23,24 @@ public class WidgetContainer extends Widget
 		children.add(child);
 	}
 	
+	/**
+	 * Adapts the size of the container to its children
+	 */
+	public void adaptSize()
+	{
+		width = 0;
+		height = 0;
+		for(Widget child : children)
+		{
+			int x = child.getX() + child.getWidth();
+			if(x > width)
+				width = x;
+			int y = child.getY() + child.getHeight();
+			if(y > height)
+				height = y;
+		}		
+	}
+	
 	@Override
 	public boolean mouseMoved(int oldX, int oldY, int newX, int newY)
 	{

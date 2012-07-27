@@ -181,8 +181,8 @@ public class GamePlay extends UIBasicGameState
 		minimap.setView(view);
 		minimap.setViz(minimapUpdater.getViz());
 		minimap.setVisible(true);
-		minimap.alignToCenter(true, false);
 		minimapWindow.add(minimap);
+		minimapWindow.adaptSize();
 		minimapWindow.alignToCenter();
 		minimapWindow.setVisible(false);
 		ui.add(minimapWindow);
@@ -208,10 +208,10 @@ public class GamePlay extends UIBasicGameState
 		CityBuilder.loadContent();
 		Nature.loadContent();
 
-		world = new World(128, 128);
+		world = new World(192, 192);
 		MapGenerator mapgen = new MapGenerator(131183);
 		mapgen.generate(world.map);
-				
+		
 		minimapUpdater = new MinimapUpdater(world.map);
 		
 		builder = new CityBuilder(world);

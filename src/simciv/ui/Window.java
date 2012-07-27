@@ -16,7 +16,7 @@ public class Window extends WidgetContainer
 		super(parent, x, y, width, height + WindowTitleBar.height);
 		titleBar = new WindowTitleBar(this, title);
 		closeButton = new WindowCloseButton(this);
-		content = new WidgetContainer(this, 0, titleBar.getHeight(), width, height - 24);
+		content = new WidgetContainer(this, 0, titleBar.getHeight(), width, height - titleBar.getHeight());
 		try
 		{
 			super.add(closeButton);
@@ -26,6 +26,16 @@ public class Window extends WidgetContainer
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void adaptSize()
+	{
+		content.adaptSize();
+		width = content.width;
+		height = content.height;
+		titleBar.width = width;
+		closeButton.posX = width - closeButton.getWidth();
 	}
 	
 	public void setOnCloseAction(IActionListener action)
