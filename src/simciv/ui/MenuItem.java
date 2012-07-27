@@ -29,7 +29,7 @@ public class MenuItem extends Button
 	@Override
 	protected void onPress()
 	{
-		Content.sounds.uiClick.play(1.f, 0.5f);
+		Content.sounds.uiButtonPress.play(1.f, 0.5f);
 	}
 
 	@Override

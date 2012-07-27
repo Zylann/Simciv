@@ -233,10 +233,16 @@ public class UIRenderer
 		renderButton(gfx, w, Content.images.uiToolButton, w.icon, null, 2);
 	}
 
+	public void renderPushButton(Graphics gfx, PushButton w)
+	{
+		renderButton(gfx, w, Content.images.uiPushButton, null, w.getText(), 1);
+	}
+
 	public int getGlobalScale()
 	{
 		return globalScale;
 	}
+
 
 }
 

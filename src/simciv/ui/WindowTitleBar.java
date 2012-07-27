@@ -28,6 +28,11 @@ public class WindowTitleBar extends Widget
 	{
 		this.text = text;
 	}
+	
+	public void setDraggable(boolean enable)
+	{
+		dragEnabled = enable;
+	}
 
 	@Override
 	public boolean mouseMoved(int oldX, int oldY, int newX, int newY)

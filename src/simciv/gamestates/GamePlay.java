@@ -24,6 +24,7 @@ import simciv.ui.InfoBar;
 import simciv.ui.Menu;
 import simciv.ui.MenuItem;
 import simciv.ui.Minimap;
+import simciv.ui.PushButton;
 import simciv.ui.ResourceBar;
 import simciv.ui.RootPane;
 import simciv.ui.ToolButton;
@@ -50,6 +51,7 @@ public class GamePlay extends UIBasicGameState
 	private ToolButtonGroup buildCategoryButtonsGroup;
 	private Minimap minimap;
 	private Window minimapWindow;
+	private Window pauseWindow;
 	private MinimapUpdater minimapUpdater;
 	private ResourceBar resourceBar;
 	private boolean closeRequested = false;
@@ -79,9 +81,29 @@ public class GamePlay extends UIBasicGameState
 		int gs = UIRenderer.instance().getGlobalScale();
 		ui = new RootPane(container.getWidth() / gs, container.getHeight() / gs);
 		
+		// Pause window
+		
+		pauseWindow = new Window(ui, 0, 0, 150, 60, "Game paused");
+		
+		PushButton resumeButton = new PushButton(pauseWindow, 0, 10, "Resume game");
+		PushButton quitButton = new PushButton(pauseWindow, 0, 28, "Quit game");
+		resumeButton.alignToCenter(true, false);
+		resumeButton.setAction(new TogglePauseAction());
+		quitButton.alignToCenter(true, false);
+		quitButton.setAction(new QuitGameAction());
+		
+		pauseWindow.add(resumeButton);
+		pauseWindow.add(quitButton);
+		pauseWindow.setOnCloseAction(new TogglePauseAction());
+		pauseWindow.setDraggable(false);
+		pauseWindow.setVisible(false);
+		pauseWindow.alignToCenter();
+		ui.add(pauseWindow);
+		
+		// Build categories
 		buildCategoryButtonsGroup = new ToolButtonGroup();
 		
-		// Mouse
+		// Mouse tool
 		
 		ToolButton mouseButton = new ToolButton(ui, 10, 10, buildCategoryButtonsGroup);
 		mouseButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_CURSOR));
@@ -189,7 +211,7 @@ public class GamePlay extends UIBasicGameState
 		world = new World(128, 128);
 		MapGenerator mapgen = new MapGenerator(131183);
 		mapgen.generate(world.map);
-		
+				
 		minimapUpdater = new MinimapUpdater(world.map);
 		
 		builder = new CityBuilder(world);
@@ -273,9 +295,6 @@ public class GamePlay extends UIBasicGameState
 		
 		infoBar.setPosition(0, ui.getHeight() - infoBar.getHeight());
 		infoBar.setText(builder.getInfoText());
-
-		if(paused)
-			gfx.drawString("PAUSE", 10, 70);
 	}
 	
 	public void renderDebugInfo(GameContainer gc, Graphics gfx)
@@ -325,8 +344,8 @@ public class GamePlay extends UIBasicGameState
 	{
 		if(key == Input.KEY_G)
 			world.map.toggleRenderGrid();
-		if(key == Input.KEY_P)
-			paused = !paused;
+		if(key == Input.KEY_P || key == Input.KEY_PAUSE || key == Input.KEY_ESCAPE)
+			togglePause();
 		if(key == Input.KEY_F3)
 		{
 			debugInfoVisible = !debugInfoVisible;
@@ -337,6 +356,12 @@ public class GamePlay extends UIBasicGameState
 		}
 		if(key == Input.KEY_TAB)
 			toggleShowMinimap();
+	}
+	
+	public void togglePause()
+	{
+		paused = !paused;
+		pauseWindow.setVisible(paused);
 	}
 	
 	public void toggleShowMinimap()
@@ -395,6 +420,22 @@ public class GamePlay extends UIBasicGameState
 				builder.setBuildingString(buildingString);
 			}
 			categButton.select(false);
+		}
+	}
+	
+	class TogglePauseAction implements IActionListener
+	{
+		@Override
+		public void actionPerformed() {
+			togglePause();
+		}	
+	}
+	
+	class QuitGameAction implements IActionListener
+	{
+		@Override
+		public void actionPerformed() {
+			closeRequested = true;
 		}
 	}
 

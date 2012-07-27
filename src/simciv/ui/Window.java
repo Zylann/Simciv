@@ -28,6 +28,16 @@ public class Window extends WidgetContainer
 		}
 	}
 	
+	public void setOnCloseAction(IActionListener action)
+	{
+		closeButton.setActionListener(action);
+	}
+	
+	public void setDraggable(boolean enabled)
+	{
+		titleBar.setDraggable(enabled);
+	}
+	
 	@Override
 	public boolean mousePressed(int button, int x, int y)
 	{

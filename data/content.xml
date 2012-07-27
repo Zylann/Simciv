@@ -46,6 +46,8 @@
 	<resource type="image" id="uiFrame">ui_frame.png</resource>
 	<resource type="image" id="uiWindowTitleBar">ui_winbar.png</resource>
 	<resource type="image" id="uiWindowCloseButton">ui_winclosebtn.png</resource>
+	<resource type="image" id="uiPushButton">ui_push_button.png</resource>
+
 	<resource type="image" id="uiMinimapMask">minimap_mask.png</resource>
 	<resource type="image" id="uiIndicatorsPopulation">citizen_icon.png</resource>
 	<resource type="image" id="uiResourceBar">resource_bar.png</resource>
@@ -58,7 +60,7 @@
 	
 	<resource type="sound" id="unitNewCitizen">door_open.ogg</resource>
 	
-	<resource type="sound" id="uiMenuItemSelect">click2.ogg</resource>
+	<resource type="sound" id="uiButtonPress">click2.ogg</resource>
 	<resource type="sound" id="uiClick">click.ogg</resource>
 	<resource type="sound" id="uiReverseClick">click_reverse.ogg</resource>
 	<resource type="sound" id="uiErase">erase.ogg</resource>

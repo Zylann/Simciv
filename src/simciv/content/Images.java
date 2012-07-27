@@ -53,6 +53,7 @@ public class Images
 	public Image uiMinimapMask;
 	public Image uiIndicatorsPopulation;
 	public Image uiResourceBar;
+	public Image uiPushButton;
 	
 	// Effects
 	public Image effectGreenStar;
