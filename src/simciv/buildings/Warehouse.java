@@ -5,11 +5,11 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Game;
-import simciv.Job;
 import simciv.ResourceSlot;
 import simciv.World;
 import simciv.content.Content;
 import simciv.jobs.InternalJob;
+import simciv.jobs.Job;
 import simciv.units.Citizen;
 
 /**

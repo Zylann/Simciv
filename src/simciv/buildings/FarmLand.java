@@ -6,7 +6,6 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Cheats;
 import simciv.Game;
-import simciv.Job;
 import simciv.Map;
 import simciv.Resource;
 import simciv.ResourceSlot;
@@ -14,6 +13,7 @@ import simciv.World;
 import simciv.content.Content;
 import simciv.jobs.Conveyer;
 import simciv.jobs.InternalJob;
+import simciv.jobs.Job;
 import simciv.maptargets.FreeWarehouseMapTarget;
 import simciv.units.Citizen;
 

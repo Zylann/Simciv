@@ -7,12 +7,12 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
 import simciv.Game;
-import simciv.Job;
 import simciv.World;
 import simciv.buildings.Building;
 import simciv.buildings.House;
 import simciv.buildings.Workplace;
 import simciv.effects.RisingIcon;
+import simciv.jobs.Job;
 import simciv.movements.RandomRoadMovement;
 
 import simciv.content.Content;

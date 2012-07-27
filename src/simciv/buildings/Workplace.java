@@ -2,8 +2,8 @@ package simciv.buildings;
 
 import java.util.HashMap;
 
-import simciv.Job;
 import simciv.World;
+import simciv.jobs.Job;
 import simciv.units.Citizen;
 
 public abstract class Workplace extends Building

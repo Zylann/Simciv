@@ -2,7 +2,6 @@ package simciv.jobs;
 
 import org.newdawn.slick.Graphics;
 import simciv.Direction2D;
-import simciv.Job;
 import simciv.buildings.Workplace;
 import simciv.units.Citizen;
 

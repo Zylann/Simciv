@@ -1,4 +1,4 @@
-package simciv;
+package simciv.jobs;
 
 import org.newdawn.slick.Graphics;
 import simciv.buildings.Workplace;

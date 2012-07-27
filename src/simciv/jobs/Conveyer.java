@@ -8,7 +8,6 @@ import org.newdawn.slick.Image;
 
 import simciv.Direction2D;
 import simciv.Game;
-import simciv.Job;
 import simciv.PathFinder;
 import simciv.ResourceSlot;
 import simciv.Vector2i;
