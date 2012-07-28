@@ -5,8 +5,9 @@ import org.newdawn.slick.Graphics;
 
 public class ProgressBar extends BasicWidget
 {
+	public static final int height = 8;
+
 	private float progress; // between 0 and 1
-	private static int height = 8;
 	
 	public ProgressBar(WidgetContainer parent, int x, int y, int width)
 	{
@@ -25,6 +26,20 @@ public class ProgressBar extends BasicWidget
 		else if(p < 0)
 			p = 0;
 		progress = p / 100.f;
+	}
+	
+	/**
+	 * Sets progress from a [0, 1] floating number
+	 * @param p
+	 */
+	public void setProgressRatio(float p)
+	{
+		if(p < 0)
+			progress = 0;
+		else if(p > 1)
+			progress = 1;
+		else
+			progress = p;
 	}
 	
 	/**

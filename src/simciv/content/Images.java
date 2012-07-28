@@ -54,6 +54,7 @@ public class Images
 	public Image uiIndicatorsPopulation;
 	public Image uiResourceBar;
 	public Image uiPushButton;
+	public Image uiProgressBar;
 	
 	// Effects
 	public Image effectGreenStar;

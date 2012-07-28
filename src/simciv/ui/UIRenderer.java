@@ -24,6 +24,7 @@ public class UIRenderer
 	private int globalScale;
 	private SpriteSheet frameBackground;
 	private SpriteSheet windowTitleBarBackground;
+	private SpriteSheet progressBarSprites;
 	private Font font;
 	
 	public static UIRenderer instance()
@@ -51,6 +52,11 @@ public class UIRenderer
 			new SpriteSheet(windowTitleBarBackgroundImg,
 					windowTitleBarBackgroundImg.getHeight(),
 					windowTitleBarBackgroundImg.getHeight());
+		
+		progressBarSprites = new SpriteSheet(
+				Content.images.uiProgressBar, 
+				ProgressBar.height, 
+				ProgressBar.height);
 	}
 	
 	public void setGlobalScale(int s)
@@ -73,6 +79,15 @@ public class UIRenderer
 	public void endRender(Graphics gfx)
 	{
 		gfx.popTransform();
+	}
+	
+	public void renderImagePart(Graphics gfx, Image img, int posX, int posY, int srcX, int srcY, int srcW, int srcH)
+	{
+		gfx.drawImage(img,
+				posX, posY,
+				posX + srcW, posY + srcH,
+				srcX, srcY,
+				srcX + srcW, srcY + srcH);
 	}
 	
 	public void renderImageRepeatXY(Graphics gfx, Image img, int posX, int posY, int w, int h)
@@ -148,6 +163,15 @@ public class UIRenderer
 		renderImageRepeatXY(gfx, bottom, 	posX + b,		posY + h - b, 	w - 2 * b, 	b);
 		// Center
 		renderImageRepeatXY(gfx, center, posX + b, posY + b, w - 2 * b, h - 2 * b);
+	}
+	
+	public void renderBar(Graphics gfx, SpriteSheet sheet, int posX, int posY, int w, int h, int b, int s)
+	{
+		// Corners
+		gfx.drawImage(sheet.getSprite(0, s), posX, posY);
+		gfx.drawImage(sheet.getSprite(2, s), posX + w - b, posY);
+		// Middle
+		renderImageRepeatXY(gfx, sheet.getSprite(1, s), posX + b, posY, w - 2 * b, b);
 	}
 		
 	public void renderPanel(Graphics gfx, Panel w)
@@ -248,11 +272,48 @@ public class UIRenderer
 		int x = w.getAbsoluteX();
 		int y = w.getAbsoluteY();
 		int t = (int) (w.getProgressRatio() * w.getWidth());
+		int b = ProgressBar.height;
 		
-		gfx.setColor(Color.green);
-		gfx.fillRect(x, y, t, w.getHeight());
-		gfx.setColor(Color.gray);
-		gfx.fillRect(x + t, y, w.getWidth() - t, w.getHeight());
+		if(t == 0)
+			renderBar(gfx, progressBarSprites, x, y, w.getWidth(), w.getHeight(), b, 0);
+		else if(t < w.getWidth())
+		{
+			// Left
+			if(t <= b)
+			{
+				renderImagePart(gfx, progressBarSprites.getSprite(0, 1), x, y, 0, 0, t, b);
+				renderImagePart(gfx, progressBarSprites.getSprite(0, 0), x + t, y, t, 0, b - t, b);
+			}
+			else
+				gfx.drawImage(progressBarSprites.getSprite(0, 1), x, y);
+			
+			// Center
+			if(t > b && t <= w.getWidth() - b)
+			{
+				renderImageRepeatXY(gfx, progressBarSprites.getSprite(1, 1), x + b, y, t - b, b);
+				renderImageRepeatXY(gfx, progressBarSprites.getSprite(1, 0), x + t, y, w.getWidth() - b - t, b);
+				gfx.drawImage(progressBarSprites.getSprite(2, 0), x + w.getWidth() - b, y);
+			}
+			else
+			{
+				int s = t <= b ? 0 : 1;
+				renderImageRepeatXY(gfx, progressBarSprites.getSprite(1, s), x + b, y, w.getWidth() - 2*b, b);
+			}
+			
+			// Right
+			if(t > w.getWidth() - b)
+			{
+				int t2 = t - w.getWidth() + b;
+				renderImagePart(gfx, progressBarSprites.getSprite(2, 1),
+						x + w.getWidth() - b, y, 0, 0, t2, b);
+				renderImagePart(gfx, progressBarSprites.getSprite(2, 0),
+						x + t, y, t2, 0, b - t2, b);
+			}
+			else
+				gfx.drawImage(progressBarSprites.getSprite(2, 0), x + w.getWidth() - b, y);
+		}
+		else
+			renderBar(gfx, progressBarSprites, x, y, w.getWidth(), w.getHeight(), b, 1);			
 	}
 
 
