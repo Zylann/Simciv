@@ -331,7 +331,7 @@ public class Map
 	
 	public boolean contains(int x, int y, int w, int h)
 	{
-		return x >= 0 && y >= 0 && x + w < width && y + h < height;
+		return x >= 0 && y >= 0 && x + w <= width && y + h <= height;
 	}
 
 	/**
