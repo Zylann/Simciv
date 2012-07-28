@@ -204,21 +204,16 @@ public class CityBuilder
 		cursorButton = button;
 		lastClickPos.set(mapPos);
 		lastClickBuildPos.set(buildPos);
-		
+
+		if(button != Input.MOUSE_LEFT_BUTTON)
+			return;
+
 		if(mode == MODE_HOUSE)
-		{
-			if(button == Input.MOUSE_LEFT_BUTTON)
-				placeBuilding(buildPos.x, buildPos.y);
-		}
+			placeBuilding(buildPos.x, buildPos.y);
 		else if(mode == MODE_ERASE)
-		{
 			erase(pos.x, pos.y);
-		}
 		else if(mode == MODE_BUILDS)
-		{
-			if(button == Input.MOUSE_LEFT_BUTTON)
-				placeBuilding(buildPos.x, buildPos.y);
-		}
+			placeBuilding(buildPos.x, buildPos.y);
 	}
 	
 	public void cursorMoved(Vector2i mapPos)
@@ -282,7 +277,7 @@ public class CityBuilder
 
 	public void cursorReleased()
 	{
-		if(cursorPress)
+		if(cursorPress && cursorButton == Input.MOUSE_LEFT_BUTTON)
 		{
 			if(mode == MODE_BUILDS || mode == MODE_HOUSE)
 				placeBuildingsFromZone();
@@ -347,7 +342,7 @@ public class CityBuilder
 	{
 		// Create a new building
 		Building b = BuildingFactory.createBuildingFromName(buildingString, worldRef);
-		
+
 		if(b != null)
 		{
 			if(worldRef.placeBuilding(b, x, y))
@@ -365,7 +360,7 @@ public class CityBuilder
 	
 	// TODO Limit nb sounds played at the same time
 	
-	// SUGG add a tick delay to zone-placed buildings?
+	// SUGG add a tick delay to zone-placed buildings (because they are created at the same time) ?
 	
 	private int placeBuildingsFromZone()
 	{
