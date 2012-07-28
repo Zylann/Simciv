@@ -14,7 +14,7 @@ import simciv.units.Unit;
  */
 public class PathMovement implements IMovement
 {
-	private LinkedList<Vector2i> path;
+	private LinkedList<Vector2i> path; // TODO create a Path class storing directions (lighter)
 	private boolean blocked;
 	public IMapTarget target; // Target that was used to build the path
 	

@@ -15,6 +15,7 @@ public class Nature
 	// Constants
 	public static final byte NONE = 0;
 	public static final byte TREE = 1;
+	// TODO add bushes, flowers and tall grass
 	
 	private static Image treeSprites[] = new Image[3];
 	

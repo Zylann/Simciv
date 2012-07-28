@@ -77,6 +77,7 @@ public class GameLoadingScreen extends UIBasicGameState
 			throws SlickException
 	{
 		progressBar.setProgress(mapGenerator.getProgress());
+		
 		if(mapGenerator.isFinished())
 			game.enterState(Game.STATE_GAMEPLAY);
 	}
