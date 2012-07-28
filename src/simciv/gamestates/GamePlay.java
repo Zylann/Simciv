@@ -9,11 +9,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.CityBuilder;
 import simciv.IntRange2D;
-import simciv.MapGenerator;
 import simciv.MinimapUpdater;
-import simciv.Nature;
-import simciv.Resource;
-import simciv.Road;
 import simciv.Terrain;
 import simciv.Vector2i;
 import simciv.View;
@@ -57,6 +53,8 @@ public class GamePlay extends UIBasicGameState
 	private boolean closeRequested = false;
 	private boolean paused = false;
 	private boolean debugInfoVisible = false;
+	private long renderTime;
+	private long updateTime;
 	
 	public GamePlay(int stateID)
 	{
@@ -72,6 +70,11 @@ public class GamePlay extends UIBasicGameState
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException
 	{
+	}
+	
+	public void setWorld(World world)
+	{
+		this.world = world;
 	}
 
 	@Override
@@ -201,17 +204,7 @@ public class GamePlay extends UIBasicGameState
 
 	@Override
 	public void enter(GameContainer gc, StateBasedGame game) throws SlickException
-	{
-		Terrain.initialize();
-		Resource.initialize();
-		Road.loadContent();
-		CityBuilder.loadContent();
-		Nature.loadContent();
-
-		world = new World(192, 192);
-		MapGenerator mapgen = new MapGenerator(131183);
-		mapgen.generate(world.map);
-		
+	{		
 		minimapUpdater = new MinimapUpdater(world.map);
 		
 		builder = new CityBuilder(world);
@@ -263,15 +256,19 @@ public class GamePlay extends UIBasicGameState
 		resourceBar.update(Citizen.totalCount, Citizen.totalWithJob);
 		
 		// debug
-		long updateTime = gc.getTime() - beginUpdateTime;
+		updateTime = gc.getTime() - beginUpdateTime;
 		debugText = "x=" + pointedCell.x + ", y=" + pointedCell.y;
 		debugText += "  updateTime=" + updateTime;
+		debugText += "  renderTime=" + renderTime;
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics gfx)
 			throws SlickException
 	{		
+		// Debug
+		long beginRenderTime = gc.getTime();
+
 		// World view
 		view.configureGraphicsForWorldRendering(gfx);
 		IntRange2D mapRange = view.getMapRange(gc);
@@ -295,10 +292,13 @@ public class GamePlay extends UIBasicGameState
 		
 		infoBar.setPosition(0, ui.getHeight() - infoBar.getHeight());
 		infoBar.setText(builder.getInfoText());
+
+		// debug
+		renderTime = gc.getTime() - beginRenderTime;
 	}
 	
 	public void renderDebugInfo(GameContainer gc, Graphics gfx)
-	{		
+	{
 		gfx.setColor(new Color(0, 0, 0, 128));
 		gfx.fillRect(0, 0, gc.getWidth(), 100);
 		gfx.setColor(Color.white);

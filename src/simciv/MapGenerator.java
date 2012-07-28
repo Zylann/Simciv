@@ -1,15 +1,39 @@
 package simciv;
 
-public class MapGenerator
-{	
-	int seed;
+public class MapGenerator extends Thread
+{
+	private int seed;
+	private Map mapRef;
+	private int progress;
+	private boolean finished;
 	
-	public MapGenerator(int seed)
+	public MapGenerator(int seed, Map map)
 	{
 		this.seed = seed;
+		finished = false;
+		mapRef = map;
 	}
-    
-    public void generate(Map map)
+	
+	public boolean isFinished()
+	{
+		// Note : not synchronized because a boolean is atomic
+		return finished;
+	}
+	
+	public int getProgress()
+	{
+		// Note : should be synchronized, but progress is read-only and use locks would slow the process a bit
+		return progress;
+	}
+   
+    @Override
+	public void run() // Note : to execute the thread, use start().
+	{
+    	
+    	generate(mapRef);
+	}
+
+	public void generate(Map map)
     {
     	int x, y;
     	double n, n2, n3;
@@ -19,14 +43,14 @@ public class MapGenerator
     	{
     		for(x = 0; x < map.getWidth(); x++)
     		{
-    			n = Noise.getPerlin((float)x, (float)y, seed, 3, 0.5f, 32.f);
-    			n3 = Noise.getf(x, y, seed+1);
+    			n = Noise.getPerlin((float)x, (float)y, seed, 4, 0.5f, 64.f); // height noise
+    			n3 = Noise.getf(x, y, seed+1); // local noise
     			
 				c.nature = 0;
 				
     			if(n > 0.5)
     			{
-        			n2 = Noise.getPerlin((float)x, (float)y, seed+1, 4, 0.3f, 16.f);
+        			n2 = Noise.getPerlin((float)x, (float)y, seed+1, 5, 0.5f, 24.f); // forest noise
         			
         			if(n < 0.6 && n2 > 0.5)
         			{
@@ -49,7 +73,11 @@ public class MapGenerator
     			
     			map.getCellExisting(x, y).set(c);
     		}
+    		
+    		progress = (int) (100 * (float)y / (float)map.getHeight());
     	}
+    	
+    	finished = true;
     }
     
 }

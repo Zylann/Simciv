@@ -14,13 +14,13 @@ import org.newdawn.slick.state.StateBasedGame;
 import simciv.Game;
 import simciv.content.Content;
 
-public class LoadingScreen extends BasicGameState
+public class ContentLoadingScreen extends BasicGameState
 {
 	private int stateID = -1;
 	private int totalLoaded = 0;
 	private String lastLoaded = "";
 	
-	public LoadingScreen(int stateID)
+	public ContentLoadingScreen(int stateID)
 	{
 		this.stateID = stateID;
 	}
@@ -75,7 +75,7 @@ public class LoadingScreen extends BasicGameState
 			// loading finished, entering next state
 			LoadingList.setDeferredLoading(false);
 			Content.indexAll();
-			game.enterState(Game.STATE_GAMEPLAY);
+			game.enterState(Game.STATE_GAME_LOADING);
 		}
 	}
 

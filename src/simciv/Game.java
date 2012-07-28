@@ -9,8 +9,9 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.state.GameState;
 
 import simciv.content.Content;
+import simciv.gamestates.GameLoadingScreen;
 import simciv.gamestates.GamePlay;
-import simciv.gamestates.LoadingScreen;
+import simciv.gamestates.ContentLoadingScreen;
 import simciv.ui.UIStateBasedGame;
 
 /**
@@ -31,16 +32,20 @@ public class Game extends UIStateBasedGame
     // Graphics settings
     public static boolean renderFancyUnitMovements = true;
     
-    // States
-    public static final int STATE_LOADING = 1;
+    // State constants
+    public static final int STATE_CONTENT_LOADING = 1;
+    public static final int STATE_GAME_LOADING = 3;
     public static final int STATE_GAMEPLAY = 4;
     
-    List<GameState> states = new ArrayList<GameState>();
+    // States
+    private List<GameState> states = new ArrayList<GameState>();
+    public GamePlay gamePlay; // direct access
 
 	public static void main(String[] args)
 	{
 		try
 		{
+			// TODO make the game window resizable
 			//CanvasGameContainer gc = new CanvasGameContainer(new Game(title));
 			AppGameContainer gc = new AppGameContainer(new Game(title));
 			// Note : fullscreen works with 800x600 and 1600x1200
@@ -64,8 +69,10 @@ public class Game extends UIStateBasedGame
 		super(title);
 		
 		// Create states
-    	addState(new LoadingScreen(STATE_LOADING));    	
-    	addState(new GamePlay(STATE_GAMEPLAY));
+    	addState(new ContentLoadingScreen(STATE_CONTENT_LOADING));
+    	addState(new GameLoadingScreen(STATE_GAME_LOADING));
+    	gamePlay = new GamePlay(STATE_GAMEPLAY);
+    	addState(gamePlay);
 	}
     
     @Override
@@ -77,10 +84,10 @@ public class Game extends UIStateBasedGame
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException
-	{	
+	{
 		// Load global font (minimal)
 		Content.loadMinimalContent();
-
+		
 		// Load content (deferred)
 		Content.loadFromContentFile("data/content.xml");
 		
@@ -91,7 +98,7 @@ public class Game extends UIStateBasedGame
     	}
     	
     	// Enter first state
-    	enterState(STATE_LOADING);
+    	enterState(STATE_CONTENT_LOADING);
 	}
 
 }

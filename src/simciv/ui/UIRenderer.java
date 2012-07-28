@@ -58,6 +58,11 @@ public class UIRenderer
 		globalScale = s;
 	}
 	
+	public int getGlobalScale()
+	{
+		return globalScale;
+	}
+
 	public void beginRender(Graphics gfx)
 	{
 		gfx.pushTransform();
@@ -238,9 +243,16 @@ public class UIRenderer
 		renderButton(gfx, w, Content.images.uiPushButton, null, w.getText(), 1);
 	}
 
-	public int getGlobalScale()
+	public void renderProgressBar(Graphics gfx, ProgressBar w)
 	{
-		return globalScale;
+		int x = w.getAbsoluteX();
+		int y = w.getAbsoluteY();
+		int t = (int) (w.getProgressRatio() * w.getWidth());
+		
+		gfx.setColor(Color.green);
+		gfx.fillRect(x, y, t, w.getHeight());
+		gfx.setColor(Color.gray);
+		gfx.fillRect(x + t, y, w.getWidth() - t, w.getHeight());
 	}
 
 
