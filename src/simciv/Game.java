@@ -27,7 +27,7 @@ public class Game extends UIStateBasedGame
 
     // Video settings
     public static final int screenWidth = 1200;
-    public static final int screenHeight = 900;
+    public static final int screenHeight = 800;
     public static final int framerate = 60;
     // Graphics settings
     public static boolean renderFancyUnitMovements = true;
