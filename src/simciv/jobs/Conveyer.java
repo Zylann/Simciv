@@ -201,18 +201,15 @@ public class Conveyer extends Job
 	@Override
 	public void renderUnit(Graphics gfx)
 	{
-		int gx = me.getX() * Game.tilesSize;
-		int gy = me.getY() * Game.tilesSize;
-		
 		if(me.getDirection() == Direction2D.NORTH)
 		{
-			carriedResource.renderCarriage(gfx, gx, gy, me.getDirection());
+			carriedResource.renderCarriage(gfx, 0, 0, me.getDirection());
 			me.defaultRender(gfx, unitSprites);
 		}
 		else
 		{
 			me.defaultRender(gfx, unitSprites);
-			carriedResource.renderCarriage(gfx, gx, gy, me.getDirection());
+			carriedResource.renderCarriage(gfx, 0, 0, me.getDirection());
 		}
 	}
 

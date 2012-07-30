@@ -2,6 +2,7 @@ package simciv;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SpriteSheet;
 
 import simciv.content.Content;
 
@@ -21,8 +22,8 @@ public class Resource
 	// Attributes
 	private byte ID;
 	private String name;
-	private Image carriageSprite;
-	private Image storageSprite;
+	private SpriteSheet carriageSprites;
+	private SpriteSheet storageSprites;
 	private short stackLimit;
 	
 	public static void initialize()
@@ -61,32 +62,31 @@ public class Resource
 		
 	private Resource setSprites(Image carriageSpr, Image storageSpr)
 	{
-		carriageSprite = carriageSpr;
-		storageSprite = storageSpr;
+		carriageSprites = new SpriteSheet(carriageSpr, Game.tilesSize, Game.tilesSize);
+		if(storageSpr != null)
+			storageSprites = new SpriteSheet(storageSpr, Game.tilesSize, storageSpr.getHeight());
 		return this;
 	}
 	
 	public void renderCarriage(Graphics gfx, int x, int y, int amount, byte direction)
 	{
-		gfx.drawImage(carriageSprite,
-				0, 0,
-				Game.tilesSize, Game.tilesSize,
-				0, direction * Game.tilesSize,
-				Game.tilesSize, (direction + 1) * Game.tilesSize);
+		if(direction == Direction2D.NONE)
+			direction = Direction2D.SOUTH;
+		gfx.drawImage(carriageSprites.getSprite(0, direction), x, y);
 	}
 	
 	public void renderStorage(Graphics gfx, int x, int y, int amount)
 	{
-		if(storageSprite != null)
+		if(storageSprites != null)
 		{
-			if(amount > 0)
-				gfx.drawImage(storageSprite, x, y);
-			if(amount > 30)
-				gfx.drawImage(storageSprite, x, y - 2);
-			if(amount > 60)
-				gfx.drawImage(storageSprite, x, y - 4);
-			if(amount == 100)
-				gfx.drawImage(storageSprite, x, y - 6);
+			if(amount > 0 && amount < 30)
+				gfx.drawImage(storageSprites.getSprite(0, 0), x, y - Game.tilesSize);
+			else if(amount >= 30 && amount < 60)
+				gfx.drawImage(storageSprites.getSprite(1, 0), x, y - Game.tilesSize);
+			else if(amount >= 60 && amount < 100)
+				gfx.drawImage(storageSprites.getSprite(2, 0), x, y - Game.tilesSize);
+			else if(amount == 100)
+				gfx.drawImage(storageSprites.getSprite(3, 0), x, y - Game.tilesSize);
 		}
 	}
 	
