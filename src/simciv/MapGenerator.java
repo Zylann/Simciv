@@ -47,6 +47,7 @@ public class MapGenerator extends Thread
     			n3 = Noise.getf(x, y, seed+1); // local noise
     			
 				c.nature = 0;
+    			c.noise = (byte)(255.f*n3);
 				
     			if(n > 0.5)
     			{
@@ -54,23 +55,47 @@ public class MapGenerator extends Thread
         			
         			if(n < 0.6 && n2 > 0.5)
         			{
+        				// Beach
         				c.terrainID = Terrain.DUST;
         			}
         			else
         			{
+        				// Land
+        				
         				c.terrainID = Terrain.GRASS;
         				
-        				if(n2 < 0.4 && n3 < 0.7)
-        					c.nature = Nature.TREE;
-        				else if(n2 < 0.45 && n3 < 0.1)
-        					c.nature = Nature.TREE;
+        				if(n2 < 0.4)
+        				{
+        					// Forest
+        					if(n3 < 0.7)
+            					c.nature = Nature.TREE;
+        					else if(n3 < 0.85)
+        						c.nature = Nature.BUSH;
+        				}
+        				else if(n2 < 0.45)
+        				{
+        					// Forest edge
+        					if(n3 < 0.1)
+        						c.nature = Nature.TREE;
+        					else if(n3 < 0.2)
+        						c.nature = Nature.BUSH;
+        				}
+        				else
+        				{
+        					// Bush group
+        					double n4 = Noise.getPerlin(x, y, seed+2, 5, 0.5f, 24.f);
+        					if(n4 < 0.3 && n3 < 0.9)
+        					{
+        						c.nature = Nature.BUSH;
+        						if(n3 < 0.88)
+        							c.noise &= 0x01;
+        					}
+        				}
            			}        			
     			}
     			else
-    				c.terrainID = Terrain.WATER;
-    			
-    			c.noise = (byte)(255.f*n3);
-    			
+    				c.terrainID = Terrain.WATER; // ocean
+    			    			
     			map.getCellExisting(x, y).set(c);
     		}
     		

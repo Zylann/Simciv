@@ -1,7 +1,9 @@
 package simciv;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SpriteSheet;
 
 import simciv.content.Content;
 
@@ -15,15 +17,19 @@ public class Nature
 	// Constants
 	public static final byte NONE = 0;
 	public static final byte TREE = 1;
-	// TODO add bushes, flowers and tall grass
+	public static final byte BUSH = 2;
+	// TODO add flowers and tall grass
 	
 	private static Image treeSprites[] = new Image[3];
+	private static SpriteSheet bushSprites;
 	
 	public static void loadContent()
 	{
 		treeSprites[0] = Content.images.natureTree;
 		treeSprites[1] = Content.images.natureTree2;
 		treeSprites[2] = Content.images.natureTree3;
+		
+		bushSprites = new SpriteSheet(Content.images.natureBush, Game.tilesSize, Game.tilesSize);
 	}
 	
 	/**
@@ -35,7 +41,7 @@ public class Nature
 	 */
 	public static void render(Graphics gfx, MapCell cell, int gx, int gy)
 	{
-		if(cell.nature == TREE)
+		if(cell.nature != 0)
 		{
 			// Apply a small offset to seem more "natural"
 			if((cell.noise & 0x01) != 0) // 0000 0001
@@ -46,7 +52,10 @@ public class Nature
 				gy -= 1;
 			else if((cell.noise & 0x04) != 0) // 0000 0100
 				gy += 1;
-			
+		}
+		
+		if(cell.nature == TREE)
+		{
 			// Visual variants
 			int i = 0;
 			if((cell.noise & 0x10) != 0) // 0001 0000
@@ -56,6 +65,27 @@ public class Nature
 			
 			gfx.drawImage(treeSprites[i], gx, gy - (treeSprites[i].getHeight() - Game.tilesSize));
 		}
+		else if(cell.nature == BUSH)
+		{
+			// Visual variants
+			int i = 3;
+			if((cell.noise & 0x40) != 0) // 0100 0000
+				i = 0;
+			else if((cell.noise & 0x30) != 0) // 0010 000
+				i = 2;
+			else if((cell.noise & 0x20) != 0) // 0001 000
+				i = 1;
+			
+			gfx.drawImage(bushSprites.getSprite(i, 0), gx, gy);
+		}
+	}
+
+	public static Color getMinimapColor(byte nature)
+	{
+		if(nature == BUSH)
+			return new Color(16, 96, 16);
+		else
+			return new Color(0, 64, 0);
 	}
 	
 }

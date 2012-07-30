@@ -37,6 +37,7 @@ public class Images
 	public Image natureTree;
 	public Image natureTree2;
 	public Image natureTree3;
+	public Image natureBush;
 	
 	// UI
 	public Image uiToolButton;

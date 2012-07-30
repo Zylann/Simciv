@@ -34,6 +34,7 @@
 	<resource type="image" id="natureTree">tree.png</resource>
 	<resource type="image" id="natureTree2">tree2.png</resource>
 	<resource type="image" id="natureTree3">tree3.png</resource>
+	<resource type="image" id="natureBush">bush.png</resource>
 	
 	<resource type="image" id="uiToolButton">ui_button_24x24.png</resource>
 	<resource type="image" id="uiCategHouse">ui_house.png</resource>
