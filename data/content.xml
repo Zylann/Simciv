@@ -48,7 +48,8 @@
 	<resource type="image" id="uiWindowCloseButton">ui_winclosebtn.png</resource>
 	<resource type="image" id="uiPushButton">ui_push_button.png</resource>
 	<resource type="image" id="uiProgressBar">ui_progressBar.png</resource>
-
+	
+	<resource type="image" id="uiRedCross">red_cross.png</resource>
 	<resource type="image" id="uiMinimapMask">minimap_mask.png</resource>
 	<resource type="image" id="uiIndicatorsPopulation">citizen_icon.png</resource>
 	<resource type="image" id="uiResourceBar">resource_bar.png</resource>

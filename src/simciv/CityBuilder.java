@@ -108,6 +108,7 @@ public class CityBuilder
 	
 	public void render(Graphics gfx)
 	{
+		// FIXME cursor being shifted a bit sometimes. Can't reproduce it yet...
 		// Pointed cell
 		if(worldRef.map.contains(pos.x, pos.y))
 		{
@@ -128,12 +129,12 @@ public class CityBuilder
 				else
 					renderPlaceZone(gfx);
 				
-				// Red cross
-				gfx.setColor(new Color(255,0,0,255));
-				gfx.translate(pos.x, pos.y);
-				gfx.setLineWidth(8);
-				gfx.drawLine(0, 0, 1, 1);
-				gfx.drawLine(0, 1, 1, 0);
+				gfx.drawImage(Content.images.uiRedCross,
+						pos.x, pos.y, 
+						pos.x+1, pos.y+1, 
+						0, 0,
+						Content.images.uiRedCross.getWidth(),
+						Content.images.uiRedCross.getHeight());
 			}
 			else if(mode == MODE_ROAD)
 			{
@@ -294,6 +295,7 @@ public class CityBuilder
 	
 	private void placeRoad()
 	{
+		// TODO enable auto-pathfinding by letting the mouse pressed
 		if(worldRef.map.placeRoad(pos.x, pos.y))
 		{
 			placeSound.play();
