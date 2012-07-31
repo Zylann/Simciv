@@ -11,6 +11,7 @@ public class Cheats
 	private static boolean enabled = false;
 	private static boolean fastCitizenProduction = true;
 	private static boolean fastFarmlandGrow = true;
+	private static boolean infiniteMoney = false;
 	
 	public static void onCommand(String cmd)
 	{
@@ -22,6 +23,8 @@ public class Cheats
 				fastFarmlandGrow = !fastFarmlandGrow;
 			else if(cmd == "reproduce")
 				fastCitizenProduction = !fastCitizenProduction;
+			else if(cmd == "eldorado")
+				infiniteMoney = !infiniteMoney;
 		}
 		else if(cmd == "icheat")
 		{
@@ -42,6 +45,11 @@ public class Cheats
 	public static boolean isFastFarmlandGrow()
 	{
 		return enabled && fastFarmlandGrow;
+	}
+
+	public static boolean isInfiniteMoney()
+	{
+		return enabled && infiniteMoney;
 	}
 
 }

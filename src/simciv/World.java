@@ -15,7 +15,8 @@ import simciv.rendering.SortedRender;
 import simciv.units.Unit;
 
 /**
- * The world contains the terrain and the city (units and buildings)
+ * The world contains the terrain and the city (units and buildings).
+ * Note : units don't all belong to the city (ducks, nomads...)
  * @author Marc
  *
  */
@@ -23,7 +24,8 @@ public class World
 {
 	public static boolean renderFancyUnitsMovements = true;
 	
-	public Map map;	
+	public Map map;
+	public PlayerCity playerCity;
 	private HashMap<Integer,Unit> units = new HashMap<Integer,Unit>();
 	private HashMap<Integer,Building> buildings = new HashMap<Integer,Building>();
 	private List<VisualEffect> graphicalEffects = new ArrayList<VisualEffect>();
@@ -32,6 +34,7 @@ public class World
 	public World(int width, int height)
 	{
 		map = new Map(width, height);
+		playerCity = new PlayerCity();
 	}
 		
 	/**

@@ -52,8 +52,9 @@
 	
 	<resource type="image" id="uiRedCross">red_cross.png</resource>
 	<resource type="image" id="uiMinimapMask">minimap_mask.png</resource>
-	<resource type="image" id="uiIndicatorsPopulation">citizen_icon.png</resource>
 	<resource type="image" id="uiResourceBar">resource_bar.png</resource>
+	<resource type="image" id="uiIndicatorsPopulation">citizen_icon.png</resource>
+	<resource type="image" id="uiIndicatorsMoney">ui_money.png</resource>
 	
 	<resource type="image" id="effectGreenStar">green_star.png</resource>
 	

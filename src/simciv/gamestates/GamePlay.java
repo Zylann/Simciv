@@ -21,7 +21,7 @@ import simciv.ui.Menu;
 import simciv.ui.MenuItem;
 import simciv.ui.Minimap;
 import simciv.ui.PushButton;
-import simciv.ui.ResourceBar;
+import simciv.ui.IndicatorsBar;
 import simciv.ui.RootPane;
 import simciv.ui.ToolButton;
 import simciv.ui.ToolButtonGroup;
@@ -49,7 +49,7 @@ public class GamePlay extends UIBasicGameState
 	private Window minimapWindow;
 	private Window pauseWindow;
 	private MinimapUpdater minimapUpdater;
-	private ResourceBar resourceBar;
+	private IndicatorsBar indicatorsBar;
 	private boolean closeRequested = false;
 	private boolean paused = false;
 	private boolean debugInfoVisible = false;
@@ -192,9 +192,9 @@ public class GamePlay extends UIBasicGameState
 		
 		// Resource bar
 		
-		resourceBar = new ResourceBar(ui, 0, 0);
-		resourceBar.setPosition(ui.getWidth() - resourceBar.getWidth() - 10, 10);
-		ui.add(resourceBar);
+		indicatorsBar = new IndicatorsBar(ui, 0, 0);
+		indicatorsBar.setPosition(ui.getWidth() - indicatorsBar.getWidth() - 10, 10);
+		ui.add(indicatorsBar);
 		
 		// Info bar
 
@@ -253,7 +253,10 @@ public class GamePlay extends UIBasicGameState
 		minimapUpdater.update(delta);
 		minimap.setViz(minimapUpdater.getViz());
 		
-		resourceBar.update(Citizen.totalCount, Citizen.totalWithJob);
+		indicatorsBar.update(
+				Citizen.totalCount,
+				Citizen.totalWithJob,
+				world.playerCity.getMoney());
 		
 		// debug
 		updateTime = gc.getTime() - beginUpdateTime;

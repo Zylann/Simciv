@@ -14,6 +14,7 @@ public class Images
 	public Image buildHouseLv2;
 	public Image buildActiveWarehouse;
 	public Image buildInactiveWarehouse;
+//	public Image buildTaxmenOffice;
 	
 	// Units
 	public Image unitCitizen;
@@ -53,6 +54,7 @@ public class Images
 	public Image uiWindowCloseButton;
 	public Image uiMinimapMask;
 	public Image uiIndicatorsPopulation;
+	public Image uiIndicatorsMoney;
 	public Image uiResourceBar;
 	public Image uiPushButton;
 	public Image uiProgressBar;

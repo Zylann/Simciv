@@ -39,7 +39,7 @@ public class FarmLand extends Workplace
 	static
 	{
 		properties = new BuildingProperties("Farmland");
-		properties.setUnitsCapacity(5).setSize(3, 3, 0).setCost(100);
+		properties.setUnitsCapacity(5).setSize(3, 3, 0).setCost(10);
 	}
 	
 	public FarmLand(World w)

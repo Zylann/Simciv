@@ -11,6 +11,8 @@ import simciv.content.Content;
 
 public class Road
 {
+	public static final int cost = 1;
+	
 	static Image tileset;
 	static Image tiles[];
 	

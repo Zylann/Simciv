@@ -32,10 +32,10 @@ public class House extends Building
 		properties = new BuildingProperties[MAX_LEVEL+1];
 		
 		properties[0] = new BuildingProperties("House lv.1")
-			.setUnitsCapacity(2).setCost(50).setSize(1, 1, 1);
+			.setUnitsCapacity(2).setCost(5).setSize(1, 1, 1);
 		
 		properties[1] = new BuildingProperties("House lv.2")
-			.setUnitsCapacity(8).setCost(250).setSize(2, 2, 2);
+			.setUnitsCapacity(8).setCost(25).setSize(2, 2, 2);
 	}
 
 	// References to citizen living here

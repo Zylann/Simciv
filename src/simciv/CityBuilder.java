@@ -30,6 +30,8 @@ public class CityBuilder
  	public static final int MODE_HOUSE = 3;
 	public static final int MODE_BUILDS = 4;
  	//public static final int MODE_COUNT = 5; // used to count modes
+	
+	public static final int erasingCost = 1;
 
  	// Map cursors
 	private Vector2i pos = new Vector2i(); // current pointed cell
@@ -298,6 +300,7 @@ public class CityBuilder
 		// TODO enable auto-pathfinding by letting the mouse pressed
 		if(worldRef.map.placeRoad(pos.x, pos.y))
 		{
+			worldRef.playerCity.buy(Road.cost);
 			placeSound.play();
 		}
 	}
@@ -307,6 +310,13 @@ public class CityBuilder
 		return erase(x, y, true);
 	}
 	
+	/**
+	 * This is the main erase method. All things erasing may use it.
+	 * @param x
+	 * @param y
+	 * @param notify : if we erased something, play a sound
+	 * @return true if something has been erased
+	 */
 	private boolean erase(int x, int y, boolean notify)
 	{
 		boolean res = false;
@@ -314,8 +324,12 @@ public class CityBuilder
 			res = true;
 		else if(worldRef.eraseBuilding(x, y))
 			res = true;
-		if(res && notify)
-			eraseSound.play();
+		if(res)
+		{
+			worldRef.playerCity.buy(erasingCost);
+			if(notify)
+				eraseSound.play();
+		}
 		return res;
 	}
 	
@@ -340,6 +354,13 @@ public class CityBuilder
 		return placeBuilding(x, y, true);
 	}
 	
+	/**
+	 * The main build placing method. All others may use this one.
+	 * @param x
+	 * @param y
+	 * @param notify : if the build has been placed, play a sound
+	 * @return true if the build has been placed, false otherwise
+	 */
 	private boolean placeBuilding(int x, int y, boolean notify)
 	{
 		// Create a new building
@@ -347,8 +368,10 @@ public class CityBuilder
 
 		if(b != null)
 		{
+			// Place it if possible
 			if(worldRef.placeBuilding(b, x, y))
 			{
+				worldRef.playerCity.buy(b.getProperties().cost);
 				if(notify)
 				{
 					placeSound.play();

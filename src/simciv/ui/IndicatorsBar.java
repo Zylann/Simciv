@@ -7,26 +7,34 @@ import org.newdawn.slick.SpriteSheet;
 
 import simciv.content.Content;
 
-public class ResourceBar extends BasicWidget
+/**
+ * This is a bar displaying main city indicators.
+ * @author Marc
+ *
+ */
+public class IndicatorsBar extends BasicWidget
 {
 	private static SpriteSheet background;
 	private static final int HEIGHT = 24;
 	private static final int WIDTH = 100;
 	
+	// Note : these attributes are for display only
 	private int population;
 	private int populationAtWork;
+	private int money;
 	
-	public ResourceBar(WidgetContainer parent, int x, int y)
+	public IndicatorsBar(WidgetContainer parent, int x, int y)
 	{
 		super(parent, x, y, WIDTH, HEIGHT);
 		if(background == null)
 			background = new SpriteSheet(Content.images.uiResourceBar, HEIGHT, HEIGHT);
 	}
 	
-	public void update(int population, int populationAtWork)
+	public void update(int population, int populationAtWork, int money)
 	{
 		this.population = population;
 		this.populationAtWork = populationAtWork;
+		this.money = money;
 	}
 
 	@Override
@@ -34,21 +42,22 @@ public class ResourceBar extends BasicWidget
 	{		
 		gfx.pushTransform();
 		gfx.translate(getAbsoluteX(), getAbsoluteY());
-
-		int b = height;
 	
 		// Background
-		gfx.drawImage(background.getSprite(0, 0), 0, 0);
-		UIRenderer.instance().renderImageRepeatXY(gfx, background.getSprite(1, 0), b, 0, width - 3 * b, b);
-		gfx.drawImage(background.getSprite(2, 0), width - 2 * b, 0);
+		int b = height;
+		UIRenderer.instance().renderBar(gfx, background, 0, 0, width, height, b, 0);
 		
-		// Icon
-		gfx.drawImage(Content.images.uiIndicatorsPopulation, 4, 4);
-		
-		// Text
-		String populationText = "" + population;
 		gfx.setColor(Color.black);
+
+		// Population
+		gfx.drawImage(Content.images.uiIndicatorsPopulation, 4, 4); // Icon
+		String populationText = "" + population; // Text
 		gfx.drawString(populationText, 24, 6);
+		
+		// Money
+		gfx.drawImage(Content.images.uiIndicatorsMoney, 50, 4); // Icon
+		String moneyText = "" + money;
+		gfx.drawString(moneyText, 70, 6); // Text
 		
 		// Work ratio
 		int h = height - 7;
