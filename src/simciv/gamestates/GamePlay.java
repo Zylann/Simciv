@@ -177,6 +177,22 @@ public class GamePlay extends UIBasicGameState
 		buildCategoryButtonsGroup.add(industryBuildsButton);
 		ui.add(industryBuildsButton);
 		
+		// Administration
+		
+		ToolButton adminBuildsButton = new ToolButton(ui, 154, 10, buildCategoryButtonsGroup);
+		
+		Menu adminBuildsMenu = new Menu(ui, 10, 34, 128);
+		adminBuildsMenu
+			.add(new MenuItem(adminBuildsMenu, "Taxmen office"), new SelectBuildAction(adminBuildsButton, "TaxmenOffice"))
+			.setNullActionListener(new SelectBuildAction(adminBuildsButton, null))
+			.setVisible(false);
+		ui.add(adminBuildsMenu);
+			
+		adminBuildsButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_BUILDS, adminBuildsMenu));
+		adminBuildsButton.icon = Content.images.uiCategAdmin;
+		buildCategoryButtonsGroup.add(adminBuildsButton);
+		ui.add(adminBuildsButton);
+		
 		// Minimap
 		
 		minimapWindow = new Window(ui, 0, 0, 134, 134, "Minimap");

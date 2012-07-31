@@ -40,6 +40,11 @@ public abstract class Building extends Entity
 		return getProperties().height;
 	}
 	
+	public int getZHeight()
+	{
+		return getProperties().zHeight;
+	}
+	
 	public boolean is1x1()
 	{
 		return getProperties().width == 1 && getProperties().height == 1;
@@ -94,6 +99,8 @@ public abstract class Building extends Entity
 	{
 		return map.canPlaceObject(x, y, getWidth(), getHeight());
 	}
+	
+	// TODO render method that handles translating
 	
 }
 

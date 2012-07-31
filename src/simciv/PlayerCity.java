@@ -8,7 +8,7 @@ package simciv;
 public class PlayerCity
 {
 	protected int money;
-//	protected float incomeTaxRatio;
+	protected float incomeTaxRatio;
 	
 	public PlayerCity()
 	{
@@ -31,20 +31,20 @@ public class PlayerCity
 			money -= cost;
 	}
 	
-//	public float getIncomeTaxRatio()
-//	{
-//		return incomeTaxRatio;
-//	}
-//	
-//	public void setIncomeTaxRatio(float r)
-//	{
-//		if(r > 1)
-//			incomeTaxRatio = 1;
-//		else if(r < 0)
-//			incomeTaxRatio = 0;
-//		else
-//			incomeTaxRatio = r;
-//	}
+	public float getIncomeTaxRatio()
+	{
+		return incomeTaxRatio;
+	}
+	
+	public void setIncomeTaxRatio(float r)
+	{
+		if(r > 1)
+			incomeTaxRatio = 1;
+		else if(r < 0)
+			incomeTaxRatio = 0;
+		else
+			incomeTaxRatio = r;
+	}
 
 }
 
