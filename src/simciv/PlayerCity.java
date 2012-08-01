@@ -7,25 +7,26 @@ package simciv;
  */
 public class PlayerCity
 {
-	protected int money;
+	protected float money;
 	protected float incomeTaxRatio;
 	
 	public PlayerCity()
 	{
 		money = 3000;
+		incomeTaxRatio = 0.09f; // 9 %
 	}
 	
-	public int getMoney()
+	public float getMoney()
 	{
 		return money;
 	}
 		
-	public void setMoney(int m)
+	public void setMoney(float m)
 	{
 		money = m;
 	}
 	
-	public void buy(int cost)
+	public void buy(float cost)
 	{
 		if(!Cheats.isInfiniteMoney())
 			money -= cost;
@@ -44,6 +45,11 @@ public class PlayerCity
 			incomeTaxRatio = 0;
 		else
 			incomeTaxRatio = r;
+	}
+
+	public void gainMoney(float amount)
+	{
+		money += amount;
 	}
 
 }

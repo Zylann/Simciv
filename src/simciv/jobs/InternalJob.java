@@ -31,8 +31,9 @@ public class InternalJob extends Job
 	{
 		me.setMovement(null);
 		me.setDirection(Direction2D.NONE);
+		me.enterBuilding(workplaceRef);
 	}
-	
+
 	@Override
 	public byte getID()
 	{
@@ -43,6 +44,18 @@ public class InternalJob extends Job
 	public final void renderUnit(Graphics gfx)
 	{
 		// Nothing
+	}
+
+	@Override
+	public int getIncome()
+	{
+		return 5;
+	}
+	
+	@Override
+	public boolean isInternal()
+	{
+		return true;
 	}
 
 }

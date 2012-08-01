@@ -34,14 +34,18 @@ public class Citizen extends Unit
 	private Building buildingRef; // reference to the building the citizen currently is in
 	private House houseRef; // if null, the Citizen is homeless
 	private Job job; // Job of the Citizen
-	private int tickTime; // Tick time interval in milliseconds
+	private int basicTickTime; // Tick time interval in milliseconds (basic value)
+	private int tickTime; // Tick time interval in milliseconds (modified value)
+	private boolean beenTaxed; // true if the citizen have been asked to pay his taxes this month
 
 	public Citizen(World w)
 	{
 		super(w);
 		// Each citizen have a slightly different tickTime
-		tickTime = 500 + (int)(100.f * Math.random()) - 50;		
+		basicTickTime = 500 + (int)(100.f * Math.random()) - 50;
+		tickTime = basicTickTime;
 		setMovement(new RandomRoadMovement());
+		beenTaxed = false;
 		
 		if(thinkingAnim == null)
 		{
@@ -49,6 +53,19 @@ public class Citizen extends Unit
 			int b = thinkingSprite.getHeight();
 			thinkingAnim = new SpriteSheet(thinkingSprite, b, b);
 		}
+	}
+	
+	public boolean isBeenTaxed()
+	{
+		return beenTaxed;
+	}
+	
+	public float payTax()
+	{
+		beenTaxed = true;
+		if(job != null)
+			return worldRef.playerCity.getIncomeTaxRatio() * (float)job.getIncome();
+		return 0;
 	}
 	
 	@Override
@@ -71,6 +88,8 @@ public class Citizen extends Unit
 	@Override
 	public void tick()
 	{
+		if(beenTaxed && worldRef.time.getDay() == 0)
+			beenTaxed = false;
 		if(job == null)
 			searchJob();
 		else
@@ -103,6 +122,7 @@ public class Citizen extends Unit
 					if(job != null) // I got the job !
 					{
 						job.onBegin();
+						tickTime = basicTickTime + job.getTickTimeOverride();
 						// Visual feedback
 						worldRef.addGraphicalEffect(
 								new RisingIcon(
@@ -160,6 +180,7 @@ public class Citizen extends Unit
 			job.onQuit(notifyWorkplace);
 		job = null;
 		totalWithJob--;
+		tickTime = basicTickTime;
 	}
 
 	/**

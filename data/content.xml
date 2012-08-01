@@ -20,6 +20,7 @@
 	<resource type="image" id="unitCitizen">citizen.png</resource>
 	<resource type="image" id="unitConveyer">transporter_only.png</resource>
 	<resource type="image" id="unitNomad">nomad.png</resource>
+	<resource type="image" id="unitTaxman">taxman.png</resource>
 	<resource type="image" id="unitDuck">duck.png</resource>
 	<resource type="image" id="unitThinking">think.png</resource>
 	
@@ -59,6 +60,7 @@
 	<resource type="image" id="uiIndicatorsMoney">ui_money.png</resource>
 	
 	<resource type="image" id="effectGreenStar">green_star.png</resource>
+	<resource type="image" id="effectGold">gold_fx.png</resource>
 	
 	<resource type="image" id="test">test.png</resource>
 	

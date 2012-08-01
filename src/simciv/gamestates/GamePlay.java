@@ -272,7 +272,8 @@ public class GamePlay extends UIBasicGameState
 		indicatorsBar.update(
 				Citizen.totalCount,
 				Citizen.totalWithJob,
-				world.playerCity.getMoney());
+				(int) world.playerCity.getMoney(),
+				world.time.getMonthProgressRatio());
 		
 		// debug
 		updateTime = gc.getTime() - beginUpdateTime;

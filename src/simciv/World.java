@@ -26,17 +26,18 @@ public class World
 	
 	public Map map;
 	public PlayerCity playerCity;
+	public WorldTime time;
 	private HashMap<Integer,Unit> units = new HashMap<Integer,Unit>();
 	private HashMap<Integer,Building> buildings = new HashMap<Integer,Building>();
 	private List<VisualEffect> graphicalEffects = new ArrayList<VisualEffect>();
-	private int time; // World time in milliseconds
 
 	public World(int width, int height)
 	{
 		map = new Map(width, height);
 		playerCity = new PlayerCity();
+		time = new WorldTime();
 	}
-		
+	
 	/**
 	 * Updates the world, and calls the tick() method on buildings
 	 * and units at each time interval (tickTime).
@@ -44,7 +45,7 @@ public class World
 	 */
 	public void update(GameContainer gc, StateBasedGame game, int delta)
 	{
-		time += delta;
+		time.update(delta);
 		
 		ArrayList<Unit> unitsToRemove = new ArrayList<Unit>();
 		for(Unit u : units.values())

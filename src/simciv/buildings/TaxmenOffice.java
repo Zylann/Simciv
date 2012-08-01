@@ -8,7 +8,9 @@ import org.newdawn.slick.state.StateBasedGame;
 import simciv.Game;
 import simciv.World;
 import simciv.content.Content;
+import simciv.jobs.InternalJob;
 import simciv.jobs.Job;
+import simciv.jobs.Taxman;
 import simciv.units.Citizen;
 
 public class TaxmenOffice extends Workplace
@@ -19,12 +21,14 @@ public class TaxmenOffice extends Workplace
 	static
 	{
 		properties = new BuildingProperties("Taxmen office");
-		properties.setCost(100).setSize(2, 2, 1).setUnitsCapacity(6);
+		properties.setCost(200).setSize(2, 2, 1).setUnitsCapacity(6);
 	}
 	
 	public TaxmenOffice(World w)
 	{
 		super(w);
+		state = Building.NORMAL;
+
 		if(sprites == null)
 		{
 			sprites = new SpriteSheet(Content.images.buildTaxmenOffice, 
@@ -39,12 +43,23 @@ public class TaxmenOffice extends Workplace
 		if(state == Building.NORMAL)
 		{
 			if(!needEmployees())
+			{
 				state = Building.ACTIVE;
+				for(Citizen emp : employees.values())
+				{
+					if(emp.getJob().getID() == Job.TAXMAN && !emp.isOut())
+						emp.exitBuilding(); // mission begin
+				}
+			}
 		}
 		else if(state == Building.ACTIVE)
 		{
 			if(needEmployees())
+			{
+				System.out.println("aaa");
 				state = Building.NORMAL;
+				// TODO out employees must end their mission
+			}
 		}
 	}
 
@@ -69,18 +84,17 @@ public class TaxmenOffice extends Workplace
 	@Override
 	public Job giveNextJob(Citizen citizen)
 	{
-		// Future code
-//		if(needEmployees())
-//		{
-//			Job job;
-//			if(employees.size() <= 3)
-//				Job job = new InternalJob(citizen, this, Job.TAXMEN_OFFICE_INTERNAL);
-//			else
-//				Job job = new Taxman(citizen, this);
-//				
-//			addEmployee(citizen);
-//			return job;
-//		}
+		if(needEmployees())
+		{
+			Job job;
+			if(employees.size() < 4) // 4 internals,
+				job = new InternalJob(citizen, this, Job.TAXMEN_OFFICE_INTERNAL);
+			else // and 2 for patrol
+				job = new Taxman(citizen, this);
+				
+			addEmployee(citizen);
+			return job;
+		}
 		return null;
 	}
 

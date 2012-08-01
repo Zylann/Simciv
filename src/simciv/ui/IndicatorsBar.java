@@ -16,12 +16,13 @@ public class IndicatorsBar extends BasicWidget
 {
 	private static SpriteSheet background;
 	private static final int HEIGHT = 24;
-	private static final int WIDTH = 100;
+	private static final int WIDTH = 110;
 	
 	// Note : these attributes are for display only
 	private int population;
 	private int populationAtWork;
 	private int money;
+	private float monthProgressRatio;
 	
 	public IndicatorsBar(WidgetContainer parent, int x, int y)
 	{
@@ -30,11 +31,17 @@ public class IndicatorsBar extends BasicWidget
 			background = new SpriteSheet(Content.images.uiResourceBar, HEIGHT, HEIGHT);
 	}
 	
-	public void update(int population, int populationAtWork, int money)
+	public void setWorldTime(float monthProgressRatio)
+	{
+		this.monthProgressRatio = monthProgressRatio;
+	}
+	
+	public void update(int population, int populationAtWork, int money, float monthProgressRatio)
 	{
 		this.population = population;
 		this.populationAtWork = populationAtWork;
 		this.money = money;
+		this.monthProgressRatio = monthProgressRatio;
 	}
 
 	@Override
@@ -59,10 +66,13 @@ public class IndicatorsBar extends BasicWidget
 		String moneyText = "" + money;
 		gfx.drawString(moneyText, 70, 6); // Text
 		
-		// Work ratio
+		// Progress bars :
+		
 		int h = height - 7;
-		int x = 20;
 		int y = height - 4;
+
+		// Work ratio
+		int x = 20;
 		if(population != 0)
 		{
 			int t = (int) (h * (float)populationAtWork / (float)population);
@@ -76,8 +86,17 @@ public class IndicatorsBar extends BasicWidget
 			gfx.setColor(Color.darkGray);
 			gfx.fillRect(x, y - h, 2, h);
 		}
-		
+
+		// Month progress
+		x = 66;
+		int t = (int) ((float)h * monthProgressRatio);
+		gfx.setColor(new Color(32, 32, 255));
+		gfx.fillRect(x, y - t, 2, t);
+		gfx.setColor(Color.darkGray);
+		gfx.fillRect(x, y - h, 2, h - t);
+				
 		gfx.popTransform();
+		
 	}
 
 }

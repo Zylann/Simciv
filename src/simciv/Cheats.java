@@ -10,8 +10,9 @@ public class Cheats
 {
 	private static boolean enabled = false;
 	private static boolean fastCitizenProduction = true;
-	private static boolean fastFarmlandGrow = true;
+	private static boolean fastFarmlandGrow = false;
 	private static boolean infiniteMoney = false;
+	private static boolean fastTime = true;
 	
 	public static void onCommand(String cmd)
 	{
@@ -50,6 +51,11 @@ public class Cheats
 	public static boolean isInfiniteMoney()
 	{
 		return enabled && infiniteMoney;
+	}
+
+	public static boolean isFastTime()
+	{
+		return enabled && fastTime;
 	}
 
 }

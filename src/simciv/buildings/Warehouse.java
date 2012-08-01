@@ -28,7 +28,7 @@ public class Warehouse extends Workplace
 	static
 	{
 		properties = new BuildingProperties("Warehouse");
-		properties.setUnitsCapacity(4).setSize(3, 3, 1).setCost(25);
+		properties.setUnitsCapacity(4).setSize(3, 3, 1).setCost(50);
 	}
 	
 	public Warehouse(World w)

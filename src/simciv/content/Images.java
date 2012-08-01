@@ -22,6 +22,7 @@ public class Images
 	public Image unitNomad;
 	public Image unitDuck;
 	public Image unitThinking;
+	public Image unitTaxman;
 	
 	// Resources
 	public Image resourceEmptyCarriage;
@@ -63,6 +64,7 @@ public class Images
 	
 	// Effects
 	public Image effectGreenStar;
+	public Image effectGold;
 	
 	// Test
 	public Image test;

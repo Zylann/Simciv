@@ -16,6 +16,8 @@ public abstract class Job
 	public static final byte FARMER = 1;
 	public static final byte WAREHOUSE_INTERNAL = 2;
 	public static final byte CONVEYER = 3;
+	public static final byte TAXMEN_OFFICE_INTERNAL = 4;
+	public static final byte TAXMAN = 5;
 	
 	protected Citizen me; // The Citizen doing the job
 	protected Workplace workplaceRef; // must not be null (otherwise the job may be useless)
@@ -48,7 +50,9 @@ public abstract class Job
 	public void onBegin()
 	{
 	}
-		
+	
+	// TODO missionBegin / missionEnd system
+	
 	/**
 	 * Called when the citizen quits his job or is fired.
 	 * Overrides must call this superclass method in order to allow workplace notification.
@@ -58,6 +62,8 @@ public abstract class Job
 	{
 		if(workplaceRef != null && notifyWorkplace)
 			workplaceRef.removeEmployeeAndMakeRedundant(me.getID());
+		if(!me.isOut())
+			me.exitBuilding();
 		me.setMovement(new RandomRoadMovement());
 	}
 
@@ -66,6 +72,30 @@ public abstract class Job
 	 * @param citizen
 	 */
 	public abstract void renderUnit(Graphics gfx);
+	
+	/**
+	 * Returns the amount of money the citizen gets paid of
+	 * (Note that citizen don't really earn money, this is just a mean to
+	 * evaluate their wealth).
+	 * @return
+	 */
+	public abstract int getIncome();
+	
+	/**
+	 * Gets the tick time modification applied to the unit.
+	 * It is applied only when the job begins.
+	 * Calculation is : newTickTime = tickTime + getTickTimeOverride().
+	 * @return
+	 */
+	public int getTickTimeOverride()
+	{
+		return 0;
+	}
+
+	public boolean isInternal()
+	{
+		return false;
+	}
 	
 }
 
