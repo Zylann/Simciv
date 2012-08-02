@@ -7,7 +7,7 @@ package simciv;
  */
 public class WorldTime
 {
-	private static final int millisecondsPerDay = 8000; // 1s = 3h
+	private static final int millisecondsPerDay = 6000; // 1s = 4h
 	
 	private int time; // in real milliseconds
 	private int day; // in virtual days

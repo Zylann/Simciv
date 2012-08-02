@@ -8,6 +8,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.CityBuilder;
+import simciv.Game;
 import simciv.IntRange2D;
 import simciv.MinimapUpdater;
 import simciv.Terrain;
@@ -252,15 +253,15 @@ public class GamePlay extends UIBasicGameState
 		
 		if(closeRequested)
 			gc.exit();
-				
+		
 		view.update(gc, delta / 1000.f);
-		builder.cursorMoved(pointedCell);
 		Terrain.updateTerrains(delta);
 		
 		if(!paused)
 		{
 			// Pointed cell
 			pointedCell = view.convertCoordsToMap(input.getMouseX(), input.getMouseY());
+			builder.cursorMoved(pointedCell);
 
 			world.update(gc, game, delta);
 			builder.update(gc);
@@ -290,15 +291,19 @@ public class GamePlay extends UIBasicGameState
 		long beginRenderTime = gc.getTime();
 
 		// World view
+		// FIXME cursor being shifted a bit sometimes. Can't figure out how to reproduce it...
 		view.configureGraphicsForWorldRendering(gfx);
 		IntRange2D mapRange = view.getMapRange(gc);
 		
+		gfx.setColor(Color.blue);
+		gfx.drawRect(Game.tilesSize * pointedCell.x, Game.tilesSize * pointedCell.y, Game.tilesSize, Game.tilesSize);
+
 		/* World */
-		
+				
 		world.render(gc, game, gfx, mapRange);
 		
 		/* Builder */
-		
+				
 		builder.render(gfx);
 		
 		/* HUD */
@@ -349,7 +354,10 @@ public class GamePlay extends UIBasicGameState
 	public void mouseMoved(int oldx, int oldy, int newx, int newy)
 	{
 		if(!paused)
+		{
+			pointedCell = view.convertCoordsToMap(newx, newy);
 			builder.cursorMoved(pointedCell);
+		}
 	}
 
 	@Override
@@ -376,6 +384,8 @@ public class GamePlay extends UIBasicGameState
 		}
 		if(key == Input.KEY_TAB)
 			toggleShowMinimap();
+		if(key == Input.KEY_SPACE)
+			world.setFastForward(!world.isFastForward()); // TODO TEST
 	}
 	
 	public void togglePause()

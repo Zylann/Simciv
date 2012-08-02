@@ -13,7 +13,7 @@ public class PlayerCity
 	public PlayerCity()
 	{
 		money = 3000;
-		incomeTaxRatio = 0.09f; // 9 %
+		incomeTaxRatio = 0.12f; // 12 %
 	}
 	
 	public float getMoney()

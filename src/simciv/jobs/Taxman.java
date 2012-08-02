@@ -57,7 +57,7 @@ public class Taxman extends Job
 	@Override
 	public int getIncome()
 	{
-		return 10;
+		return 16;
 	}
 
 	@Override

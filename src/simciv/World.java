@@ -6,12 +6,14 @@ import java.util.List;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.buildings.Building;
 import simciv.buildings.Warehouse;
 import simciv.effects.VisualEffect;
 import simciv.rendering.SortedRender;
+import simciv.units.Citizen;
 import simciv.units.Unit;
 
 /**
@@ -27,6 +29,7 @@ public class World
 	public Map map;
 	public PlayerCity playerCity;
 	public WorldTime time;
+	private transient boolean fastForward;
 	private HashMap<Integer,Unit> units = new HashMap<Integer,Unit>();
 	private HashMap<Integer,Building> buildings = new HashMap<Integer,Building>();
 	private List<VisualEffect> graphicalEffects = new ArrayList<VisualEffect>();
@@ -38,6 +41,23 @@ public class World
 		time = new WorldTime();
 	}
 	
+	public boolean isFastForward()
+	{
+		return fastForward;
+	}
+	
+	public void setFastForward(boolean e)
+	{
+		if(Citizen.totalCount < 1000)
+		{
+			fastForward = e;
+			if(fastForward)
+				System.out.println("Fast forward ON");
+			else
+				System.out.println("Fast forward OFF");
+		}
+	}
+	
 	/**
 	 * Updates the world, and calls the tick() method on buildings
 	 * and units at each time interval (tickTime).
@@ -45,6 +65,9 @@ public class World
 	 */
 	public void update(GameContainer gc, StateBasedGame game, int delta)
 	{
+		if(fastForward)
+			delta *= 4;
+		
 		time.update(delta);
 		
 		ArrayList<Unit> unitsToRemove = new ArrayList<Unit>();
@@ -70,6 +93,9 @@ public class World
 		
 		for(Unit u : unitsToRemove)
 			removeUnit(u.getID());
+		
+		if(Citizen.totalCount > 1000)
+			fastForward = false;
 		
 		// Update graphical effects
 		ArrayList<VisualEffect> finishedGraphicalEffects = new ArrayList<VisualEffect>();
@@ -232,22 +258,28 @@ public class World
 				
 		map.registerElementsForSortedRender(mapRange, renderMgr);
 
-		// Register buildings
-		for(Building b : buildings.values())
+		if(!gc.getInput().isKeyDown(Input.KEY_1))
 		{
-			if(mapRange.intersects(
-					b.getX(),
-					b.getY(),
-					b.getX() + b.getWidth() - 1,
-					b.getY() + b.getHeight() - 1))
-				renderMgr.add(b);
+			// Register buildings
+			for(Building b : buildings.values())
+			{
+				if(mapRange.intersects(
+						b.getX(),
+						b.getY(),
+						b.getX() + b.getWidth() - 1,
+						b.getY() + b.getHeight() - 1))
+					renderMgr.add(b);
+			}
 		}
 
-		// Register units
-		for(Unit u : units.values())
+		if(!gc.getInput().isKeyDown(Input.KEY_2))
 		{
-			if(u.isVisible() && mapRange.contains(u.getX(), u.getY()))
-				renderMgr.add(u);
+			// Register units
+			for(Unit u : units.values())
+			{
+				if(u.isVisible() && mapRange.contains(u.getX(), u.getY()))
+					renderMgr.add(u);
+			}
 		}
 		
 //		long timeBefore = System.currentTimeMillis(); // for debug

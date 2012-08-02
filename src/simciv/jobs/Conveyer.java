@@ -215,7 +215,7 @@ public class Conveyer extends Job
 	@Override
 	public int getIncome()
 	{
-		return 15;
+		return 14;
 	}
 
 }

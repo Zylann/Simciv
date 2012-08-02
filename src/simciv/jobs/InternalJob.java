@@ -49,7 +49,7 @@ public class InternalJob extends Job
 	@Override
 	public int getIncome()
 	{
-		return 10;
+		return 12;
 	}
 	
 	@Override
