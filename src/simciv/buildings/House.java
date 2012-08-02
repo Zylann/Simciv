@@ -10,6 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Cheats;
 import simciv.Game;
+import simciv.SoundEngine;
 import simciv.Vector2i;
 import simciv.World;
 import simciv.content.Content;
@@ -137,7 +138,7 @@ public class House extends Building
 		}
 		
 		if(citizensProduced != 0)
-			Content.sounds.unitNewCitizen.play(1.f, 0.25f);
+			SoundEngine.instance().play(Content.sounds.unitNewCitizen, 1.f, 0.25f);
 		
 		return citizensProduced;
 	}
