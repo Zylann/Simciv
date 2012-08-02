@@ -117,6 +117,13 @@ public class View
 		gfx.scale(scale, scale);
 	}
 	
+	/**
+	 * Converts screen coordinates into map coordinates,
+	 * using the current state of the view
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public Vector2i convertCoordsToMap(int x, int y)
 	{
 		Vector2i pos = new Vector2i(

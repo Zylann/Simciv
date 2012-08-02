@@ -15,6 +15,7 @@ import org.newdawn.slick.Sound;
  * @author Marc
  *
  */
+// TODO texture packs support
 public class Content
 {
 	// Direct access

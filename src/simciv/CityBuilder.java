@@ -110,7 +110,6 @@ public class CityBuilder
 	
 	public void render(Graphics gfx)
 	{
-		// FIXME cursor being shifted a bit sometimes. Can't figure out how to reproduce it...
 		// Pointed cell
 		if(worldRef.map.contains(pos.x, pos.y))
 		{
