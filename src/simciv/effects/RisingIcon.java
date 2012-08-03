@@ -36,3 +36,7 @@ public class RisingIcon extends VisualEffect
 		gfx.drawImage(sprite, posX, posY, color);
 	}
 }
+
+
+
+

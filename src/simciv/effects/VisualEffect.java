@@ -43,7 +43,7 @@ public abstract class VisualEffect
 		time += delta;
 		updateEffect(delta);
 		if(time >= duration)
-			return;
+			finished = true;
 	}
 	
 	protected abstract void updateEffect(int delta);

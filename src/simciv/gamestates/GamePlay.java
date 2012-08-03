@@ -7,10 +7,11 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import simciv.Cheats;
 import simciv.CityBuilder;
-import simciv.Game;
 import simciv.IntRange2D;
 import simciv.MinimapUpdater;
+import simciv.SoundEngine;
 import simciv.Terrain;
 import simciv.Vector2i;
 import simciv.View;
@@ -228,6 +229,9 @@ public class GamePlay extends UIBasicGameState
 		view = new View(0, 0, 2);
 		view.setWorldSize(world.map.getWidth(), world.map.getHeight());
 		
+		// Because we will always draw the map on the entire screen at each frame
+		gc.setClearEachFrame(false);
+		
 		super.enter(gc, game);
 	}
 
@@ -235,6 +239,7 @@ public class GamePlay extends UIBasicGameState
 	public void leave(GameContainer gc, StateBasedGame game)
 			throws SlickException
 	{
+		gc.setClearEachFrame(true);
 		super.leave(gc, game);
 	}
 
@@ -270,6 +275,8 @@ public class GamePlay extends UIBasicGameState
 		minimapUpdater.update(delta);
 		minimap.setViz(minimapUpdater.getViz());
 		
+		SoundEngine.instance().update(delta);
+		
 		indicatorsBar.update(
 				Citizen.totalCount,
 				Citizen.totalWithJob,
@@ -291,19 +298,15 @@ public class GamePlay extends UIBasicGameState
 		long beginRenderTime = gc.getTime();
 
 		// World view
-		// FIXME cursor being shifted a bit sometimes. Can't figure out how to reproduce it...
 		view.configureGraphicsForWorldRendering(gfx);
 		IntRange2D mapRange = view.getMapRange(gc);
 		
-		gfx.setColor(Color.blue);
-		gfx.drawRect(Game.tilesSize * pointedCell.x, Game.tilesSize * pointedCell.y, Game.tilesSize, Game.tilesSize);
-
 		/* World */
-				
+		
 		world.render(gc, game, gfx, mapRange);
 		
 		/* Builder */
-				
+		
 		builder.render(gfx);
 		
 		/* HUD */
@@ -317,7 +320,7 @@ public class GamePlay extends UIBasicGameState
 		
 		infoBar.setPosition(0, ui.getHeight() - infoBar.getHeight());
 		infoBar.setText(builder.getInfoText());
-
+		
 		// debug
 		renderTime = gc.getTime() - beginRenderTime;
 	}
@@ -384,8 +387,8 @@ public class GamePlay extends UIBasicGameState
 		}
 		if(key == Input.KEY_TAB)
 			toggleShowMinimap();
-		if(key == Input.KEY_SPACE)
-			world.setFastForward(!world.isFastForward()); // TODO TEST
+		if(key == Input.KEY_SPACE && Cheats.isFastForwardEnabled())
+			world.setFastForward(!world.isFastForward());
 	}
 	
 	public void togglePause()

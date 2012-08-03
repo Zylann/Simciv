@@ -115,7 +115,7 @@ public class CityBuilder
 		{
 			gfx.pushTransform();
 			gfx.scale(Game.tilesSize, Game.tilesSize);
-			
+						
 			if(mode == MODE_HOUSE || mode == MODE_BUILDS)
 			{
 				if(!cursorPress)
@@ -381,9 +381,7 @@ public class CityBuilder
 		}
 		return false;
 	}
-	
-	// TODO Limit nb sounds played at the same time
-	
+		
 	// SUGG add a tick delay to zone-placed buildings (because they are created at the same time) ?
 	
 	private int placeBuildingsFromZone()

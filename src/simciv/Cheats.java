@@ -12,7 +12,7 @@ public class Cheats
 	private static boolean fastCitizenProduction = true;
 	private static boolean fastFarmlandGrow = false;
 	private static boolean infiniteMoney = false;
-	private static boolean fastTime = true;
+	private static boolean fastForwardEnabled = true;
 	
 	public static void onCommand(String cmd)
 	{
@@ -26,6 +26,8 @@ public class Cheats
 				fastCitizenProduction = !fastCitizenProduction;
 			else if(cmd == "eldorado")
 				infiniteMoney = !infiniteMoney;
+			else if(cmd == "timelord")
+				fastForwardEnabled = !fastForwardEnabled;
 		}
 		else if(cmd == "icheat")
 		{
@@ -53,9 +55,9 @@ public class Cheats
 		return enabled && infiniteMoney;
 	}
 
-	public static boolean isFastTime()
+	public static boolean isFastForwardEnabled()
 	{
-		return enabled && fastTime;
+		return enabled && fastForwardEnabled ;
 	}
 
 }

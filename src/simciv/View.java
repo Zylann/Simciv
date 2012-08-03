@@ -35,6 +35,16 @@ public class View
 		worldSize.y = scale * Game.tilesSize * (sizeY > 0 ? sizeY : 0);
 	}
 	
+	public float getOriginX()
+	{
+		return origin.x;
+	}
+	
+	public float getOriginY()
+	{
+		return origin.y;
+	}
+	
 	public int getMapX()
 	{
 		return ((int)origin.x) / scale / Game.tilesSize;

@@ -49,13 +49,7 @@ public class World
 	public void setFastForward(boolean e)
 	{
 		if(Citizen.totalCount < 1000)
-		{
 			fastForward = e;
-			if(fastForward)
-				System.out.println("Fast forward ON");
-			else
-				System.out.println("Fast forward OFF");
-		}
 	}
 	
 	/**
@@ -286,12 +280,13 @@ public class World
 		
 		// Draw elements in the right order
 		map.renderGround(mapRange, gc, gfx); // Ground at first
+		
 		renderMgr.render(gc, game, gfx);
 		
 		// Draw effects on the top
 		for(VisualEffect e : graphicalEffects)
 			e.render(gfx);
-		
+				
 //		long time = System.currentTimeMillis() - timeBefore; // for debug
 //		if(gc.getInput().isKeyDown(Input.KEY_T))
 //			System.out.println(time);

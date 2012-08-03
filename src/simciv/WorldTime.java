@@ -24,10 +24,7 @@ public class WorldTime
 		time += delta;
 		
 		int lastDay = day;
-		if(Cheats.isFastTime())
-			day = (time / (millisecondsPerDay / 20)) % 30;
-		else
-			day = (time / millisecondsPerDay) % 30;
+		day = (time / millisecondsPerDay) % 30;
 		isNewYearDay = false;
 		
 		if(day == 0 && lastDay != 0)
