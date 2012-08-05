@@ -15,6 +15,7 @@ public class Images
 	public Image buildActiveWarehouse;
 	public Image buildInactiveWarehouse;
 	public Image buildTaxmenOffice;
+	public Image buildMarket;
 	
 	// Units
 	public Image unitCitizen;
@@ -50,6 +51,7 @@ public class Images
 	public Image uiCategIndustry;
 	public Image uiCategCursor;
 	public Image uiCategAdmin;
+	public Image uiCategMarketing;
 	public Image uiMenuItem;
 	public Image uiFrame;
 	public Image uiWindowTitleBar;

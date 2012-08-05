@@ -195,6 +195,22 @@ public class GamePlay extends UIBasicGameState
 		buildCategoryButtonsGroup.add(adminBuildsButton);
 		ui.add(adminBuildsButton);
 		
+		// Marketing
+		
+		ToolButton marketBuildsButton = new ToolButton(ui, 178, 10, buildCategoryButtonsGroup);
+		
+		Menu marketBuildsMenu = new Menu(ui, 10, 34, 128);
+		marketBuildsMenu
+			.add(new MenuItem(marketBuildsMenu, "Market"), new SelectBuildAction(adminBuildsButton, "Market"))
+			.setNullActionListener(new SelectBuildAction(marketBuildsButton, null))
+			.setVisible(false);
+		ui.add(marketBuildsMenu);
+			
+		marketBuildsButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_BUILDS, marketBuildsMenu));
+		marketBuildsButton.icon = Content.images.uiCategMarketing;
+		buildCategoryButtonsGroup.add(marketBuildsButton);
+		ui.add(marketBuildsButton);
+		
 		// Minimap
 		
 		minimapWindow = new Window(ui, 0, 0, 134, 134, "Minimap");

@@ -16,6 +16,7 @@
 	<resource type="image" id="buildInactiveWarehouse">warehouse.png</resource>
 	<resource type="image" id="buildActiveWarehouse">warehouse_active.png</resource>
 	<resource type="image" id="buildTaxmenOffice">taxmen_office.png</resource>
+	<resource type="image" id="buildMarket">market.png</resource>
 	
 	<resource type="image" id="unitCitizen">citizen.png</resource>
 	<resource type="image" id="unitConveyer">transporter_only.png</resource>
@@ -46,6 +47,7 @@
 	<resource type="image" id="uiCategIndustry">ui_factory.png</resource>
 	<resource type="image" id="uiCategCursor">ui_categMouse.png</resource>
 	<resource type="image" id="uiCategAdmin">ui_categAdmin.png</resource>
+	<resource type="image" id="uiCategMarketing">ui_categMarketing.png</resource>
 	<resource type="image" id="uiMenuItem">ui_menu_item.png</resource>
 	<resource type="image" id="uiFrame">ui_frame.png</resource>
 	<resource type="image" id="uiWindowTitleBar">ui_winbar.png</resource>

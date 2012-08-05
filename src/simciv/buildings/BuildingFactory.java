@@ -26,6 +26,7 @@ public class BuildingFactory
 		addMapping(FarmLand.class, "FarmLand");
 		addMapping(Warehouse.class, "Warehouse");
 		addMapping(TaxmenOffice.class, "TaxmenOffice");
+		addMapping(Market.class, "Market");
 	}
 
 	@SuppressWarnings("rawtypes")
