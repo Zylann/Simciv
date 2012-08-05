@@ -18,6 +18,8 @@ public abstract class Job
 	public static final byte CONVEYER = 3;
 	public static final byte TAXMEN_OFFICE_INTERNAL = 4;
 	public static final byte TAXMAN = 5;
+	public static final byte MARKET_INTERNAL = 6;
+	public static final byte MARKET_DELIVERY = 7;
 	
 	protected Citizen me; // The Citizen doing the job
 	protected Workplace workplaceRef; // must not be null (otherwise the job may be useless)
@@ -47,9 +49,7 @@ public abstract class Job
 	/**
 	 * Called when the job begins.
 	 */
-	public void onBegin()
-	{
-	}
+	public abstract void onBegin();
 	
 	// TODO missionBegin / missionEnd system
 	

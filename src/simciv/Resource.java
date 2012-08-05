@@ -6,6 +6,11 @@ import org.newdawn.slick.SpriteSheet;
 
 import simciv.content.Content;
 
+/**
+ * Information about gameplay resources (food, raw materials, manufactured...)
+ * @author Marc
+ *
+ */
 public class Resource
 {
 	// IDs
@@ -25,6 +30,7 @@ public class Resource
 	private SpriteSheet carriageSprites;
 	private SpriteSheet storageSprites;
 	private short stackLimit;
+	private boolean isFood;
 	
 	public static void initialize()
 	{
@@ -34,7 +40,8 @@ public class Resource
 			.setSprites(Content.images.resourceEmptyCarriage, null);
 		set(new Resource(WOOD, "Wood", 100));
 		set(new Resource(WHEAT, "Wheat", 100))
-			.setSprites(Content.images.resourceWheatCarriage, Content.images.resourceWheat);
+			.setSprites(Content.images.resourceWheatCarriage, Content.images.resourceWheat)
+			.setIsFood(true);
 		set(new Resource(STRAW, "Straw", 100));
 		set(new Resource(CLAY, "Clay", 100));
 		//...
@@ -58,6 +65,7 @@ public class Resource
 		this.ID = ID;
 		this.name = name;
 		this.stackLimit = (short) stackLimit;
+		isFood = false;
 	}
 		
 	private Resource setSprites(Image carriageSpr, Image storageSpr)
@@ -66,6 +74,17 @@ public class Resource
 		if(storageSpr != null)
 			storageSprites = new SpriteSheet(storageSpr, Game.tilesSize, storageSpr.getHeight());
 		return this;
+	}
+	
+	private Resource setIsFood(boolean f)
+	{
+		isFood = f;
+		return this;
+	}
+	
+	public boolean isFood()
+	{
+		return isFood;
 	}
 	
 	public void renderCarriage(Graphics gfx, int x, int y, int amount, byte direction)

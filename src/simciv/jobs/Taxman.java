@@ -3,7 +3,9 @@ package simciv.jobs;
 import java.util.List;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SpriteSheet;
 
+import simciv.Game;
 import simciv.buildings.Building;
 import simciv.buildings.House;
 import simciv.buildings.Workplace;
@@ -13,9 +15,13 @@ import simciv.units.Citizen;
 
 public class Taxman extends Job
 {
+	private static SpriteSheet unitSprites;
+	
 	public Taxman(Citizen citizen, Workplace workplace)
 	{
 		super(citizen, workplace);
+		if(unitSprites == null)
+			unitSprites = new SpriteSheet(Content.images.unitTaxman, Game.tilesSize, Game.tilesSize);
 	}
 
 	@Override
@@ -51,7 +57,7 @@ public class Taxman extends Job
 	@Override
 	public void renderUnit(Graphics gfx)
 	{
-		me.defaultRender(gfx, Content.images.unitTaxman);
+		me.defaultRender(gfx, unitSprites);
 	}
 
 	@Override

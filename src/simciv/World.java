@@ -334,5 +334,47 @@ public class World
 		return list;
 	}
 	
+	public ArrayList<Building> getBuildingsAround(int x0, int y0, int w, int h)
+	{
+		Building b;
+		ArrayList<Building> list = new ArrayList<Building>();
+		int x, y;
+		
+		for(x = x0-1; x <= x0 + w; x++)
+		{
+			// Top
+			y = y0 - 1;
+			b = getBuilding(x, y);
+			if(b != null)
+				list.add(b);
+			
+			// Bottom
+			y = y0 + h;
+			b = getBuilding(x, y);
+			if(b != null)
+				list.add(b);
+		}
+
+		for(y = y0; y < y0 + h; y++)
+		{
+			// Left
+			x = x0 - 1;
+			b = getBuilding(x, y);
+			if(b != null)
+				list.add(b);
+
+			// Right
+			x = x0 + w;
+			b = getBuilding(x, y);
+			if(b != null)
+				list.add(b);
+		}
+		
+		return list;
+	}
+	
 }
+
+
+
 

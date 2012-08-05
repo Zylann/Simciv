@@ -10,6 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Cheats;
 import simciv.Game;
+import simciv.ResourceSlot;
 import simciv.SoundEngine;
 import simciv.Vector2i;
 import simciv.World;
@@ -280,6 +281,12 @@ public class House extends Building
 	public String getInfoString()
 	{
 		return "[" + getProperties().name + "] inhabitants : " + getNbInhabitants();
+	}
+	
+	public void onDistributedResource(ResourceSlot r)
+	{
+		for(Citizen c : inhabitants.values())
+			c.onDistributedResource(r);
 	}
 
 }

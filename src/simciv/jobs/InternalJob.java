@@ -29,7 +29,6 @@ public class InternalJob extends Job
 	@Override
 	public void onBegin()
 	{
-		me.setMovement(null);
 		me.setDirection(Direction2D.NONE);
 		me.enterBuilding(workplaceRef);
 	}

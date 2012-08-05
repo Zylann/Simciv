@@ -47,6 +47,11 @@ public class ResourceSlot
 		return type == Resource.NONE;
 	}
 	
+	public boolean isFull()
+	{
+		return type != Resource.NONE && amount == getSpecs().getStackLimit();
+	}
+	
 	public Resource getSpecs()
 	{
 		return Resource.get(type);
@@ -58,11 +63,14 @@ public class ResourceSlot
 	 * Stack limits are applied.
 	 * @param other
 	 */
-	public void addFrom(ResourceSlot other)
+	public boolean addFrom(ResourceSlot other)
 	{
 		// If the slot is compatible or free
 		if(type == other.type || isEmpty())
 		{
+			if(other.isEmpty())
+				return false;
+			
 			// Put resources in it as much as possible
 			int spaceLeft = Resource.get(other.type).getStackLimit() - amount;
 			type = other.type;
@@ -80,7 +88,10 @@ public class ResourceSlot
 				other.amount = 0;
 				other.type = Resource.NONE;
 			}
+			
+			return true;
 		}
+		return false;
 	}
 	
 	public void renderCarriage(Graphics gfx, int x, int y, byte direction)
@@ -110,6 +121,23 @@ public class ResourceSlot
 		if(type == Resource.NONE)
 			return 0;
 		return (float)amount / (float)(getSpecs().getStackLimit());
+	}
+	
+	public void add(short amount)
+	{
+		this.amount += amount;
+		if(this.amount > getSpecs().getStackLimit())
+			this.amount = getSpecs().getStackLimit();
+	}
+
+	public void subtract(short amount)
+	{
+		this.amount -= amount;
+		if(this.amount < 0)
+		{
+			this.amount = 0;
+			type = Resource.NONE;
+		}
 	}
 	
 }

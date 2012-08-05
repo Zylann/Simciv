@@ -72,6 +72,21 @@ public class Warehouse extends Workplace
 		}
 		full = true;
 	}
+	
+	public boolean retrieveResource(ResourceSlot r)
+	{
+		boolean retrieved = false;
+		for(ResourceSlot slot : resourceSlots)
+		{
+			if(r.addFrom(slot))
+				retrieved = true;
+			if(r.isFull())
+				break;
+		}
+		if(retrieved)
+			full = false;
+		return retrieved;
+	}
 
 	@Override
 	protected int getTickTime()
@@ -144,6 +159,29 @@ public class Warehouse extends Workplace
 		for(ResourceSlot slot : resourceSlots)
 			k += slot.getLoadRatio();
 		return (int) (100.f * k / (float)NB_SLOTS);
+	}
+	
+	/**
+	 * Returns true if it contains resources
+	 * @return
+	 */
+	public boolean containsResources()
+	{
+		for(ResourceSlot slot : resourceSlots)
+		{
+			if(!slot.isEmpty())
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns true if it contains resources availables for markets
+	 * @return
+	 */
+	public boolean containsResourcesForMarkets()
+	{
+		return containsResources();
 	}
 	
 	@Override

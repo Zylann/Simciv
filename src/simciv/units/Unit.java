@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
+import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Direction2D;
@@ -67,6 +67,11 @@ public abstract class Unit extends Entity
 		if(movement == null)
 			return null;
 		return movement.getTarget();
+	}
+	
+	public boolean isMovement()
+	{
+		return movement != null;
 	}
 	
 	public boolean isMovementFinished()
@@ -231,11 +236,13 @@ public abstract class Unit extends Entity
 	/**
 	 * Renders the unit using a commonly used sprite scheme
 	 * @param gfx
-	 * @param sprite
+	 * @param sprites
+	 * @param yShift
 	 */
-	public final void defaultRender(Graphics gfx, Image sprite)
+	public final void defaultRender(Graphics gfx, SpriteSheet sprites, int yShift)
 	{
-		if(sprite == null)
+		// TODO sprite scheme description
+		if(sprites == null)
 		{
 			// For debug : draws a red quad in place of the sprite
 //			gfx.setLineWidth(1);
@@ -244,11 +251,22 @@ public abstract class Unit extends Entity
 			return;
 		}
 		
-		gfx.drawImage(sprite,
-				0, 0,
-				Game.tilesSize, Game.tilesSize,
-				0, direction * Game.tilesSize,
-				Game.tilesSize, (direction + 1) * Game.tilesSize);
+		if(direction == Direction2D.NONE)
+			gfx.drawImage(sprites.getSprite(0, Direction2D.SOUTH + yShift), 0, 0);
+		else
+			gfx.drawImage(sprites.getSprite(0, direction + yShift), 0, 0);
+		
+		// Old code
+//		gfx.drawImage(sprite,
+//				0, 0,
+//				Game.tilesSize, Game.tilesSize,
+//				0, direction * Game.tilesSize,
+//				Game.tilesSize, (direction + 1) * Game.tilesSize);
+	}
+	
+	public final void defaultRender(Graphics gfx, SpriteSheet sprites)
+	{
+		defaultRender(gfx, sprites, 0);
 	}
 		
 }

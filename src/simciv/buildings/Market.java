@@ -8,7 +8,9 @@ import org.newdawn.slick.state.StateBasedGame;
 import simciv.Game;
 import simciv.World;
 import simciv.content.Content;
+import simciv.jobs.InternalJob;
 import simciv.jobs.Job;
+import simciv.jobs.MarketDelivery;
 import simciv.units.Citizen;
 
 /**
@@ -30,6 +32,7 @@ public class Market extends Workplace
 	public Market(World w)
 	{
 		super(w);
+		state = Building.NORMAL;
 		if(sprites == null)
 		{
 			sprites = new SpriteSheet(Content.images.buildMarket,
@@ -59,7 +62,17 @@ public class Market extends Workplace
 	@Override
 	public Job giveNextJob(Citizen citizen)
 	{
-		// TODO Auto-generated method stub
+		if(needEmployees())
+		{
+			Job job;
+			if(employees.size() < 3) // 3 internals,
+				job = new InternalJob(citizen, this, Job.MARKET_INTERNAL);
+			else // and 3 delivery men
+				job = new MarketDelivery(citizen, this);
+			
+			addEmployee(citizen);
+			return job;
+		}
 		return null;
 	}
 
@@ -83,6 +96,7 @@ public class Market extends Workplace
 			if(!needEmployees())
 			{
 				state = Building.ACTIVE;
+				sendDelivery();
 			}
 		}
 		else if(state == Building.ACTIVE)
@@ -90,6 +104,17 @@ public class Market extends Workplace
 			if(needEmployees())
 			{
 				state = Building.NORMAL;
+			}
+		}
+	}
+
+	private void sendDelivery()
+	{
+		for(Citizen emp : employees.values())
+		{
+			if(!emp.isOut() && emp.getJob().getID() == Job.MARKET_DELIVERY)
+			{				
+				emp.exitBuilding();
 			}
 		}
 	}

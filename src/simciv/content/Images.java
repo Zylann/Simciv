@@ -24,6 +24,7 @@ public class Images
 	public Image unitDuck;
 	public Image unitThinking;
 	public Image unitTaxman;
+	public Image unitMarketDelivery;
 	
 	// Resources
 	public Image resourceEmptyCarriage;

@@ -4,9 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
+import org.newdawn.slick.SpriteSheet;
 
 import simciv.Direction2D;
+import simciv.Game;
 import simciv.PathFinder;
 import simciv.ResourceSlot;
 import simciv.Vector2i;
@@ -28,7 +29,7 @@ import simciv.units.Unit;
 public class Conveyer extends Job
 {
 	// Sprites
-	private static Image unitSprites;
+	private static SpriteSheet unitSprites;
 	
 	private PathFinder pathFinder;
 	private ResourceSlot carriedResource;
@@ -37,7 +38,7 @@ public class Conveyer extends Job
 	{
 		super(citizen, workplace);
 		if(unitSprites == null)
-			unitSprites = Content.images.unitConveyer;
+			unitSprites = new SpriteSheet(Content.images.unitConveyer, Game.tilesSize, Game.tilesSize);
 		carriedResource = new ResourceSlot();
 	}
 	
@@ -45,7 +46,6 @@ public class Conveyer extends Job
 	public void onBegin()
 	{
 		me.enterBuilding(workplaceRef);
-		me.setMovement(null);
 	}
 	
 	@Override
@@ -100,7 +100,7 @@ public class Conveyer extends Job
 				LinkedList<Vector2i> path = pathFinder.retrievePath();
 //				System.out.println("Path found"); // debug
 				
-				// Remove first pos if we already are on
+				// Remove first pos if we already are on 
 				if(path != null && !path.isEmpty())
 				{
 					if(path.getFirst().equals(me.getX(), me.getY()))
@@ -140,7 +140,7 @@ public class Conveyer extends Job
 	{
 		if(!carriedResource.isEmpty())
 			distributeResources(); // distribute resources
-		if(!carriedResource.isEmpty()) // if still left, search another warehouse
+		if(!carriedResource.isEmpty()) // if still resources left, search another warehouse
 			restartPathFinding(new FreeWarehouseMapTarget());
 		
 		if(getTargetBuildingID() == workplaceRef.getID())

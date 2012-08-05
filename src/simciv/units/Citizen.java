@@ -6,7 +6,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
+import simciv.Direction2D;
 import simciv.Game;
+import simciv.ResourceSlot;
 import simciv.World;
 import simciv.buildings.Building;
 import simciv.buildings.House;
@@ -27,7 +29,8 @@ import simciv.content.Content;
  */
 public class Citizen extends Unit
 {
-	private static SpriteSheet thinkingAnim = null;
+	private static SpriteSheet thinkingAnim;
+	private static SpriteSheet sprites;
 	public static int totalCount = 0;
 	public static int totalWithJob = 0;
 	
@@ -53,6 +56,9 @@ public class Citizen extends Unit
 			int b = thinkingSprite.getHeight();
 			thinkingAnim = new SpriteSheet(thinkingSprite, b, b);
 		}
+		
+		if(sprites == null)
+			sprites = new SpriteSheet(Content.images.unitCitizen, Game.tilesSize, Game.tilesSize);
 	}
 	
 	public boolean isBeenTaxed()
@@ -72,7 +78,7 @@ public class Citizen extends Unit
 	protected void renderUnit(Graphics gfx)
 	{
 		if(job == null)
-			defaultRender(gfx, Content.images.unitCitizen);
+			defaultRender(gfx, sprites);
 		else
 			job.renderUnit(gfx);
 		if(state == Unit.THINKING)
@@ -157,6 +163,8 @@ public class Citizen extends Unit
 		if(buildingRef != null)
 			return false;
 		buildingRef = b;
+		setMovement(null);
+		setDirection(Direction2D.NONE);
 		return true;
 		//return buildingRef.addCitizen(this);
 	}
@@ -207,7 +215,23 @@ public class Citizen extends Unit
 	public void onInit()
 	{
 		super.onInit();
-		totalCount++;
+		totalCount++; // TODO put citizen count in PlayerCity
+	}
+	
+	public void onDistributedResource(ResourceSlot r)
+	{
+		if(job == null)
+			return;
+		if(job.getIncome() == 0)
+			return;
+		if(r.getSpecs().isFood())
+			buyResource(r, (short) 5);
+	}
+	
+	protected void buyResource(ResourceSlot r, short amount)
+	{
+		r.subtract(amount);
+		// TODO TVA ?
 	}
 	
 }
