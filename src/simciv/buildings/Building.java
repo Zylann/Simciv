@@ -25,7 +25,7 @@ public abstract class Building extends Entity
 		super(w);
 		if(constructionSprite == null)
 			constructionSprite = Content.images.buildConstructing1x1;
-		state = CONSTRUCTION;
+		state = NORMAL;
 	}
 	
 	public abstract BuildingProperties getProperties();

@@ -30,7 +30,7 @@ public class House extends Building
 {
 	private static BuildingProperties properties[];
 	private static SpriteSheet sprites[];
-	private static byte MAX_LEVEL = 1;
+	private static byte MAX_LEVEL = 1; // Note : in code, the first level is 0.
 	
 	static
 	{
@@ -67,6 +67,7 @@ public class House extends Building
 		direction = (byte) (4 * Math.random());
 		level = 0;
 		nbCitizensToProduce = 1;
+		state = Building.CONSTRUCTION;
 	}
 	
 	@Override
@@ -262,7 +263,7 @@ public class House extends Building
 	private void renderFeedRatio(Graphics gfx, int x, int y)
 	{
 		float w = (float)(getWidth() * Game.tilesSize - 1);
-		float t = getLowerFeedRatio() * w;
+		float t = getLowestFeedRatio() * w;
 		gfx.setColor(Color.green);
 		gfx.fillRect(x, y, t, 2);
 		gfx.setColor(Color.red);
@@ -329,7 +330,7 @@ public class House extends Building
 		return sum / (float)(inhabitants.size());
 	}
 	
-	public float getLowerFeedRatio()
+	public float getLowestFeedRatio()
 	{
 		float r = 1;
 		for(Citizen c : inhabitants.values())
