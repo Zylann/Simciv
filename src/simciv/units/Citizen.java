@@ -8,6 +8,8 @@ import org.newdawn.slick.SpriteSheet;
 
 import simciv.Direction2D;
 import simciv.Game;
+import simciv.Resource;
+import simciv.ResourceBag;
 import simciv.ResourceSlot;
 import simciv.World;
 import simciv.buildings.Building;
@@ -31,8 +33,18 @@ public class Citizen extends Unit
 {
 	private static SpriteSheet thinkingAnim;
 	private static SpriteSheet sprites;
+
 	public static int totalCount = 0;
 	public static int totalWithJob = 0;
+	
+	private static final int TICK_TIME_MEAN = 500;
+	private static final float TICK_TIME_VARIATION = 100;
+	
+	// Feed levels (in citizen ticks)
+	public static final int FEED_MAX = 800;
+	public static final int FEED_HUNGRY = 400;
+	public static final int FEED_STARVING = 200;
+	public static final int FEED_MIN = 0;
 	
 	private Building buildingRef; // reference to the building the citizen currently is in
 	private House houseRef; // if null, the Citizen is homeless
@@ -40,15 +52,19 @@ public class Citizen extends Unit
 	private int basicTickTime; // Tick time interval in milliseconds (basic value)
 	private int tickTime; // Tick time interval in milliseconds (modified value)
 	private boolean beenTaxed; // true if the citizen have been asked to pay his taxes this month
+	private int feedLevel;
+	private ResourceBag ownedResources;
 
 	public Citizen(World w)
 	{
 		super(w);
-		// Each citizen have a slightly different tickTime
-		basicTickTime = 500 + (int)(100.f * Math.random()) - 50;
+		// Each citizen have a slightly different basic tickTime
+		basicTickTime = TICK_TIME_MEAN + (int)(TICK_TIME_VARIATION * (Math.random() - 0.5f));
 		tickTime = basicTickTime;
 		setMovement(new RandomRoadMovement());
 		beenTaxed = false;
+		ownedResources = new ResourceBag();
+		feedLevel = FEED_MAX;
 		
 		if(thinkingAnim == null)
 		{
@@ -94,8 +110,29 @@ public class Citizen extends Unit
 	@Override
 	public void tick()
 	{
+		// Hunger
+		if(feedLevel > 0)
+			feedLevel--;
+		if(feedLevel <= FEED_HUNGRY)
+		{
+			ResourceSlot food = ownedResources.getFoodSlot();
+			if(food != null && !food.isEmpty())
+			{
+				food.subtract(1);
+				feedLevel = FEED_MAX;
+			}
+			
+			if(feedLevel <= FEED_STARVING)
+			{
+				// TODO reduce citizen perfs
+			}
+		}
+		
+		// Taxes
 		if(beenTaxed && worldRef.time.getDay() == 0)
 			beenTaxed = false;
+		
+		// Job
 		if(job == null)
 			searchJob();
 		else
@@ -109,7 +146,7 @@ public class Citizen extends Unit
 	
 	/**
 	 * Searches a job by querying all buildings around the current position.
-	 * (Will modify the job attribute.)
+	 * (Will modify the job attribute if one is found.)
 	 */
 	private void searchJob()
 	{
@@ -189,6 +226,7 @@ public class Citizen extends Unit
 		job = null;
 		totalWithJob--;
 		tickTime = basicTickTime;
+		state = Unit.NORMAL;
 	}
 
 	/**
@@ -216,6 +254,14 @@ public class Citizen extends Unit
 	{
 		super.onInit();
 		totalCount++; // TODO put citizen count in PlayerCity
+		
+		// Initial resources
+		ownedResources.addAllFrom(new ResourceSlot(Resource.WHEAT, 2));
+	}
+	
+	public float getFeedRatio()
+	{
+		return (float)feedLevel / (float)FEED_MAX;
 	}
 	
 	public void onDistributedResource(ResourceSlot r)
@@ -223,15 +269,20 @@ public class Citizen extends Unit
 		if(job == null)
 			return;
 		if(job.getIncome() == 0)
+		{
+			// TODO if he has housemates with a job, the citizen can buy resources
 			return;
-		if(r.getSpecs().isFood())
-			buyResource(r, (short) 5);
+		}
+		if(ownedResources.getFoodSlot() == null && r.getSpecs().isFood())
+			buyResource(r, 2);
 	}
 	
-	protected void buyResource(ResourceSlot r, short amount)
+	protected void buyResource(ResourceSlot r, int amount)
 	{
-		r.subtract(amount);
-		// TODO TVA ?
+//		int oldSlotAmount = r.getAmount();
+		ownedResources.addFrom(r, amount);
+//		int diff = oldSlotAmount - r.getAmount();
+		worldRef.playerCity.gainMoney(0.5f);
 	}
 	
 }

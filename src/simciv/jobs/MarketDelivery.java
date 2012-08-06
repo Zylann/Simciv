@@ -52,7 +52,7 @@ public class MarketDelivery extends Job
 	
 	public void addResourceCarriage(ResourceSlot r)
 	{
-		carriedResource.addFrom(r);
+		carriedResource.addAllFrom(r);
 	}
 	
 	@Override

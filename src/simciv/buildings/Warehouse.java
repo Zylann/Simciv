@@ -66,7 +66,7 @@ public class Warehouse extends Workplace
 		// Iterate over slots
 		for(ResourceSlot slot : resourceSlots)
 		{
-			slot.addFrom(r);
+			slot.addAllFrom(r);
 			if(r.isEmpty())
 				return;
 		}
@@ -78,7 +78,7 @@ public class Warehouse extends Workplace
 		boolean retrieved = false;
 		for(ResourceSlot slot : resourceSlots)
 		{
-			if(r.addFrom(slot))
+			if(r.addAllFrom(slot))
 				retrieved = true;
 			if(r.isFull())
 				break;

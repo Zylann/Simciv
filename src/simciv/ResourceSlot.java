@@ -62,36 +62,46 @@ public class ResourceSlot
 	 * They must store the same resource type.
 	 * Stack limits are applied.
 	 * @param other
+	 * @param amountToTransfert : amount to transfert. -1 means all.
+	 * @return true if more than 0 resources were moved.
 	 */
-	public boolean addFrom(ResourceSlot other)
+	public boolean addFrom(ResourceSlot other, int amountToTransfert)
 	{
 		// If the slot is compatible or free
-		if(type == other.type || isEmpty())
+		if(type == other.type || !isFull())
 		{
-			if(other.isEmpty())
+			if(other.isEmpty() || amountToTransfert == 0)
 				return false;
 			
-			// Put resources in it as much as possible
-			int spaceLeft = Resource.get(other.type).getStackLimit() - amount;
-			type = other.type;
+			if(amountToTransfert < 0 || amountToTransfert > other.amount)
+				amountToTransfert = other.amount;
 			
-			if(other.amount > spaceLeft)
+			// Calculate how much space the current slot have
+			type = other.type; // in case the current slot type is NONE
+			int spaceLeft = Resource.get(type).getStackLimit() - amount;
+			
+			if(amountToTransfert > spaceLeft) // Not enough space in current slot
 			{
 				amount += spaceLeft;
 				other.amount -= spaceLeft;
 				if(other.amount == 0)
 					other.type = Resource.NONE;
 			}
-			else
+			else // enough space
 			{
-				amount += other.amount;
-				other.amount = 0;
+				amount += amountToTransfert;
+				other.amount -= amountToTransfert;
 				other.type = Resource.NONE;
 			}
 			
 			return true;
 		}
 		return false;
+	}
+	
+	public boolean addAllFrom(ResourceSlot other)
+	{
+		return addFrom(other, -1);
 	}
 	
 	public void renderCarriage(Graphics gfx, int x, int y, byte direction)
@@ -123,14 +133,14 @@ public class ResourceSlot
 		return (float)amount / (float)(getSpecs().getStackLimit());
 	}
 	
-	public void add(short amount)
+	public void add(int amount)
 	{
 		this.amount += amount;
 		if(this.amount > getSpecs().getStackLimit())
 			this.amount = getSpecs().getStackLimit();
 	}
 
-	public void subtract(short amount)
+	public void subtract(int amount)
 	{
 		this.amount -= amount;
 		if(this.amount < 0)

@@ -2,9 +2,12 @@ package simciv.buildings;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -236,19 +239,34 @@ public class House extends Building
 		{
 			renderAsConstructing(gfx);
 		}
-		else if(level == 0)
-		{
-			// Note : directionnal sprites are only supported with the first level yet
-			gfx.drawImage(sprites[level].getSprite(direction, 0), 
-					posX * Game.tilesSize, 
-					(posY - 1) * Game.tilesSize);
-		}
 		else
 		{
-			gfx.drawImage(sprites[level].getSprite(0, 0), 
-					posX * Game.tilesSize, 
-					(posY - 1) * Game.tilesSize);
+			if(level == 0)
+			{
+				// Note : directionnal sprites are only supported with the first level yet
+				gfx.drawImage(sprites[level].getSprite(direction, 0), 
+						posX * Game.tilesSize, 
+						(posY - 1) * Game.tilesSize);
+			}
+			else
+			{
+				gfx.drawImage(sprites[level].getSprite(0, 0), 
+						posX * Game.tilesSize, 
+						(posY - 1) * Game.tilesSize);
+			}
+			if(gc.getInput().isKeyDown(Input.KEY_3))
+				renderFeedRatio(gfx, posX * Game.tilesSize, posY * Game.tilesSize);
 		}
+	}
+	
+	private void renderFeedRatio(Graphics gfx, int x, int y)
+	{
+		float w = (float)(getWidth() * Game.tilesSize - 1);
+		float t = getLowerFeedRatio() * w;
+		gfx.setColor(Color.green);
+		gfx.fillRect(x, y, t, 2);
+		gfx.setColor(Color.red);
+		gfx.fillRect(x + t, y, w - t, 2);
 	}
 
 	@Override
@@ -283,10 +301,44 @@ public class House extends Building
 		return "[" + getProperties().name + "] inhabitants : " + getNbInhabitants();
 	}
 	
+	/**
+	 * Returns true if at least one inhabitant has a job
+	 * @return
+	 */
+	public boolean isInhabitantHaveJob()
+	{
+		for(Citizen c : inhabitants.values())
+		{
+			if(c.getJob() != null)
+				return true;
+		}
+		return false;
+	}
+	
 	public void onDistributedResource(ResourceSlot r)
 	{
 		for(Citizen c : inhabitants.values())
 			c.onDistributedResource(r);
+	}
+	
+	public float getMeanFeedRatio()
+	{
+		float sum = 0;
+		for(Citizen c : inhabitants.values())
+			sum += c.getFeedRatio();
+		return sum / (float)(inhabitants.size());
+	}
+	
+	public float getLowerFeedRatio()
+	{
+		float r = 1;
+		for(Citizen c : inhabitants.values())
+		{
+			float r2 = c.getFeedRatio();
+			if(r2 < r)
+				r = r2;
+		}
+		return r;
 	}
 
 }
