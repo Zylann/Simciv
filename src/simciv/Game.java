@@ -12,7 +12,7 @@ import simciv.content.Content;
 import simciv.gamestates.GameLoadingScreen;
 import simciv.gamestates.GamePlay;
 import simciv.gamestates.ContentLoadingScreen;
-import simciv.ui.UIStateBasedGame;
+import simciv.ui.base.UIStateBasedGame;
 
 /**
  * The main class
@@ -22,13 +22,13 @@ import simciv.ui.UIStateBasedGame;
 public class Game extends UIStateBasedGame
 {
 	// Game constants
-    public static final String title = "Simciv - indev";
+    public static final String title = "Simciv - indev - release 2";
     public static final int tilesSize = 16;
 
     // Video settings
-    public static final int screenWidth = 1200;
-    public static final int screenHeight = 800;
-    public static final int framerate = 60;
+    public static final int screenWidth = 800;
+    public static final int screenHeight = 600;
+    public static final int framerate = 30;
     // Graphics settings
     public static boolean renderFancyUnitMovements = true;
     

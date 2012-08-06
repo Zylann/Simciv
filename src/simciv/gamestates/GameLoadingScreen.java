@@ -13,10 +13,10 @@ import simciv.Resource;
 import simciv.Road;
 import simciv.Terrain;
 import simciv.World;
-import simciv.ui.ProgressBar;
-import simciv.ui.RootPane;
-import simciv.ui.UIBasicGameState;
-import simciv.ui.UIRenderer;
+import simciv.ui.base.ProgressBar;
+import simciv.ui.base.RootPane;
+import simciv.ui.base.UIBasicGameState;
+import simciv.ui.base.UIRenderer;
 
 public class GameLoadingScreen extends UIBasicGameState
 {

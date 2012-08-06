@@ -1,4 +1,4 @@
-package simciv.ui;
+package simciv.ui.base;
 
 import org.newdawn.slick.Input;
 import org.newdawn.slick.util.InputAdapter;

@@ -1,4 +1,4 @@
-package simciv.ui;
+package simciv.ui.base;
 
 public interface IActionListener
 {

@@ -6,6 +6,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import simciv.Game;
 import simciv.View;
+import simciv.ui.base.Widget;
+import simciv.ui.base.WidgetContainer;
 
 public class Minimap extends Widget
 {

@@ -6,6 +6,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 
 import simciv.content.Content;
+import simciv.ui.base.BasicWidget;
+import simciv.ui.base.UIRenderer;
+import simciv.ui.base.WidgetContainer;
 
 /**
  * This is a bar displaying main city indicators.

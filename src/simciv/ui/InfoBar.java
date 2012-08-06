@@ -4,6 +4,9 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
+import simciv.ui.base.Widget;
+import simciv.ui.base.WidgetContainer;
+
 /**
  * A simple text display line.
  * @author Marc

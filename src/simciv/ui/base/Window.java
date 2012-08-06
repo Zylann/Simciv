@@ -1,4 +1,4 @@
-package simciv.ui;
+package simciv.ui.base;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;

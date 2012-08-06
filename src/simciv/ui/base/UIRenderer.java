@@ -1,4 +1,4 @@
-package simciv.ui;
+package simciv.ui.base;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
@@ -316,6 +316,20 @@ public class UIRenderer
 			renderBar(gfx, progressBarSprites, x, y, w.getWidth(), w.getHeight(), b, 1);			
 	}
 
+	public void renderLabel(Graphics gfx, Label label)
+	{
+		int x = label.getAbsoluteX();
+		int y = label.getAbsoluteY();
+		
+		if(label.getImage() != null)
+			gfx.drawImage(label.getImage(), x, y);
+		
+		if(label.getText() != null)
+		{
+			gfx.setColor(Color.black);
+			gfx.drawString(label.getText(), x, y);
+		}
+	}
 
 }
 

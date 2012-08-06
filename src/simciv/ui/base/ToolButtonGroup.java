@@ -1,4 +1,4 @@
-package simciv.ui;
+package simciv.ui.base;
 
 import java.util.ArrayList;
 import java.util.List;
