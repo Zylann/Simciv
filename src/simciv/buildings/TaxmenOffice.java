@@ -11,6 +11,7 @@ import simciv.content.Content;
 import simciv.jobs.InternalJob;
 import simciv.jobs.Job;
 import simciv.jobs.Taxman;
+import simciv.movements.RandomRoadMovement;
 import simciv.units.Citizen;
 
 public class TaxmenOffice extends Workplace
@@ -48,7 +49,10 @@ public class TaxmenOffice extends Workplace
 				for(Citizen emp : employees.values())
 				{
 					if(emp.getJob().getID() == Job.TAXMAN && !emp.isOut())
+					{
 						emp.exitBuilding(); // mission begin
+						emp.setMovement(new RandomRoadMovement());
+					}
 				}
 			}
 		}
