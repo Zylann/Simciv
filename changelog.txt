@@ -1,0 +1,14 @@
+Simciv indev release 2 (work in progress) :
+
++ Added money counter (and building costs)
++ Added taxmen offices and taxmen
++ Added markets and delivery men
++ Added time progression (only for months)
++ Added bushes
+- Fixed cursor shift bug
+- Fixed too loud sounds (played at the same time as for houses)
+- Fixed too large default window
+
+Simciv indev release 1 (2012-07-28) :
+Initial release
+
