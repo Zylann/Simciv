@@ -103,7 +103,8 @@ public class FarmLand extends Workplace
 			if(emp.getJob().getID() == Job.CONVEYER && !emp.isOut())
 			{
 				Conveyer job = (Conveyer)(emp.getJob());
-				job.addResourceCarriage(new ResourceSlot(Resource.WHEAT, 100));
+				int harvestResult = (int) (60 + 40.f * Math.random());
+				job.addResourceCarriage(new ResourceSlot(Resource.WHEAT, harvestResult));
 				job.setTarget(new FreeWarehouseMapTarget());
 				emp.exitBuilding();
 			}
