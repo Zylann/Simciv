@@ -4,9 +4,13 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
+/**
+ * A widget container with a frame, a title bar and a close button.
+ * @author Marc
+ *
+ */
 public class Window extends WidgetContainer
 {
-	//protected WindowCloseButton closeButton;
 	private WidgetContainer content;
 	private WindowTitleBar titleBar; 
 	private WindowCloseButton closeButton;

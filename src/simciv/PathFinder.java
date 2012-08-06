@@ -17,6 +17,8 @@ import simciv.maptargets.IMapTarget;
  * @author Marc
  *
  */
+// TODO PERF create a single pathfinder instance (not included in each unit) working with requests ;
+// so we can use a unique 2D matrix for visited cells and speed up unit thinkings
 public class PathFinder
 {
 	// States

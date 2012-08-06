@@ -224,7 +224,7 @@ public class GamePlay extends UIBasicGameState
 		minimapWindow.setVisible(false);
 		ui.add(minimapWindow);
 		
-		// Resource bar
+		// Indicators bar
 		
 		indicatorsBar = new IndicatorsBar(ui, 0, 0);
 		indicatorsBar.setPosition(ui.getWidth() - indicatorsBar.getWidth() - 10, 10);

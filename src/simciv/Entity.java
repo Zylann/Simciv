@@ -124,7 +124,7 @@ public abstract class Entity extends GameComponent
 	
 	/**
 	 * Returns the tick ratio.
-	 * This value is always increasing, reaching 1 before its tick(),
+	 * This value is always increasing, reaching 1 before next call to tick(),
 	 * and turns back to zero after each tick().
 	 * For example, if the entity has waited the half of its time before tick again,
 	 * getK() will return 0.5.
