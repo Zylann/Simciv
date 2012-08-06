@@ -266,13 +266,10 @@ public class Citizen extends Unit
 	
 	public void onDistributedResource(ResourceSlot r)
 	{
-		if(job == null)
+		// The citizen must have a job.
+		// If he has housemates with a job, the citizen can buy resources.
+		if(job == null && !houseRef.isInhabitantHaveJob())
 			return;
-		if(job.getIncome() == 0)
-		{
-			// TODO if he has housemates with a job, the citizen can buy resources
-			return;
-		}
 		if(ownedResources.getFoodSlot() == null && r.getSpecs().isFood())
 			buyResource(r, 2);
 	}
