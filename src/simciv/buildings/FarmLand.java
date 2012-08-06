@@ -114,16 +114,13 @@ public class FarmLand extends Workplace
 	}
 
 	@Override
-	public void render(GameContainer gc, StateBasedGame game, Graphics gfx)
+	public void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
-		int gx = posX * Game.tilesSize;
-		int gy = posY * Game.tilesSize;
-
 		// Soil
 		if(state == Building.NORMAL || needEmployees())
-			gfx.drawImage(Content.images.buildInactiveFarmland, gx, gy);
+			gfx.drawImage(Content.images.buildInactiveFarmland, 0, 0);
 		else
-			gfx.drawImage(Content.images.buildActiveFarmland, gx, gy);
+			gfx.drawImage(Content.images.buildActiveFarmland, 0, 0);
 		
 		// Crops
 		if(state == Building.ACTIVE || cropsLevel != 0)
@@ -134,11 +131,12 @@ public class FarmLand extends Workplace
 				{
 					if(cropsLevel != ROTTEN_LEVEL)
 					{
+						// TODO use spritesheets
 						gfx.drawImage(Content.images.buildFarmlandCrops,
-								gx + i * Game.tilesSize,
-								gy + j * Game.tilesSize,
-								gx + (i+1) * Game.tilesSize,
-								gy + (j+1) * Game.tilesSize,
+								i * Game.tilesSize,
+								j * Game.tilesSize,
+								(i+1) * Game.tilesSize,
+								(j+1) * Game.tilesSize,
 								cropsLevel * Game.tilesSize,
 								0,
 								(cropsLevel + 1) * Game.tilesSize,
@@ -147,7 +145,8 @@ public class FarmLand extends Workplace
 					}
 					else
 						gfx.drawImage(Content.images.buildFarmlandRottenCrops, 
-								gx + i * Game.tilesSize, gy + j * Game.tilesSize);
+								i * Game.tilesSize,
+								j * Game.tilesSize);
 				}
 			}
 		}

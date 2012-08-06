@@ -1,7 +1,10 @@
 package simciv.buildings;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.state.StateBasedGame;
+
 import simciv.Entity;
 import simciv.Game;
 import simciv.Map;
@@ -52,7 +55,8 @@ public abstract class Building extends Entity
 	
 	public void renderAsConstructing(Graphics gfx)
 	{
-		gfx.drawImage(constructionSprite, Game.tilesSize * posX, Game.tilesSize * posY);
+		// TODO handle size upper than 1x1
+		gfx.drawImage(constructionSprite, 0, 0);
 	}
 
 	public boolean isHouse()
@@ -95,12 +99,28 @@ public abstract class Building extends Entity
 	{
 	}
 	
+	@Override
+	public final void render(GameContainer gc, StateBasedGame game, Graphics gfx)
+	{
+		gfx.pushTransform();
+		gfx.translate(posX * Game.tilesSize, posY * Game.tilesSize);
+		
+		renderBuilding(gc, game, gfx);
+		
+		gfx.popTransform();
+	}
+	
+	protected void renderDefault(Graphics gfx, Image sprite)
+	{
+		gfx.drawImage(sprite, 0, -getZHeight() * Game.tilesSize);
+	}
+
+	protected abstract void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx);
+
 	public boolean canBePlaced(Map map, int x, int y)
 	{
 		return map.canPlaceObject(x, y, getWidth(), getHeight());
 	}
-	
-	// TODO render method that handles translating
 	
 }
 

@@ -234,26 +234,20 @@ public class House extends Building
 	}
 
 	@Override
-	public void render(GameContainer gc, StateBasedGame game, Graphics gfx)
+	public void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		if(state == CONSTRUCTION)
-		{
 			renderAsConstructing(gfx);
-		}
 		else
 		{
 			if(level == 0)
 			{
 				// Note : directionnal sprites are only supported with the first level yet
-				gfx.drawImage(sprites[level].getSprite(direction, 0), 
-						posX * Game.tilesSize, 
-						(posY - 1) * Game.tilesSize);
+				gfx.drawImage(sprites[level].getSprite(direction, 0), 0, -Game.tilesSize);
 			}
 			else
 			{
-				gfx.drawImage(sprites[level].getSprite(0, 0), 
-						posX * Game.tilesSize, 
-						(posY - 1) * Game.tilesSize);
+				gfx.drawImage(sprites[level].getSprite(0, 0), 0, -Game.tilesSize);
 			}
 			if(gc.getInput().isKeyDown(Input.KEY_3))
 				renderFeedRatio(gfx, posX * Game.tilesSize, posY * Game.tilesSize);

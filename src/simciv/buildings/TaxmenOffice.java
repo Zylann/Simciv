@@ -68,15 +68,9 @@ public class TaxmenOffice extends Workplace
 	}
 
 	@Override
-	public void render(GameContainer gc, StateBasedGame game, Graphics gfx)
+	public void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
-		int gx = posX * Game.tilesSize;
-		int gy = posY * Game.tilesSize;
-
-		if(state == Building.ACTIVE)
-			gfx.drawImage(sprites.getSprite(1, 0), gx, gy - Game.tilesSize);
-		else
-			gfx.drawImage(sprites.getSprite(0, 0), gx, gy - Game.tilesSize);
+		renderDefault(gfx, sprites);
 	}
 
 	@Override

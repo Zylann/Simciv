@@ -2,6 +2,9 @@ package simciv.buildings;
 
 import java.util.HashMap;
 
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SpriteSheet;
+import simciv.Game;
 import simciv.World;
 import simciv.jobs.Job;
 import simciv.units.Citizen;
@@ -89,6 +92,14 @@ public abstract class Workplace extends Building
 		}
 	}
 	
+	public void renderDefault(Graphics gfx, SpriteSheet sprites)
+	{
+		if(state == Building.ACTIVE)
+			gfx.drawImage(sprites.getSprite(1, 0), 0, -getZHeight() * Game.tilesSize);
+		else
+			gfx.drawImage(sprites.getSprite(0, 0), 0, -getZHeight() * Game.tilesSize);
+	}
+
 	@Override
 	public String getInfoString()
 	{

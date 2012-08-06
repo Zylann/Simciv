@@ -110,30 +110,27 @@ public class Warehouse extends Workplace
 	}
 
 	@Override
-	public void render(GameContainer gc, StateBasedGame game, Graphics gfx)
+	public void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
-		int gx = posX * Game.tilesSize;
-		int gy = posY * Game.tilesSize;
-		
 		// Floor
-		
+		// TODO use spritesheet
 		if(state == Building.ACTIVE)
-			gfx.drawImage(Content.images.buildActiveWarehouse, gx, gy - Game.tilesSize);
+			gfx.drawImage(Content.images.buildActiveWarehouse, 0, -Game.tilesSize);
 		else
-			gfx.drawImage(Content.images.buildInactiveWarehouse, gx, gy - Game.tilesSize);
+			gfx.drawImage(Content.images.buildInactiveWarehouse, 0, -Game.tilesSize);
 			
 		// Resources
 		
-		renderSlot(gfx, 0, gx + Game.tilesSize, 	gy);
-		renderSlot(gfx, 1, gx + Game.tilesSize * 2, gy);
+		renderSlot(gfx, 0, Game.tilesSize, 		0);
+		renderSlot(gfx, 1, Game.tilesSize * 2, 	0);
 		
-		renderSlot(gfx, 2, gx, 						gy + Game.tilesSize);
-		renderSlot(gfx, 3, gx + Game.tilesSize, 	gy + Game.tilesSize);
-		renderSlot(gfx, 4, gx + Game.tilesSize * 2, gy + Game.tilesSize);
+		renderSlot(gfx, 2, 0, 					Game.tilesSize);
+		renderSlot(gfx, 3, Game.tilesSize, 		Game.tilesSize);
+		renderSlot(gfx, 4, Game.tilesSize * 2, 	Game.tilesSize);
 
-		renderSlot(gfx, 5, gx, 						gy + Game.tilesSize * 2);
-		renderSlot(gfx, 6, gx + Game.tilesSize, 	gy + Game.tilesSize * 2);
-		renderSlot(gfx, 7, gx + Game.tilesSize * 2, gy + Game.tilesSize * 2);
+		renderSlot(gfx, 5, 0, 					Game.tilesSize * 2);
+		renderSlot(gfx, 6, Game.tilesSize, 		Game.tilesSize * 2);
+		renderSlot(gfx, 7, Game.tilesSize * 2, 	Game.tilesSize * 2);
 	}
 	
 	private void renderSlot(Graphics gfx, int i, int gx, int gy)
