@@ -41,9 +41,9 @@ public class Citizen extends Unit
 	private static final float TICK_TIME_VARIATION = 100;
 	
 	// Feed levels (in citizen ticks)
-	public static final int FEED_MAX = 800;
-	public static final int FEED_HUNGRY = 400;
-	public static final int FEED_STARVING = 200;
+	public static final int FEED_MAX = 350;
+	public static final int FEED_HUNGRY = 200;
+	public static final int FEED_STARVING = 100;
 	public static final int FEED_MIN = 0;
 	
 	private Building buildingRef; // reference to the building the citizen currently is in
@@ -115,10 +115,10 @@ public class Citizen extends Unit
 			feedLevel--;
 		if(feedLevel <= FEED_HUNGRY)
 		{
-			ResourceSlot food = ownedResources.getFoodSlot();
-			if(food != null && !food.isEmpty())
+			byte foodType = ownedResources.getContainedFoodType();
+			if(foodType != Resource.NONE)
 			{
-				food.subtract(1);
+				ownedResources.subtract(foodType, 1);
 				feedLevel = FEED_MAX;
 			}
 			
@@ -256,7 +256,7 @@ public class Citizen extends Unit
 		totalCount++; // TODO put citizen count in PlayerCity
 		
 		// Initial resources
-		ownedResources.addAllFrom(new ResourceSlot(Resource.WHEAT, 2));
+		ownedResources.addAllFrom(new ResourceSlot(Resource.WHEAT, 4));
 	}
 	
 	public float getFeedRatio()
@@ -264,16 +264,20 @@ public class Citizen extends Unit
 		return (float)feedLevel / (float)FEED_MAX;
 	}
 	
-	public void onDistributedResource(ResourceSlot r)
+	public boolean onDistributedResource(ResourceSlot r)
 	{
 		// The citizen must have a job.
 		// If he has housemates with a job, the citizen can buy resources.
 		if(job == null && !houseRef.isInhabitantHaveJob())
-			return;
-		if(ownedResources.getFoodSlot() == null && r.getSpecs().isFood())
-			buyResource(r, 2);
+			return false;
+		if(!ownedResources.containsFood() && r.getSpecs().isFood())
+		{
+			buyResource(r, 4);
+			return true;
+		}
+		return false;
 	}
-	
+		
 	protected void buyResource(ResourceSlot r, int amount)
 	{
 //		int oldSlotAmount = r.getAmount();

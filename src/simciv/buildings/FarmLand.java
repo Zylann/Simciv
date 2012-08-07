@@ -54,16 +54,7 @@ public class FarmLand extends Workplace
 	@Override
 	public void tick()
 	{
-		if(state == Building.NORMAL)
-		{
-			if(!needEmployees())
-				state = Building.ACTIVE;
-		}
-		else if(state == Building.ACTIVE)
-		{
-			if(needEmployees())
-				state = Building.NORMAL;
-		}
+		super.tick();
 		
 		if(Cheats.isFastFarmlandGrow() && ticksBeforeNextLevel > secondsToTicks(1))
 			ticksBeforeNextLevel = secondsToTicks(1);
@@ -103,7 +94,7 @@ public class FarmLand extends Workplace
 			if(emp.getJob().getID() == Job.CONVEYER && !emp.isOut())
 			{
 				Conveyer job = (Conveyer)(emp.getJob());
-				int harvestResult = (int) (60 + 40.f * Math.random());
+				int harvestResult = (int) (50 + 25.f * Math.random());
 				job.addResourceCarriage(new ResourceSlot(Resource.WHEAT, harvestResult));
 				job.setTarget(new FreeWarehouseMapTarget());
 				emp.exitBuilding();
@@ -193,6 +184,21 @@ public class FarmLand extends Workplace
 	public boolean canBePlaced(Map map, int x, int y)
 	{
 		return super.canBePlaced(map, x, y) && map.isArable(x, y, getWidth(), getHeight());
+	}
+
+	@Override
+	protected void onActivityStart()
+	{
+	}
+
+	@Override
+	protected void onActivityStop()
+	{
+	}
+
+	@Override
+	protected void tickActivity()
+	{
 	}
 	
 }

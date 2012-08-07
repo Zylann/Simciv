@@ -10,7 +10,6 @@ import simciv.buildings.Building;
 import simciv.buildings.House;
 import simciv.buildings.Workplace;
 import simciv.content.Content;
-import simciv.effects.RisingIcon;
 import simciv.units.Citizen;
 
 public class Taxman extends Job
@@ -34,8 +33,6 @@ public class Taxman extends Job
 			if(b.isHouse())
 			{
 				float moneyCollected = ((House)b).payTaxes();
-				if(moneyCollected > 0)
-					me.getWorld().addGraphicalEffect(new RisingIcon(b.getX(), b.getY(), Content.images.effectGold));
 				totalMoneyCollected += moneyCollected;
 			}
 		}

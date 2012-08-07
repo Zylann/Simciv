@@ -83,25 +83,21 @@ public class Market extends Workplace
 	}
 
 	@Override
-	protected void tick()
+	protected void onActivityStart()
 	{
-		if(state == Building.NORMAL)
-		{
-			if(!needEmployees())
-			{
-				state = Building.ACTIVE;
-				sendDelivery();
-			}
-		}
-		else if(state == Building.ACTIVE)
-		{
-			if(needEmployees())
-			{
-				state = Building.NORMAL;
-			}
-		}
+		sendDelivery();
 	}
 
+	@Override
+	protected void onActivityStop()
+	{
+	}
+
+	@Override
+	protected void tickActivity()
+	{
+	}
+	
 	private void sendDelivery()
 	{
 		for(Citizen emp : employees.values())

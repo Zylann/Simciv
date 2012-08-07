@@ -18,6 +18,7 @@ import simciv.SoundEngine;
 import simciv.Vector2i;
 import simciv.World;
 import simciv.content.Content;
+import simciv.effects.RisingIcon;
 import simciv.maptargets.RoadMapTarget;
 import simciv.units.Citizen;
 
@@ -84,6 +85,8 @@ public class House extends Building
 			if(!c.isBeenTaxed())
 				totalMoneyCollected += c.payTax();
 		}
+		if(totalMoneyCollected > 0)
+			worldRef.addGraphicalEffect(new RisingIcon(posX, posY, Content.images.effectGold));
 		return totalMoneyCollected;
 	}
 
@@ -250,7 +253,7 @@ public class House extends Building
 				gfx.drawImage(sprites[level].getSprite(0, 0), 0, -Game.tilesSize);
 			}
 			if(gc.getInput().isKeyDown(Input.KEY_3))
-				renderFeedRatio(gfx, posX * Game.tilesSize, posY * Game.tilesSize);
+				renderFeedRatio(gfx, 0, 0);
 		}
 	}
 	
@@ -312,8 +315,14 @@ public class House extends Building
 	
 	public void onDistributedResource(ResourceSlot r)
 	{
+		boolean buyed = false;
 		for(Citizen c : inhabitants.values())
-			c.onDistributedResource(r);
+		{
+			if(c.onDistributedResource(r))
+				buyed = true;
+		}
+		if(buyed)
+			worldRef.addGraphicalEffect(new RisingIcon(posX, posY, Content.images.effectGold));
 	}
 	
 	public float getMeanFeedRatio()

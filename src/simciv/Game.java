@@ -26,8 +26,8 @@ public class Game extends UIStateBasedGame
     public static final int tilesSize = 16;
 
     // Video settings
-    public static final int screenWidth = 800;
-    public static final int screenHeight = 600;
+    public static final int screenWidth = 1000;
+    public static final int screenHeight = 750;
     public static final int framerate = 30;
     // Graphics settings
     public static boolean renderFancyUnitMovements = true;

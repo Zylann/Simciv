@@ -108,6 +108,33 @@ public abstract class Workplace extends Building
 			info += ", production : " + getProductionProgress() + "%";
 		return info;
 	}
+
+	@Override
+	protected void tick()
+	{
+		if(state == Building.NORMAL)
+		{
+			if(!needEmployees())
+			{
+				state = Building.ACTIVE;
+				onActivityStart();
+			}
+		}
+		else if(state == Building.ACTIVE)
+		{
+			if(needEmployees())
+			{
+				state = Building.NORMAL;
+				onActivityStop();
+			}
+		}
+	}
+	
+	protected abstract void onActivityStart();
+	
+	protected abstract void onActivityStop();
+	
+	protected abstract void tickActivity();
 	
 }
 

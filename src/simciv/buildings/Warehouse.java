@@ -95,21 +95,6 @@ public class Warehouse extends Workplace
 	}
 
 	@Override
-	protected void tick()
-	{
-		if(state == Building.NORMAL)
-		{
-			if(!needEmployees())
-				state = Building.ACTIVE;
-		}
-		else if(state == Building.ACTIVE)
-		{
-			if(needEmployees())
-				state = Building.NORMAL;
-		}
-	}
-
-	@Override
 	public void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		// Floor
@@ -187,6 +172,21 @@ public class Warehouse extends Workplace
 		return "[" + getProperties().name + "] employees : "
 			+ getNbEmployees() + "/" + getMaxEmployees()
 			+ ", load : " + getLoad() + "%";
+	}
+
+	@Override
+	protected void onActivityStart()
+	{
+	}
+
+	@Override
+	protected void onActivityStop()
+	{
+	}
+
+	@Override
+	protected void tickActivity()
+	{
 	}
 	
 }

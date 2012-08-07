@@ -18,6 +18,8 @@ public class ResourceBag
 	
 	public void addFrom(ResourceSlot r, int amount)
 	{
+		if(amount == 0 || r.isEmpty())
+			return;
 		ResourceSlot slot = slots.get(r.getType());
 		if(slot == null)
 		{
@@ -25,8 +27,6 @@ public class ResourceBag
 			slots.put(r.getType(), slot);
 		}
 		slot.addFrom(r, amount);
-		if(slot.isEmpty())
-			slots.remove(slot.getType());
 	}
 	
 	public void addAllFrom(ResourceSlot r)
@@ -34,21 +34,54 @@ public class ResourceBag
 		addFrom(r, -1);
 	}
 
-	public ResourceSlot getSlot(byte type)
+	public int getAmount(byte type)
 	{
-		return slots.get(type);
+		ResourceSlot slot = slots.get(type);
+		if(slot == null)
+			return 0;
+		return slot.getAmount();
 	}
 	
-	public ResourceSlot getFoodSlot()
+	/**
+	 * If the bag contains food, returns the first food type.
+	 * Returns NONE if no non-empty slot was found.
+	 * @return
+	 */
+	public byte getContainedFoodType()
 	{
 		for(ResourceSlot slot : slots.values())
 		{
-			if(slot.getSpecs().isFood())
-				return slot;
+			if(slot.getSpecs().isFood() && !slot.isEmpty())
+				return slot.getType();
 		}
-		return null;
+		return Resource.NONE;
+	}
+
+	public boolean containsFood()
+	{
+		return getContainedFoodType() != Resource.NONE;
 	}
 	
+	public boolean subtract(byte type, int amount)
+	{
+		ResourceSlot slot = slots.get(type);
+		if(slot == null)
+			return false;
+		slot.subtract(amount);
+		if(slot.isEmpty())
+			slots.remove(type);
+		return true;
+	}
+	
+	public boolean add(byte type, int amount)
+	{
+		ResourceSlot slot = slots.get(type);
+		if(slot == null)
+			return false;
+		slot.add(amount);
+		return true;
+	}
+
 	public int getNbDifferentSlots()
 	{
 		return slots.size();

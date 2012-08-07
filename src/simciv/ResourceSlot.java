@@ -23,7 +23,7 @@ public class ResourceSlot
 		set(type, amount);
 	}
 	
-	public void set(byte type, int amount)
+	private void set(byte type, int amount)
 	{
 		if(amount == 0)
 			this.type = Resource.NONE;
@@ -44,7 +44,7 @@ public class ResourceSlot
 	
 	public boolean isEmpty()
 	{
-		return type == Resource.NONE;
+		return amount == 0;
 	}
 	
 	public boolean isFull()
@@ -80,19 +80,20 @@ public class ResourceSlot
 			type = other.type; // in case the current slot type is NONE
 			int spaceLeft = Resource.get(type).getStackLimit() - amount;
 			
+			// Transfert
 			if(amountToTransfert > spaceLeft) // Not enough space in current slot
 			{
 				amount += spaceLeft;
 				other.amount -= spaceLeft;
-				if(other.amount == 0)
-					other.type = Resource.NONE;
 			}
 			else // enough space
 			{
 				amount += amountToTransfert;
 				other.amount -= amountToTransfert;
-				other.type = Resource.NONE;
 			}
+			
+			if(other.amount == 0)
+				other.type = Resource.NONE;
 			
 			return true;
 		}
@@ -116,8 +117,8 @@ public class ResourceSlot
 	
 	public String toString()
 	{
-		if(type == Resource.NONE)
-			return "Empty";
+		if(isEmpty())
+			return "Empty (" + amount + ")";
 		String resourceName = new String(getSpecs().getName());
 		if(resourceName.isEmpty())
 			resourceName = "unknown";
@@ -133,17 +134,31 @@ public class ResourceSlot
 		return (float)amount / (float)(getSpecs().getStackLimit());
 	}
 	
-	public void add(int amount)
+	/**
+	 * Adds a positive amount to the slot.
+	 * Does nothing if the slot type is NONE.
+	 * @param a
+	 */
+	public void add(int a)
 	{
-		this.amount += amount;
+		if(a <= 0 || type == Resource.NONE)
+			return;
+		this.amount += a;
 		if(this.amount > getSpecs().getStackLimit())
 			this.amount = getSpecs().getStackLimit();
 	}
 
-	public void subtract(int amount)
+	/**
+	 * Subtracts a positive amount to the slot.
+	 * Does nothing if the slot type is NONE.
+	 * @param a
+	 */
+	public void subtract(int a)
 	{
-		this.amount -= amount;
-		if(this.amount < 0)
+		if(a <= 0 || type == Resource.NONE)
+			return;
+		this.amount -= a;
+		if(this.amount <= 0)
 		{
 			this.amount = 0;
 			type = Resource.NONE;

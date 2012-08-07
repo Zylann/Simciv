@@ -37,34 +37,29 @@ public class TaxmenOffice extends Workplace
 					Game.tilesSize * (getHeight() + getZHeight()));
 		}
 	}
+	
+	@Override
+	protected void onActivityStart()
+	{
+		for(Citizen emp : employees.values())
+		{
+			if(emp.getJob().getID() == Job.TAXMAN && !emp.isOut())
+			{
+				emp.exitBuilding(); // mission begin
+				emp.setMovement(new RandomRoadMovement());
+			}
+		}
+	}
 
 	@Override
-	protected void tick()
+	protected void onActivityStop()
 	{
-		if(state == Building.NORMAL)
-		{
-			if(!needEmployees())
-			{
-				state = Building.ACTIVE;
-				for(Citizen emp : employees.values())
-				{
-					if(emp.getJob().getID() == Job.TAXMAN && !emp.isOut())
-					{
-						emp.exitBuilding(); // mission begin
-						emp.setMovement(new RandomRoadMovement());
-					}
-				}
-			}
-		}
-		else if(state == Building.ACTIVE)
-		{
-			if(needEmployees())
-			{
-				System.out.println("aaa");
-				state = Building.NORMAL;
-				// TODO out employees must end their mission
-			}
-		}
+		// TODO out employees must end their mission
+	}
+
+	@Override
+	protected void tickActivity()
+	{
 	}
 
 	@Override
