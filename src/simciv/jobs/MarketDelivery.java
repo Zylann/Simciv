@@ -89,7 +89,6 @@ public class MarketDelivery extends Job
 				distributeResources();
 				if(!wasEmpty && carriedResource.isEmpty())
 				{
-					System.out.println("reload2 " + wasEmpty + ", " + carriedResource.isEmpty() + ", " + carriedResource.getAmount());
 					restartPathFinding(new WarehouseForMarketMapTarget());
 				}
 				else

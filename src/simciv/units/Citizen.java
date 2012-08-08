@@ -37,19 +37,20 @@ public class Citizen extends Unit
 	public static int totalCount = 0;
 	public static int totalWithJob = 0;
 	
-	private static final int TICK_TIME_MEAN = 500;
+	public static final int TICK_TIME_BASIC = 500;
 	private static final float TICK_TIME_VARIATION = 100;
+	private static final int TICK_TIME_MIN = 200;
 	
 	// Feed levels (in citizen ticks)
-	public static final int FEED_MAX = 350;
-	public static final int FEED_HUNGRY = 200;
-	public static final int FEED_STARVING = 100;
+	public static final int FEED_MAX = 650;
+	public static final int FEED_HUNGRY = 500;
+	public static final int FEED_STARVING = 350;
 	public static final int FEED_MIN = 0;
 	
 	private Building buildingRef; // reference to the building the citizen currently is in
 	private House houseRef; // if null, the Citizen is homeless
 	private Job job; // Job of the Citizen
-	private int basicTickTime; // Tick time interval in milliseconds (basic value)
+	private int tickTimeRandom; // Tick time variation constant in milliseconds
 	private int tickTime; // Tick time interval in milliseconds (modified value)
 	private boolean beenTaxed; // true if the citizen have been asked to pay his taxes this month
 	private int feedLevel;
@@ -59,8 +60,8 @@ public class Citizen extends Unit
 	{
 		super(w);
 		// Each citizen have a slightly different basic tickTime
-		basicTickTime = TICK_TIME_MEAN + (int)(TICK_TIME_VARIATION * (Math.random() - 0.5f));
-		tickTime = basicTickTime;
+		tickTimeRandom = (int)(TICK_TIME_VARIATION * (Math.random() - 0.5f));
+		setTickTimeWithRandom(TICK_TIME_BASIC);
 		setMovement(new RandomRoadMovement());
 		beenTaxed = false;
 		ownedResources = new ResourceBag();
@@ -75,6 +76,22 @@ public class Citizen extends Unit
 		
 		if(sprites == null)
 			sprites = new SpriteSheet(Content.images.unitCitizen, Game.tilesSize, Game.tilesSize);
+	}
+
+	public void setTickTimeWithRandom(int newTickTime)
+	{
+		tickTime = newTickTime + tickTimeRandom;
+		if(tickTime < TICK_TIME_MIN)
+			tickTime = TICK_TIME_MIN;
+	}
+	
+	private void updateTickTime()
+	{
+		int btt = isStarving() ? TICK_TIME_BASIC * 2 : TICK_TIME_BASIC;
+		if(job != null)
+			setTickTimeWithRandom(btt + job.getTickTimeOverride());
+		else
+			setTickTimeWithRandom(btt);
 	}
 	
 	public boolean isBeenTaxed()
@@ -106,30 +123,20 @@ public class Citizen extends Unit
 		int gx = Game.tilesSize - thinkingAnim.getWidth() / thinkingAnim.getHorizontalCount();
 		gfx.drawImage(thinkingAnim.getSprite(getTicks() % 2 == 0 ? 0 : 1, 0), gx, 0);
 	}
-
+	
+	public boolean isStarving()
+	{
+		return feedLevel <= FEED_STARVING;
+	}
+	
 	@Override
 	public void tick()
 	{
 		// Hunger
-		if(feedLevel > 0)
-			feedLevel--;
-		if(feedLevel <= FEED_HUNGRY)
-		{
-			byte foodType = ownedResources.getContainedFoodType();
-			if(foodType != Resource.NONE)
-			{
-				ownedResources.subtract(foodType, 1);
-				feedLevel = FEED_MAX;
-			}
-			
-			if(feedLevel <= FEED_STARVING)
-			{
-				// TODO reduce citizen perfs
-			}
-		}
+		tickHunger();
 		
 		// Taxes
-		if(beenTaxed && worldRef.time.getDay() == 0)
+		if(beenTaxed && worldRef.time.isFirstDayOfMonth())
 			beenTaxed = false;
 		
 		// Job
@@ -137,6 +144,33 @@ public class Citizen extends Unit
 			searchJob();
 		else
 			job.tick();
+	}
+	
+	/**
+	 * Updates citizen's hunger.
+	 */
+	private void tickHunger()
+	{
+		feedLevel--;
+		// TODO transform into nomad if too long starving
+		if(feedLevel <= FEED_HUNGRY)
+		{
+			byte foodType = ownedResources.getContainedFoodType();
+			if(foodType != Resource.NONE)
+			{
+				ownedResources.subtract(foodType, 1);
+				feedLevel = FEED_MAX;
+				updateTickTime();
+			}
+			else if(feedLevel == FEED_STARVING)
+			{
+				updateTickTime();
+			}
+			else if(feedLevel == FEED_MIN)
+			{
+				transformToNomad();
+			}
+		}
 	}
 	
 	public Job getJob()
@@ -165,7 +199,7 @@ public class Citizen extends Unit
 					if(job != null) // I got the job !
 					{
 						job.onBegin();
-						tickTime = basicTickTime + job.getTickTimeOverride();
+						setTickTimeWithRandom(TICK_TIME_BASIC + job.getTickTimeOverride());
 						// Visual feedback
 						worldRef.addGraphicalEffect(
 								new RisingIcon(
@@ -178,6 +212,10 @@ public class Citizen extends Unit
 		}
 	}
 	
+	/**
+	 * Sets the house of the citizen (doesn't update anything else, it's just a basic setter).
+	 * @param h
+	 */
 	public void setHouse(House h)
 	{
 		houseRef = h;
@@ -203,7 +241,6 @@ public class Citizen extends Unit
 		setMovement(null);
 		setDirection(Direction2D.NONE);
 		return true;
-		//return buildingRef.addCitizen(this);
 	}
 	
 	/**
@@ -216,16 +253,19 @@ public class Citizen extends Unit
 			return false;
 		buildingRef = null;
 		return true;
-		//return buildingRef.removeCitizen(getID());
 	}
 	
+	/**
+	 * Makes the citizen quit his job.
+	 * @param notifyWorkplace : if true, the workplace will be notified (do not set to true if the workplace has already been updated).
+	 */
 	public void quitJob(boolean notifyWorkplace)
 	{
 		if(job != null)
 			job.onQuit(notifyWorkplace);
 		job = null;
 		totalWithJob--;
-		tickTime = basicTickTime;
+		updateTickTime();
 		state = Unit.NORMAL;
 	}
 
@@ -259,11 +299,24 @@ public class Citizen extends Unit
 		ownedResources.addAllFrom(new ResourceSlot(Resource.WHEAT, 4));
 	}
 	
-	public float getFeedRatio()
+	/**
+	 * Returns a ratio representing the hunger status of the citizen.
+	 * It will be 1 if the citizen is fine, and a value in [0, 1[ if he is hungry.
+	 * @return
+	 */
+	public float getHungerRatio()
 	{
-		return (float)feedLevel / (float)FEED_MAX;
+		if(feedLevel > FEED_HUNGRY)
+			return 1;
+		return (float)(feedLevel - FEED_HUNGRY) / (float)FEED_HUNGRY;
 	}
 	
+	/**
+	 * Called when a market delivery reaches citizen's house.
+	 * (The citizen must have a house)
+	 * @param r : resource available to buy
+	 * @return true if the citizen bought something, false otherwise
+	 */
 	public boolean onDistributedResource(ResourceSlot r)
 	{
 		// The citizen must have a job.
@@ -284,6 +337,15 @@ public class Citizen extends Unit
 		ownedResources.addFrom(r, amount);
 //		int diff = oldSlotAmount - r.getAmount();
 		worldRef.playerCity.gainMoney(0.5f);
+	}
+	
+	/**
+	 * Destroys the citizen and spawns a new nomad at the same place
+	 */
+	public void transformToNomad()
+	{
+		dispose();
+		worldRef.spawnUnit(new Nomad(worldRef), posX, posY);
 	}
 	
 }

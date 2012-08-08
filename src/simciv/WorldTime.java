@@ -69,6 +69,11 @@ public class WorldTime
 	{
 		return "day " + day + ", month " + month + ", year " + year;
 	}
+
+	public boolean isFirstDayOfMonth()
+	{
+		return day == 0;
+	}
 	
 }
 

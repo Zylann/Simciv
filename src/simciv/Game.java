@@ -42,7 +42,7 @@ public class Game extends UIStateBasedGame
     public GamePlay gamePlay; // direct access
 
 	public static void main(String[] args)
-	{
+	{	
 		try
 		{
 			// TODO make the game window resizable

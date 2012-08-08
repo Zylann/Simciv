@@ -315,13 +315,13 @@ public class House extends Building
 	
 	public void onDistributedResource(ResourceSlot r)
 	{
-		boolean buyed = false;
+		boolean bought = false;
 		for(Citizen c : inhabitants.values())
 		{
 			if(c.onDistributedResource(r))
-				buyed = true;
+				bought = true;
 		}
-		if(buyed)
+		if(bought)
 			worldRef.addGraphicalEffect(new RisingIcon(posX, posY, Content.images.effectGold));
 	}
 	
@@ -329,7 +329,7 @@ public class House extends Building
 	{
 		float sum = 0;
 		for(Citizen c : inhabitants.values())
-			sum += c.getFeedRatio();
+			sum += c.getHungerRatio();
 		return sum / (float)(inhabitants.size());
 	}
 	
@@ -338,7 +338,7 @@ public class House extends Building
 		float r = 1;
 		for(Citizen c : inhabitants.values())
 		{
-			float r2 = c.getFeedRatio();
+			float r2 = c.getHungerRatio();
 			if(r2 < r)
 				r = r2;
 		}

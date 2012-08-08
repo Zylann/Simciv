@@ -17,7 +17,7 @@ public class Noise
 	private static final int RAND_SEQ3 = 423005601;
 	
 	/**
-	 * Generates a random value between 0 and maxint.
+	 * Generates a random positive value between 0 and maxint.
 	 * The same parameters will return the same value.
 	 * @param x : X position
 	 * @param y : Y position
