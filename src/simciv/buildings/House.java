@@ -235,6 +235,11 @@ public class House extends Building
 	{
 		inhabitants.remove(id);
 	}
+	
+	public boolean isAbandonned()
+	{
+		return nbCitizensToProduce == 0 && inhabitants.size() == 0;
+	}
 
 	@Override
 	public void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
@@ -243,14 +248,19 @@ public class House extends Building
 			renderAsConstructing(gfx);
 		else
 		{
+			int shift = 0;
 			if(level == 0)
 			{
+				if(isAbandonned())
+					shift = 4;
 				// Note : directionnal sprites are only supported with the first level yet
-				gfx.drawImage(sprites[level].getSprite(direction, 0), 0, -Game.tilesSize);
+				gfx.drawImage(sprites[level].getSprite(direction + shift, 0), 0, -Game.tilesSize);
 			}
 			else
 			{
-				gfx.drawImage(sprites[level].getSprite(0, 0), 0, -Game.tilesSize);
+				if(isAbandonned())
+					shift = 1;
+				gfx.drawImage(sprites[level].getSprite(shift, 0), 0, -Game.tilesSize);
 			}
 			if(gc.getInput().isKeyDown(Input.KEY_3))
 				renderHungerRatio(gfx, 0, 0);

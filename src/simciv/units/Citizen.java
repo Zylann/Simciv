@@ -42,9 +42,9 @@ public class Citizen extends Unit
 	private static final int TICK_TIME_MIN = 200;
 	
 	// Feed levels (in citizen ticks)
-	public static final int FEED_MAX = 550;
-	public static final int FEED_HUNGRY = 400;
-	public static final int FEED_STARVING = 250;
+	public static final int FEED_MAX = 500;
+	public static final int FEED_HUNGRY = 350;
+	public static final int FEED_STARVING = 200;
 	public static final int FEED_MIN = 0;
 	
 	private Building buildingRef; // reference to the building the citizen currently is in

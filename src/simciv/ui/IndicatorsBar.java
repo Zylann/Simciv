@@ -85,6 +85,7 @@ public class IndicatorsBar extends BasicWidget
 		int y = height - 4;
 
 		// Work ratio
+		// FIXME in some cases, the bar goes straight down
 		int x = 20;
 		if(population != 0)
 		{
