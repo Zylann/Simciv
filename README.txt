@@ -6,24 +6,27 @@ Description :
 	It is written in Java, and uses the Slick2D library.
 	It is currently under developpment, more features will be added soon.
 	
-Current features :
+Releases :
+	
+	SimCiv indev release 1 : <link coming soon...>
+	SimCiv indev release 2 : work in progress
+	
+Current features (for development version) :
 
-	- Map generation (grass, trees, water)
-	- Graphical user interface + debug info when hitting F3
+	- Random map generation (grass, trees, bushes, water)
 	- Placing buildings and roads
-	- Path finding
-	- Draggable minimap
 	- Job system
-	- Farmlands (with growing crops), houses, warehouses (more in the future)
+	- Economy (through taxes and markets)
+	- Draggable/hideable minimap
+	- Farmlands with growing crops
+	See more in the changelog file !
 	
 Some planned features and ideas :
 
-	- Economy system
-	- Resources (food, raw materials, ores...)
 	- Ability to save/load a game
 	- Savage units
 	- Moar builds
-	- Technological tree ?
+	- Technological tree
 	- Random natural events (weather...)
 	- World view (foreign cities...)
 	- Citizen social levels
