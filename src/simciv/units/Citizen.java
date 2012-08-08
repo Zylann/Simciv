@@ -262,9 +262,11 @@ public class Citizen extends Unit
 	public void quitJob(boolean notifyWorkplace)
 	{
 		if(job != null)
+		{
 			job.onQuit(notifyWorkplace);
+			totalWithJob--;
+		}
 		job = null;
-		totalWithJob--;
 		updateTickTime();
 		state = Unit.NORMAL;
 	}
@@ -281,6 +283,7 @@ public class Citizen extends Unit
 		if(houseRef != null)
 			houseRef.removeInhabitant(this.getID());
 		totalCount--;
+		System.out.println(totalWithJob + ", " + totalCount);
 	}
 
 	@Override
