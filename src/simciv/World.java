@@ -30,6 +30,7 @@ public class World
 	public PlayerCity playerCity;
 	public WorldTime time;
 	private transient boolean fastForward;
+	private List<Unit> spawnedUnits = new ArrayList<Unit>();
 	private HashMap<Integer,Unit> units = new HashMap<Integer,Unit>();
 	private HashMap<Integer,Building> buildings = new HashMap<Integer,Building>();
 	private List<VisualEffect> graphicalEffects = new ArrayList<VisualEffect>();
@@ -63,6 +64,11 @@ public class World
 			delta *= 5;
 		
 		time.update(delta);
+		
+		for(Unit u : spawnedUnits)
+			addUnit(u);
+		if(!spawnedUnits.isEmpty())
+			spawnedUnits.clear();
 		
 		ArrayList<Unit> unitsToRemove = new ArrayList<Unit>();
 		for(Unit u : units.values())
@@ -109,15 +115,31 @@ public class World
 	
 	/**
 	 * Spawns an unit in the world at (x,y).
+	 * It will be active at next world update, because it allows to spawn units
+	 * while iterating on the units map.
 	 * @param u : unit
-	 * @param x
-	 * @param y
-	 * @return : true if the unit has been spawned.
+	 * @param x : x coordinate in map cells
+	 * @param y : y coordinate in map cells
 	 */
-	public boolean spawnUnit(Unit u, int x, int y)
+	public void spawnUnit(Unit u, int x, int y)
 	{
 		u.setPosition(x, y);
-		
+		spawnedUnits.add(u);
+	}
+	
+	public void spawnUnit(Unit unit)
+	{
+		spawnUnit(unit, unit.getX(), unit.getY());
+	}
+	
+	/**
+	 * Spawns directly an unit in the world.
+	 * Do NOT use this method while iterating on the units map.
+	 * @param u : unit
+	 * @return : true if the unit has been added.
+	 */	
+	private boolean addUnit(Unit u)
+	{
 		if(!units.containsKey(u.getID()))
 		{
 			units.put(u.getID(), u);
@@ -125,15 +147,6 @@ public class World
 			return true;
 		}
 		return false;
-	}
-	
-	/**
-	 * Spawns a new unit to the world
-	 * @param unit
-	 */
-	public void spawnUnit(Unit unit)
-	{
-		spawnUnit(unit, unit.getX(), unit.getY());
 	}
 	
 	/**
@@ -170,7 +183,7 @@ public class World
 	}
 	
 	/**
-	 * Places a new building at (x,y).
+	 * Places a new building at (x,y) if possible.
 	 * It may occupy one or more cells on the map.
 	 * @param b : new building
 	 * @param x : x origin
