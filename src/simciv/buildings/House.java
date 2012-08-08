@@ -253,14 +253,14 @@ public class House extends Building
 				gfx.drawImage(sprites[level].getSprite(0, 0), 0, -Game.tilesSize);
 			}
 			if(gc.getInput().isKeyDown(Input.KEY_3))
-				renderFeedRatio(gfx, 0, 0);
+				renderHungerRatio(gfx, 0, 0);
 		}
 	}
 	
-	private void renderFeedRatio(Graphics gfx, int x, int y)
+	private void renderHungerRatio(Graphics gfx, int x, int y)
 	{
 		float w = (float)(getWidth() * Game.tilesSize - 1);
-		float t = getLowestFeedRatio() * w;
+		float t = getLowestHungerRatio() * w;
 		gfx.setColor(Color.green);
 		gfx.fillRect(x, y, t, 2);
 		gfx.setColor(Color.red);
@@ -333,7 +333,7 @@ public class House extends Building
 		return sum / (float)(inhabitants.size());
 	}
 	
-	public float getLowestFeedRatio()
+	public float getLowestHungerRatio()
 	{
 		float r = 1;
 		for(Citizen c : inhabitants.values())
