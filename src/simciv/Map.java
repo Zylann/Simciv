@@ -196,7 +196,6 @@ public class Map
 		int xmax = b.getX() + b.getWidth() - 1;
 		int ymax = b.getY() + b.getHeight() - 1;
 		boolean isOrigin = true;
-		boolean isEntryPoint = false;
 		
 		for(y = b.getY(); y <= ymax; y++)
 		{
@@ -204,10 +203,7 @@ public class Map
 			{
 				if(mark)
 				{
-					isEntryPoint =
-							x == b.getX() + b.getProperties().entryX && 
-							y == b.getY() + b.getProperties().entryY;
-					getCellExisting(x, y).setBuildingInfo(b.getID(), isOrigin, isEntryPoint);
+					getCellExisting(x, y).setBuildingInfo(b.getID(), isOrigin);
 					if(isOrigin)
 						isOrigin = false;
 				}

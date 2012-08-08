@@ -10,8 +10,6 @@ public class BuildingProperties
 	public String name;
 	public int width;
 	public int height;
-	public int entryX;
-	public int entryY;
 	public int zHeight;
 	public int unitsCapacity; // How many citizen can be contained?
 	public int cost;
@@ -53,18 +51,6 @@ public class BuildingProperties
 		return this;
 	}
 	
-	/**
-	 * Sets the entry point of the building.
-	 * @param x : X-coordinate relative to origin
-	 * @param y : Y-coordinate relative to origin
-	 * @return properties object itself for chaining
-	 */
-	public BuildingProperties setEntryPoint(int x, int y)
-	{
-		entryX = x;
-		entryY = y;
-		return this;
-	}
 }
 
 

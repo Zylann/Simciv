@@ -24,7 +24,6 @@ public class MapCell
 	
 	private static int BUILDING_INFO_ID_MASK = 0x3fffffff; // 30 bits to 1, 2 higher bits to 0
 	private static int BUILDING_INFO_ORIGIN_MASK = 0x80000000; // 2 higher bits : 10
-	private static int BUILDING_INFO_ENTRY_MASK = 0x40000000; // 2 higher bits : 01
 	
 	public MapCell()
 	{
@@ -47,13 +46,11 @@ public class MapCell
 		buildingInfo = 0;
 	}
 	
-	public void setBuildingInfo(int id, boolean isOrigin, boolean isEntryPoint)
+	public void setBuildingInfo(int id, boolean isOrigin)
 	{
 		buildingInfo = id & BUILDING_INFO_ID_MASK;
 		if(isOrigin)
 			buildingInfo |= BUILDING_INFO_ORIGIN_MASK;
-		if(isEntryPoint)
-			buildingInfo |= BUILDING_INFO_ENTRY_MASK;
 	}
 	
 	public boolean isBuilding()
@@ -69,11 +66,6 @@ public class MapCell
 	public boolean isBuildingOrigin()
 	{
 		return (buildingInfo & BUILDING_INFO_ORIGIN_MASK) != 0;
-	}
-	
-	public boolean isBuildingEntryPoint()
-	{
-		return (buildingInfo & BUILDING_INFO_ENTRY_MASK) != 0;
 	}
 	
 	public boolean isArable()
