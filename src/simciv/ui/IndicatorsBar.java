@@ -67,6 +67,16 @@ public class IndicatorsBar extends BasicWidget
 		// Money
 		gfx.drawImage(Content.images.uiIndicatorsMoney, 50, 4); // Icon
 		String moneyText = "" + money;
+		if(money < 500)
+		{
+			gfx.setColor(new Color(0,0,0,128));
+			gfx.drawString(moneyText, 71, 7); // Text
+			
+			if(money >= 200 && money < 500)
+				gfx.setColor(Color.orange);
+			else if(money < 200)
+				gfx.setColor(Color.red);
+		}
 		gfx.drawString(moneyText, 70, 6); // Text
 		
 		// Progress bars :
