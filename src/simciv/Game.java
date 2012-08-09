@@ -39,11 +39,8 @@ public class Game extends UIStateBasedGame
 	public static final int STATE_GAME_LOADING = 3;
 	public static final int STATE_GAMEPLAY = 4;
 
-	// Video settings
-	public static final int framerate = 30;
-	// Graphics settings
-	public static boolean renderFancyUnitMovements = true;
-
+	public static Settings settings;
+	
 	// Game container
 	private static CanvasGameContainer canvas;
 	private static Container contentPane;
@@ -59,6 +56,8 @@ public class Game extends UIStateBasedGame
 
 	public static void main(String[] args)
 	{
+		settings = new Settings();
+		
 		try
 		{
 			// Create game and canvas
@@ -66,6 +65,10 @@ public class Game extends UIStateBasedGame
 			canvas = new CanvasGameContainer(game);
 			canvas.setSize(defaultScreenWidth, defaultScreenHeight);
 			canvas.getContainer().setAlwaysRender(true);
+			canvas.getContainer().setTargetFrameRate(settings.framerate);
+			canvas.getContainer().setVSync(settings.useVSync);
+			canvas.getContainer().setSmoothDeltas(settings.smoothDeltasEnabled);
+			canvas.getContainer().setUpdateOnlyWhenVisible(true);
 
 			// Create main window
 			frame = new JFrame();
@@ -84,6 +87,8 @@ public class Game extends UIStateBasedGame
 			contentPane.add(canvas);
 			
 			canvas.start(); // Starts the game
+			
+			// TODO Limit FPS
 
 			// Old code
 			// AppGameContainer gc = new AppGameContainer(new Game(title));

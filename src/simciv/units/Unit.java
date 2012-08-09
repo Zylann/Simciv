@@ -202,7 +202,7 @@ public abstract class Unit extends Entity
 	{
 		gfx.pushTransform();
 		
-		if(Game.renderFancyUnitMovements)
+		if(Game.settings.renderFancyUnitMovements)
 		{
 			if(getDirection() != Direction2D.NONE && isMoving())
 			{
