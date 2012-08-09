@@ -180,6 +180,7 @@ public abstract class Unit extends Entity
 	public void kill()
 	{
 		isAlive = false;
+		dispose();
 	}
 	
 	/**
@@ -232,7 +233,7 @@ public abstract class Unit extends Entity
 	{
 		return 500;
 	}
-
+	
 	/**
 	 * Renders the unit using a commonly used sprite scheme
 	 * @param gfx

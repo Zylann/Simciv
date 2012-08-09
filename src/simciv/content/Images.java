@@ -66,6 +66,7 @@ public class Images
 	// Effects
 	public Image effectGreenStar;
 	public Image effectGold;
+	public Image effectDeath;
 	
 	// Test
 	public Image test;

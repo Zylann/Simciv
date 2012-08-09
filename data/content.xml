@@ -62,6 +62,7 @@
 	
 	<resource type="image" id="effectGreenStar">green_star.png</resource>
 	<resource type="image" id="effectGold">gold_fx.png</resource>
+	<resource type="image" id="effectDeath">death.png</resource>
 	
 	<resource type="image" id="test">test.png</resource>
 	

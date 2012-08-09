@@ -42,9 +42,9 @@ public class Citizen extends Unit
 	private static final int TICK_TIME_MIN = 200;
 	
 	// Feed levels (in citizen ticks)
-	public static final int FEED_MAX = 500;
-	public static final int FEED_HUNGRY = 350;
-	public static final int FEED_STARVING = 200;
+	public static final int FEED_MAX = 400;
+	public static final int FEED_HUNGRY = 250;
+	public static final int FEED_STARVING = 100;
 	public static final int FEED_MIN = 0;
 	
 	private Building buildingRef; // reference to the building the citizen currently is in
@@ -168,11 +168,22 @@ public class Citizen extends Unit
 			}
 			else if(feedLevel == FEED_MIN)
 			{
-				transformToNomad();
+				if(Math.random() < 0.5f)
+					kill(); // Death...
+				else
+					transformToNomad(); // Or quit the city
 			}
 		}
 	}
-	
+
+	@Override
+	public void kill()
+	{
+		super.kill();
+		worldRef.addGraphicalEffect(
+				new RisingIcon(posX, posY, Content.images.effectDeath));
+	}
+
 	public Job getJob()
 	{
 		return job;
@@ -283,7 +294,6 @@ public class Citizen extends Unit
 		if(houseRef != null)
 			houseRef.removeInhabitant(this.getID());
 		totalCount--;
-		System.out.println(totalWithJob + ", " + totalCount);
 	}
 
 	@Override
