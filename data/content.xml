@@ -7,14 +7,12 @@
 	<!-- Textures -->
 
 	<resource type="image" id="buildConstructing1x1">buildplace.png</resource>
-	<resource type="image" id="buildInactiveFarmland">farmland.png</resource>
-	<resource type="image" id="buildActiveFarmland">farmland_active.png</resource>
+	<resource type="image" id="buildFarmland">farmland.png</resource>
 	<resource type="image" id="buildFarmlandCrops">crops.png</resource>
 	<resource type="image" id="buildFarmlandRottenCrops">rotten_crops.png</resource>
 	<resource type="image" id="buildHouseLv1">house1.png</resource>
 	<resource type="image" id="buildHouseLv2">house2_2x2.png</resource>
-	<resource type="image" id="buildInactiveWarehouse">warehouse.png</resource>
-	<resource type="image" id="buildActiveWarehouse">warehouse_active.png</resource>
+	<resource type="image" id="buildWarehouse">warehouse.png</resource>
 	<resource type="image" id="buildTaxmenOffice">taxmen_office.png</resource>
 	<resource type="image" id="buildMarket">market.png</resource>
 	

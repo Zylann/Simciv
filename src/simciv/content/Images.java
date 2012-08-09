@@ -6,14 +6,12 @@ public class Images
 {
 	// Buildings
 	public Image buildConstructing1x1;
-	public Image buildActiveFarmland;
-	public Image buildInactiveFarmland;
+	public Image buildFarmland;
 	public Image buildFarmlandCrops;
 	public Image buildFarmlandRottenCrops;
 	public Image buildHouseLv1;
 	public Image buildHouseLv2;
-	public Image buildActiveWarehouse;
-	public Image buildInactiveWarehouse;
+	public Image buildWarehouse;
 	public Image buildTaxmenOffice;
 	public Image buildMarket;
 	

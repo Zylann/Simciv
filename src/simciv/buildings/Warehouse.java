@@ -2,6 +2,7 @@ package simciv.buildings;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Game;
@@ -20,6 +21,7 @@ import simciv.units.Citizen;
 public class Warehouse extends Workplace
 {
 	private static BuildingProperties properties;
+	private static SpriteSheet sprites;
 	private static int NB_SLOTS = 8;
 	
 	private ResourceSlot resourceSlots[] = new ResourceSlot[NB_SLOTS];
@@ -39,6 +41,13 @@ public class Warehouse extends Workplace
 		
 		for(int i = 0; i < resourceSlots.length; i++)
 			resourceSlots[i] = new ResourceSlot();
+		
+		if(sprites == null)
+		{
+			sprites = new SpriteSheet(Content.images.buildWarehouse,
+					getWidth() * Game.tilesSize,
+					(getHeight() + getZHeight())* Game.tilesSize);
+		}
 	}
 	
 	@Override
@@ -98,11 +107,10 @@ public class Warehouse extends Workplace
 	public void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		// Floor
-		// TODO use spritesheet
 		if(state == Building.ACTIVE)
-			gfx.drawImage(Content.images.buildActiveWarehouse, 0, -Game.tilesSize);
+			gfx.drawImage(sprites.getSprite(0, 0), 0, -Game.tilesSize);
 		else
-			gfx.drawImage(Content.images.buildInactiveWarehouse, 0, -Game.tilesSize);
+			gfx.drawImage(sprites.getSprite(1, 0), 0, -Game.tilesSize);
 			
 		// Resources
 		

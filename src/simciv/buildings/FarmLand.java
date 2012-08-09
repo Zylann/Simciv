@@ -2,6 +2,7 @@ package simciv.buildings;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Cheats;
@@ -27,6 +28,7 @@ import simciv.units.Citizen;
 public class FarmLand extends Workplace
 {	
 	private static BuildingProperties properties;
+	private static SpriteSheet sprites;
 
 	private static byte MIN_LEVEL = 0;
 	private static byte MAX_LEVEL = 7;
@@ -49,6 +51,13 @@ public class FarmLand extends Workplace
 		ticksBeforeNextLevel = ticksPerLevel;
 		cropsLevel = MIN_LEVEL;
 		state = Building.NORMAL;
+		
+		if(sprites == null)
+		{
+			sprites = new SpriteSheet(Content.images.buildFarmland,
+					getWidth() * Game.tilesSize,
+					getHeight() * Game.tilesSize);
+		}
 	}
 	
 	@Override
@@ -109,9 +118,9 @@ public class FarmLand extends Workplace
 	{
 		// Soil
 		if(state == Building.NORMAL || needEmployees())
-			gfx.drawImage(Content.images.buildInactiveFarmland, 0, 0);
+			gfx.drawImage(sprites.getSprite(0, 0), 0, 0);
 		else
-			gfx.drawImage(Content.images.buildActiveFarmland, 0, 0);
+			gfx.drawImage(sprites.getSprite(1, 0), 0, 0);
 		
 		// Crops
 		if(state == Building.ACTIVE || cropsLevel != 0)
