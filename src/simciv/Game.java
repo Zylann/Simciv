@@ -87,8 +87,6 @@ public class Game extends UIStateBasedGame
 			contentPane.add(canvas);
 			
 			canvas.start(); // Starts the game
-			
-			// TODO Limit FPS
 
 			// Old code
 			// AppGameContainer gc = new AppGameContainer(new Game(title));
@@ -105,6 +103,12 @@ public class Game extends UIStateBasedGame
 		}
 		
 		// FIXME on game close : "AL lib: alc_cleanup: 1 device not closed" (serious or not?)
+	}
+	
+	public void close()
+	{
+		canvas.getContainer().exit(); // Note : doesn't work without frame.dispose()
+		frame.dispose();
 	}
 
 	public Game(String title)

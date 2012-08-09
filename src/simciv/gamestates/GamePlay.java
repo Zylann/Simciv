@@ -275,7 +275,7 @@ public class GamePlay extends UIBasicGameState
 		
 		if(closeRequested)
 		{
-			gc.exit(); // FIXME doesn't work since screen resize feature
+			((simciv.Game)game).close();
 		}
 		
 		view.update(gc, delta / 1000.f);
