@@ -198,12 +198,7 @@ public class UIRenderer
 		int y = w.getAbsoluteY();
 		int b = WindowTitleBar.height;
 		
-		// Left
-		gfx.drawImage(windowTitleBarBackground.getSprite(0, 0), x, y);
-		// Middle
-		renderImageRepeatXY(gfx, windowTitleBarBackground.getSprite(1, 0), x + b, y, w.getWidth() - 3 * b, b);
-		// Right
-		gfx.drawImage(windowTitleBarBackground.getSprite(2, 0), x + w.getWidth() - 2 * b, y);
+		renderBar(gfx, windowTitleBarBackground, x, y, w.getWidth(), w.getHeight(), b, 0);
 		
 		// Title
 		if(w.getText() != null)

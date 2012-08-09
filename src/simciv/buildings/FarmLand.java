@@ -29,6 +29,7 @@ public class FarmLand extends Workplace
 {	
 	private static BuildingProperties properties;
 	private static SpriteSheet sprites;
+	private static SpriteSheet cropsSprites;
 
 	private static byte MIN_LEVEL = 0;
 	private static byte MAX_LEVEL = 7;
@@ -57,6 +58,9 @@ public class FarmLand extends Workplace
 			sprites = new SpriteSheet(Content.images.buildFarmland,
 					getWidth() * Game.tilesSize,
 					getHeight() * Game.tilesSize);
+			cropsSprites = new SpriteSheet(Content.images.buildFarmlandCrops,
+					Game.tilesSize,
+					Game.tilesSize);
 		}
 	}
 	
@@ -131,17 +135,10 @@ public class FarmLand extends Workplace
 				{
 					if(cropsLevel != ROTTEN_LEVEL)
 					{
-						// TODO use spritesheets
-						gfx.drawImage(Content.images.buildFarmlandCrops,
+						gfx.drawImage(
+								cropsSprites.getSprite(cropsLevel, 0),
 								i * Game.tilesSize,
-								j * Game.tilesSize,
-								(i+1) * Game.tilesSize,
-								(j+1) * Game.tilesSize,
-								cropsLevel * Game.tilesSize,
-								0,
-								(cropsLevel + 1) * Game.tilesSize,
-								Game.tilesSize
-						);
+								j * Game.tilesSize);
 					}
 					else
 						gfx.drawImage(Content.images.buildFarmlandRottenCrops, 
