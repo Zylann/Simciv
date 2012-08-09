@@ -6,6 +6,7 @@ Simciv indev release 2 (work in progress) :
 + Added time progression (only for months)
 + Added bushes
 + Added citizen hunger (they slow down and finally quit the city if they starve for too long)
+* The main window is now resizeable
 - Fixed cursor shift bug
 - Fixed too loud sounds (played at the same time as for houses)
 - Fixed too large default window
