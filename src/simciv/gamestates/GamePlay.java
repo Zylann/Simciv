@@ -29,6 +29,7 @@ import simciv.ui.base.ToolButton;
 import simciv.ui.base.ToolButtonGroup;
 import simciv.ui.base.UIBasicGameState;
 import simciv.ui.base.UIRenderer;
+import simciv.ui.base.Widget;
 import simciv.ui.base.Window;
 import simciv.units.Citizen;
 
@@ -92,9 +93,9 @@ public class GamePlay extends UIBasicGameState
 		
 		PushButton resumeButton = new PushButton(pauseWindow, 0, 10, "Resume game");
 		PushButton quitButton = new PushButton(pauseWindow, 0, 28, "Quit game");
-		resumeButton.alignToCenter(true, false);
+		resumeButton.setAlign(Widget.ALIGN_CENTER_X);
 		resumeButton.setAction(new TogglePauseAction());
-		quitButton.alignToCenter(true, false);
+		quitButton.setAlign(Widget.ALIGN_CENTER_X);
 		quitButton.setAction(new QuitGameAction());
 		
 		pauseWindow.add(resumeButton);
@@ -102,7 +103,7 @@ public class GamePlay extends UIBasicGameState
 		pauseWindow.setOnCloseAction(new TogglePauseAction());
 		pauseWindow.setDraggable(false);
 		pauseWindow.setVisible(false);
-		pauseWindow.alignToCenter();
+		pauseWindow.setAlign(Widget.ALIGN_CENTER);
 		ui.add(pauseWindow);
 		
 		// Build categories
@@ -205,7 +206,7 @@ public class GamePlay extends UIBasicGameState
 			.setNullActionListener(new SelectBuildAction(marketBuildsButton, null))
 			.setVisible(false);
 		ui.add(marketBuildsMenu);
-			
+		
 		marketBuildsButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_BUILDS, marketBuildsMenu));
 		marketBuildsButton.icon = Content.images.uiCategMarketing;
 		buildCategoryButtonsGroup.add(marketBuildsButton);
@@ -220,7 +221,7 @@ public class GamePlay extends UIBasicGameState
 		minimap.setVisible(true);
 		minimapWindow.add(minimap);
 		minimapWindow.adaptSize();
-		minimapWindow.alignToCenter();
+		minimapWindow.setAlign(Widget.ALIGN_CENTER);
 		minimapWindow.setVisible(false);
 		ui.add(minimapWindow);
 		
@@ -233,7 +234,7 @@ public class GamePlay extends UIBasicGameState
 		// Info bar
 
 		infoBar = new InfoBar(ui, 0, 0, 300);
-		ui.add(infoBar);
+		ui.add(infoBar);		
 	}
 
 	@Override
@@ -273,7 +274,9 @@ public class GamePlay extends UIBasicGameState
 		Input input = gc.getInput();
 		
 		if(closeRequested)
-			gc.exit();
+		{
+			gc.exit(); // FIXME doesn't work since screen resize feature
+		}
 		
 		view.update(gc, delta / 1000.f);
 		Terrain.updateTerrains(delta);
@@ -415,7 +418,7 @@ public class GamePlay extends UIBasicGameState
 	
 	public void toggleShowMinimap()
 	{
-		minimapWindow.alignToCenter();
+		minimapWindow.layout();
 		minimapWindow.setVisible(!minimapWindow.isVisible());
 	}
 	

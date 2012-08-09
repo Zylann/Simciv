@@ -10,6 +10,11 @@ import org.newdawn.slick.Graphics;
  */
 public abstract class Widget
 {
+	public static final byte ALIGN_NONE = 0;
+	public static final byte ALIGN_CENTER = 1;
+	public static final byte ALIGN_CENTER_X = 2;
+	public static final byte ALIGN_CENTER_Y = 3;
+	
 	// Relative position towards its parent
 	protected int posX;
 	protected int posY;
@@ -19,14 +24,19 @@ public abstract class Widget
 	
 	protected boolean visible;
 	protected WidgetContainer parent;
+	protected byte align;
 	
-	public Widget(WidgetContainer parent, int x, int y, int width, int height)
+	public Widget(WidgetContainer parent, int x, int y, int w, int h)
 	{
 		this.parent = parent;
 		visible = true;
-		setGeometry(x, y, width, height);
+		align = ALIGN_NONE;
+		posX = x;
+		posY = y;
+		width = w > 0 ? w : 0;
+		height = h > 0 ? h : 0;
 	}
-		
+	
 	public void setVisible(boolean visible)
 	{
 		this.visible = visible;
@@ -41,8 +51,7 @@ public abstract class Widget
 	{
 		this.posX = x;
 		this.posY = y;
-		this.width = width <= 0 ? 1 : width;
-		this.height = height <= 0 ? 1 : height;
+		setSize(width, height);
 	}
 	
 	public void setSize(int x, int y)
@@ -113,7 +122,7 @@ public abstract class Widget
 			root = root.getParent();
 		return root;
 	}
-
+	
 	public boolean contains(int x, int y)
 	{
 		int selfX = getAbsoluteX();
@@ -125,12 +134,27 @@ public abstract class Widget
 			y < selfY + this.height ;
 	}
 	
-	public void alignToCenter()
+	/**
+	 * Called when the parent widget is resized
+	 */
+	public void layout()
 	{
-		alignToCenter(true, true);
+		switch(align)
+		{
+		case ALIGN_CENTER : alignToCenter(true, true); break;
+		case ALIGN_CENTER_X : alignToCenter(true, false); break;
+		case ALIGN_CENTER_Y : alignToCenter(false, true); break;
+		default : break;
+		}
 	}
 	
-	public void alignToCenter(boolean onX, boolean onY)
+	public void setAlign(byte a)
+	{
+		align = a;
+		layout();
+	}
+	
+	private void alignToCenter(boolean onX, boolean onY)
 	{
 		if(parent == null)
 			return;
@@ -154,4 +178,9 @@ public abstract class Widget
 	public abstract boolean keyReleased(int key, char c);
 	
 	public abstract void render(GameContainer gc, Graphics gfx);
+	
 }
+
+
+
+

@@ -17,6 +17,7 @@ import simciv.ui.base.ProgressBar;
 import simciv.ui.base.RootPane;
 import simciv.ui.base.UIBasicGameState;
 import simciv.ui.base.UIRenderer;
+import simciv.ui.base.Widget;
 
 public class GameLoadingScreen extends UIBasicGameState
 {
@@ -51,7 +52,7 @@ public class GameLoadingScreen extends UIBasicGameState
 		ui = new RootPane(container.getWidth() / gs, container.getHeight() / gs);
 
 		progressBar = new ProgressBar(ui, 0, 0, 300);
-		progressBar.alignToCenter();
+		progressBar.setAlign(Widget.ALIGN_CENTER);
 		ui.add(progressBar);
 	}
 

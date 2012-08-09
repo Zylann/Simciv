@@ -46,6 +46,12 @@ public class IndicatorsBar extends BasicWidget
 		this.money = money;
 		this.monthProgressRatio = monthProgressRatio;
 	}
+	
+	@Override
+	public void layout()
+	{
+		setPosition(parent.getWidth() - width - 10, 10);
+	}
 
 	@Override
 	public void render(GameContainer gc, Graphics gfx)
@@ -85,7 +91,6 @@ public class IndicatorsBar extends BasicWidget
 		int y = height - 4;
 
 		// Work ratio
-		// FIXME in some cases, the bar goes straight down
 		int x = 20;
 		if(population != 0)
 		{

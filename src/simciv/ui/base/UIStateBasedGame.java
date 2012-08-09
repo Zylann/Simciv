@@ -10,11 +10,12 @@ public abstract class UIStateBasedGame extends StateBasedGame
 {
 	protected WidgetContainer ui;
 	private UIInputForwarder inputForwarder;
-	private WidgetContainer dummyUI = new WidgetContainer(null, 0, 0, 0, 0);
+	private WidgetContainer dummyUI;
 	
 	public UIStateBasedGame(String name)
 	{
 		super(name);
+		dummyUI = new WidgetContainer(null, 0, 0, 0, 0);
 	}
 	
 	public void setUI(WidgetContainer ui)
@@ -32,6 +33,15 @@ public abstract class UIStateBasedGame extends StateBasedGame
 		}
 		
 		inputForwarder.setUI(ui);
+	}
+	
+	public void onContainerResize(int width, int height)
+	{
+		if(ui != null)
+		{
+			int gs = UIRenderer.instance().getGlobalScale();
+			ui.onScreenResize(width / gs, height / gs);
+		}
 	}
 
 	@Override

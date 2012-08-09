@@ -28,19 +28,37 @@ public class WidgetContainer extends Widget
 	 */
 	public void adaptSize()
 	{
-		width = 0;
-		height = 0;
+		int newWidth = 0;
+		int newHeight = 0;
+		
 		for(Widget child : children)
 		{
 			int x = child.getX() + child.getWidth();
-			if(x > width)
-				width = x;
+			if(x > newWidth)
+				newWidth = x;
 			int y = child.getY() + child.getHeight();
-			if(y > height)
-				height = y;
-		}		
+			if(y > newHeight)
+				newHeight = y;
+		}
+		
+		setSize(newWidth, newHeight);
 	}
 	
+	@Override
+	public void setSize(int x, int y)
+	{
+		super.setSize(x, y);
+		layout();
+	}
+	
+	@Override
+	public void layout()
+	{
+		super.layout(); // Widget.layout
+		for(Widget w : children)
+			w.layout();
+	}
+
 	@Override
 	public boolean mouseMoved(int oldX, int oldY, int newX, int newY)
 	{
@@ -159,6 +177,10 @@ public class WidgetContainer extends Widget
 				return true;
 		}
 		return false;
+	}
+
+	public void onScreenResize(int width, int height)
+	{
 	}
 
 }
