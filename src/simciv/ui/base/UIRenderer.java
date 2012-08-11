@@ -40,6 +40,11 @@ public class UIRenderer
 		loadContent();
 	}
 	
+	public Font getFont()
+	{
+		return font;
+	}
+	
 	private void loadContent()
 	{
 		font = Content.globalFont;
@@ -310,11 +315,16 @@ public class UIRenderer
 		else
 			renderBar(gfx, progressBarSprites, x, y, w.getWidth(), w.getHeight(), b, 1);			
 	}
-
+	
 	public void renderLabel(Graphics gfx, Label label)
 	{
+		renderLabel(gfx, label, 0);
+	}
+
+	public void renderLabel(Graphics gfx, Label label, int offY)
+	{
 		int x = label.getAbsoluteX();
-		int y = label.getAbsoluteY();
+		int y = label.getAbsoluteY() + offY;
 		
 		if(label.getImage() != null)
 			gfx.drawImage(label.getImage(), x, y);
@@ -326,5 +336,17 @@ public class UIRenderer
 		}
 	}
 
+	public void renderMenuBarButton(Graphics gfx, MenuBarButton w)
+	{
+		renderButton(gfx, w, Content.images.uiToolButton, null, null, 2);
+		if(w.isPressed())
+			renderLabel(gfx, w.getLabel(), 2);
+		else
+			renderLabel(gfx, w.getLabel(), 0);
+	}
+
 }
+
+
+
 

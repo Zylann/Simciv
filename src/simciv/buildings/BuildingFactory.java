@@ -37,7 +37,7 @@ public class BuildingFactory
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static Building createBuildingFromName(String s, World world)
+	public static Building createFromName(String s, World world)
 	{
 		Building b = null;
 		try
@@ -56,11 +56,12 @@ public class BuildingFactory
 		}
 		return b;
 	}
-
+	
 	public static String getBuildingString(Building b)
 	{
 		return (String) classToStringMapping.get(b.getClass());
 	}
+	
 }
 
 

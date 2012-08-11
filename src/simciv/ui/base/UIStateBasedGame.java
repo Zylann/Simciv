@@ -15,7 +15,7 @@ public abstract class UIStateBasedGame extends StateBasedGame
 	public UIStateBasedGame(String name)
 	{
 		super(name);
-		dummyUI = new WidgetContainer(null, 0, 0, 0, 0);
+		dummyUI = new RootPane(0, 0);
 	}
 	
 	public void setUI(WidgetContainer ui)

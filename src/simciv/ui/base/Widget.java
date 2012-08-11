@@ -4,7 +4,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 /**
- * Base class for all GUI elements (graphical user interface)
+ * Base class for all GUI elements (graphical user interface).
  * @author Marc
  *
  */
@@ -23,10 +23,10 @@ public abstract class Widget
 	protected int height;
 	
 	protected boolean visible;
-	protected WidgetContainer parent;
+	protected Widget parent;
 	protected byte align;
 	
-	public Widget(WidgetContainer parent, int x, int y, int w, int h)
+	public Widget(Widget parent, int x, int y, int w, int h)
 	{
 		this.parent = parent;
 		visible = true;
@@ -37,9 +37,32 @@ public abstract class Widget
 		height = h > 0 ? h : 0;
 	}
 	
+	/**
+	 * Changes the state of the visible flag.
+	 * The widget should'nt be drawn and intercept events if visible is false.
+	 * This method will also call onShow or onHide (for use in subclasses).
+	 * @param visible
+	 */
 	public void setVisible(boolean visible)
 	{
-		this.visible = visible;
+		if(!this.visible && visible)
+		{
+			this.visible = true;
+			onShow();
+		}
+		else if(this.visible && !visible)
+		{
+			this.visible = false;
+			onHide();
+		}
+	}
+	
+	protected void onShow()
+	{
+	}
+	
+	protected void onHide()
+	{
 	}
 	
 	public boolean isVisible()
@@ -110,14 +133,14 @@ public abstract class Widget
 		return height;
 	}
 
-	public WidgetContainer getParent()
+	public Widget getParent()
 	{
 		return parent;
 	}
 	
-	public WidgetContainer getRoot()
+	public Widget getRoot()
 	{
-		WidgetContainer root = getParent();
+		Widget root = getParent();
 		while(root.getParent() != null)
 			root = root.getParent();
 		return root;

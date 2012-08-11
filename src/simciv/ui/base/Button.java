@@ -1,19 +1,50 @@
 package simciv.ui.base;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.newdawn.slick.Input;
 
+/**
+ * Every widget that can be pressed in order to do something
+ * @author Marc
+ *
+ */
 public abstract class Button extends Widget
 {
 	private boolean mouseOver;
 	private boolean pressed;
 	private boolean enabled;
+	private List<IActionListener> actionListeners;
 	
-	public Button(WidgetContainer parent, int x, int y, int width, int height)
+	public Button(Widget parent, int x, int y, int width, int height)
 	{
 		super(parent, x, y, width, height);
 		mouseOver = false;
 		pressed = false;
 		enabled = true;
+		actionListeners = new ArrayList<IActionListener>();
+	}
+	
+	/**
+	 * Adds a listener which be notified when the button is activated
+	 * (defines the action associated to the button).
+	 * @param l
+	 */
+	public void addActionListener(IActionListener l)
+	{
+		if(l != null)
+			actionListeners.add(l);
+	}
+	
+	/**
+	 * Notifies all action listeners of the button.
+	 * This method must be called when we consider that the button has been activated.
+	 */
+	protected void onAction()
+	{
+		for(IActionListener l : actionListeners)
+			l.actionPerformed(this);
 	}
 	
 	public boolean isPressed()
@@ -21,11 +52,19 @@ public abstract class Button extends Widget
 		return pressed;
 	}
 	
+	/**
+	 * Returns true if the mouse cursor is over the button
+	 * @return
+	 */
 	public boolean isMouseOver()
 	{
 		return mouseOver;
 	}
 	
+	/**
+	 * Returns true if the button is enabled.
+	 * @return
+	 */
 	public boolean isEnabled()
 	{
 		return enabled;
@@ -45,6 +84,10 @@ public abstract class Button extends Widget
 	protected abstract void onPress();
 	protected abstract void onRelease();
 	
+	/**
+	 * Sets the press state of the button, as if done with the mouse
+	 * @param p
+	 */
 	protected void press(boolean p)
 	{
 		if(p)
@@ -54,7 +97,11 @@ public abstract class Button extends Widget
 			pressed = true;
 		}
 		else
+		{
+			if(pressed)
+				onRelease();
 			pressed = false;
+		}
 	}
 
 	@Override
@@ -81,9 +128,9 @@ public abstract class Button extends Widget
 	{
 		if(pressed && contains(x, y))
 		{
-			pressed = false;
 			onRelease();
 		}
+		pressed = false;
 		return false;
 	}
 		

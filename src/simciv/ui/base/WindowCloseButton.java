@@ -30,7 +30,7 @@ public class WindowCloseButton extends Button
 	{
 		((Window)parent).setVisible(false);
 		if(!parent.isVisible() && action != null)
-			action.actionPerformed();
+			action.actionPerformed(this);
 	}
 
 	@Override

@@ -17,16 +17,14 @@ import simciv.Vector2i;
 import simciv.View;
 import simciv.World;
 import simciv.content.Content;
+import simciv.ui.BuildMenu;
+import simciv.ui.BuildMenuBar;
 import simciv.ui.InfoBar;
 import simciv.ui.Minimap;
 import simciv.ui.IndicatorsBar;
 import simciv.ui.base.IActionListener;
-import simciv.ui.base.Menu;
-import simciv.ui.base.MenuItem;
 import simciv.ui.base.PushButton;
 import simciv.ui.base.RootPane;
-import simciv.ui.base.ToolButton;
-import simciv.ui.base.ToolButtonGroup;
 import simciv.ui.base.UIBasicGameState;
 import simciv.ui.base.UIRenderer;
 import simciv.ui.base.Widget;
@@ -47,11 +45,11 @@ public class GamePlay extends UIBasicGameState
 	private InfoBar infoBar;
 	private String debugText = "";
 	private Vector2i pointedCell = new Vector2i();
-	private ToolButtonGroup buildCategoryButtonsGroup;
 	private Minimap minimap;
 	private Window minimapWindow;
 	private Window pauseWindow;
 	private MinimapUpdater minimapUpdater;
+	private BuildMenuBar menuBar;
 	private IndicatorsBar indicatorsBar;
 	private boolean closeRequested = false;
 	private boolean paused = false;
@@ -94,9 +92,9 @@ public class GamePlay extends UIBasicGameState
 		PushButton resumeButton = new PushButton(pauseWindow, 0, 10, "Resume game");
 		PushButton quitButton = new PushButton(pauseWindow, 0, 28, "Quit game");
 		resumeButton.setAlign(Widget.ALIGN_CENTER_X);
-		resumeButton.setAction(new TogglePauseAction());
+		resumeButton.addActionListener(new TogglePauseAction());
 		quitButton.setAlign(Widget.ALIGN_CENTER_X);
-		quitButton.setAction(new QuitGameAction());
+		quitButton.addActionListener(new QuitGameAction());
 		
 		pauseWindow.add(resumeButton);
 		pauseWindow.add(quitButton);
@@ -106,112 +104,45 @@ public class GamePlay extends UIBasicGameState
 		pauseWindow.setAlign(Widget.ALIGN_CENTER);
 		ui.add(pauseWindow);
 		
-		// Build categories
-		buildCategoryButtonsGroup = new ToolButtonGroup();
+		// TODO add prices on builds menu items
+		
+		menuBar = new BuildMenuBar(ui, 10, 10);
+		menuBar.cityBuilderRef = builder;
 		
 		// Mouse tool
-		
-		ToolButton mouseButton = new ToolButton(ui, 10, 10, buildCategoryButtonsGroup);
-		mouseButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_CURSOR));
-		mouseButton.icon = Content.images.uiCategCursor;
-		buildCategoryButtonsGroup.add(mouseButton);
-		ui.add(mouseButton);
+		menuBar.addMode(Content.images.uiCategCursor, "Pointer", CityBuilder.MODE_CURSOR);
 		
 		// Erase
-		
-		ToolButton eraseButton = new ToolButton(ui, 34, 10, buildCategoryButtonsGroup);
-		eraseButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_ERASE));
-		eraseButton.icon = Content.images.uiCategErase;
-		buildCategoryButtonsGroup.add(eraseButton);
-		ui.add(eraseButton);
+		menuBar.addMode(Content.images.uiCategErase, "Erase", CityBuilder.MODE_ERASE);
 		
 		// Roads
-
-		ToolButton traceRoadsButton = new ToolButton(ui, 58, 10, buildCategoryButtonsGroup);
-		traceRoadsButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_ROAD));
-		traceRoadsButton.icon = Content.images.uiCategRoad;
-		buildCategoryButtonsGroup.add(traceRoadsButton);
-		ui.add(traceRoadsButton);
+		menuBar.addMode(Content.images.uiCategRoad, "Trace roads", CityBuilder.MODE_ROAD);
 		
 		// Houses
-		
-		ToolButton buildHousesButton = new ToolButton(ui, 82, 10, buildCategoryButtonsGroup);
-		buildHousesButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_HOUSE, "House"));
-		buildHousesButton.icon = Content.images.uiCategHouse;
-		buildCategoryButtonsGroup.add(buildHousesButton);
-		ui.add(buildHousesButton);
+		menuBar.addMode(Content.images.uiCategHouse, "Place houses", CityBuilder.MODE_HOUSE);
 		
 		// Food
-		
-		ToolButton foodBuildsButton = new ToolButton(ui, 106, 10, buildCategoryButtonsGroup);
+		BuildMenu foodMenu = new BuildMenu(menuBar, 0, menuBar.getHeight(), 128);
+		foodMenu.addBuild("FarmLand");
+		menuBar.addCategory(Content.images.uiCategFood, "Food", foodMenu);
 
-		Menu foodBuildsMenu = new Menu(ui, 10, 34, 128);
-		MenuItem waterSourceItem = new MenuItem(foodBuildsMenu, "Water source");
-		MenuItem farmlandItem = new MenuItem(foodBuildsMenu, "Farm land");
-		MenuItem huntersItem = new MenuItem(foodBuildsMenu, "Hunters");
-		waterSourceItem.setEnabled(false);
-		huntersItem.setEnabled(false);
-		foodBuildsMenu
-			.add(waterSourceItem, new SelectBuildAction(foodBuildsButton, "House"))
-			.add(farmlandItem, new SelectBuildAction(foodBuildsButton, "FarmLand"))
-			.add(huntersItem, new SelectBuildAction(foodBuildsButton, "House"))
-			.setNullActionListener(new SelectBuildAction(foodBuildsButton, null))
-			.setVisible(false);
-		ui.add(foodBuildsMenu);
-
-		foodBuildsButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_BUILDS, foodBuildsMenu));
-		foodBuildsButton.icon = Content.images.uiCategFood;
-		buildCategoryButtonsGroup.add(foodBuildsButton);
-		ui.add(foodBuildsButton);
-		
 		// Industry
-		
-		ToolButton industryBuildsButton = new ToolButton(ui, 130, 10, buildCategoryButtonsGroup);
-		
-		Menu industryBuildsMenu = new Menu(ui, 10, 34, 128);
-		industryBuildsMenu
-			.add(new MenuItem(industryBuildsMenu, "Warehouse"), new SelectBuildAction(industryBuildsButton, "Warehouse"))
-			.setNullActionListener(new SelectBuildAction(industryBuildsButton, null))
-			.setVisible(false);
-		ui.add(industryBuildsMenu);
-		
-		industryBuildsButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_BUILDS, industryBuildsMenu));
-		industryBuildsButton.icon = Content.images.uiCategIndustry;
-		buildCategoryButtonsGroup.add(industryBuildsButton);
-		ui.add(industryBuildsButton);
+		BuildMenu industryMenu = new BuildMenu(menuBar, 0, menuBar.getHeight(), 128);
+		industryMenu.addBuild("Warehouse");
+		menuBar.addCategory(Content.images.uiCategIndustry, "Industry", industryMenu);
 		
 		// Administration
-		
-		ToolButton adminBuildsButton = new ToolButton(ui, 154, 10, buildCategoryButtonsGroup);
-		
-		Menu adminBuildsMenu = new Menu(ui, 10, 34, 128);
-		adminBuildsMenu
-			.add(new MenuItem(adminBuildsMenu, "Taxmen office"), new SelectBuildAction(adminBuildsButton, "TaxmenOffice"))
-			.setNullActionListener(new SelectBuildAction(adminBuildsButton, null))
-			.setVisible(false);
-		ui.add(adminBuildsMenu);
-			
-		adminBuildsButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_BUILDS, adminBuildsMenu));
-		adminBuildsButton.icon = Content.images.uiCategAdmin;
-		buildCategoryButtonsGroup.add(adminBuildsButton);
-		ui.add(adminBuildsButton);
-		
+		BuildMenu adminMenu = new BuildMenu(menuBar, 0, menuBar.getHeight(), 128);
+		adminMenu.addBuild("TaxmenOffice");
+		menuBar.addCategory(Content.images.uiCategAdmin, "Administration", adminMenu);
+
 		// Marketing
+		BuildMenu marketMenu = new BuildMenu(menuBar, 0, menuBar.getHeight(), 128);
+		marketMenu.addBuild("Market");
+		menuBar.addCategory(Content.images.uiCategMarketing, "Marketing and exchanges", marketMenu);
 		
-		ToolButton marketBuildsButton = new ToolButton(ui, 178, 10, buildCategoryButtonsGroup);
-		
-		Menu marketBuildsMenu = new Menu(ui, 10, 34, 128);
-		marketBuildsMenu
-			.add(new MenuItem(marketBuildsMenu, "Market"), new SelectBuildAction(adminBuildsButton, "Market"))
-			.setNullActionListener(new SelectBuildAction(marketBuildsButton, null))
-			.setVisible(false);
-		ui.add(marketBuildsMenu);
-		
-		marketBuildsButton.setActionListener(new ChangeBuildCategoryAction(CityBuilder.MODE_BUILDS, marketBuildsMenu));
-		marketBuildsButton.icon = Content.images.uiCategMarketing;
-		buildCategoryButtonsGroup.add(marketBuildsButton);
-		ui.add(marketBuildsButton);
-		
+		ui.add(menuBar);
+
 		// Minimap
 		
 		minimapWindow = new Window(ui, 0, 0, 134, 134, "Minimap");
@@ -234,7 +165,7 @@ public class GamePlay extends UIBasicGameState
 		// Info bar
 
 		infoBar = new InfoBar(ui, 0, 0, 300);
-		ui.add(infoBar);		
+		ui.add(infoBar);
 	}
 
 	@Override
@@ -242,14 +173,17 @@ public class GamePlay extends UIBasicGameState
 	{		
 		minimapUpdater = new MinimapUpdater(world.map);
 		
+		// Create CityBuilder
 		builder = new CityBuilder(world);
+		
+		// Create view
 		view = new View(0, 0, 2);
 		view.setWorldSize(world.map.getWidth(), world.map.getHeight());
-		
+				
 		// Because we will always draw the map on the entire screen at each frame
 		gc.setClearEachFrame(false);
 		
-		super.enter(gc, game);
+		super.enter(gc, game); // Note : the UI is created here, it depends on the code above
 	}
 
 	@Override
@@ -424,61 +358,10 @@ public class GamePlay extends UIBasicGameState
 	
 	// UI Actions
 	
-	class ChangeBuildCategoryAction implements IActionListener
-	{
-		private int category;
-		private String buildingString;
-		private Menu buildsMenu;
-		
-		public ChangeBuildCategoryAction(int categ) {
-			this.category = categ;
-		}
-
-		public ChangeBuildCategoryAction(int categ, Menu buildsMenu) {
-			this.category = categ;
-			this.buildsMenu = buildsMenu;
-		}
-		
-		public ChangeBuildCategoryAction(int categ, String buildingString) {
-			this.category = categ;
-			this.buildingString = buildingString;
-		}
-		
-		@Override
-		public void actionPerformed() {
-			builder.setMode(category);
-			if(buildingString != null)
-				builder.setBuildingString(buildingString);
-			if(buildsMenu != null)
-				buildsMenu.setVisible(true);
-		}
-	}
-	
-	class SelectBuildAction implements IActionListener
-	{
-		private String buildingString;
-		private ToolButton categButton;
-		
-		public SelectBuildAction(ToolButton categButton, String buildingString) {
-			this.buildingString = buildingString;
-			this.categButton = categButton;
-		}
-		
-		@Override
-		public void actionPerformed() {
-			if(buildingString != null)
-			{
-				builder.setMode(CityBuilder.MODE_BUILDS);
-				builder.setBuildingString(buildingString);
-			}
-			categButton.select(false);
-		}
-	}
-	
 	class TogglePauseAction implements IActionListener
 	{
 		@Override
-		public void actionPerformed() {
+		public void actionPerformed(Widget sender) {
 			togglePause();
 		}	
 	}
@@ -486,7 +369,7 @@ public class GamePlay extends UIBasicGameState
 	class QuitGameAction implements IActionListener
 	{
 		@Override
-		public void actionPerformed() {
+		public void actionPerformed(Widget sender) {
 			closeRequested = true;
 		}
 	}

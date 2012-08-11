@@ -61,6 +61,11 @@ public class CityBuilder
 		setBuildingString("House");
 	}
 	
+	public World getWorld()
+	{
+		return worldRef;
+	}
+
 	public static void loadContent() throws SlickException
 	{
 		placeSound = Content.sounds.uiPlace;
@@ -72,7 +77,12 @@ public class CityBuilder
 		return infoText;
 	}
 	
-	public void setMode(int mode)
+	/**
+	 * Sets the current build mode
+	 * @param mode
+	 * @return object for chaining
+	 */
+	public CityBuilder setMode(int mode)
 	{
 		this.mode = mode;
 		if(mode == MODE_ERASE)
@@ -81,16 +91,19 @@ public class CityBuilder
 			modeString = "Road mode";
 		else if(mode == MODE_HOUSE)
 			modeString = "Building mode";
+		return this;
 	}
 	
 	/**
 	 * Sets the current building from its class name
 	 * @param bstr : class name
+	 * @return : object for chaining
 	 */
-	public void setBuildingString(String bstr)
+	public CityBuilder setBuildingString(String bstr)
 	{
 		buildingString = bstr;
-		building = BuildingFactory.createBuildingFromName(bstr, worldRef);
+		building = BuildingFactory.createFromName(bstr, worldRef);
+		return this;
 	}
 	
 	public int getMode()
@@ -363,7 +376,7 @@ public class CityBuilder
 	private boolean placeBuilding(int x, int y, boolean notify)
 	{
 		// Create a new building
-		Building b = BuildingFactory.createBuildingFromName(buildingString, worldRef);
+		Building b = BuildingFactory.createFromName(buildingString, worldRef);
 
 		if(b != null)
 		{

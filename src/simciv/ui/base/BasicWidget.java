@@ -7,7 +7,7 @@ package simciv.ui.base;
  */
 public abstract class BasicWidget extends Widget
 {
-	public BasicWidget(WidgetContainer parent, int x, int y, int width, int height)
+	public BasicWidget(Widget parent, int x, int y, int width, int height)
 	{
 		super(parent, x, y, width, height);
 	}

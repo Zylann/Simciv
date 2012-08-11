@@ -15,7 +15,6 @@ public class ToolButton extends Button
 {
 	private static final int SIZE = 24;
 	
-	private IActionListener actionListener;
 	private ToolButtonGroup group;
 	public Image icon;
 	
@@ -43,15 +42,6 @@ public class ToolButton extends Button
 		// The button remains pressed
 		return false;
 	}
-
-	/**
-	 * Sets the action executed on button press
-	 * @param callback
-	 */
-	public void setActionListener(IActionListener listener)
-	{
-		this.actionListener = listener;
-	}
 	
 	@Override
 	protected void onPress()
@@ -59,8 +49,7 @@ public class ToolButton extends Button
 		Content.sounds.uiClick.play(1.f, 0.5f);
 		if(group != null)
 			group.unselectAllExcept(this);
-		if(actionListener != null)
-			actionListener.actionPerformed();
+		onAction();
 	}
 
 	@Override

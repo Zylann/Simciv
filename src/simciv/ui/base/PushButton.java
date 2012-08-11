@@ -5,11 +5,15 @@ import org.newdawn.slick.Graphics;
 
 import simciv.content.Content;
 
+/**
+ * Classic button with a text.
+ * @author Marc
+ *
+ */
 public class PushButton extends Button
 {
 	private static final int HEIGHT = 16;
 
-	private IActionListener actionListener;
 	private String text;
 
 	public PushButton(WidgetContainer parent, int x, int y, String text)
@@ -17,11 +21,6 @@ public class PushButton extends Button
 		// TODO allow various button widths
 		super(parent, x, y, 128, HEIGHT);
 		this.text = text;
-	}
-
-	public void setAction(IActionListener listener)
-	{
-		actionListener = listener;
 	}
 	
 	public String getText()
@@ -38,8 +37,9 @@ public class PushButton extends Button
 	@Override
 	protected void onRelease()
 	{
-		if(actionListener != null)
-			actionListener.actionPerformed();
+		if(!isMouseOver())
+			return;
+		onAction();
 	}
 
 	@Override

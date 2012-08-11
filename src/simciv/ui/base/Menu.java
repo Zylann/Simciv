@@ -1,14 +1,18 @@
 package simciv.ui.base;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.newdawn.slick.SlickException;
 
 public class Menu extends WidgetContainer
 {
-	IActionListener nullActionListener;
+	List<IActionListener> actionListeners;
 	
-	public Menu(WidgetContainer parent, int x, int y, int width)
+	public Menu(Widget parent, int x, int y, int width)
 	{
 		super(parent, x, y, width, 0);
+		actionListeners = new ArrayList<IActionListener>();
 	}
 
 	/**
@@ -28,37 +32,39 @@ public class Menu extends WidgetContainer
 		
 		super.add(child);
 	}
-	
+
 	public Menu add(MenuItem item, IActionListener actionListener) throws SlickException
 	{
-		item.setActionListener(actionListener);
+		item.addActionListener(actionListener);
 		add(item);
 		return this;
 	}
 	
 	/**
-	 * Sets action performed if the menu disappears with no item being selected.
+	 * Sets action performed when any item is selected.
+	 * (see also the action listener in MenuItem)
 	 * @return the object itself for chaining
 	 */
-	public Menu setNullActionListener(IActionListener listener)
+	public Menu addActionListener(IActionListener listener)
 	{
-		nullActionListener = listener;
+		actionListeners.add(listener);
 		return this;
+	}
+	
+	public void onItemSelect(MenuItem item)
+	{
+		setVisible(false);
+		for(IActionListener l : actionListeners)
+			l.actionPerformed(item);
 	}
 
 	@Override
 	public boolean mousePressed(int button, int x, int y)
 	{
-		if(!super.mousePressed(button, x, y))
-		{
-			if(!contains(x, y))
-			{
-				if(nullActionListener != null)
-					nullActionListener.actionPerformed();
-				setVisible(false);
-			}
-		}
+		super.mousePressed(button, x, y);
+		if(isVisible() && !contains(x, y))
+			onItemSelect(null);
 		return true;
-	}	
+	}
 
 }

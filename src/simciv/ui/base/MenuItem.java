@@ -10,15 +10,19 @@ public class MenuItem extends Button
 	// All menu items have a common height
 	public static final int HEIGHT = 16;
 	
-	private IActionListener actionListener;
 	private String text;
+	private Menu parentMenu;
 	
-	public MenuItem(WidgetContainer parent, String text) throws SlickException
+	public MenuItem(Menu parent, String text) throws SlickException
 	{
 		super(parent, 0, 0, 0, HEIGHT);
-		if(!Menu.class.isInstance(parent))
-			throw new SlickException("The parent of a MenuItem must be a Menu.");
+		parentMenu = parent;
 		this.text = text;
+	}
+	
+	public void setText(String txt)
+	{
+		text = txt;
 	}
 	
 	public String getText()
@@ -35,20 +39,14 @@ public class MenuItem extends Button
 	@Override
 	protected void onRelease()
 	{
-		if(actionListener != null)
-			actionListener.actionPerformed();
-		parent.setVisible(false);
+		onAction();
+		parentMenu.onItemSelect(this);
 	}
 
 	@Override
 	public void render(GameContainer gc, Graphics gfx)
 	{
 		UIRenderer.instance().renderMenuItem(gfx, this);
-	}
-
-	public void setActionListener(IActionListener actionListener)
-	{
-		this.actionListener = actionListener;
 	}
 
 }

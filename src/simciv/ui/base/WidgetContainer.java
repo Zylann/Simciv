@@ -1,16 +1,22 @@
 package simciv.ui.base;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
+/**
+ * A widget that can contain another widgets.
+ * @author Marc
+ *
+ */
 public class WidgetContainer extends Widget
 {
 	protected ArrayList<Widget> children;
 
-	public WidgetContainer(WidgetContainer parent, int x, int y, int width, int height)
+	public WidgetContainer(Widget parent, int x, int y, int width, int height)
 	{
 		super(parent, x, y, width, height);
 		children = new ArrayList<Widget>();
@@ -58,6 +64,21 @@ public class WidgetContainer extends Widget
 		for(Widget w : children)
 			w.layout();
 	}
+	
+	/**
+	 * Creates and returns a list filled with all visible child widgets.
+	 * @return
+	 */
+	private List<Widget> getVisibleWidgets()
+	{
+		ArrayList<Widget> visibleWidgets = new ArrayList<Widget>();
+		for(Widget child : children)
+		{
+			if(child.isVisible())
+				visibleWidgets.add(child);
+		}
+		return visibleWidgets;
+	}
 
 	@Override
 	public boolean mouseMoved(int oldX, int oldY, int newX, int newY)
@@ -91,9 +112,10 @@ public class WidgetContainer extends Widget
 		if(!visible)
 			return false;
 		boolean res = false;
-		for(Widget child : children)
+		List<Widget> visibleWidgets = getVisibleWidgets();
+		for(Widget child : visibleWidgets)
 		{
-			if(child.visible && child.mousePressed(button, x, y))
+			if(child.mousePressed(button, x, y))
 			{
 				if(!res)
 					res = true;
@@ -107,9 +129,10 @@ public class WidgetContainer extends Widget
 	{
 		if(!visible)
 			return false;
-		for(Widget child : children)
+		List<Widget> visibleWidgets = getVisibleWidgets();
+		for(Widget child : visibleWidgets)
 		{
-			if(child.visible && child.mouseReleased(button, x, y))
+			if(child.mouseReleased(button, x, y))
 				return true;
 		}
 		return false;
@@ -120,9 +143,10 @@ public class WidgetContainer extends Widget
 	{
 		if(!visible)
 			return false;
-		for(Widget child : children)
+		List<Widget> visibleWidgets = getVisibleWidgets();
+		for(Widget child : visibleWidgets)
 		{
-			if(child.visible && child.mouseClicked(button, x, y, clickCount))
+			if(child.mouseClicked(button, x, y, clickCount))
 				return true;
 		}
 		return false;
@@ -133,9 +157,10 @@ public class WidgetContainer extends Widget
 	{
 		if(!visible)
 			return false;
-		for(Widget child : children)
+		List<Widget> visibleWidgets = getVisibleWidgets();
+		for(Widget child : visibleWidgets)
 		{
-			if(child.visible && child.keyPressed(key, c))
+			if(child.keyPressed(key, c))
 				return true;
 		}
 		return false;
@@ -146,9 +171,23 @@ public class WidgetContainer extends Widget
 	{
 		if(!visible)
 			return false;
+		List<Widget> visibleWidgets = getVisibleWidgets();
+		for(Widget child : visibleWidgets)
+		{
+			if(child.keyReleased(key, c))
+				return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean mouseWheelMoved(int change)
+	{
+		if(!visible)
+			return false;
 		for(Widget child : children)
 		{
-			if(child.visible && child.keyReleased(key, c))
+			if(child.visible && child.mouseWheelMoved(change))
 				return true;
 		}
 		return false;
@@ -166,21 +205,33 @@ public class WidgetContainer extends Widget
 		}
 	}
 
-	@Override
-	public boolean mouseWheelMoved(int change)
-	{
-		if(!visible)
-			return false;
-		for(Widget child : children)
-		{
-			if(child.visible && child.mouseWheelMoved(change))
-				return true;
-		}
-		return false;
-	}
-
 	public void onScreenResize(int width, int height)
 	{
+	}
+	
+	@Override
+	public void setVisible(boolean visible)
+	{
+		if(!this.visible && visible)
+		{
+			this.visible = true;
+			onShow();
+			for(Widget w : children)
+			{
+				if(w.isVisible())
+					w.onShow();
+			}
+		}
+		else if(this.visible && !visible)
+		{
+			this.visible = false;
+			onHide();
+			for(Widget w : children)
+			{
+				if(w.isVisible())
+					w.onHide();
+			}
+		}
 	}
 
 }

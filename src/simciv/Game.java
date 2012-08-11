@@ -31,8 +31,8 @@ public class Game extends UIStateBasedGame
 	// Game constants
 	public static final String title = "Simciv - indev - release 2";
 	public static final int tilesSize = 16;
-	public static final int defaultScreenWidth = 1000;
-	public static final int defaultScreenHeight = 750;
+	public static final int defaultScreenWidth = 800;
+	public static final int defaultScreenHeight = 600;
 	
 	// State constants
 	public static final int STATE_CONTENT_LOADING = 1;
@@ -82,6 +82,7 @@ public class Game extends UIStateBasedGame
 					defaultScreenWidth + frame.getInsets().left + frame.getInsets().right,
 					defaultScreenHeight + frame.getInsets().top + frame.getInsets().bottom);
 			
+			// Add canvas to the content pane
 			contentPane = frame.getContentPane();
 			contentPane.addComponentListener(new MainComponentListener());
 			contentPane.add(canvas);
