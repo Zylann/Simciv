@@ -57,10 +57,16 @@ public abstract class Widget
 		}
 	}
 	
+	/**
+	 * Called when the widget becomes visible.
+	 */
 	protected void onShow()
 	{
 	}
 	
+	/**
+	 * Called when the widget becomes hidden.
+	 */
 	protected void onHide()
 	{
 	}
@@ -83,32 +89,57 @@ public abstract class Widget
 		height = y > 0 ? y : 0;
 	}
 	
+	/**
+	 * Sets parent-relative position
+	 * @param x
+	 * @param y
+	 */
 	public void setPosition(int x, int y)
 	{
 		this.posX = x;
 		this.posY = y;
 	}
 	
+	/**
+	 * Sets X parent-relative coordinate
+	 * @param x
+	 */
 	public void setX(int x)
 	{
 		this.posX = x;
 	}
 	
+	/**
+	 * Sets Y parent-relative coordinate
+	 * @param y
+	 */
 	public void setY(int y)
 	{
 		this.posY = y;
 	}
 	
+	/**
+	 * Gets X parent-relative coordinate
+	 * @return
+	 */
 	public int getX()
 	{
 		return posX;
 	}
 
+	/**
+	 * Gets Y parent-relative coordinate
+	 * @return
+	 */
 	public int getY()
 	{
 		return posY;
 	}
 	
+	/**
+	 * Gets X screen-relative coordinate
+	 * @return
+	 */
 	public int getAbsoluteX()
 	{
 		if(parent != null)
@@ -116,6 +147,10 @@ public abstract class Widget
 		return posX;
 	}
 
+	/**
+	 * Gets Y screen-relative coordinate
+	 * @return
+	 */
 	public int getAbsoluteY()
 	{
 		if(parent != null)
@@ -133,11 +168,19 @@ public abstract class Widget
 		return height;
 	}
 
+	/**
+	 * @return widget's parent. Can be null.
+	 */
 	public Widget getParent()
 	{
 		return parent;
 	}
 	
+	/**
+	 * Searches the root parent of the widget and returns it.
+	 * Note : the returned widget has no parent.
+	 * @return upper widget's parent.
+	 */
 	public Widget getRoot()
 	{
 		Widget root = getParent();
@@ -146,6 +189,12 @@ public abstract class Widget
 		return root;
 	}
 	
+	/**
+	 * Tests if a point is contained in the widget.
+	 * @param x : point X screen-relative coordinate
+	 * @param y : point Y screen-relative coordinate
+	 * @return true if contained, false if not.
+	 */
 	public boolean contains(int x, int y)
 	{
 		int selfX = getAbsoluteX();
@@ -171,6 +220,10 @@ public abstract class Widget
 		}
 	}
 	
+	/**
+	 * Sets and updates widget's alignment.
+	 * @param a
+	 */
 	public void setAlign(byte a)
 	{
 		align = a;
@@ -190,6 +243,7 @@ public abstract class Widget
 	// Each of these methods below return a boolean.
 	// If true, the event will be consumed by the GUI.
 	// If false, it will be forwarded to the game.
+	// Each coordinate is screen-relative.
 	
 	public abstract boolean mouseMoved(int oldX, int oldY, int newX, int newY);
 	public abstract boolean mouseDragged(int oldX, int oldY, int newX, int newY);
@@ -200,6 +254,11 @@ public abstract class Widget
 	public abstract boolean keyPressed(int key, char c);
 	public abstract boolean keyReleased(int key, char c);
 	
+	/**
+	 * Draws the widget on the screen.
+	 * @param gc : game container
+	 * @param gfx : graphics context
+	 */
 	public abstract void render(GameContainer gc, Graphics gfx);
 	
 }

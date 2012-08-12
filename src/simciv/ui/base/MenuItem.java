@@ -5,6 +5,11 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import simciv.content.Content;
 
+/**
+ * Menu element. Clickable button.
+ * @author Marc
+ *
+ */
 public class MenuItem extends Button
 {
 	// All menu items have a common height

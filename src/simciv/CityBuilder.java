@@ -12,24 +12,25 @@ import simciv.buildings.BuildingFactory;
 import simciv.content.Content;
 
 /**
- * User build engine
+ * City build engine
  * @author Marc
  *
  */
 // TODO merge this class to GamePlay ?
 public class CityBuilder
 {
+	// Media
  	private static Sound placeSound;
  	private static Sound eraseSound;
  	private static Color canPlaceColor = new Color(64, 255, 64, 128);
  	private static Color cannotPlaceColor = new Color(255, 64, 64, 128);
  	
+ 	// Modes
  	public static final int MODE_CURSOR = 0;
  	public static final int MODE_ERASE = 1;
  	public static final int MODE_ROAD = 2;
  	public static final int MODE_HOUSE = 3;
 	public static final int MODE_BUILDS = 4;
- 	//public static final int MODE_COUNT = 5; // used to count modes
 	
 	public static final int erasingCost = 1;
 

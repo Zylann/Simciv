@@ -19,7 +19,7 @@ import simciv.ui.base.UIRenderer;
 /**
  * List of builds.
  * Each item displays the name of the build, its cost,
- * and changes the current build on click (if allowed).
+ * and changes the current build of the cityBuilder on click (if allowed).
  * @author Marc
  *
  */
