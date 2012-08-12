@@ -5,9 +5,14 @@ import java.util.List;
 
 import org.newdawn.slick.SlickException;
 
+/**
+ * Vertical list of clickable buttons.
+ * @author Marc
+ *
+ */
 public class Menu extends WidgetContainer
 {
-	List<IActionListener> actionListeners;
+	private List<IActionListener> actionListeners;
 	
 	public Menu(Widget parent, int x, int y, int width)
 	{
@@ -16,27 +21,37 @@ public class Menu extends WidgetContainer
 	}
 
 	/**
-	 * Adds an item to the menu.
+	 * Adds a child to the container.
+	 * Note : better use add(MenuItem, IActionListener)
 	 * @param child: widget of class MenuItem
 	 */
-	@Override
+	@Override @Deprecated
 	public void add(Widget child) throws SlickException
 	{
 		if(!MenuItem.class.isInstance(child))
 			throw new SlickException("Menu : Cannot add a child which is not a MenuItem.");
-		
-		child.posX = 0;
-		child.posY = this.height;
-		child.width = this.width;
-		this.height += child.height;
-		
-		super.add(child);
+		add((MenuItem)child, null);
 	}
 
+	/**
+	 * Adds a new menu item with a custom action.
+	 * @param item : MenuItem
+	 * @param actionListener : action to execute. Not set if null.
+	 * @return Menu object for chaining.
+	 * @throws SlickException
+	 */
 	public Menu add(MenuItem item, IActionListener actionListener) throws SlickException
 	{
-		item.addActionListener(actionListener);
-		add(item);
+		if(actionListener != null)
+			item.addActionListener(actionListener);
+
+		item.posX = 0;
+		item.posY = this.height;
+		item.width = this.width;
+		this.height += item.height;
+		
+		super.add(item);
+
 		return this;
 	}
 	
@@ -51,6 +66,10 @@ public class Menu extends WidgetContainer
 		return this;
 	}
 	
+	/**
+	 * Called when a menu item is selected.
+	 * @param item
+	 */
 	public void onItemSelect(MenuItem item)
 	{
 		setVisible(false);
