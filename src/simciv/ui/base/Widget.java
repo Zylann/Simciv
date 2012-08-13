@@ -230,6 +230,16 @@ public abstract class Widget
 		layout();
 	}
 	
+	/**
+	 * If true, the widget will intercept events if the mouse cursor
+	 * is contained in.
+	 * @return
+	 */
+	public boolean isOpaqueContainer()
+	{
+		return false;
+	}
+	
 	private void alignToCenter(boolean onX, boolean onY)
 	{
 		if(parent == null)

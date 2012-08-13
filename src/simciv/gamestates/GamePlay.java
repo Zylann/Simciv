@@ -104,11 +104,22 @@ public class GamePlay extends UIBasicGameState
 		pauseWindow.setAlign(Widget.ALIGN_CENTER);
 		ui.add(pauseWindow);
 		
-		// TODO add prices on builds menu items
-		
 		menuBar = new BuildMenuBar(ui, 10, 10);
 		menuBar.cityBuilderRef = builder;
 		
+		// Minimap
+		
+		minimapWindow = new Window(ui, 0, 0, 134, 134, "Minimap");
+		minimap = new Minimap(minimapWindow, 0, 0, 0, 0);
+		minimap.setView(view);
+		minimap.setViz(minimapUpdater.getViz());
+		minimap.setVisible(true);
+		minimapWindow.add(minimap);
+		minimapWindow.adaptSize();
+		minimapWindow.setAlign(Widget.ALIGN_CENTER);
+		minimapWindow.setVisible(false);
+		ui.add(minimapWindow);
+
 		// Mouse tool
 		menuBar.addMode(Content.images.uiCategCursor, "Pointer", CityBuilder.MODE_CURSOR);
 		
@@ -142,19 +153,6 @@ public class GamePlay extends UIBasicGameState
 		menuBar.addCategory(Content.images.uiCategMarketing, "Marketing and exchanges", marketMenu);
 		
 		ui.add(menuBar);
-
-		// Minimap
-		
-		minimapWindow = new Window(ui, 0, 0, 134, 134, "Minimap");
-		minimap = new Minimap(minimapWindow, 0, 0, 0, 0);
-		minimap.setView(view);
-		minimap.setViz(minimapUpdater.getViz());
-		minimap.setVisible(true);
-		minimapWindow.add(minimap);
-		minimapWindow.adaptSize();
-		minimapWindow.setAlign(Widget.ALIGN_CENTER);
-		minimapWindow.setVisible(false);
-		ui.add(minimapWindow);
 		
 		// Indicators bar
 		
@@ -211,6 +209,10 @@ public class GamePlay extends UIBasicGameState
 		{
 			((simciv.Game)game).close();
 		}
+		
+		// FIXME bad work ratio in some cases, probably due to a bad total count
+		if(input.isKeyDown(Input.KEY_C))
+			System.out.println(Citizen.totalCount + ", " + Citizen.totalWithJob);
 		
 		view.update(gc, delta / 1000.f);
 		Terrain.updateTerrains(delta);

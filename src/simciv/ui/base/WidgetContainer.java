@@ -29,6 +29,11 @@ public class WidgetContainer extends Widget
 		children.add(child);
 	}
 	
+	public void remove(Widget child)
+	{
+		children.remove(child);
+	}
+	
 	/**
 	 * Adapts the size of the container to its children
 	 */
@@ -120,6 +125,8 @@ public class WidgetContainer extends Widget
 				if(!res)
 					res = true;
 			}
+			if(child.isOpaqueContainer() && child.contains(x, y))
+				return true;
 		}
 		return res;
 	}
