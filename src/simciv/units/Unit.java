@@ -1,5 +1,6 @@
 package simciv.units;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.newdawn.slick.GameContainer;
@@ -10,10 +11,14 @@ import org.newdawn.slick.state.StateBasedGame;
 import simciv.Direction2D;
 import simciv.Entity;
 import simciv.Game;
+import simciv.PathFinder;
 import simciv.Vector2i;
 import simciv.World;
+import simciv.buildings.Building;
+import simciv.maptargets.BuildingMapTarget;
 import simciv.maptargets.IMapTarget;
 import simciv.movements.IMovement;
+import simciv.movements.PathMovement;
 
 /**
  * An unit can move, and is seen as a "living" thing.
@@ -27,12 +32,13 @@ public abstract class Unit extends Entity
 	// States
 	public static final byte NORMAL = 1;
 	public static final byte THINKING = 2;	
-	// Counts all the units
+	// Counts all units
 	public static int count = 0;
 	
 	private boolean isAlive;
 	private boolean isMoving;
 	private IMovement movement;
+	private PathFinder pathFinder;
 	
 	public Unit(World w)
 	{
@@ -47,13 +53,68 @@ public abstract class Unit extends Entity
 	@Override
 	protected final void tickEntity()
 	{
-		tick();
+		tick(); // Main behavior
+		
+		// PathFinding
+		if(pathFinder != null)
+			tickPathFinding();
+		
+		// Detect movement
 		if(movement != null)
 		{
 			int lastPosX = posX;
 			int lastPosY = posY;
 			movement.tick(this);
-			isMoving = posX != lastPosX || posY != lastPosY;
+			isMoving = posX != lastPosX || posY != lastPosY;			
+		}
+	}
+	
+	/**
+	 * Starts pathfinding and go to the specified target when a path is found.
+	 * The unit will be on the state THINKING while pathfinding.
+	 * @param target
+	 */
+	public void findAndGoTo(IMapTarget target)
+	{
+		if(target == null)
+			return;
+		
+		pathFinder = new PathFinder(worldRef, posX, posY, target);
+		
+		setState(Unit.THINKING);
+		setDirection(Direction2D.NONE);
+		setMovement(null);
+	}
+	
+	public void findAndGoTo(Building b)
+	{
+		findAndGoTo(new BuildingMapTarget(b.getID()));
+	}
+	
+	private void tickPathFinding()
+	{
+		pathFinder.step(8);
+		if(pathFinder.isFinished())
+		{
+			if(pathFinder.getState() == PathFinder.FOUND)
+			{
+				// I found a path !
+				LinkedList<Vector2i> path = pathFinder.retrievePath();
+				
+				// Remove first pos if we already are on 
+				if(path != null && !path.isEmpty())
+				{
+					if(path.getFirst().equals(posX, posY))
+						path.pop();
+				}
+				
+				// Start following the path
+				setState(Unit.NORMAL);
+				setMovement(new PathMovement(path, pathFinder.getTarget()));
+				pathFinder = null;
+			}
+			else
+				findAndGoTo(pathFinder.getTarget());
 		}
 	}
 	

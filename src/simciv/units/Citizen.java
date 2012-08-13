@@ -152,7 +152,6 @@ public class Citizen extends Unit
 	private void tickHunger()
 	{
 		feedLevel--;
-		// TODO transform into nomad if too long starving
 		if(feedLevel <= FEED_HUNGRY)
 		{
 			byte foodType = ownedResources.getContainedFoodType();

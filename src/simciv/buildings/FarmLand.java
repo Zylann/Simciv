@@ -109,8 +109,8 @@ public class FarmLand extends Workplace
 				Conveyer job = (Conveyer)(emp.getJob());
 				int harvestResult = (int) (50 + 25.f * Math.random());
 				job.addResourceCarriage(new ResourceSlot(Resource.WHEAT, harvestResult));
-				job.setTarget(new FreeWarehouseMapTarget());
 				emp.exitBuilding();
+				emp.findAndGoTo(new FreeWarehouseMapTarget());
 			}
 		}
 

@@ -1,25 +1,18 @@
 package simciv.jobs;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 
-import simciv.Direction2D;
 import simciv.Game;
-import simciv.PathFinder;
 import simciv.ResourceSlot;
-import simciv.Vector2i;
 import simciv.buildings.Building;
 import simciv.buildings.House;
 import simciv.buildings.Warehouse;
 import simciv.buildings.Workplace;
 import simciv.content.Content;
-import simciv.maptargets.BuildingMapTarget;
-import simciv.maptargets.IMapTarget;
 import simciv.maptargets.WarehouseForMarketMapTarget;
-import simciv.movements.PathMovement;
 import simciv.movements.RandomRoadMovement;
 import simciv.units.Citizen;
 import simciv.units.Unit;
@@ -34,7 +27,6 @@ public class MarketDelivery extends Job
 	private static SpriteSheet unitSprites;
 	
 	private ResourceSlot carriedResource;
-	private PathFinder pathFinder;
 	
 	public MarketDelivery(Citizen citizen, Workplace workplace)
 	{
@@ -60,6 +52,9 @@ public class MarketDelivery extends Job
 	{
 		if(!me.isOut())
 			return;
+		
+		if(me.getState() == Unit.THINKING)
+			return;
 
 		/*
 		 * Behavior :
@@ -71,43 +66,37 @@ public class MarketDelivery extends Job
 		 * go to 2).
 		 */
 		
-		if(me.getState() == Unit.THINKING)
+		if(carriedResource.isEmpty() && !me.isMovement())
 		{
-			if(pathFinder != null)
-				tickPathFinding(); // I am searching for a path
+			me.findAndGoTo(new WarehouseForMarketMapTarget());
 		}
 		else
 		{
-			if(carriedResource.isEmpty() && !me.isMovement())
+			boolean wasEmpty = carriedResource.isEmpty();
+			distributeResources();
+			if(!wasEmpty && carriedResource.isEmpty())
 			{
-				if(pathFinder == null)
-					restartPathFinding(new WarehouseForMarketMapTarget());
+				me.findAndGoTo(new WarehouseForMarketMapTarget());
 			}
 			else
-			{
-				boolean wasEmpty = carriedResource.isEmpty();
-				distributeResources();
-				if(!wasEmpty && carriedResource.isEmpty())
+			{				
+				if(me.isMovementBlocked())
+					me.findAndGoTo(me.getMovementTarget());
+				else if(me.isMovementFinished())
 				{
-					restartPathFinding(new WarehouseForMarketMapTarget());
-				}
-				else
-				{				
-					if(me.isMovementBlocked())
-						restartPathFinding(me.getMovementTarget());
-					else if(me.isMovementFinished())
-					{
-						retrieveResourcesIfPossible();
-						if(carriedResource.isEmpty())
-							restartPathFinding(me.getMovementTarget());
-						else
-							me.setMovement(new RandomRoadMovement());
-					}
+					retrieveResourcesIfPossible();
+					if(carriedResource.isEmpty())
+						me.findAndGoTo(me.getMovementTarget());
+					else
+						me.setMovement(new RandomRoadMovement());
 				}
 			}
 		}
 	}
 	
+	/**
+	 * Distributes resources to each house nearby
+	 */
 	private void distributeResources()
 	{
 		List<Building> buildings = me.getWorld().getBuildingsAround(me.getX(), me.getY());
@@ -131,45 +120,6 @@ public class MarketDelivery extends Job
 			if(carriedResource.isFull())
 				return;
 		}
-	}
-
-	private void tickPathFinding()
-	{
-		pathFinder.step(8);
-		if(pathFinder.isFinished())
-		{
-			if(pathFinder.getState() == PathFinder.FOUND)
-			{
-				// I found a path !
-				LinkedList<Vector2i> path = pathFinder.retrievePath();
-				
-				// Remove first pos if we already are on 
-				if(path != null && !path.isEmpty())
-				{
-					if(path.getFirst().equals(me.getX(), me.getY()))
-						path.pop();
-				}
-				
-				// Start following the path
-				me.setState(Unit.NORMAL);
-				me.setMovement(new PathMovement(path, pathFinder.getTarget()));
-				pathFinder = null;
-			}
-			else
-				restartPathFinding(pathFinder.getTarget());
-		}
-	}
-	
-	private void restartPathFinding(IMapTarget target)
-	{
-		if(target == null)
-			target = new BuildingMapTarget(workplaceRef.getID());
-		
-		pathFinder = new PathFinder(me.getWorld(), me.getX(), me.getY(), target);
-		
-		me.setState(Unit.THINKING);
-		me.setDirection(Direction2D.NONE);
-		me.setMovement(null);
 	}
 
 	@Override
