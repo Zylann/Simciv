@@ -32,8 +32,6 @@ public abstract class Unit extends Entity
 	// States
 	public static final byte NORMAL = 1;
 	public static final byte THINKING = 2;	
-	// Counts all units
-	public static int count = 0;
 	
 	private boolean isAlive;
 	private boolean isMoving;
@@ -45,7 +43,6 @@ public abstract class Unit extends Entity
 		super(w);
 		
 		direction = Direction2D.EAST;
-		count++;
 		isAlive = true;
 		state = NORMAL;
 	}
