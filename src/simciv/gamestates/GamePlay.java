@@ -209,9 +209,6 @@ public class GamePlay extends UIBasicGameState
 		{
 			((simciv.Game)game).close();
 		}
-
-		if(input.isKeyDown(Input.KEY_C))
-			System.out.println(Citizen.totalCount + ", " + Citizen.totalWithJob);
 		
 		view.update(gc, delta / 1000.f);
 		Terrain.updateTerrains(delta);

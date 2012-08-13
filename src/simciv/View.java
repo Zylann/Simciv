@@ -16,10 +16,10 @@ public class View
 	static final float acceleration = 5000.f;
 	static final float velocityMax = 750.f;
 	
-	Vector2f origin; // in pixels
-	Vector2f velocity;
-	Vector2i worldSize;
-	int scale;
+	private Vector2f origin; // in pixels
+	private Vector2f velocity;
+	private Vector2i worldSize;
+	private int scale;
 	
 	public View(float x, float y, int scale)
 	{
