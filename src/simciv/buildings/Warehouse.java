@@ -108,9 +108,9 @@ public class Warehouse extends Workplace
 	{
 		// Floor
 		if(state == Building.ACTIVE)
-			gfx.drawImage(sprites.getSprite(0, 0), 0, -Game.tilesSize);
-		else
 			gfx.drawImage(sprites.getSprite(1, 0), 0, -Game.tilesSize);
+		else
+			gfx.drawImage(sprites.getSprite(0, 0), 0, -Game.tilesSize);
 			
 		// Resources
 		
