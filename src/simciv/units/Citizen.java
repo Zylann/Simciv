@@ -11,7 +11,6 @@ import simciv.Game;
 import simciv.Resource;
 import simciv.ResourceBag;
 import simciv.ResourceSlot;
-import simciv.SoundEngine;
 import simciv.World;
 import simciv.buildings.Building;
 import simciv.buildings.House;
@@ -113,7 +112,7 @@ public class Citizen extends Unit
 	
 	protected static void playPaySound()
 	{
-		SoundEngine.instance().play(Content.sounds.unitPay, (float) (1.f + 0.1f * Math.random()), 0.5f);
+		Content.sounds.unitPay.play((float) (1.f + 0.1f * Math.random()), 0.05f);
 	}
 	
 	@Override
