@@ -267,17 +267,18 @@ public class Citizen extends Unit
 	
 	/**
 	 * Makes the citizen quit his job.
-	 * @param notifyWorkplace : if true, the workplace will be notified (do not set to true if the workplace has already been updated).
+	 * @param notifyWorkplace : if true, the workplace will be notified
+	 * (do not set to true if the workplace has already been updated).
 	 */
 	public void quitJob(boolean notifyWorkplace)
 	{
 		if(job != null)
 		{
 			job.onQuit(notifyWorkplace);
+			job = null;
 			totalWithJob--;
+			updateTickTime();
 		}
-		job = null;
-		updateTickTime();
 		state = Unit.NORMAL;
 	}
 

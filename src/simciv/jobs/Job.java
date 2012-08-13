@@ -61,7 +61,7 @@ public abstract class Job
 	public void onQuit(boolean notifyWorkplace)
 	{
 		if(workplaceRef != null && notifyWorkplace)
-			workplaceRef.removeEmployeeAndMakeRedundant(me.getID());
+			workplaceRef.removeEmployee(me.getID(), false);
 		if(!me.isOut())
 			me.exitBuilding();
 		me.setMovement(new RandomRoadMovement());

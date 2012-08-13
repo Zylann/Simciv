@@ -66,13 +66,15 @@ public abstract class Workplace extends Building
 	}
 	
 	/**
-	 * Removes an employee (a citizen) from the workplace, also make it redundant.
+	 * Removes an employee (a citizen) from the workplace, also make it redundant if prompted.
 	 * @param id : ID of the citizen
+	 * @param makeRedundant : if true, this method will notify the citizen to quit his job.
+	 * Do not set it to true if it is already done.
 	 */
-	public void removeEmployeeAndMakeRedundant(int id)
+	public void removeEmployee(int id, boolean makeRedundant)
 	{
 		Citizen oldEmployee = employees.remove(id);
-		if(oldEmployee != null)
+		if(oldEmployee != null && makeRedundant)
 			oldEmployee.quitJob(false); // false : don't notify the workplace, this is already done.
 	}
 	
