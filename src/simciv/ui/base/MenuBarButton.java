@@ -4,6 +4,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
+import simciv.content.Content;
+
 public class MenuBarButton extends Button
 {
 	private MenuBar parentMenuBar;
@@ -54,6 +56,7 @@ public class MenuBarButton extends Button
 		if(menu != null)
 			menu.setVisible(true);
 		parentMenuBar.unpressButtons(this);
+		Content.sounds.uiClick.play(1.f, 0.5f);
 		onAction();
 	}
 	
