@@ -209,8 +209,7 @@ public class GamePlay extends UIBasicGameState
 		{
 			((simciv.Game)game).close();
 		}
-		
-		// FIXME bad work ratio in some cases, probably due to a bad total count
+
 		if(input.isKeyDown(Input.KEY_C))
 			System.out.println(Citizen.totalCount + ", " + Citizen.totalWithJob);
 		

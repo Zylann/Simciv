@@ -14,7 +14,7 @@ import org.newdawn.slick.SlickException;
  */
 public class WidgetContainer extends Widget
 {
-	protected ArrayList<Widget> children;
+	protected ArrayList<Widget> children; // ordered as event receiving
 
 	public WidgetContainer(Widget parent, int x, int y, int width, int height)
 	{

@@ -231,8 +231,10 @@ public abstract class Widget
 	}
 	
 	/**
-	 * If true, the widget will intercept events if the mouse cursor
-	 * is contained in.
+	 * If true, the widget will intercept events if the mouse cursor is contained in.
+	 * Example : if there is two containers and one receives an event, the second one will not
+	 * be notified of this event. In another case, a window hidden over another will not receive mouse clicks.
+	 * (this is useful mainly for containers, despite been present in Widgets)
 	 * @return
 	 */
 	public boolean isOpaqueContainer()
