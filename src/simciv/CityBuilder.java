@@ -16,7 +16,6 @@ import simciv.content.Content;
  * @author Marc
  *
  */
-// TODO merge this class to GamePlay ?
 public class CityBuilder
 {
 	// Media
@@ -91,7 +90,10 @@ public class CityBuilder
 		else if(mode == MODE_ROAD)
 			modeString = "Road mode";
 		else if(mode == MODE_HOUSE)
+		{
 			modeString = "Building mode";
+			setBuildingString("House");
+		}
 		return this;
 	}
 	
