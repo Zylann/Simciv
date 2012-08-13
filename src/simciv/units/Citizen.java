@@ -11,6 +11,7 @@ import simciv.Game;
 import simciv.Resource;
 import simciv.ResourceBag;
 import simciv.ResourceSlot;
+import simciv.SoundEngine;
 import simciv.World;
 import simciv.buildings.Building;
 import simciv.buildings.House;
@@ -103,8 +104,16 @@ public class Citizen extends Unit
 	{
 		beenTaxed = true;
 		if(job != null)
+		{
+			playPaySound();
 			return worldRef.playerCity.getIncomeTaxRatio() * (float)job.getIncome();
+		}
 		return 0;
+	}
+	
+	protected static void playPaySound()
+	{
+		SoundEngine.instance().play(Content.sounds.unitPay, (float) (1.f + 0.1f * Math.random()), 0.5f);
 	}
 	
 	@Override
@@ -346,10 +355,9 @@ public class Citizen extends Unit
 		
 	protected void buyResource(ResourceSlot r, int amount)
 	{
-//		int oldSlotAmount = r.getAmount();
 		ownedResources.addFrom(r, amount);
-//		int diff = oldSlotAmount - r.getAmount();
 		worldRef.playerCity.gainMoney(0.5f);
+		playPaySound();
 	}
 	
 	/**

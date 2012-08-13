@@ -69,6 +69,7 @@
 	<!-- Sounds -->
 	
 	<resource type="sound" id="unitNewCitizen">door_open.ogg</resource>
+	<resource type="sound" id="unitPay">coinBounce.ogg</resource>
 	
 	<resource type="sound" id="uiButtonPress">click2.ogg</resource>
 	<resource type="sound" id="uiClick">click.ogg</resource>

@@ -6,6 +6,7 @@ public class Sounds
 {
 	// Units
 	public Sound unitNewCitizen;
+	public Sound unitPay;
 	
 	// UI
 	public Sound uiClick;
