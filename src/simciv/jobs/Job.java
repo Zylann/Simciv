@@ -20,6 +20,8 @@ public abstract class Job
 	public static final byte TAXMAN = 5;
 	public static final byte MARKET_INTERNAL = 6;
 	public static final byte MARKET_DELIVERY = 7;
+	public static final byte ARCHITECT_INTERNAL = 8;
+	public static final byte ARCHITECT = 9;
 	
 	protected Citizen me; // The Citizen doing the job
 	protected Workplace workplaceRef; // must not be null (otherwise the job may be useless)

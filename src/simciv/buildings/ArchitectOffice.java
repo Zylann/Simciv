@@ -8,7 +8,10 @@ import org.newdawn.slick.state.StateBasedGame;
 import simciv.Game;
 import simciv.World;
 import simciv.content.Content;
+import simciv.jobs.Architect;
+import simciv.jobs.InternalJob;
 import simciv.jobs.Job;
+import simciv.movements.RandomRoadMovement;
 import simciv.units.Citizen;
 
 public class ArchitectOffice extends Workplace
@@ -45,19 +48,31 @@ public class ArchitectOffice extends Workplace
 	@Override
 	public Job giveNextJob(Citizen citizen)
 	{
-//		if(needEmployees())
-//		{
-//			if(employees.size() < 2)
-//				return new InternalJob(citizen, this, Job.ARCHITECT_INTERNAL);
-//			else
-//				return new Architect(citizen, this);
-//		}
+		if(needEmployees())
+		{
+			Job job;
+			if(employees.size() < 2)
+				job = new InternalJob(citizen, this, Job.ARCHITECT_INTERNAL);
+			else
+				job = new Architect(citizen, this);
+			
+			addEmployee(citizen);
+			return job;
+		}
 		return null;
 	}
 
 	@Override
 	protected void onActivityStart()
 	{
+		for(Citizen emp : employees.values())
+		{
+			if(emp.getJob().getID() == Job.ARCHITECT && !emp.isOut())
+			{
+				emp.exitBuilding(); // mission begin
+				emp.setMovement(new RandomRoadMovement());
+			}
+		}
 	}
 
 	@Override

@@ -23,6 +23,7 @@
 	<resource type="image" id="unitTaxman">taxman.png</resource>
 	<resource type="image" id="unitDuck">duck.png</resource>
 	<resource type="image" id="unitMarketDelivery">delivery_man.png</resource>
+	<resource type="image" id="unitArchitect">architect.png</resource>
 	<resource type="image" id="unitThinking">think.png</resource>
 	
 	<resource type="image" id="resourceEmptyCarriage">carriage.png</resource>

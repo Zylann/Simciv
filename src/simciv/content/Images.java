@@ -24,6 +24,7 @@ public class Images
 	public Image unitThinking;
 	public Image unitTaxman;
 	public Image unitMarketDelivery;
+	public Image unitArchitect;
 	
 	// Resources
 	public Image resourceEmptyCarriage;
