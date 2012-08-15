@@ -18,7 +18,7 @@ import simciv.units.Citizen;
  * @author Marc
  *
  */
-public class Market extends Workplace
+public class Market extends PassiveWorkplace
 {
 	private static SpriteSheet sprites;
 	private static BuildingProperties properties;
@@ -48,12 +48,6 @@ public class Market extends Workplace
 	}
 
 	@Override
-	public int getProductionProgress()
-	{
-		return 0; // Markets are not productive buildings
-	}
-
-	@Override
 	public Job giveNextJob(Citizen citizen)
 	{
 		if(needEmployees())
@@ -77,12 +71,6 @@ public class Market extends Workplace
 	}
 
 	@Override
-	protected int getTickTime()
-	{
-		return 1000;
-	}
-
-	@Override
 	protected void onActivityStart()
 	{
 		sendDelivery();
@@ -92,20 +80,13 @@ public class Market extends Workplace
 	protected void onActivityStop()
 	{
 	}
-
-	@Override
-	protected void tickActivity()
-	{
-	}
 	
 	private void sendDelivery()
 	{
 		for(Citizen emp : employees.values())
 		{
 			if(!emp.isOut() && emp.getJob().getID() == Job.MARKET_DELIVERY)
-			{				
 				emp.exitBuilding();
-			}
 		}
 	}
 

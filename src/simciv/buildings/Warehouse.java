@@ -18,7 +18,7 @@ import simciv.units.Citizen;
  * @author Marc
  *
  */
-public class Warehouse extends Workplace
+public class Warehouse extends PassiveWorkplace
 {
 	private static BuildingProperties properties;
 	private static SpriteSheet sprites;
@@ -48,13 +48,6 @@ public class Warehouse extends Workplace
 					getWidth() * Game.tilesSize,
 					(getHeight() + getZHeight())* Game.tilesSize);
 		}
-	}
-	
-	@Override
-	public int getProductionProgress()
-	{
-		// Warehouses just store resources. They do not produce anything.
-		return 0;
 	}
 
 	@Override
@@ -95,12 +88,6 @@ public class Warehouse extends Workplace
 		if(retrieved)
 			full = false;
 		return retrieved;
-	}
-
-	@Override
-	protected int getTickTime()
-	{
-		return 500; // 1/2 second
 	}
 
 	@Override
@@ -177,9 +164,7 @@ public class Warehouse extends Workplace
 	@Override
 	public String getInfoString()
 	{
-		return "[" + getProperties().name + "] employees : "
-			+ getNbEmployees() + "/" + getMaxEmployees()
-			+ ", load : " + getLoad() + "%";
+		return super.getInfoString() + ", load : " + getLoad() + "%";
 	}
 
 	@Override
@@ -189,11 +174,6 @@ public class Warehouse extends Workplace
 
 	@Override
 	protected void onActivityStop()
-	{
-	}
-
-	@Override
-	protected void tickActivity()
 	{
 	}
 	

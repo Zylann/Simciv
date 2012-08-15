@@ -335,7 +335,7 @@ public class House extends Building
 			worldRef.addGraphicalEffect(new RisingIcon(posX, posY, Content.images.effectGold));
 	}
 	
-	public float getMeanFeedRatio()
+	public float getMeanHungerRatio()
 	{
 		float sum = 0;
 		for(Citizen c : inhabitants.values())

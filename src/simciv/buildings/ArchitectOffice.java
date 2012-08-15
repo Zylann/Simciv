@@ -14,13 +14,13 @@ import simciv.jobs.Job;
 import simciv.movements.RandomRoadMovement;
 import simciv.units.Citizen;
 
-public class ArchitectOffice extends Workplace
+public class ArchitectOffice extends PassiveWorkplace
 {
 	private static BuildingProperties properties;
 	private static SpriteSheet sprites;
 	
-	// TODO ProductiveWorkplace
-	// TODO PassiveWorkplace
+	// TODO factorize : ProductiveWorkplace
+	// TODO factorize : PassiveWorkplace
 	
 	static
 	{
@@ -37,12 +37,6 @@ public class ArchitectOffice extends Workplace
 					getWidth() * Game.tilesSize,
 					3 * Game.tilesSize);
 		}
-	}
-
-	@Override
-	public int getProductionProgress()
-	{
-		return 0;
 	}
 
 	@Override
@@ -81,11 +75,6 @@ public class ArchitectOffice extends Workplace
 	}
 
 	@Override
-	protected void tickActivity()
-	{
-	}
-
-	@Override
 	public BuildingProperties getProperties()
 	{
 		return properties;
@@ -98,12 +87,6 @@ public class ArchitectOffice extends Workplace
 			gfx.drawImage(sprites.getSprite(1, 0), 0, -Game.tilesSize);
 		else
 			gfx.drawImage(sprites.getSprite(0, 0), 0, -Game.tilesSize);
-	}
-
-	@Override
-	protected int getTickTime()
-	{
-		return 1000;
 	}
 
 }

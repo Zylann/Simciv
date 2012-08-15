@@ -121,6 +121,12 @@ public abstract class Building extends Entity
 	{
 		return map.canPlaceObject(x, y, getWidth(), getHeight());
 	}
+
+	@Override
+	protected int getTickTime()
+	{
+		return 1000; // default is 1s
+	}
 	
 }
 

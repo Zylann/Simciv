@@ -14,7 +14,7 @@ import simciv.jobs.Taxman;
 import simciv.movements.RandomRoadMovement;
 import simciv.units.Citizen;
 
-public class TaxmenOffice extends Workplace
+public class TaxmenOffice extends PassiveWorkplace
 {
 	private static BuildingProperties properties;
 	private static SpriteSheet sprites;
@@ -58,20 +58,9 @@ public class TaxmenOffice extends Workplace
 	}
 
 	@Override
-	protected void tickActivity()
-	{
-	}
-
-	@Override
 	public void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		renderDefault(gfx, sprites);
-	}
-
-	@Override
-	public int getProductionProgress()
-	{
-		return 0; // Taxmen don't produce anything.
 	}
 
 	@Override
@@ -95,12 +84,6 @@ public class TaxmenOffice extends Workplace
 	public BuildingProperties getProperties()
 	{
 		return properties;
-	}
-
-	@Override
-	protected int getTickTime()
-	{
-		return 1000;
 	}
 
 }

@@ -166,7 +166,7 @@ public class FarmLand extends Workplace
 	@Override
 	protected int getTickTime()
 	{
-		return 500;
+		return 500; // 1/2 second
 	}
 
 	@Override
