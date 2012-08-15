@@ -54,7 +54,7 @@ public class CityBuilder
 	private boolean cursorPress = false;
 	private int cursorButton;
 	
-	public CityBuilder(World worldRef)
+	public CityBuilder(World worldRef) throws SlickException
 	{
 		this.worldRef = worldRef;
 		setMode(MODE_CURSOR);
@@ -81,6 +81,7 @@ public class CityBuilder
 	 * Sets the current build mode
 	 * @param mode
 	 * @return object for chaining
+	 * @throws SlickException 
 	 */
 	public CityBuilder setMode(int mode)
 	{
@@ -92,7 +93,11 @@ public class CityBuilder
 		else if(mode == MODE_HOUSE)
 		{
 			modeString = "Building mode";
-			setBuildingString("House");
+			try {
+				setBuildingString("House");
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
 		}
 		return this;
 	}
@@ -101,8 +106,9 @@ public class CityBuilder
 	 * Sets the current building from its class name
 	 * @param bstr : class name
 	 * @return : object for chaining
+	 * @throws SlickException 
 	 */
-	public CityBuilder setBuildingString(String bstr)
+	public CityBuilder setBuildingString(String bstr) throws SlickException
 	{
 		buildingString = bstr;
 		building = BuildingFactory.createFromName(bstr, worldRef);
@@ -216,7 +222,7 @@ public class CityBuilder
 			gfx.drawString(modeString, 100, 30);
 	}
 	
-	public void cursorPressed(int button, Vector2i mapPos)
+	public void cursorPressed(int button, Vector2i mapPos) throws SlickException
 	{
 		cursorPress = true;
 		cursorButton = button;
@@ -293,7 +299,7 @@ public class CityBuilder
 			infoText = pointedBuilding.getInfoString();
 	}
 
-	public void cursorReleased()
+	public void cursorReleased() throws SlickException
 	{
 		if(cursorPress && cursorButton == Input.MOUSE_LEFT_BUTTON)
 		{
@@ -364,7 +370,7 @@ public class CityBuilder
 		return nbErased;
 	}
 	
-	private boolean placeBuilding(int x, int y)
+	private boolean placeBuilding(int x, int y) throws SlickException
 	{
 		return placeBuilding(x, y, true);
 	}
@@ -375,8 +381,9 @@ public class CityBuilder
 	 * @param y
 	 * @param notify : if the build has been placed, play a sound
 	 * @return true if the build has been placed, false otherwise
+	 * @throws SlickException 
 	 */
-	private boolean placeBuilding(int x, int y, boolean notify)
+	private boolean placeBuilding(int x, int y, boolean notify) throws SlickException
 	{
 		// Create a new building
 		Building b = BuildingFactory.createFromName(buildingString, worldRef);
@@ -400,7 +407,7 @@ public class CityBuilder
 		
 	// SUGG add a tick delay to zone-placed buildings (because they are created at the same time) ?
 	
-	private int placeBuildingsFromZone()
+	private int placeBuildingsFromZone() throws SlickException
 	{
 		int nbPlaced = 0;
 		for(int y = buildZone.minY(); y <= buildZone.maxY(); y += building.getHeight())

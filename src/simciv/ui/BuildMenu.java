@@ -46,10 +46,16 @@ public class BuildMenu extends Menu
 	protected void onShow()
 	{
 		if(parentBuildMenuBar.cityBuilderRef != null)
-			updateInfos(parentBuildMenuBar.cityBuilderRef.getWorld());
+		{
+			try {
+				updateInfos(parentBuildMenuBar.cityBuilderRef.getWorld());
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
-	public void updateInfos(World worldRef)
+	public void updateInfos(World worldRef) throws SlickException
 	{
 		for(BuildMenuItem item : items)
 			item.updateInfos(worldRef);
@@ -77,13 +83,17 @@ public class BuildMenu extends Menu
 			super.onAction();
 			if(parentBuildMenuBar.cityBuilderRef != null)
 			{
-				parentBuildMenuBar.cityBuilderRef
-					.setMode(CityBuilder.MODE_BUILDS)
-					.setBuildingString(buildString);
+				try {
+					parentBuildMenuBar.cityBuilderRef
+						.setMode(CityBuilder.MODE_BUILDS)
+						.setBuildingString(buildString);
+				} catch (SlickException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 
-		public void updateInfos(World worldRef)
+		public void updateInfos(World worldRef) throws SlickException
 		{
 			// Name
 			Building b = BuildingFactory.createFromName(buildString, worldRef);

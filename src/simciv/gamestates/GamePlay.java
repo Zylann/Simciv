@@ -145,6 +145,7 @@ public class GamePlay extends UIBasicGameState
 		// Administration
 		BuildMenu adminMenu = new BuildMenu(menuBar, 0, menuBar.getHeight(), 128);
 		adminMenu.addBuild("TaxmenOffice");
+		adminMenu.addBuild("ArchitectOffice");
 		menuBar.addCategory(Content.images.uiCategAdmin, "Administration", adminMenu);
 
 		// Marketing
@@ -298,7 +299,11 @@ public class GamePlay extends UIBasicGameState
 	{
 		if(!paused)
 		{
-			builder.cursorPressed(button, pointedCell);
+			try {
+				builder.cursorPressed(button, pointedCell);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
 			if(button == Input.MOUSE_MIDDLE_BUTTON && !minimapWindow.isVisible())
 				toggleShowMinimap();
 		}
@@ -318,7 +323,13 @@ public class GamePlay extends UIBasicGameState
 	public void mouseReleased(int button, int x, int y)
 	{
 		if(!paused)
-			builder.cursorReleased();
+		{
+			try {
+				builder.cursorReleased();
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override

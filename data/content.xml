@@ -15,6 +15,7 @@
 	<resource type="image" id="buildWarehouse">warehouse.png</resource>
 	<resource type="image" id="buildTaxmenOffice">taxmen_office.png</resource>
 	<resource type="image" id="buildMarket">market.png</resource>
+	<resource type="image" id="buildArchitectOffice">architects.png</resource>
 	
 	<resource type="image" id="unitCitizen">citizen.png</resource>
 	<resource type="image" id="unitConveyer">transporter_only.png</resource>

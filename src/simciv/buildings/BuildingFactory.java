@@ -2,6 +2,8 @@ package simciv.buildings;
 
 import java.util.HashMap;
 
+import org.newdawn.slick.SlickException;
+
 import simciv.World;
 
 /**
@@ -27,6 +29,7 @@ public class BuildingFactory
 		addMapping(Warehouse.class, "Warehouse");
 		addMapping(TaxmenOffice.class, "TaxmenOffice");
 		addMapping(Market.class, "Market");
+		addMapping(ArchitectOffice.class, "ArchitectOffice");
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -37,7 +40,7 @@ public class BuildingFactory
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static Building createFromName(String s, World world)
+	public static Building createFromName(String s, World world) throws SlickException
 	{
 		Building b = null;
 		try
@@ -53,6 +56,7 @@ public class BuildingFactory
 		catch(Exception exception)
 		{
 			exception.printStackTrace();
+			throw new SlickException("Build class not found (" + s + ")");
 		}
 		return b;
 	}
