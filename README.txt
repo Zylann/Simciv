@@ -8,8 +8,8 @@ Description :
 	
 Releases :
 	
-	SimCiv indev release 1 : <link coming soon...>
-	SimCiv indev release 2 : work in progress
+	SimCiv indev release 2 : work in progress...
+	SimCiv indev release 1 : http://www.mediafire.com/?i5bgd97wlom8a67
 	
 Current features (for development version) :
 
