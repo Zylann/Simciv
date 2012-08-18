@@ -13,6 +13,7 @@ import simciv.Map;
 import simciv.ResourceSlot;
 import simciv.World;
 import simciv.content.Content;
+import simciv.effects.SmokeExplosion;
 
 /**
  * Each object that can be constructed by the player.
@@ -53,8 +54,6 @@ public abstract class Building extends Entity
 		// Make a sound
 		Content.sounds.buildCollapse.play((float) (1.0 + 0.2 * (Math.random() - 0.5)), 0.5f);
 		
-		// TODO smoke effect
-
 		// Leave ruins
 		for(int y = posY; y < posY + getHeight(); y++)
 		{
@@ -63,6 +62,9 @@ public abstract class Building extends Entity
 				Debris d = new Debris(worldRef);
 				d.setPropertiesFromBuild(this);
 				worldRef.placeBuilding(d, x, y);
+				
+				worldRef.addGraphicalEffect(
+						new SmokeExplosion(x, y, 8, 1.5f, Game.tilesSize/2));
 			}
 		}
 	}

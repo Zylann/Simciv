@@ -63,7 +63,7 @@ public class World
 	public void update(GameContainer gc, StateBasedGame game, int delta)
 	{
 		if(fastForward)
-			delta *= 5;
+			delta *= 8;
 		
 		time.update(delta);
 		

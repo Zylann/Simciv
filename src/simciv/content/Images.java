@@ -70,6 +70,7 @@ public class Images
 	public Image effectGreenStar;
 	public Image effectGold;
 	public Image effectDeath;
+	public Image effectSmoke;
 	
 	// Test
 	public Image test;

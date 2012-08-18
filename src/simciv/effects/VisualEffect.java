@@ -9,12 +9,7 @@ public abstract class VisualEffect
 	// Graphical position
 	protected float posX;
 	protected float posY;
-	// Time control (milliseconds)
-	protected int duration;
-	protected int time;
-	
-	protected boolean finished;
-	
+		
 	/**
 	 * Creates a visual effect
 	 * @param x : x position in cells
@@ -25,28 +20,20 @@ public abstract class VisualEffect
 		posX = Game.tilesSize * x;
 		posY = Game.tilesSize * y;
 	}
-	
-	protected float getK()
+		
+	public void render(Graphics gfx)
 	{
-		return (float)time / (float)duration;
+		gfx.pushTransform();
+		gfx.translate(posX, posY);
+		
+		renderEffect(gfx);
+		
+		gfx.popTransform();
 	}
+
+	public abstract void update(int delta);	
+	protected abstract void renderEffect(Graphics gfx);
+	public abstract boolean isFinished();
 	
-	public boolean isFinished()
-	{
-		return finished;
-	}
-	
-	public void update(int delta)
-	{
-		if(finished)
-			return;
-		time += delta;
-		updateEffect(delta);
-		if(time >= duration)
-			finished = true;
-	}
-	
-	protected abstract void updateEffect(int delta);
-	public abstract void render(Graphics gfx);
 }
 
