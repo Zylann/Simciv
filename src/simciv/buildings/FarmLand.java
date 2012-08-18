@@ -180,9 +180,9 @@ public class FarmLand extends Workplace
 	{
 		if(needEmployees())
 		{
-			// 3 farmers, 2 conveyers
+			// 4 farmers, 1 conveyer
 			Job job;
-			if(employees.size() < 3)
+			if(employees.size() < 4)
 				job = new InternalJob(citizen, this, Job.FARMER);
 			else
 				job = new Conveyer(citizen, this);
