@@ -68,7 +68,7 @@ public abstract class Building extends Entity
 			}
 		}
 	}
-
+	
 	@Override
 	public void dispose()
 	{
@@ -98,7 +98,7 @@ public abstract class Building extends Entity
 	
 	public int getMaintenanceThreshold()
 	{
-		return 100;
+		return 150;
 	}
 	
 	public int getSolidnessMax()

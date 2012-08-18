@@ -32,7 +32,7 @@ public class Architect extends Job
 		{
 			if(b.needsMaintenance())
 			{
-				float cost = b.getSurfaceArea() * 0.5f;
+				float cost = b.getSurfaceArea() * 0.3f;
 				if(city.getMoney() >= cost && b.onMaintenance())
 					city.buy(cost);
 			}
