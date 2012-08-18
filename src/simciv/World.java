@@ -210,6 +210,7 @@ public class World
 		if(b.canBePlaced(map, x, y))
 		{
 			placedBuilds.add(b);
+			return true;
 		}
 		return false;
 	}
