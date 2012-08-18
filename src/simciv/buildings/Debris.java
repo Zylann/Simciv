@@ -48,6 +48,12 @@ public class Debris extends Building
 	}
 
 	@Override
+	protected void tickSolidness()
+	{
+		// No solidness
+	}
+
+	@Override
 	public String getInfoString()
 	{
 		return infoString;
