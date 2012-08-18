@@ -30,6 +30,7 @@ public class BuildingFactory
 		addMapping(TaxmenOffice.class, "TaxmenOffice");
 		addMapping(Market.class, "Market");
 		addMapping(ArchitectOffice.class, "ArchitectOffice");
+		addMapping(Debris.class, "Debris");
 	}
 
 	@SuppressWarnings("rawtypes")

@@ -89,9 +89,7 @@ public abstract class Workplace extends Building
 	{
 		// All citizen working here are made redundant
 		for(Citizen c : employees.values())
-		{
 			c.quitJob(false); // false : don't notify the workplace, this is already done.
-		}
 	}
 	
 	public void renderDefault(Graphics gfx, SpriteSheet sprites)
@@ -132,6 +130,15 @@ public abstract class Workplace extends Building
 		}
 	}
 	
+	@Override
+	public boolean onMaintenance()
+	{
+		if(employees.isEmpty())
+			return false;
+		repair();
+		return true;
+	}
+
 	protected abstract void onActivityStart();
 	
 	protected abstract void onActivityStop();

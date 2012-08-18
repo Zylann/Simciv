@@ -191,7 +191,7 @@ public class Map
 //		// Check if we can place a mark
 //		if(mark && !canPlaceObject(b.getX(), b.getY(), b.getWidth(), b.getHeight()))
 //			return false;
-				
+		
 		int x, y;
 		int xmax = b.getX() + b.getWidth() - 1;
 		int ymax = b.getY() + b.getHeight() - 1;

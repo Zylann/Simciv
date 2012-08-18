@@ -80,7 +80,13 @@ public class FarmLand extends Workplace
 			ticksBeforeNextLevel = ticksPerLevel;
 		}
 	}
-		
+	
+	@Override
+	protected void tickSolidness()
+	{
+		// No solidness
+	}
+	
 	private void onLevelUp()
 	{
 		if(state == Building.ACTIVE)

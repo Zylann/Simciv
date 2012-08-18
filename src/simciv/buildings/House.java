@@ -173,7 +173,6 @@ public class House extends Building
 	 */
 	protected boolean tryLevelUp()
 	{
-//		System.out.println("--- tryLevelUp " + posX + ", " + posY); // debug
 		if(level == 0)
 		{
 			// Check if 4 1x1 houses are forming a quad
@@ -287,9 +286,7 @@ public class House extends Building
 	public void onDestruction()
 	{
 		for(Citizen c : inhabitants.values())
-		{
 			c.kill();
-		}
 	}
 
 	@Override
@@ -353,6 +350,15 @@ public class House extends Building
 				r = r2;
 		}
 		return r;
+	}
+
+	@Override
+	public boolean onMaintenance()
+	{
+		if(!isInhabitantHaveJob())
+			return false;
+		repair();
+		return true;
 	}
 
 }

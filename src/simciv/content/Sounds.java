@@ -8,6 +8,9 @@ public class Sounds
 	public Sound unitNewCitizen;
 	public Sound unitPay;
 	
+	// Builds
+	public Sound buildCollapse;
+	
 	// UI
 	public Sound uiClick;
 	public Sound uiReverseClick;

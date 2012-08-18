@@ -1,9 +1,13 @@
 package simciv.jobs;
 
+import java.util.List;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 
 import simciv.Game;
+import simciv.PlayerCity;
+import simciv.buildings.Building;
 import simciv.buildings.Workplace;
 import simciv.content.Content;
 import simciv.units.Citizen;
@@ -22,7 +26,17 @@ public class Architect extends Job
 	@Override
 	public void tick()
 	{
-		// TODO builds maintenance
+		List<Building> builds = me.getWorld().getBuildingsAround(me.getX(), me.getY());
+		PlayerCity city = me.getWorld().playerCity;
+		for(Building b : builds)
+		{
+			if(b.needsMaintenance())
+			{
+				float cost = b.getSurfaceArea() * 0.5f;
+				if(city.getMoney() >= cost && b.onMaintenance())
+					city.buy(cost);
+			}
+		}
 	}
 
 	@Override

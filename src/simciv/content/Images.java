@@ -15,6 +15,7 @@ public class Images
 	public Image buildTaxmenOffice;
 	public Image buildMarket;
 	public Image buildArchitectOffice;
+	public Image buildDebris;
 	
 	// Units
 	public Image unitCitizen;

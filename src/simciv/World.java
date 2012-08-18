@@ -30,7 +30,9 @@ public class World
 	public PlayerCity playerCity;
 	public WorldTime time;
 	private transient boolean fastForward;
+	// TODO improve entity containers dynamics (create a GameComponentMap?)
 	private List<Unit> spawnedUnits = new ArrayList<Unit>();
+	private List<Building> placedBuilds = new ArrayList<Building>();
 	private HashMap<Integer,Unit> units = new HashMap<Integer,Unit>();
 	private HashMap<Integer,Building> buildings = new HashMap<Integer,Building>();
 	private List<VisualEffect> graphicalEffects = new ArrayList<VisualEffect>();
@@ -41,18 +43,18 @@ public class World
 		playerCity = new PlayerCity();
 		time = new WorldTime();
 	}
-	
+
 	public boolean isFastForward()
 	{
 		return fastForward;
 	}
-	
+
 	public void setFastForward(boolean e)
 	{
 		if(Citizen.totalCount < 1000)
 			fastForward = e;
 	}
-	
+
 	/**
 	 * Updates the world, and calls the tick() method on buildings
 	 * and units at each time interval (tickTime).
@@ -79,6 +81,11 @@ public class World
 				unitsToRemove.add(u);
 		}
 		
+		for(Building b : placedBuilds)
+			addBuilding(b);
+		if(!placedBuilds.isEmpty())
+			placedBuilds.clear();
+
 		ArrayList<Building> buildingsToRemove = new ArrayList<Building>();
 		for(Building b : buildings.values())
 		{
@@ -149,12 +156,7 @@ public class World
 		return false;
 	}
 	
-	/**
-	 * Removes and destroys an unit in the world
-	 * @param ID : unit ID
-	 * @return true if success
-	 */
-	public boolean removeUnit(int ID)
+	private boolean removeUnit(int ID)
 	{
 		if(ID > 0)
 		{
@@ -168,6 +170,18 @@ public class World
 		return false;
 	}
 	
+	private boolean addBuilding(Building b)
+	{
+		if(!buildings.containsKey(b.getID()))
+		{
+			buildings.put(b.getID(), b);
+			map.markBuilding(b, true);
+			b.onInit();
+			return true;
+		}
+		return false;
+	}
+
 	private boolean removeBuilding(int ID)
 	{
 		if(ID > 0)
@@ -195,13 +209,7 @@ public class World
 		b.setPosition(x, y);
 		if(b.canBePlaced(map, x, y))
 		{
-			if(!buildings.containsKey(b.getID()))
-			{
-				map.markBuilding(b, true);
-				buildings.put(b.getID(), b);
-				b.onInit();
-				return true;
-			}
+			placedBuilds.add(b);
 		}
 		return false;
 	}
@@ -220,9 +228,10 @@ public class World
 			Building b = getBuilding(ID);
 			if(b != null)
 			{
-				map.markBuilding(b, false);
-				b.onDestruction();
-				buildings.remove(ID);
+				b.dispose();
+//				map.markBuilding(b, false);
+//				b.onDestruction();
+//				buildings.remove(ID);
 				return true;
 			}
 		}
@@ -261,8 +270,8 @@ public class World
 	 */
 	public void render(GameContainer gc, StateBasedGame game, Graphics gfx, IntRange2D mapRange)
 	{		
-		SortedRender renderMgr = new SortedRender();		
-				
+		SortedRender renderMgr = new SortedRender();
+		
 		map.registerElementsForSortedRender(mapRange, renderMgr);
 
 		if(!gc.getInput().isKeyDown(Input.KEY_1))
@@ -299,7 +308,7 @@ public class World
 		// Draw effects on the top
 		for(VisualEffect e : graphicalEffects)
 			e.render(gfx);
-				
+		
 //		long time = System.currentTimeMillis() - timeBefore; // for debug
 //		if(gc.getInput().isKeyDown(Input.KEY_T))
 //			System.out.println(time);
