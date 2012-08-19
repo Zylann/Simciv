@@ -8,6 +8,7 @@ import org.newdawn.slick.SpriteSheet;
 
 import simciv.Direction2D;
 import simciv.Game;
+import simciv.MathHelper;
 import simciv.Resource;
 import simciv.ResourceBag;
 import simciv.ResourceSlot;
@@ -112,7 +113,7 @@ public class Citizen extends Unit
 	
 	protected static void playPaySound()
 	{
-		Content.sounds.unitPay.play((float) (1.f + 0.1f * Math.random()), 0.05f);
+		Content.sounds.unitPay.play((float) (1.f + MathHelper.randS(0.1f)), 0.05f);
 	}
 	
 	@Override
@@ -351,7 +352,7 @@ public class Citizen extends Unit
 		}
 		return false;
 	}
-		
+	
 	protected void buyResource(ResourceSlot r, int amount)
 	{
 		ownedResources.addFrom(r, amount);

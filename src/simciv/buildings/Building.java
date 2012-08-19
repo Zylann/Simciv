@@ -10,6 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import simciv.Entity;
 import simciv.Game;
 import simciv.Map;
+import simciv.MathHelper;
 import simciv.ResourceSlot;
 import simciv.World;
 import simciv.content.Content;
@@ -52,7 +53,7 @@ public abstract class Building extends Entity
 		dispose();
 
 		// Make a sound
-		Content.sounds.buildCollapse.play((float) (1.0 + 0.2 * (Math.random() - 0.5)), 0.5f);
+		Content.sounds.buildCollapse.play((float) (1.0 + MathHelper.randS(0.1f)), 0.5f);
 		
 		// Leave ruins
 		for(int y = posY; y < posY + getHeight(); y++)

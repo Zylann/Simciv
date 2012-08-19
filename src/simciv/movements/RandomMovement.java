@@ -1,6 +1,7 @@
 package simciv.movements;
 
 import simciv.Direction2D;
+import simciv.MathHelper;
 import simciv.maptargets.IMapTarget;
 import simciv.units.Unit;
 
@@ -16,8 +17,8 @@ public class RandomMovement implements IMovement
 	
 	private void randomize()
 	{
-		ticksBeforeNextMove = (int) (5 + 10.f * Math.random());
-		ticksBeforeNextStop = (int) (5 + 10.f * Math.random());
+		ticksBeforeNextMove = MathHelper.randInt(5, 15);
+		ticksBeforeNextStop = MathHelper.randInt(5, 15);
 	}
 
 	@Override

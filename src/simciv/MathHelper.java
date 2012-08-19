@@ -3,8 +3,23 @@ package simciv;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 
+/**
+ * Math utility methods and shortcuts
+ * @author Marc
+ *
+ */
 public class MathHelper
 {
+	/**
+	 * Returns the value of f(x), where f is a slow-begin-slow-end curve equation :
+	 * |       ..
+	 * |     .
+	 * |   .
+	 * |..
+	 * O---------> X
+	 * @param x : value between 0 and 1
+	 * @return f(x)
+	 */
     public static float smoothCurve(float x)
     {
         return (float) (6 * Math.pow(x,5) - 15 * Math.pow(x, 4) + 10 * Math.pow(x,3));
@@ -99,6 +114,28 @@ public class MathHelper
 		return m;
 	}
 	
+	/**
+	 * Returns a random integer number between min and max
+	 * @param min
+	 * @param max
+	 * @return
+	 */
+	public static int randInt(int min, int max)
+	{
+		return (int) ((float)(max - min) * Math.random() - (float)min);
+	}
+	
+	/**
+	 * Returns a random float number between -k and k
+	 * @return
+	 */
+	public static float randS(float k)
+	{
+		return k * (float) (2.0 * Math.random() - 0.5);
+	}
+
 }
+
+
 
 

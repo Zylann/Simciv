@@ -4,6 +4,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 import simciv.Game;
+import simciv.MathHelper;
 import simciv.content.Content;
 
 /**
@@ -38,7 +39,7 @@ public class SmokeExplosion extends VisualEffect
 		float durationVariation = meanDuration / 4;
 		for(int i = 0; i < particles.length; i++)
 		{
-			float lifeTime = (int) (meanDuration + durationVariation * (2.0 * Math.random() - 0.5));
+			float lifeTime = (int) (meanDuration + MathHelper.randS(durationVariation));
 			int x = (int) ((2.0 * Math.random() - 0.5) * excentering);
 			int y = (int) ((2.0 * Math.random() - 0.5) * excentering);
 			particles[i] = new SmokeParticle(x, y, lifeTime);
@@ -84,10 +85,10 @@ public class SmokeExplosion extends VisualEffect
 		public SmokeParticle(float x, float y, float lifeTime)
 		{
 			super(x, y, lifeTime);
-			velX = 32.f * (float) (2.0 * Math.random() - 1.0);
+			velX = MathHelper.randS(32.f);
 			velY = -32.f * (float) (Math.random());
 			color = new Color(224, 224, 224, 255);
-			sprite = (int) ((float)(sprites.getHorizontalCount()) * Math.random());
+			sprite = MathHelper.randInt(0, sprites.getHorizontalCount());
 		}
 		
 		public void render(Graphics gfx)
