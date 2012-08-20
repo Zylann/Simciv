@@ -122,7 +122,7 @@ public class MathHelper
 	 */
 	public static int randInt(int min, int max)
 	{
-		return (int) ((float)(max - min) * Math.random() - (float)min);
+		return (int) ((float)(max - min) * Math.random() + (float)min);
 	}
 	
 	/**
