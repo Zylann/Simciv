@@ -1,6 +1,7 @@
 package simciv;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -12,7 +13,7 @@ import simciv.rendering.SortedRender;
 
 /**
  * The map is a 2D array that stores terrain, plants and roads information.
- * It is also used to mark places occupied by buildings (see MapCell).
+ * It is also used to mark places occupied by buildings (see MapCell) and other useful data for game optimization.
  * @author Marc
  *
  */
@@ -22,6 +23,7 @@ public class Map
 	private int width;
 	private int height;	
 	private boolean renderGrid;
+	private List<IMapListener> listeners;
 
 	/**
 	 * Creates an empty map
@@ -39,8 +41,58 @@ public class Map
 		cells = new MapCell[area];
 		for(int i = 0; i < area; i++)
 			cells[i] = new MapCell();
+		
+		listeners = new ArrayList<IMapListener>();
 	}
 	
+	public void addListener(IMapListener l)
+	{
+		listeners.add(l);
+	}
+	
+	/**
+	 * Notifies map listeners for a change at (x,y).
+	 * @param x : cell position Y
+	 * @param y : cell position X
+	 */
+	public void onChange(int x, int y)
+	{
+		if(!contains(x, y))
+			return;
+		onChange(x, y, getCellExisting(x, y));
+	}
+	
+	/**
+	 * Notifies map listeners for a change in a rectangular area.
+	 * @param x0 : cells area origin X
+	 * @param y0 : cells area origin Y
+	 * @param w : area width
+	 * @param h : area height
+	 */
+	public void onChange(int x0, int y0, int w, int h)
+	{
+		if(!contains(x0, y0, w, h))
+			return;
+		for(int y = y0; y < y0 + h; y++)
+		{
+			for(int x = x0; x < x0 + w; x++)
+				onChange(x, y, getCellExisting(x, y));
+		}
+	}
+
+	/**
+	 * Notifies map listeners for a change in (x,y).
+	 * This position must be valid, and the specified cell must be corresponding one.
+	 * @param x
+	 * @param y
+	 * @param cell
+	 */
+	private void onChange(int x, int y, MapCell cell)
+	{
+		for(IMapListener l : listeners)
+			l.onCellChange(cell, x, y);
+	}
+
 	/**
 	 * Get the area of the map. It is also the length of data buffers.
 	 * @return area (length)
@@ -52,6 +104,8 @@ public class Map
 	
 	/**
 	 * Returns the cell at position (x,y). This position MUST be valid.
+	 * Warning : listeners will not be notified if the returned cell is modified.
+	 * (Manually call onChange(x, y) or use another method to make it done)
 	 * @param x
 	 * @param y
 	 * @return
@@ -78,7 +132,7 @@ public class Map
 	}
 	
 	/**
-	 * Sets the terrain type at (x,y)
+	 * Sets the terrain type at (x,y) and notifies listeners.
 	 * @param x
 	 * @param y
 	 * @param t : terrain type (ID)
@@ -91,11 +145,13 @@ public class Map
 			MapCell c = getCellExisting(x, y);
 			c.terrainID = t;
 			c.nature = nature;
+			onChange(x, y, c);
 		}
 	}
 	
 	/**
 	 * Fills all cells with a terrain type.
+	 * (Listeners are not notified)
 	 * @param value : terrain type
 	 */
 	public void fillTerrain(byte value)
@@ -116,6 +172,7 @@ public class Map
 	
 	/**
 	 * Sets the road index at (x,y).
+	 * Listeners are notified.
 	 * @param x
 	 * @param y
 	 * @param i : index (using Road.getIndex(map,x,y))
@@ -123,11 +180,16 @@ public class Map
 	private void setRoad(int x, int y, byte i)
 	{
 		if(contains(x, y))
-			getCellExisting(x,y).road = i;
+		{
+			MapCell c = getCellExisting(x,y);
+			c.road = i;
+			onChange(x, y, c);
+		}
 	}
 	
 	/**
-	 * Places a road at (x,y)
+	 * Places a road at (x,y).
+	 * Listeners are notified.
 	 * @param x
 	 * @param y
 	 * @return true if the road has been successfully placed.
@@ -136,8 +198,29 @@ public class Map
 	{
 		if(canPlaceObject(x, y))
 		{
-			getCellExisting(x,y).road = Road.getIndex(this, x, y);
+			MapCell c = getCellExisting(x,y);
+			c.road = Road.getIndex(this, x, y);
 			updateRoads(x, y);
+			onChange(x, y, c);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Erases roads at (x,y).
+	 * @param x
+	 * @param y
+	 * @return : true if a road has been erased.
+	 */
+	public boolean eraseRoad(int x, int y)
+	{
+		if(isRoad(x, y))
+		{
+			MapCell c = getCellExisting(x,y);
+			c.road = -1;
+			updateRoads(x, y);
+			onChange(x, y, c);
 			return true;
 		}
 		return false;
@@ -162,27 +245,11 @@ public class Map
 			setRoad(x, y+1, Road.getIndex(this, x, y+1));
 	}
 	
-	/**
-	 * Erases roads at (x,y).
-	 * @param x
-	 * @param y
-	 * @return : true if a road has been erased.
-	 */
-	public boolean eraseRoad(int x, int y)
-	{
-		if(isRoad(x, y))
-		{
-			setRoad(x, y, (byte) -1);
-			updateRoads(x, y);
-			return true;
-		}
-		return false;
-	}
-	
 	// Buildings
 	
 	/**
 	 * Marks cells as occupied by a building, or clears marked cells.
+	 * Listeners are notified.
 	 * @param b : building to mark
 	 * @param mark : true to mark, false to clear marks.
 	 */
@@ -211,6 +278,8 @@ public class Map
 					getCellExisting(x, y).eraseBuildingInfo();
 			}
 		}
+		
+		onChange(b.getX(), b.getY(), b.getWidth(), b.getHeight());
 	}
 	
 	/**
@@ -280,6 +349,12 @@ public class Map
 		}
 	}
 	
+	/**
+	 * Draws a grid clearly showing cells frontiers, for debug use.
+	 * @param range : which range should the grid be rendered
+	 * @param gc
+	 * @param gfx
+	 */
 	private void renderGrid(IntRange2D range, GameContainer gc, Graphics gfx)
 	{
 		gfx.pushTransform();
@@ -325,6 +400,14 @@ public class Map
 		return x >= 0 && y >= 0 && x < width && y < height;
 	}
 	
+	/**
+	 * Tests if the rectangle defined by the origin (x,y) and size (w,h) is contained in the map.
+	 * @param x : rectangle origin X in cells
+	 * @param y : rectangle origin Y in cells
+	 * @param w : rectangle width
+	 * @param h : rectangle height
+	 * @return true if the rectangle is contained, false if not
+	 */
 	public boolean contains(int x, int y, int w, int h)
 	{
 		return x >= 0 && y >= 0 && x + w <= width && y + h <= height;
@@ -406,15 +489,16 @@ public class Map
 	 * @param world : world reference if needed by the target (Set to null if not)
 	 * @return list of positions
 	 */
-	public ArrayList<Vector2i> getAvailablePositionsAround(int x0, int y0, int w, int h, IMapTarget target, World world)
+	public ArrayList<Vector2i> getAvailablePositionsAround(
+			int x0, int y0, int w, int h, IMapTarget target, World world)
 	{
 		ArrayList<Vector2i> p = new ArrayList<Vector2i>();
 		int x, y;
 		
-		//	  X X  
-		//	Y     Y
-		//	Y     Y
-		//	  X X  
+		//	  X X X  
+		//	Y       Y
+		//	Y       Y
+		//	  X X X 
 		
 		for(x = x0; x < x0 + w; x++) // X
 		{
@@ -448,6 +532,14 @@ public class Map
 		return getAvailablePositionsAround(b.getX(), b.getY(), b.getWidth(), b.getHeight(), target, world);
 	}
 	
+	/**
+	 * Evaluates if an area is arable or not.
+	 * @param x0 : area origin X in cells
+	 * @param y0 : area origin Y in cells
+	 * @param w : area width
+	 * @param h : area height
+	 * @return : true if the area is arable, false if not.
+	 */
 	public boolean isArable(int x0, int y0, int w, int h)
 	{
 		if(!contains(x0, y0, w, h))

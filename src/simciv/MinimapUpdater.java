@@ -12,21 +12,19 @@ import simciv.content.Content;
  * @author Marc
  *
  */
-public class MinimapUpdater
+public class MinimapUpdater implements IMapListener
 {
 	private static Image mapMask;
-	private static final int MASK_BASE = 16;
+	private static final int MASK_BASE = 16; // in pixels
+	private static final int VIZ_UPDATE_TIME = 1000; // in ms
 	
-	private Map mapRef;
 	private ImageBuffer pixels;
 	private Image viz;
-	private int cursorX;
-	private int cursorY;
+	private int nextVizUpdateTime; // in ms
 	
-	public MinimapUpdater(Map mapRef) throws SlickException
+	public MinimapUpdater(World w) throws SlickException
 	{
-		this.mapRef = mapRef;
-		pixels = new ImageBuffer(mapRef.getWidth(), mapRef.getHeight());
+		pixels = new ImageBuffer(w.map.getWidth(), w.map.getHeight());
 		viz = pixels.getImage(Image.FILTER_NEAREST);
 		
 		mapMask = Content.images.uiMinimapMask;
@@ -34,27 +32,24 @@ public class MinimapUpdater
 	
 	public void update(int delta) throws SlickException
 	{
-		int nbCellsToUpdate = 5 * delta;
-				
-		for(int n = 0; n < nbCellsToUpdate; n++)
+		nextVizUpdateTime -= delta;
+		if(nextVizUpdateTime <= 0)
 		{
-			updateCellExisting(cursorX, cursorY);
-			
-			cursorX++;
-			if(cursorX >= mapRef.getWidth())
-			{
-				cursorX = 0;
-				cursorY++;
-				if(cursorY >= mapRef.getHeight())
-				{
-					cursorY = 0;
-					viz = pixels.getImage(Image.FILTER_NEAREST);
-				}
-			}
+			viz = pixels.getImage(Image.FILTER_NEAREST);
+			nextVizUpdateTime = VIZ_UPDATE_TIME;
 		}
 	}
 	
-	public void updateCellExisting(int x, int y)
+	public void updateCompleteViz(Map m)
+	{
+		for(int y = 0; y < m.getHeight(); y++)
+		{
+			for(int x = 0; x < m.getWidth(); x++)
+				updateCellExisting(m.getCellExisting(x, y), x, y);
+		}
+	}
+	
+	public void updateCellExisting(MapCell cell, int x, int y)
 	{		
 		int b = MASK_BASE;
 		int maskX, maskY;
@@ -73,7 +68,7 @@ public class MinimapUpdater
 		else
 			maskY = y;
 				
-		Color clr = mapRef.getCellExisting(x, y).getMinimapColor();
+		Color clr = cell.getMinimapColor();
 		clr = clr.multiply(mapMask.getColor(maskX, maskY));
 		
 		pixels.setRGBA(x, y,
@@ -87,4 +82,11 @@ public class MinimapUpdater
 	{
 		return viz;
 	}
+
+	@Override
+	public void onCellChange(MapCell cell, int x, int y)
+	{
+		updateCellExisting(cell, x, y);
+	}
+	
 }

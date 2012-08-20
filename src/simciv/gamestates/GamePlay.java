@@ -169,8 +169,11 @@ public class GamePlay extends UIBasicGameState
 
 	@Override
 	public void enter(GameContainer gc, StateBasedGame game) throws SlickException
-	{		
-		minimapUpdater = new MinimapUpdater(world.map);
+	{
+		// Create and init minimap
+		minimapUpdater = new MinimapUpdater(world);
+		world.map.addListener(minimapUpdater);
+		minimapUpdater.updateCompleteViz(world.map);
 		
 		// Create CityBuilder
 		builder = new CityBuilder(world);
