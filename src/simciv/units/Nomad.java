@@ -30,6 +30,12 @@ public class Nomad extends Unit
 	@Override
 	public void tick()
 	{
+		// Nomads can disappear after 2min
+		if(getLifeTime() > 120000)
+		{
+			if(Math.random() < 0.1)
+				dispose();
+		}
 	}
 
 	@Override

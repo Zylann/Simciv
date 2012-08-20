@@ -73,6 +73,10 @@ public abstract class Entity extends GameComponent
 		return posY;
 	}
 	
+	/**
+	 * Returns the life time of the entity in milliseconds
+	 * @return
+	 */
 	public int getLifeTime()
 	{
 		return lifeTime;
@@ -144,7 +148,7 @@ public abstract class Entity extends GameComponent
 	{
 		return (int) ((1000.f * s) / getTickTime());
 	}
-	
+		
 	/**
 	 * Returns the time interval between each behavior update.
 	 * It can be used to increase its speed for example.
