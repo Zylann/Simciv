@@ -287,6 +287,7 @@ public class Citizen extends Unit
 			job = null;
 			totalWithJob--;
 			updateTickTime();
+			setMovement(new RandomRoadMovement());
 		}
 		state = Unit.NORMAL;
 	}
@@ -318,7 +319,7 @@ public class Citizen extends Unit
 		totalCount++; // TODO put citizen count in PlayerCity
 		
 		// Initial resources
-		ownedResources.addAllFrom(new ResourceSlot(Resource.WHEAT, 4));
+		ownedResources.addAllFrom(new ResourceSlot(Resource.WHEAT, 5));
 	}
 	
 	/**
