@@ -21,9 +21,11 @@ public class MinimapUpdater implements IMapListener
 	private ImageBuffer pixels;
 	private Image viz;
 	private int nextVizUpdateTime; // in ms
+	private World worldRef;
 	
 	public MinimapUpdater(World w) throws SlickException
 	{
+		worldRef = w;
 		pixels = new ImageBuffer(w.map.getWidth(), w.map.getHeight());
 		viz = pixels.getImage(Image.FILTER_NEAREST);
 		
@@ -68,7 +70,7 @@ public class MinimapUpdater implements IMapListener
 		else
 			maskY = y;
 				
-		Color clr = cell.getMinimapColor();
+		Color clr = cell.getMinimapColor(worldRef);
 		clr = clr.multiply(mapMask.getColor(maskX, maskY));
 		
 		pixels.setRGBA(x, y,

@@ -42,7 +42,7 @@ public class FarmLand extends Workplace
 	static
 	{
 		properties = new BuildingProperties("Farmland");
-		properties.setUnitsCapacity(5).setSize(3, 3, 0).setCost(10);
+		properties.setUnitsCapacity(5).setSize(3, 3, 0).setCost(10).setCategory(BuildCategory.FOOD);
 	}
 	
 	public FarmLand(World w)
@@ -51,7 +51,7 @@ public class FarmLand extends Workplace
 		ticksPerLevel = secondsToTicks(60);
 		ticksBeforeNextLevel = ticksPerLevel;
 		cropsLevel = MIN_LEVEL;
-		state = Building.NORMAL;
+		state = Building.STATE_NORMAL;
 		
 		if(sprites == null)
 		{
@@ -89,7 +89,7 @@ public class FarmLand extends Workplace
 	
 	private void onLevelUp()
 	{
-		if(state == Building.ACTIVE)
+		if(state == Building.STATE_ACTIVE)
 		{
 			if(cropsLevel == ROTTEN_LEVEL)
 				cropsLevel = 0; // The field is cleaned up
@@ -127,13 +127,13 @@ public class FarmLand extends Workplace
 	public void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		// Soil
-		if(state == Building.NORMAL || needEmployees())
+		if(state == Building.STATE_NORMAL || needEmployees())
 			gfx.drawImage(sprites.getSprite(0, 0), 0, 0);
 		else
 			gfx.drawImage(sprites.getSprite(1, 0), 0, 0);
 		
 		// Crops
-		if(state == Building.ACTIVE || cropsLevel != 0)
+		if(state == Building.STATE_ACTIVE || cropsLevel != 0)
 		{
 			for(int j = 0; j < 3; j++)
 			{

@@ -94,7 +94,7 @@ public abstract class Workplace extends Building
 	
 	public void renderDefault(Graphics gfx, SpriteSheet sprites)
 	{
-		if(state == Building.ACTIVE)
+		if(state == Building.STATE_ACTIVE)
 			gfx.drawImage(sprites.getSprite(1, 0), 0, -getZHeight() * Game.tilesSize);
 		else
 			gfx.drawImage(sprites.getSprite(0, 0), 0, -getZHeight() * Game.tilesSize);
@@ -104,7 +104,7 @@ public abstract class Workplace extends Building
 	public String getInfoString()
 	{
 		String info = "[" + getProperties().name + "] employees : " + getNbEmployees() + "/" + getMaxEmployees();
-		if(state == ACTIVE)
+		if(state == STATE_ACTIVE)
 			info += ", production : " + getProductionProgress() + "%";
 		return info;
 	}
@@ -112,19 +112,19 @@ public abstract class Workplace extends Building
 	@Override
 	protected void tick()
 	{
-		if(state == Building.NORMAL)
+		if(state == Building.STATE_NORMAL)
 		{
 			if(!needEmployees())
 			{
-				state = Building.ACTIVE;
+				state = Building.STATE_ACTIVE;
 				onActivityStart();
 			}
 		}
-		else if(state == Building.ACTIVE)
+		else if(state == Building.STATE_ACTIVE)
 		{
 			if(needEmployees())
 			{
-				state = Building.NORMAL;
+				state = Building.STATE_NORMAL;
 				onActivityStop();
 			}
 		}

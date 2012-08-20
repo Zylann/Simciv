@@ -3,6 +3,7 @@ package simciv;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -12,6 +13,7 @@ import simciv.content.Content;
 public class Road
 {
 	public static final int cost = 1;
+	public static final Color minimapColor = new Color(224, 224, 224);
 	
 	static Image tileset;
 	static Image tiles[];
@@ -118,5 +120,5 @@ public class Road
 		gfx.drawImage(tiles[index], gx, gy);
 	}
 
-
 }
+

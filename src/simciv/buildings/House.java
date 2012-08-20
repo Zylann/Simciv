@@ -38,10 +38,10 @@ public class House extends Building
 		properties = new BuildingProperties[MAX_LEVEL+1];
 		
 		properties[0] = new BuildingProperties("House lv.1")
-			.setUnitsCapacity(2).setCost(10).setSize(1, 1, 1);
+			.setUnitsCapacity(2).setCost(10).setSize(1, 1, 1).setCategory(BuildCategory.HOUSES);
 		
 		properties[1] = new BuildingProperties("House lv.2")
-			.setUnitsCapacity(8).setCost(50).setSize(2, 2, 2);
+			.setUnitsCapacity(8).setCost(50).setSize(2, 2, 2).setCategory(BuildCategory.HOUSES);
 	}
 
 	// References to citizen living here
@@ -68,7 +68,7 @@ public class House extends Building
 		direction = (byte) (4 * Math.random());
 		level = 0;
 		nbCitizensToProduce = 1;
-		state = Building.CONSTRUCTION;
+		state = Building.STATE_CONSTRUCTION;
 	}
 	
 	@Override
@@ -93,12 +93,12 @@ public class House extends Building
 	@Override
 	public void tick()
 	{
-		if(state == Building.CONSTRUCTION)
+		if(state == Building.STATE_CONSTRUCTION)
 		{
 			if((getTicks() > 15 || Cheats.isFastCitizenProduction()))
-				state = Building.NORMAL;
+				state = Building.STATE_NORMAL;
 		}
-		else if(state == Building.NORMAL)
+		else if(state == Building.STATE_NORMAL)
 		{
 			if(level != MAX_LEVEL && getTicks() % 20 == 0)
 			{
@@ -184,7 +184,7 @@ public class House extends Building
 				if(b[i] == null ||
 					!b[i].isHouse() ||
 					!b[i].is1x1() ||
-					b[i].getState() != Building.NORMAL)
+					b[i].getState() != Building.STATE_NORMAL)
 				{
 					return false;
 				}
@@ -243,7 +243,7 @@ public class House extends Building
 	@Override
 	public void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
-		if(state == CONSTRUCTION)
+		if(state == STATE_CONSTRUCTION)
 			renderAsConstructing(gfx);
 		else
 		{

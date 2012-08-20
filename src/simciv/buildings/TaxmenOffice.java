@@ -22,13 +22,13 @@ public class TaxmenOffice extends PassiveWorkplace
 	static
 	{
 		properties = new BuildingProperties("Taxmen office");
-		properties.setCost(200).setSize(2, 2, 1).setUnitsCapacity(6);
+		properties.setCost(200).setSize(2, 2, 1).setUnitsCapacity(6).setCategory(BuildCategory.ADMINISTRATION);
 	}
 	
 	public TaxmenOffice(World w)
 	{
 		super(w);
-		state = Building.NORMAL;
+		state = Building.STATE_NORMAL;
 
 		if(sprites == null)
 		{

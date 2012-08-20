@@ -127,12 +127,17 @@ public class MapCell
 			Nature.render(gfx, this, gx, gy);
 	}
 
-	public Color getMinimapColor()
+	public Color getMinimapColor(World w)
 	{
 		if(isBuilding())
-			return new Color(255, 128, 0);
+		{
+			if(w != null)
+				return w.getBuilding(getBuildingID()).getMinimapColor();
+			else
+				return new Color(255, 128, 0);
+		}
 		if(isRoad())
-			return new Color(224, 224, 224);
+			return Road.minimapColor;
 		if(nature != Nature.NONE)
 			return Nature.getMinimapColor(nature);			
 		return Terrain.get(terrainID).minimapColor;

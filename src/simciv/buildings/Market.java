@@ -26,13 +26,13 @@ public class Market extends PassiveWorkplace
 	static
 	{
 		properties = new BuildingProperties("Market");
-		properties.setCost(50).setSize(2, 2, 1).setUnitsCapacity(6);
+		properties.setCost(50).setSize(2, 2, 1).setUnitsCapacity(6).setCategory(BuildCategory.MARKETING);
 	}
 	
 	public Market(World w)
 	{
 		super(w);
-		state = Building.NORMAL;
+		state = Building.STATE_NORMAL;
 		if(sprites == null)
 		{
 			sprites = new SpriteSheet(Content.images.buildMarket,

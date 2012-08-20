@@ -25,7 +25,7 @@ public class ArchitectOffice extends PassiveWorkplace
 	static
 	{
 		properties = new BuildingProperties("Architects office");
-		properties.setCost(100).setSize(2, 2, 2).setUnitsCapacity(4);
+		properties.setCost(100).setSize(2, 2, 2).setUnitsCapacity(4).setCategory(BuildCategory.ADMINISTRATION);
 	}
 	
 	public ArchitectOffice(World w)
@@ -83,7 +83,7 @@ public class ArchitectOffice extends PassiveWorkplace
 	@Override
 	protected void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
-		if(state == Building.ACTIVE)
+		if(state == Building.STATE_ACTIVE)
 			gfx.drawImage(sprites.getSprite(1, 0), 0, -Game.tilesSize);
 		else
 			gfx.drawImage(sprites.getSprite(0, 0), 0, -Game.tilesSize);

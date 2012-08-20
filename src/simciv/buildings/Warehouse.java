@@ -30,13 +30,13 @@ public class Warehouse extends PassiveWorkplace
 	static
 	{
 		properties = new BuildingProperties("Warehouse");
-		properties.setUnitsCapacity(4).setSize(3, 3, 1).setCost(50);
+		properties.setUnitsCapacity(4).setSize(3, 3, 1).setCost(50).setCategory(BuildCategory.INDUSTRY);
 	}
 	
 	public Warehouse(World w)
 	{
 		super(w);
-		state = Building.NORMAL;
+		state = Building.STATE_NORMAL;
 		full = false;
 		
 		for(int i = 0; i < resourceSlots.length; i++)
@@ -94,7 +94,7 @@ public class Warehouse extends PassiveWorkplace
 	public void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		// Floor
-		if(state == Building.ACTIVE)
+		if(state == Building.STATE_ACTIVE)
 			gfx.drawImage(sprites.getSprite(1, 0), 0, -Game.tilesSize);
 		else
 			gfx.drawImage(sprites.getSprite(0, 0), 0, -Game.tilesSize);

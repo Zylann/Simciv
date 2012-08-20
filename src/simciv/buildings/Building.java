@@ -16,6 +16,8 @@ import simciv.World;
 import simciv.content.Content;
 import simciv.effects.SmokeExplosion;
 
+// FIXME sometimes, the map is left unconstructible. Bug origin is unknown...
+
 /**
  * Each object that can be constructed by the player.
  * Buildings cannot move.
@@ -25,11 +27,9 @@ import simciv.effects.SmokeExplosion;
 public abstract class Building extends Entity
 {
 	// Common states
-	public static final byte CONSTRUCTION = 0;
-	public static final byte NORMAL = 1;
-	public static final byte ACTIVE = 2;
-	public static final byte FIRE = 3;
-	public static final byte RUINS = 4;
+	public static final byte STATE_CONSTRUCTION = 0;
+	public static final byte STATE_NORMAL = 1;
+	public static final byte STATE_ACTIVE = 2;
 	
 	// Solidness
 	protected int solidness;
@@ -37,11 +37,16 @@ public abstract class Building extends Entity
 	public Building(World w)
 	{
 		super(w);
-		state = NORMAL;
+		state = STATE_NORMAL;
 		solidness = getSolidnessMax();
 	}
 	
 	public abstract BuildingProperties getProperties();
+	
+	public Color getMinimapColor()
+	{
+		return BuildCategory.get(getProperties().category).getColor();
+	}
 	
 	/**
 	 * Destroys the building (as gameplay meaning, for example with a bomb) with destruction effects.
@@ -99,12 +104,12 @@ public abstract class Building extends Entity
 	
 	public int getMaintenanceThreshold()
 	{
-		return 150;
+		return 200;
 	}
 	
 	public int getSolidnessMax()
 	{
-		return 200;
+		return 250;
 	}
 	
 	/**

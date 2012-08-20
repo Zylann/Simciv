@@ -21,7 +21,7 @@ public class Debris extends Building
 	static
 	{
 		properties = new BuildingProperties("Ruins");
-		properties.setCost(0).setSize(1, 1, 0).setUnitsCapacity(0);
+		properties.setCost(0).setSize(1, 1, 0).setUnitsCapacity(0).setCategory(BuildCategory.RUINS);
 	}
 	
 	public Debris(World w)

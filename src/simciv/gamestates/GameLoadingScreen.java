@@ -13,6 +13,7 @@ import simciv.Resource;
 import simciv.Road;
 import simciv.Terrain;
 import simciv.World;
+import simciv.buildings.BuildCategory;
 import simciv.ui.base.ProgressBar;
 import simciv.ui.base.RootPane;
 import simciv.ui.base.UIBasicGameState;
@@ -67,6 +68,7 @@ public class GameLoadingScreen extends UIBasicGameState
 		Road.loadContent();
 		CityBuilder.loadContent();
 		Nature.loadContent();
+		BuildCategory.initialize();
 		
 		world = new World(256, 256);
 		mapGenerator = new MapGenerator(131183, world.map);

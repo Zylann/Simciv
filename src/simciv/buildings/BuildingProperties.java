@@ -7,12 +7,13 @@ package simciv.buildings;
  */
 public class BuildingProperties
 {
-	public String name;
+	public String name; // Displayable name
 	public int width;
 	public int height;
 	public int zHeight;
-	public int unitsCapacity; // How many citizen can be contained?
-	public int cost;
+	public int unitsCapacity; // Base units capacity
+	public int cost; // Base cost
+	public byte category;
 	
 	public BuildingProperties(String name)
 	{
@@ -29,7 +30,7 @@ public class BuildingProperties
 	 * @param width
 	 * @param height
 	 * @param zHeight : virtual height (as we are in 2D), but may be useful later (for rendering).
-	 * @return
+	 * @return object for chaining
 	 */
 	public BuildingProperties setSize(int width, int height, int zHeight)
 	{
@@ -48,6 +49,12 @@ public class BuildingProperties
 	public BuildingProperties setUnitsCapacity(int capacity)
 	{
 		this.unitsCapacity = capacity >= 0 ? capacity : 0;
+		return this;
+	}
+	
+	public BuildingProperties setCategory(byte categoryID)
+	{
+		this.category = categoryID;
 		return this;
 	}
 	
