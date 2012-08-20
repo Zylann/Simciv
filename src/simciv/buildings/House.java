@@ -322,6 +322,11 @@ public class House extends Building
 	
 	public void onDistributedResource(ResourceSlot r)
 	{
+		// At least one inhabitant of the house must have a job,
+		// in order to the others to benefit of resources distribution.
+		if(!isInhabitantHaveJob())
+			return;
+		
 		boolean bought = false;
 		for(Citizen c : inhabitants.values())
 		{
