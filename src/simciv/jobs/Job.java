@@ -2,7 +2,6 @@ package simciv.jobs;
 
 import org.newdawn.slick.Graphics;
 import simciv.buildings.Workplace;
-import simciv.movements.RandomRoadMovement;
 import simciv.units.Citizen;
 
 /**
@@ -66,7 +65,6 @@ public abstract class Job
 			workplaceRef.removeEmployee(me.getID(), false);
 		if(!me.isOut())
 			me.exitBuilding();
-		me.setMovement(new RandomRoadMovement());
 	}
 
 	/**
