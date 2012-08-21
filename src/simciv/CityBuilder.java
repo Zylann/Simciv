@@ -12,7 +12,7 @@ import simciv.buildings.BuildingFactory;
 import simciv.content.Content;
 
 /**
- * City build engine
+ * City build interface (do not contains GUI)
  * @author Marc
  *
  */
@@ -229,7 +229,9 @@ public class CityBuilder
 		lastClickPos.set(mapPos);
 		lastClickBuildPos.set(buildPos);
 
-		if(button != Input.MOUSE_LEFT_BUTTON)
+		if(button == Input.MOUSE_RIGHT_BUTTON)
+			setMode(MODE_CURSOR);
+		else if(button != Input.MOUSE_LEFT_BUTTON)
 			return;
 
 		if(mode == MODE_HOUSE)
