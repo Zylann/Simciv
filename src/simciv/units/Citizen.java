@@ -38,7 +38,7 @@ public class Citizen extends Unit
 	public static int totalCount = 0;
 	public static int totalWithJob = 0;
 	
-	public static final int TICK_TIME_BASIC = 500;
+	public static final int TICK_TIME_BASIC = 400;
 	private static final float TICK_TIME_VARIATION = 100;
 	private static final int TICK_TIME_MIN = 200;
 	
