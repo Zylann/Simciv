@@ -333,7 +333,10 @@ public class Map
 			for(x = range.minX(); x <= range.maxX(); x++)
 			{
 				if(contains(x, y))
+				{
 					getCellExisting(x, y).renderGround(x, y, gfx);
+//					getCellExisting(x, y).renderData(gfx, x, y); // debug
+				}
 			}
 		}
 		

@@ -11,6 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import simciv.Direction2D;
 import simciv.Entity;
 import simciv.Game;
+import simciv.MapCell;
 import simciv.PathFinder;
 import simciv.Vector2i;
 import simciv.World;
@@ -46,23 +47,48 @@ public abstract class Unit extends Entity
 		isAlive = true;
 		state = NORMAL;
 	}
-	
+
+	@Override
+	public void onInit()
+	{
+		super.onInit();
+		worldRef.map.getCellExisting(posX, posY).setUnitInfo(getID());
+	}
+
+	@Override
+	public void dispose()
+	{
+		worldRef.map.getCellExisting(posX, posY).eraseUnitInfo();
+		super.dispose();
+	}
+
 	@Override
 	protected final void tickEntity()
-	{
+	{		
 		tick(); // Main behavior
 		
 		// PathFinding
 		if(pathFinder != null)
 			tickPathFinding();
 		
-		// Detect movement
+		// Movement
 		if(movement != null)
-		{
+		{			
 			int lastPosX = posX;
 			int lastPosY = posY;
 			movement.tick(this);
-			isMoving = posX != lastPosX || posY != lastPosY;			
+			isMoving = posX != lastPosX || posY != lastPosY;
+			
+			if(isMoving)
+			{
+				// Update last cell
+				MapCell lastCell = worldRef.map.getCellExisting(lastPosX, lastPosY);
+				if(lastCell.getUnitID() == getID())
+					lastCell.eraseUnitInfo();
+
+				// Update new cell
+				worldRef.map.getCellExisting(posX, posY).setUnitInfo(getID());
+			}
 		}
 	}
 	
@@ -278,6 +304,9 @@ public abstract class Unit extends Entity
 		renderUnit(gfx);
 		
 		gfx.popTransform();
+		
+//		if(pathFinder != null) // debug
+//			pathFinder.render(gfx);
 	}
 
 	/**

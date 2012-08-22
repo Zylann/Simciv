@@ -20,7 +20,10 @@ public class MapCell
 	// i = 30 lowest bits : building ID
 	// o = last bit : isOrigin : is this cell at the origin of the building?
 	// e = next bit : isEntryPoint : is this cell at an entry point of the building?
-	private int buildingInfo;
+	private transient int buildingInfo;
+	
+	// ID of the last unit on the cell, 0 if none
+	private transient int unitInfo;
 	
 	private static int BUILDING_INFO_ID_MASK = 0x3fffffff; // 30 bits to 1, 2 higher bits to 0
 	private static int BUILDING_INFO_ORIGIN_MASK = 0x80000000; // 2 higher bits : 10
@@ -29,7 +32,6 @@ public class MapCell
 	{
 		terrainID = Terrain.GRASS;
 		road = -1;
-		buildingInfo = 0;
 	}
 	
 	@Override
@@ -44,6 +46,26 @@ public class MapCell
 	public void eraseBuildingInfo()
 	{
 		buildingInfo = 0;
+	}
+	
+	public void setUnitInfo(int id)
+	{
+		unitInfo = id;
+	}
+	
+	public void eraseUnitInfo()
+	{
+		unitInfo = 0;
+	}
+	
+	public int getUnitID()
+	{
+		return unitInfo;
+	}
+	
+	public boolean isUnit()
+	{
+		return getUnitID() != 0;
 	}
 	
 	public void setBuildingInfo(int id, boolean isOrigin)
@@ -102,6 +124,8 @@ public class MapCell
 			return false;
 		if(isBuilding()) // building
 			return false;
+		if(isUnit()) // unit
+			return false;
 		return true;
 	}
 	
@@ -125,6 +149,27 @@ public class MapCell
 	{
 		if(nature != Nature.NONE)
 			Nature.render(gfx, this, gx, gy);
+	}
+	
+	/**
+	 * Renders debug data
+	 * @param gfx
+	 * @param x : X cell position
+	 * @param y : Y cell position
+	 */
+	public void renderData(Graphics gfx, int x, int y)
+	{
+		if(isUnit())
+		{
+			gfx.setColor(new Color(128, 128, 255, 128));
+			gfx.fillRect(x * Game.tilesSize, y * Game.tilesSize, Game.tilesSize, Game.tilesSize);
+		}
+		if(isBuilding())
+		{
+			gfx.setColor(new Color(255, 128, 128));
+			gfx.setLineWidth(2);
+			gfx.drawRect(x * Game.tilesSize, y * Game.tilesSize, Game.tilesSize, Game.tilesSize);
+		}
 	}
 
 	public Color getMinimapColor(World w)

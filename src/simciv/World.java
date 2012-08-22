@@ -51,8 +51,7 @@ public class World
 
 	public void setFastForward(boolean e)
 	{
-		if(Citizen.totalCount < 1000)
-			fastForward = e;
+		fastForward = e;
 	}
 
 	/**
@@ -63,7 +62,7 @@ public class World
 	public void update(GameContainer gc, StateBasedGame game, int delta)
 	{
 		if(fastForward)
-			delta *= 8;
+			delta *= 4;
 		
 		time.update(delta);
 		
@@ -262,7 +261,15 @@ public class World
 		if(!map.contains(x, y))
 			return null;
 		return getBuilding(map.getCellExisting(x, y).getBuildingID());
-	}	
+	}
+	
+	public Unit getUnit(int x, int y)
+	{
+		if(!map.contains(x, y))
+			return null;
+		return getUnit(map.getCellExisting(x, y).getUnitID());
+	}
+	
 	/**
 	 * Draws a part of the world within the specified map range
 	 * @param mapRange
