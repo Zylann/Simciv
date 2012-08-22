@@ -11,6 +11,7 @@ import simciv.Cheats;
 import simciv.CityBuilder;
 import simciv.IntRange2D;
 import simciv.MinimapUpdater;
+import simciv.Resource;
 import simciv.SoundEngine;
 import simciv.Terrain;
 import simciv.Vector2i;
@@ -354,6 +355,8 @@ public class GamePlay extends UIBasicGameState
 			toggleShowMinimap();
 		if(key == Input.KEY_SPACE && Cheats.isFastForwardEnabled())
 			world.setFastForward(!world.isFastForward());
+		if(key == Input.KEY_NUMPAD0)
+			System.out.println(world.playerCity.getResourceTotal(Resource.WHEAT));
 	}
 	
 	public void togglePause()

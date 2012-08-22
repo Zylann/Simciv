@@ -9,7 +9,7 @@ import org.newdawn.slick.Graphics;
  */
 public class ResourceSlot
 {
-	private byte type; // resource type
+	private byte type; // resource type (or last type stored)
 	private int amount;
 	
 	public ResourceSlot()
@@ -25,10 +25,7 @@ public class ResourceSlot
 	
 	private void set(byte type, int amount)
 	{
-		if(amount == 0)
-			this.type = Resource.NONE;
-		else
-			this.type = type;
+		this.type = type;
 		this.amount = amount;
 	}
 	
@@ -67,37 +64,37 @@ public class ResourceSlot
 	 */
 	public boolean addFrom(ResourceSlot other, int amountToTransfert)
 	{
-		// If the slot is compatible or free
-		if(type == other.type || !isFull())
+		// The slot must have free space
+		if(isFull())
+			return false;
+
+		if(other.isEmpty() || amountToTransfert == 0)
+			return false;
+		
+		// Types must be compatible
+		if(amount > 0 && type != other.type)
+			return false;
+		
+		if(amountToTransfert < 0 || amountToTransfert > other.amount)
+			amountToTransfert = other.amount;
+		
+		// Calculate how much space the current slot have
+		type = other.type; // in case the current slot type is NONE
+		int spaceLeft = Resource.get(type).getStackLimit() - amount;
+		
+		// Transfert
+		if(amountToTransfert > spaceLeft) // Not enough space in current slot
 		{
-			if(other.isEmpty() || amountToTransfert == 0)
-				return false;
-			
-			if(amountToTransfert < 0 || amountToTransfert > other.amount)
-				amountToTransfert = other.amount;
-			
-			// Calculate how much space the current slot have
-			type = other.type; // in case the current slot type is NONE
-			int spaceLeft = Resource.get(type).getStackLimit() - amount;
-			
-			// Transfert
-			if(amountToTransfert > spaceLeft) // Not enough space in current slot
-			{
-				amount += spaceLeft;
-				other.amount -= spaceLeft;
-			}
-			else // enough space
-			{
-				amount += amountToTransfert;
-				other.amount -= amountToTransfert;
-			}
-			
-			if(other.amount == 0)
-				other.type = Resource.NONE;
-			
-			return true;
+			amount += spaceLeft;
+			other.amount -= spaceLeft;
 		}
-		return false;
+		else // enough space
+		{
+			amount += amountToTransfert;
+			other.amount -= amountToTransfert;
+		}
+					
+		return true;
 	}
 	
 	public boolean addAllFrom(ResourceSlot other)
@@ -107,12 +104,16 @@ public class ResourceSlot
 	
 	public void renderCarriage(Graphics gfx, int x, int y, byte direction)
 	{
-		Resource.get(type).renderCarriage(gfx, x, y, amount, direction);
+		if(isEmpty())
+			Resource.renderEmptyCarriage(gfx, x, y, direction);
+		else
+			Resource.get(type).renderCarriage(gfx, x, y, amount, direction);
 	}
 	
 	public void renderStorage(Graphics gfx, int x, int y)
 	{
-		Resource.get(type).renderStorage(gfx, x, y, amount);
+		if(!isEmpty())
+			Resource.get(type).renderStorage(gfx, x, y, amount);
 	}	
 	
 	public String toString()

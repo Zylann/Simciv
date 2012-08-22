@@ -14,15 +14,17 @@ import simciv.content.Content;
 public class Resource
 {
 	// IDs
-	public static final byte NONE = 0;
-	public static final byte WOOD = 1;
-	public static final byte WHEAT = 3;
-	public static final byte STRAW = 4;
-	public static final byte CLAY = 5;
-	public static final byte COUNT = 6;
+	public static final byte NONE = -1;
+	public static final byte WOOD = 0;
+	public static final byte WHEAT = 1;
+	public static final byte STRAW = 2;
+	public static final byte CLAY = 3;
+	public static final byte COUNT = 4;
 	
 	// list
 	private static Resource list[];
+	
+	private static SpriteSheet emptyCarriageSprites;
 	
 	// Attributes
 	private byte ID;
@@ -34,10 +36,13 @@ public class Resource
 	
 	public static void initialize()
 	{
+		emptyCarriageSprites = new SpriteSheet(
+				Content.images.resourceEmptyCarriage, 
+				Game.tilesSize,
+				Game.tilesSize);
+		
 		list = new Resource[COUNT];
 		
-		set(new Resource(NONE, "None", 0))
-			.setSprites(Content.images.resourceEmptyCarriage, null);
 		set(new Resource(WOOD, "Wood", 100));
 		set(new Resource(WHEAT, "Wheat", 100))
 			.setSprites(Content.images.resourceWheatCarriage, Content.images.resourceWheat)
@@ -94,6 +99,13 @@ public class Resource
 		gfx.drawImage(carriageSprites.getSprite(0, direction), x, y);
 	}
 	
+	public static void renderEmptyCarriage(Graphics gfx, int x, int y, byte direction)
+	{
+		if(direction == Direction2D.NONE)
+			direction = Direction2D.SOUTH;
+		gfx.drawImage(emptyCarriageSprites.getSprite(0, direction), x, y);
+	}
+
 	public void renderStorage(Graphics gfx, int x, int y, int amount)
 	{
 		if(storageSprites != null)

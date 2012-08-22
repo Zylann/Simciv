@@ -18,11 +18,13 @@ import simciv.units.Citizen;
  * @author Marc
  *
  */
+// TODO "existing" predicates for speed-up pathfinding
+// ex : Warehouse.isAtLeastOneHaveFood()
 public class Warehouse extends PassiveWorkplace
 {
 	private static BuildingProperties properties;
 	private static SpriteSheet sprites;
-	private static int NB_SLOTS = 8;
+	private static final int NB_SLOTS = 8;
 	
 	private ResourceSlot resourceSlots[] = new ResourceSlot[NB_SLOTS];
 	private boolean full;
@@ -65,19 +67,28 @@ public class Warehouse extends PassiveWorkplace
 	@Override
 	public void storeResource(ResourceSlot r)
 	{
+		int oldAmount = r.getAmount();
+		byte type = r.getType();
+		
 		// Iterate over slots
 		for(ResourceSlot slot : resourceSlots)
 		{
 			slot.addAllFrom(r);
 			if(r.isEmpty())
-				return;
+				break;
 		}
-		full = true;
+		int storedAmount = oldAmount - r.getAmount();
+		worldRef.playerCity.onResourceStored(type, storedAmount);
+		
+		full = !r.isEmpty();
 	}
 	
 	public boolean retrieveResource(ResourceSlot r)
 	{
 		boolean retrieved = false;
+		int oldAmount = r.getAmount();
+		byte type = r.getType();
+		
 		for(ResourceSlot slot : resourceSlots)
 		{
 			if(r.addAllFrom(slot))
@@ -85,11 +96,15 @@ public class Warehouse extends PassiveWorkplace
 			if(r.isFull())
 				break;
 		}
+		
+		int retrievedAmount = r.getAmount() - oldAmount;
+		worldRef.playerCity.onResourceUsed(type, retrievedAmount);
+		
 		if(retrieved)
 			full = false;
 		return retrieved;
 	}
-
+	
 	@Override
 	public void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
