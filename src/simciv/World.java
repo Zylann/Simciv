@@ -1,7 +1,6 @@
 package simciv;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.newdawn.slick.GameContainer;
@@ -13,7 +12,6 @@ import simciv.builds.Build;
 import simciv.builds.Warehouse;
 import simciv.effects.VisualEffect;
 import simciv.rendering.SortedRender;
-import simciv.units.Citizen;
 import simciv.units.Unit;
 
 /**
@@ -24,17 +22,12 @@ import simciv.units.Unit;
  */
 public class World
 {
-	public static boolean renderFancyUnitsMovements = true;
-	
 	public Map map;
 	public PlayerCity playerCity;
 	public WorldTime time;
 	private transient boolean fastForward;
-	// TODO improve entity containers dynamics (create a GameComponentMap?)
-	private List<Unit> spawnedUnits = new ArrayList<Unit>();
-	private List<Build> placedBuilds = new ArrayList<Build>();
-	private HashMap<Integer,Unit> units = new HashMap<Integer,Unit>();
-	private HashMap<Integer,Build> builds = new HashMap<Integer,Build>();
+	private EntityMap builds;
+	private EntityMap units;
 	private List<VisualEffect> graphicalEffects = new ArrayList<VisualEffect>();
 
 	public World(int width, int height)
@@ -42,6 +35,8 @@ public class World
 		map = new Map(width, height);
 		playerCity = new PlayerCity();
 		time = new WorldTime();
+		builds = new EntityMap();
+		units = new EntityMap();
 	}
 
 	public boolean isFastForward()
@@ -66,42 +61,8 @@ public class World
 		
 		time.update(delta);
 		
-		for(Unit u : spawnedUnits)
-			addUnit(u);
-		if(!spawnedUnits.isEmpty())
-			spawnedUnits.clear();
-		
-		ArrayList<Unit> unitsToRemove = new ArrayList<Unit>();
-		for(Unit u : units.values())
-		{
-			if(!u.isDisposed())
-				u.update(gc, game, delta);
-			if(!u.isAlive() || u.isDisposed())
-				unitsToRemove.add(u);
-		}
-		
-		for(Build b : placedBuilds)
-			addBuild(b);
-		if(!placedBuilds.isEmpty())
-			placedBuilds.clear();
-
-		ArrayList<Build> buildingsToRemove = new ArrayList<Build>();
-		for(Build b : builds.values())
-		{
-			if(!b.isDisposed())
-				b.update(gc, game, delta);
-			if(b.isDisposed())
-				buildingsToRemove.add(b);
-		}
-		
-		for(Build b : buildingsToRemove)
-			removeBuild(b.getID());
-		
-		for(Unit u : unitsToRemove)
-			removeUnit(u.getID());
-		
-		if(Citizen.totalCount > 1000)
-			fastForward = false;
+		units.updateAll(gc, game, delta);
+		builds.updateAll(gc, game, delta);
 		
 		// Update graphical effects
 		ArrayList<VisualEffect> finishedGraphicalEffects = new ArrayList<VisualEffect>();
@@ -130,69 +91,12 @@ public class World
 	public void spawnUnit(Unit u, int x, int y)
 	{
 		u.setPosition(x, y);
-		spawnedUnits.add(u);
+		units.add(u);
 	}
 	
 	public void spawnUnit(Unit unit)
 	{
 		spawnUnit(unit, unit.getX(), unit.getY());
-	}
-	
-	/**
-	 * Spawns directly an unit in the world.
-	 * Do NOT use this method while iterating on the units map.
-	 * @param u : unit
-	 * @return : true if the unit has been added.
-	 */	
-	private boolean addUnit(Unit u)
-	{
-		if(!units.containsKey(u.getID()))
-		{
-			units.put(u.getID(), u);
-			u.onInit();
-			return true;
-		}
-		return false;
-	}
-	
-	private boolean removeUnit(int ID)
-	{
-		if(ID > 0)
-		{
-			Unit u = units.remove(ID);
-			if(u != null)
-			{
-				u.onDestruction();
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	private boolean addBuild(Build b)
-	{
-		if(!builds.containsKey(b.getID()))
-		{
-			builds.put(b.getID(), b);
-			map.markBuilding(b, true);
-			b.onInit();
-			return true;
-		}
-		return false;
-	}
-
-	private boolean removeBuild(int ID)
-	{
-		if(ID > 0)
-		{
-			Build b = builds.remove(ID);
-			if(b != null)
-			{
-				b.onDestruction();
-				return true;
-			}
-		}
-		return false;
 	}
 	
 	/**
@@ -208,7 +112,7 @@ public class World
 		b.setPosition(x, y);
 		if(b.canBePlaced(map, x, y))
 		{
-			placedBuilds.add(b);
+			builds.add(b);
 			return true;
 		}
 		return false;
@@ -240,12 +144,12 @@ public class World
 	
 	public Unit getUnit(int ID)
 	{
-		return units.get(ID);
+		return (Unit)(units.get(ID));
 	}
 	
 	public Build getBuild(int ID)
 	{
-		return builds.get(ID);
+		return (Build)(builds.get(ID));
 	}
 	
 	/**
@@ -285,7 +189,7 @@ public class World
 		if(!gc.getInput().isKeyDown(Input.KEY_1))
 		{
 			// Register buildings
-			for(Build b : builds.values())
+			for(Entity b : builds.asCollection())
 			{
 				if(mapRange.intersects(
 						b.getX(),
@@ -299,7 +203,7 @@ public class World
 		if(!gc.getInput().isKeyDown(Input.KEY_2))
 		{
 			// Register units
-			for(Unit u : units.values())
+			for(Entity u : units.asCollection())
 			{
 				if(u.isVisible() && mapRange.contains(u.getX(), u.getY()))
 					renderMgr.add(u);

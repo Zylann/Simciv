@@ -7,14 +7,15 @@ import org.newdawn.slick.state.StateBasedGame;
  * An entity is a located game element that can update and draw itself.
  * In this game, the update is discretized into ticks :
  * update() uses real-time parameters, tick() does not.
+ * tick() is called at each tick time interval, usually more than the frame time.
  * Tick times are specific to each entity.
  * @author Marc
  *
  */
 public abstract class Entity extends GameComponent
-{	
-	protected int posX;
-	protected int posY;
+{
+	private int posX;
+	private int posY;
 	private int lifeTime;
 	private int nbTicks;
 	private int timeBeforeNextTick;
@@ -35,7 +36,7 @@ public abstract class Entity extends GameComponent
 	{
 		return state;
 	}
-	
+		
 	public World getWorld()
 	{
 		return worldRef;
@@ -59,8 +60,48 @@ public abstract class Entity extends GameComponent
 	 */
 	public void setPosition(int x, int y)
 	{
-		posX = x;
-		posY = y;
+		if(!isDisposed() && isInitialized())
+		{
+			untrack();
+			posX = x;
+			posY = y;
+			track();
+		}
+		else
+		{
+			posX = x;
+			posY = y;
+		}
+	}
+	
+	@Override
+	public void onInit()
+	{
+		super.onInit();
+		track();
+	}
+
+	@Override
+	public void dispose()
+	{
+		untrack();
+		super.dispose();
+	}
+
+	/**
+	 * Sets entity information on the map, when available.
+	 */
+	protected void track()
+	{
+		// By default, no need to track
+	}
+	
+	/**
+	 * Removes entity information from the map, when available.
+	 */
+	protected void untrack()
+	{
+		// By default, no need to untrack
 	}
 	
 	public int getX()
@@ -72,6 +113,9 @@ public abstract class Entity extends GameComponent
 	{
 		return posY;
 	}
+	
+	public abstract int getWidth();
+	public abstract int getHeight();
 	
 	/**
 	 * Returns the life time of the entity in milliseconds
@@ -101,6 +145,11 @@ public abstract class Entity extends GameComponent
 	public int getDrawOrder()
 	{
 		return posY;
+	}
+	
+	public boolean isTrackable()
+	{
+		return false;
 	}
 
 	@Override

@@ -22,6 +22,7 @@ public abstract class GameComponent implements IRenderable
 	private static int nextID = 1;
 	
 	private int ID = -1; // Unique numeric identifier
+	private transient boolean initialized;
 	private transient boolean disposed; // If true, the object must be destroyed
 	
 	public static final int makeUniqueID()
@@ -35,7 +36,13 @@ public abstract class GameComponent implements IRenderable
 	public GameComponent()
 	{
 		ID = makeUniqueID();
+		initialized = false;
 		disposed = false;
+	}
+	
+	public boolean isInitialized()
+	{
+		return initialized;
 	}
 	
 	/**
@@ -66,9 +73,11 @@ public abstract class GameComponent implements IRenderable
 	/**
 	 * Called when we start using the component
 	 * (Note that it is always the first method to be called after construction)
+	 * Override : Don't forget to call super.onInit()
 	 */
 	public void onInit()
 	{
+		initialized = true;
 	}
 	
 	/**

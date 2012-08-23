@@ -23,7 +23,7 @@ import simciv.movements.PathMovement;
 
 /**
  * An unit can move, and is seen as a "living" thing.
- * Note : don't move the unit in subclasses, movement is automatically handled by Unit.
+ * Warning : don't move the unit in subclasses, movement is automatically handled by Unit.
  * use setMovement(mvt) to define it.
  * @author Marc
  *
@@ -38,30 +38,16 @@ public abstract class Unit extends Entity
 	private boolean isMoving;
 	private IMovement movement;
 	private PathFinder pathFinder;
+	private Build buildingRef; // reference to the building the unit currently is in
 	
 	public Unit(World w)
 	{
 		super(w);
-		
 		direction = Direction2D.EAST;
 		isAlive = true;
 		state = NORMAL;
 	}
-
-	@Override
-	public void onInit()
-	{
-		super.onInit();
-		worldRef.map.getCellExisting(posX, posY).setUnitInfo(getID());
-	}
-
-	@Override
-	public void dispose()
-	{
-		worldRef.map.getCellExisting(posX, posY).eraseUnitInfo();
-		super.dispose();
-	}
-
+	
 	@Override
 	protected final void tickEntity()
 	{		
@@ -73,25 +59,68 @@ public abstract class Unit extends Entity
 		
 		// Movement
 		if(movement != null)
-		{			
-			int lastPosX = posX;
-			int lastPosY = posY;
+		{
+			int lastPosX = getX();
+			int lastPosY = getY();
 			movement.tick(this);
-			isMoving = posX != lastPosX || posY != lastPosY;
-			
-			if(isMoving)
-			{
-				// Update last cell
-				MapCell lastCell = worldRef.map.getCellExisting(lastPosX, lastPosY);
-				if(lastCell.getUnitID() == getID())
-					lastCell.eraseUnitInfo();
-
-				// Update new cell
-				worldRef.map.getCellExisting(posX, posY).setUnitInfo(getID());
-			}
+			isMoving = getX() != lastPosX || getY() != lastPosY;
 		}
 	}
 	
+	@Override
+	protected final void track()
+	{
+		worldRef.map.getCellExisting(getX(), getY()).setUnitInfo(getID());
+	}
+
+	@Override
+	protected final void untrack()
+	{
+		MapCell lastCell = worldRef.map.getCellExisting(getX(), getY());
+		if(lastCell.getUnitID() == getID())
+			lastCell.eraseUnitInfo();
+	}
+
+	/**
+	 * Makes the unit come in a building
+	 * Note : the building's units list is not affected.
+	 * @param b : building
+	 * @return true if success
+	 */
+	public boolean enterBuilding(Build b)
+	{
+		if(buildingRef != null)
+			return false;
+		buildingRef = b;
+		setMovement(null);
+		setDirection(Direction2D.NONE);
+		untrack();
+		return true;
+	}
+	
+	/**
+	 * Makes the unit come out a building
+	 * @return true if the unit was in a building
+	 */
+	public boolean exitBuilding()
+	{
+		if(buildingRef == null)
+			return false;
+		buildingRef = null;
+		if(!isDisposed())
+			track();
+		return true;
+	}
+	
+	/**
+	 * Is the unit outside?
+	 * @return
+	 */
+	public boolean isOut()
+	{
+		return buildingRef == null;
+	}
+
 	/**
 	 * Starts pathfinding and go to the specified target when a path is found.
 	 * The unit will be on the state THINKING while pathfinding.
@@ -102,7 +131,7 @@ public abstract class Unit extends Entity
 		if(target == null)
 			return;
 		
-		pathFinder = new PathFinder(worldRef, posX, posY, target);
+		pathFinder = new PathFinder(worldRef, getX(), getY(), target);
 		
 		setState(Unit.THINKING);
 		setDirection(Direction2D.NONE);
@@ -127,7 +156,7 @@ public abstract class Unit extends Entity
 				// Remove first pos if we already are on 
 				if(path != null && !path.isEmpty())
 				{
-					if(path.getFirst().equals(posX, posY))
+					if(path.getFirst().equals(getX(), getY()))
 						path.pop();
 				}
 				
@@ -172,16 +201,28 @@ public abstract class Unit extends Entity
 		return movement.isBlocked();
 	}
 	
+	@Override
+	public int getWidth()
+	{
+		return 1;
+	}
+	
+	@Override
+	public int getHeight()
+	{
+		return 1;
+	}
+	
 	/**
 	 * Moves the entity using its current direction, if possible.
 	 * @return true if the unit moved, false if not
 	 */
-	public boolean moveIfPossible()
+	public final boolean moveIfPossible()
 	{
 		if(direction != Direction2D.NONE)
 		{
-			int nextPosX = posX + Direction2D.vectors[direction].x;
-			int nextPosY = posY + Direction2D.vectors[direction].y;
+			int nextPosX = getX() + Direction2D.vectors[direction].x;
+			int nextPosY = getY() + Direction2D.vectors[direction].y;
 			
 			if(worldRef.map.isCrossable(nextPosX, nextPosY) && 
 					worldRef.map.isRoad(nextPosX, nextPosY))
@@ -196,12 +237,13 @@ public abstract class Unit extends Entity
 	/**
 	 * Makes the unit move to its current direction (anyways, no collision test !)
 	 */
-	protected void move()
+	protected final void move()
 	{
 		if(direction != Direction2D.NONE)
 		{
-			posX += Direction2D.vectors[direction].x;
-			posY += Direction2D.vectors[direction].y;
+			setPosition(
+					getX() + Direction2D.vectors[direction].x,
+					getY() + Direction2D.vectors[direction].y);
 		}
 	}
 	
@@ -209,7 +251,7 @@ public abstract class Unit extends Entity
 	 * Moves the unit according to given available directions
 	 * @param dirs : available directions
 	 */
-	public void move(List<Byte> dirs)
+	public final void move(List<Byte> dirs)
 	{		
 		if(!dirs.isEmpty())
 		{
@@ -266,16 +308,7 @@ public abstract class Unit extends Entity
 		isAlive = false;
 		dispose();
 	}
-	
-	/**
-	 * Is the unit outside?
-	 * @return
-	 */
-	public boolean isOut()
-	{
-		return true;
-	}
-	
+		
 	@Override
 	public boolean isVisible()
 	{
@@ -298,8 +331,8 @@ public abstract class Unit extends Entity
 		}
 		
 		gfx.translate(
-				posX * Game.tilesSize,
-				posY * Game.tilesSize - Game.tilesSize / 3);
+				getX() * Game.tilesSize,
+				getY() * Game.tilesSize - Game.tilesSize / 3);
 
 		renderUnit(gfx);
 		
@@ -342,14 +375,7 @@ public abstract class Unit extends Entity
 		if(direction == Direction2D.NONE)
 			gfx.drawImage(sprites.getSprite(0, Direction2D.SOUTH + yShift), 0, 0);
 		else
-			gfx.drawImage(sprites.getSprite(0, direction + yShift), 0, 0);
-		
-		// Old code
-//		gfx.drawImage(sprite,
-//				0, 0,
-//				Game.tilesSize, Game.tilesSize,
-//				0, direction * Game.tilesSize,
-//				Game.tilesSize, (direction + 1) * Game.tilesSize);
+			gfx.drawImage(sprites.getSprite(0, direction + yShift), 0, 0);		
 	}
 	
 	public final void defaultRender(Graphics gfx, SpriteSheet sprites)

@@ -7,7 +7,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import simciv.Cheats;
 import simciv.CityBuilder;
 import simciv.IntRange2D;
 import simciv.MinimapUpdater;
@@ -353,9 +352,9 @@ public class GamePlay extends UIBasicGameState
 		}
 		if(key == Input.KEY_TAB)
 			toggleShowMinimap();
-		if(key == Input.KEY_SPACE && Cheats.isFastForwardEnabled())
+		if(key == Input.KEY_SPACE)
 			world.setFastForward(!world.isFastForward());
-		if(key == Input.KEY_NUMPAD0)
+		if(key == Input.KEY_NUMPAD0) // Debug
 			System.out.println(world.playerCity.getResourceTotal(Resource.WHEAT));
 	}
 	

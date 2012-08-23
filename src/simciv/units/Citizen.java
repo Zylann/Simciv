@@ -6,7 +6,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
-import simciv.Direction2D;
 import simciv.Game;
 import simciv.MathHelper;
 import simciv.Resource;
@@ -41,6 +40,7 @@ public class Citizen extends Unit
 	public static final int TICK_TIME_BASIC = 400;
 	private static final float TICK_TIME_VARIATION = 100;
 	private static final int TICK_TIME_MIN = 200;
+	private static final int INITIAL_FOOD = 6;
 	
 	// Feed levels (in citizen ticks)
 	public static final int FEED_MAX = 400;
@@ -48,7 +48,6 @@ public class Citizen extends Unit
 	public static final int FEED_STARVING = 100;
 	public static final int FEED_MIN = 0;
 	
-	private Build buildingRef; // reference to the building the citizen currently is in
 	private House houseRef; // if null, the Citizen is homeless
 	private Job job; // Job of the Citizen
 	private int tickTimeRandom; // Tick time variation constant in milliseconds
@@ -189,7 +188,7 @@ public class Citizen extends Unit
 	{
 		super.kill();
 		worldRef.addGraphicalEffect(
-				new RisingIcon(posX, posY, Content.images.effectDeath));
+				new RisingIcon(getX(), getY(), Content.images.effectDeath));
 	}
 
 	public Job getJob()
@@ -205,7 +204,7 @@ public class Citizen extends Unit
 	{
 		if(job != null)
 			return;
-		ArrayList<Build> builds = worldRef.getBuildsAround(posX, posY);
+		ArrayList<Build> builds = worldRef.getBuildsAround(getX(), getY());
 		for(Build b : builds)
 		{
 			if(b.isWorkplace())
@@ -238,40 +237,6 @@ public class Citizen extends Unit
 	public void setHouse(House h)
 	{
 		houseRef = h;
-	}
-
-	@Override
-	public boolean isOut()
-	{
-		return buildingRef == null;
-	}
-
-	/**
-	 * Makes the unit come in a building
-	 * Note : the building's units list is not affected.
-	 * @param b : building
-	 * @return true if success
-	 */
-	public boolean enterBuilding(Build b)
-	{
-		if(buildingRef != null)
-			return false;
-		buildingRef = b;
-		setMovement(null);
-		setDirection(Direction2D.NONE);
-		return true;
-	}
-	
-	/**
-	 * Makes the unit come out a building
-	 * @return true if the unit was in a building
-	 */
-	public boolean exitBuilding()
-	{
-		if(buildingRef == null)
-			return false;
-		buildingRef = null;
-		return true;
 	}
 	
 	/**
@@ -319,7 +284,7 @@ public class Citizen extends Unit
 		totalCount++; // TODO put citizen count in PlayerCity
 		
 		// Initial resources
-		ownedResources.addAllFrom(new ResourceSlot(Resource.WHEAT, 5));
+		ownedResources.addAllFrom(new ResourceSlot(Resource.WHEAT, INITIAL_FOOD));
 	}
 	
 	/**
@@ -363,7 +328,7 @@ public class Citizen extends Unit
 	public void transformToNomad()
 	{
 		dispose();
-		worldRef.spawnUnit(new Nomad(worldRef), posX, posY);
+		worldRef.spawnUnit(new Nomad(worldRef), getX(), getY());
 	}
 	
 }

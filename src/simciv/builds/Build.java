@@ -61,9 +61,9 @@ public abstract class Build extends Entity
 		Content.sounds.buildCollapse.play((float) (1.0 + MathHelper.randS(0.1f)), 0.5f);
 		
 		// Leave ruins
-		for(int y = posY; y < posY + getHeight(); y++)
+		for(int y = getY(); y < getY() + getHeight(); y++)
 		{
-			for(int x = posX; x < posX + getWidth(); x++)
+			for(int x = getX(); x < getY() + getWidth(); x++)
 			{
 				Debris d = new Debris(worldRef);
 				d.setPropertiesFromBuild(this);
@@ -74,14 +74,33 @@ public abstract class Build extends Entity
 			}
 		}
 	}
-	
+		
 	@Override
 	public void dispose()
 	{
 		worldRef.map.markBuilding(this, false);
 		super.dispose();
 	}
+
+	@Override
+	public void onInit()
+	{
+		super.onInit();
+		worldRef.map.markBuilding(this, true);
+	}
 	
+	@Override
+	protected final void track()
+	{
+		worldRef.map.markBuilding(this, true);
+	}
+
+	@Override
+	protected final void untrack()
+	{
+		worldRef.map.markBuilding(this, false);
+	}
+
 	@Override
 	protected void tickEntity()
 	{
@@ -140,6 +159,7 @@ public abstract class Build extends Entity
 	 * Returns the on-floor width of the building in cells
 	 * @return
 	 */
+	@Override
 	public final int getWidth()
 	{
 		return getProperties().width;
@@ -149,6 +169,7 @@ public abstract class Build extends Entity
 	 * Returns the on-floor height of the building in cells
 	 * @return
 	 */
+	@Override
 	public final int getHeight()
 	{
 		return getProperties().height;
@@ -231,7 +252,7 @@ public abstract class Build extends Entity
 	public final void render(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		gfx.pushTransform();
-		gfx.translate(posX * Game.tilesSize, posY * Game.tilesSize);
+		gfx.translate(getX() * Game.tilesSize, getY() * Game.tilesSize);
 				
 		renderBuilding(gc, game, gfx);
 		

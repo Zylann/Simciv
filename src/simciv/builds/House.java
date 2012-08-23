@@ -86,7 +86,7 @@ public class House extends Build
 				totalMoneyCollected += c.payTax();
 		}
 		if(totalMoneyCollected > 0)
-			worldRef.addGraphicalEffect(new RisingIcon(posX, posY, Content.images.effectGold));
+			worldRef.addGraphicalEffect(new RisingIcon(getX(), getY(), Content.images.effectGold));
 		return totalMoneyCollected;
 	}
 
@@ -104,6 +104,7 @@ public class House extends Build
 			{
 				if(tryLevelUp())
 					nbCitizensToProduce++;
+				// TODO create new citizen if the usual inhabitants number is inferior (if they died)
 			}
 			
 			if(nbCitizensToProduce != 0)
@@ -180,7 +181,7 @@ public class House extends Build
 			int nxy[][] = {{1, 0}, {0, 1}, {1, 1}}; // neighboring
 			for(int i = 0; i < 3; i++)
 			{
-				b[i] = worldRef.getBuild(posX + nxy[i][0], posY + nxy[i][1]);
+				b[i] = worldRef.getBuild(getX() + nxy[i][0], getY() + nxy[i][1]);
 				if(b[i] == null ||
 					!b[i].isHouse() ||
 					!b[i].is1x1() ||
@@ -192,7 +193,7 @@ public class House extends Build
 			
 			// Check if the future 2x2 house will have roads nearby
 			RoadMapTarget roads = new RoadMapTarget();
-			if(worldRef.map.getAvailablePositionsAround(posX, posY, 2, 2, roads, worldRef).isEmpty())
+			if(worldRef.map.getAvailablePositionsAround(getX(), getY(), 2, 2, roads, worldRef).isEmpty())
 				return false;
 			
 			// Merge houses			
@@ -334,7 +335,7 @@ public class House extends Build
 				bought = true;
 		}
 		if(bought)
-			worldRef.addGraphicalEffect(new RisingIcon(posX, posY, Content.images.effectGold));
+			worldRef.addGraphicalEffect(new RisingIcon(getX(), getY(), Content.images.effectGold));
 	}
 	
 	public float getMeanHungerRatio()

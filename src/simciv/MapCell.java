@@ -25,8 +25,8 @@ public class MapCell
 	// ID of the last unit on the cell, 0 if none
 	private transient int unitInfo;
 	
-	private static int BUILDING_INFO_ID_MASK = 0x3fffffff; // 30 bits to 1, 2 higher bits to 0
-	private static int BUILDING_INFO_ORIGIN_MASK = 0x80000000; // 2 higher bits : 10
+	private static int BUILD_INFO_ID_MASK = 0x3fffffff; // 30 bits to 1, 2 higher bits to 0
+	private static int BUILD_INFO_ORIGIN_MASK = 0x80000000; // 2 higher bits : 10
 	
 	public MapCell()
 	{
@@ -70,9 +70,9 @@ public class MapCell
 	
 	public void setBuildInfo(int id, boolean isOrigin)
 	{
-		buildInfo = id & BUILDING_INFO_ID_MASK;
+		buildInfo = id & BUILD_INFO_ID_MASK;
 		if(isOrigin)
-			buildInfo |= BUILDING_INFO_ORIGIN_MASK;
+			buildInfo |= BUILD_INFO_ORIGIN_MASK;
 	}
 	
 	public boolean isBuild()
@@ -82,12 +82,12 @@ public class MapCell
 	
 	public int getBuildID()
 	{
-		return buildInfo & BUILDING_INFO_ID_MASK;
+		return buildInfo & BUILD_INFO_ID_MASK;
 	}
 	
 	public boolean isBuildOrigin()
 	{
-		return (buildInfo & BUILDING_INFO_ORIGIN_MASK) != 0;
+		return (buildInfo & BUILD_INFO_ORIGIN_MASK) != 0;
 	}
 	
 	public boolean isArable()
