@@ -5,9 +5,13 @@ Simciv indev release 2 (work in progress) :
 + Added markets and delivery men
 + Added time progression (only for months)
 + Added bushes
-+ Added citizen hunger (they slow down and finally die/quit the city if they starve for too long)
++ Added citizen hunger (they slow down and finally die/quit the city)
 + Added builds maintenance, with architects
++ Added overlays (keys 0, 1, 2 and 3)
++ Added fast-forwarding (space key)
+* Citizen are a bit faster
 * The main window is now resizeable
+* Improved minimap (builds colors and refresh rate)
 - Fixed cursor shift bug
 - Fixed too loud sounds (played at the same time as for houses)
 - Fixed too large default window

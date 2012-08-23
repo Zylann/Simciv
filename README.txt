@@ -5,22 +5,23 @@ Description :
 	Simciv is a simple management game, inspired on Sierra's Pharaoh game.
 	It is written in Java, and uses the Slick2D library.
 	It is currently under developpment, more features will be added soon.
-	
+
 Releases :
-	
+
 	SimCiv indev release 2 : work in progress...
 	SimCiv indev release 1 : http://www.mediafire.com/?i5bgd97wlom8a67
-	
+
 Current features (for development version) :
 
 	- Random map generation (grass, trees, bushes, water)
-	- Placing buildings and roads
+	- Placing builds and roads
 	- Job system
 	- Economy (through taxes and markets)
-	- Draggable/hideable minimap
+	- Builds maintenance
 	- Farmlands with growing crops
+	- Draggable/hideable minimap
 	See more in the changelog file !
-	
+
 Some planned features and ideas :
 
 	- Ability to save/load a game
@@ -36,7 +37,7 @@ Some planned features and ideas :
 Dependencies :
 
 	Slick2D library : http://slick.cokeandcode.com/
-	
+
 	Data files are needed to execute the game (see data/).
-	
+
 
