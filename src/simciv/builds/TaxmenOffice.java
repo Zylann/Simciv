@@ -1,4 +1,4 @@
-package simciv.buildings;
+package simciv.builds;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -16,19 +16,19 @@ import simciv.units.Citizen;
 
 public class TaxmenOffice extends PassiveWorkplace
 {
-	private static BuildingProperties properties;
+	private static BuildProperties properties;
 	private static SpriteSheet sprites;
 	
 	static
 	{
-		properties = new BuildingProperties("Taxmen office");
+		properties = new BuildProperties("Taxmen office");
 		properties.setCost(200).setSize(2, 2, 1).setUnitsCapacity(6).setCategory(BuildCategory.ADMINISTRATION);
 	}
 	
 	public TaxmenOffice(World w)
 	{
 		super(w);
-		state = Building.STATE_NORMAL;
+		state = Build.STATE_NORMAL;
 
 		if(sprites == null)
 		{
@@ -81,7 +81,7 @@ public class TaxmenOffice extends PassiveWorkplace
 	}
 
 	@Override
-	public BuildingProperties getProperties()
+	public BuildProperties getProperties()
 	{
 		return properties;
 	}

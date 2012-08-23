@@ -7,11 +7,11 @@ import simciv.World;
  * @author Marc
  *
  */
-public class BuildingMapTarget implements IMapTarget
+public class BuildMapTarget implements IMapTarget
 {
 	public int buildingID;
 
-	public BuildingMapTarget(int ID)
+	public BuildMapTarget(int ID)
 	{
 		buildingID = ID;
 	}
@@ -19,7 +19,7 @@ public class BuildingMapTarget implements IMapTarget
 	@Override
 	public boolean evaluate(World world, int x, int y)
 	{
-		return world.map.isBuildingAroundWithID(buildingID, x, y);
+		return world.map.isBuildAroundWithID(buildingID, x, y);
 	}
 	
 }

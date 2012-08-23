@@ -51,6 +51,7 @@ public abstract class GameComponent implements IRenderable
 	 * Sets the disposed flag to false, i.e it will be deleted as soon as possible.
 	 * Note : this is more convenient than set the component to null, as we can control
 	 * the object's lifespan.
+	 * Overriding : don't forget to call super.dispose() !
 	 */
 	public void dispose()
 	{

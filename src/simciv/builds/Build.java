@@ -1,4 +1,4 @@
-package simciv.buildings;
+package simciv.builds;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -24,7 +24,7 @@ import simciv.effects.SmokeExplosion;
  * @author Marc
  *
  */
-public abstract class Building extends Entity
+public abstract class Build extends Entity
 {
 	// Common states
 	public static final byte STATE_CONSTRUCTION = 0;
@@ -34,14 +34,14 @@ public abstract class Building extends Entity
 	// Solidness
 	protected int solidness;
 	
-	public Building(World w)
+	public Build(World w)
 	{
 		super(w);
 		state = STATE_NORMAL;
 		solidness = getSolidnessMax();
 	}
 	
-	public abstract BuildingProperties getProperties();
+	public abstract BuildProperties getProperties();
 	
 	public Color getMinimapColor()
 	{
@@ -67,7 +67,7 @@ public abstract class Building extends Entity
 			{
 				Debris d = new Debris(worldRef);
 				d.setPropertiesFromBuild(this);
-				worldRef.placeBuilding(d, x, y);
+				worldRef.placeBuild(d, x, y);
 				
 				worldRef.addGraphicalEffect(
 						new SmokeExplosion(x, y, 8, 1.5f, Game.tilesSize/2));

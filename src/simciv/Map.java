@@ -6,7 +6,8 @@ import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import simciv.buildings.Building;
+
+import simciv.builds.Build;
 import simciv.maptargets.IMapTarget;
 import simciv.rendering.RenderNatureElements;
 import simciv.rendering.SortedRender;
@@ -253,7 +254,7 @@ public class Map
 	 * @param b : building to mark
 	 * @param mark : true to mark, false to clear marks.
 	 */
-	public void markBuilding(Building b, boolean mark)
+	public void markBuilding(Build b, boolean mark)
 	{
 //		// Check if we can place a mark
 //		if(mark && !canPlaceObject(b.getX(), b.getY(), b.getWidth(), b.getHeight()))
@@ -270,12 +271,12 @@ public class Map
 			{
 				if(mark)
 				{
-					getCellExisting(x, y).setBuildingInfo(b.getID(), isOrigin);
+					getCellExisting(x, y).setBuildInfo(b.getID(), isOrigin);
 					if(isOrigin)
 						isOrigin = false;
 				}
 				else
-					getCellExisting(x, y).eraseBuildingInfo();
+					getCellExisting(x, y).eraseBuildInfo();
 			}
 		}
 		
@@ -288,10 +289,10 @@ public class Map
 	 * @param y
 	 * @return building ID, -1 if there are no building here.
 	 */
-	public int getBuildingID(int x, int y)
+	public int getBuildID(int x, int y)
 	{
 		if(contains(x, y))
-			return getCellExisting(x,y).getBuildingID();
+			return getCellExisting(x,y).getBuildID();
 		return -1;
 	}
 	
@@ -302,15 +303,15 @@ public class Map
 	 * @param y
 	 * @return true if the building is detected, false if not
 	 */
-	public boolean isBuildingAroundWithID(int ID, int x, int y)
+	public boolean isBuildAroundWithID(int ID, int x, int y)
 	{
-		if(getBuildingID(x-1, y) == ID)
+		if(getBuildID(x-1, y) == ID)
 			return true;
-		if(getBuildingID(x+1, y) == ID)
+		if(getBuildID(x+1, y) == ID)
 			return true;
-		if(getBuildingID(x, y-1) == ID)
+		if(getBuildID(x, y-1) == ID)
 			return true;
-		if(getBuildingID(x, y+1) == ID)
+		if(getBuildID(x, y+1) == ID)
 			return true;
 		return false;
 	}
@@ -530,7 +531,7 @@ public class Map
 		return p;
 	}
 	
-	public ArrayList<Vector2i> getAvailablePositionsAround(Building b, IMapTarget target, World world)
+	public ArrayList<Vector2i> getAvailablePositionsAround(Build b, IMapTarget target, World world)
 	{
 		return getAvailablePositionsAround(b.getX(), b.getY(), b.getWidth(), b.getHeight(), target, world);
 	}

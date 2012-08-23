@@ -20,7 +20,7 @@ public class MapCell
 	// i = 30 lowest bits : building ID
 	// o = last bit : isOrigin : is this cell at the origin of the building?
 	// e = next bit : isEntryPoint : is this cell at an entry point of the building?
-	private transient int buildingInfo;
+	private transient int buildInfo;
 	
 	// ID of the last unit on the cell, 0 if none
 	private transient int unitInfo;
@@ -37,15 +37,15 @@ public class MapCell
 	@Override
 	public String toString()
 	{
-		String str = "TID=" + terrainID + ", N=" + nature + ", R=" + road + ", BID=" + getBuildingID();
-		if(isBuildingOrigin())
+		String str = "TID=" + terrainID + ", N=" + nature + ", R=" + road + ", BID=" + getBuildID();
+		if(isBuildOrigin())
 			str += "o";
 		return str;
 	}
 	
-	public void eraseBuildingInfo()
+	public void eraseBuildInfo()
 	{
-		buildingInfo = 0;
+		buildInfo = 0;
 	}
 	
 	public void setUnitInfo(int id)
@@ -68,26 +68,26 @@ public class MapCell
 		return getUnitID() != 0;
 	}
 	
-	public void setBuildingInfo(int id, boolean isOrigin)
+	public void setBuildInfo(int id, boolean isOrigin)
 	{
-		buildingInfo = id & BUILDING_INFO_ID_MASK;
+		buildInfo = id & BUILDING_INFO_ID_MASK;
 		if(isOrigin)
-			buildingInfo |= BUILDING_INFO_ORIGIN_MASK;
+			buildInfo |= BUILDING_INFO_ORIGIN_MASK;
 	}
 	
-	public boolean isBuilding()
+	public boolean isBuild()
 	{
-		return buildingInfo != 0;
+		return buildInfo != 0;
 	}
 	
-	public int getBuildingID()
+	public int getBuildID()
 	{
-		return buildingInfo & BUILDING_INFO_ID_MASK;
+		return buildInfo & BUILDING_INFO_ID_MASK;
 	}
 	
-	public boolean isBuildingOrigin()
+	public boolean isBuildOrigin()
 	{
-		return (buildingInfo & BUILDING_INFO_ORIGIN_MASK) != 0;
+		return (buildInfo & BUILDING_INFO_ORIGIN_MASK) != 0;
 	}
 	
 	public boolean isArable()
@@ -100,13 +100,8 @@ public class MapCell
 		terrainID = other.terrainID;
 		nature = other.nature;
 		road = other.road;
-		buildingInfo = other.buildingInfo;
+		buildInfo = other.buildInfo;
 		noise = other.noise;
-	}
-	
-	public void setBuildingMark(int ID)
-	{
-		buildingInfo = ID;
 	}
 
 	public boolean isRoad()
@@ -122,7 +117,7 @@ public class MapCell
 			return false;
 		if(terrainID == Terrain.WATER) // invalid terrain
 			return false;
-		if(isBuilding()) // building
+		if(isBuild()) // building
 			return false;
 		if(isUnit()) // unit
 			return false;
@@ -131,7 +126,7 @@ public class MapCell
 	
 	public boolean isCrossable()
 	{
-		return terrainID != Terrain.WATER && !isBuilding() && nature != Nature.TREE;
+		return terrainID != Terrain.WATER && !isBuild() && nature != Nature.TREE;
 	}
 
 	public void renderGround(int x, int y, Graphics gfx)
@@ -164,7 +159,7 @@ public class MapCell
 			gfx.setColor(new Color(128, 128, 255, 128));
 			gfx.fillRect(x * Game.tilesSize, y * Game.tilesSize, Game.tilesSize, Game.tilesSize);
 		}
-		if(isBuilding())
+		if(isBuild())
 		{
 			gfx.setColor(new Color(255, 128, 128));
 			gfx.setLineWidth(2);
@@ -174,10 +169,10 @@ public class MapCell
 
 	public Color getMinimapColor(World w)
 	{
-		if(isBuilding())
+		if(isBuild())
 		{
 			if(w != null)
-				return w.getBuilding(getBuildingID()).getMinimapColor();
+				return w.getBuild(getBuildID()).getMinimapColor();
 			else
 				return new Color(255, 128, 0);
 		}

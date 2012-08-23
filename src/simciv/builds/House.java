@@ -1,4 +1,4 @@
-package simciv.buildings;
+package simciv.builds;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,20 +27,20 @@ import simciv.units.Citizen;
  * @author Marc
  *
  */
-public class House extends Building
+public class House extends Build
 {
-	private static BuildingProperties properties[];
+	private static BuildProperties properties[];
 	private static SpriteSheet sprites[];
 	private static byte MAX_LEVEL = 1; // Note : in code, the first level is 0.
 	
 	static
 	{
-		properties = new BuildingProperties[MAX_LEVEL+1];
+		properties = new BuildProperties[MAX_LEVEL+1];
 		
-		properties[0] = new BuildingProperties("House lv.1")
+		properties[0] = new BuildProperties("House lv.1")
 			.setUnitsCapacity(2).setCost(10).setSize(1, 1, 1).setCategory(BuildCategory.HOUSES);
 		
-		properties[1] = new BuildingProperties("House lv.2")
+		properties[1] = new BuildProperties("House lv.2")
 			.setUnitsCapacity(8).setCost(50).setSize(2, 2, 2).setCategory(BuildCategory.HOUSES);
 	}
 
@@ -68,7 +68,7 @@ public class House extends Building
 		direction = (byte) (4 * Math.random());
 		level = 0;
 		nbCitizensToProduce = 1;
-		state = Building.STATE_CONSTRUCTION;
+		state = Build.STATE_CONSTRUCTION;
 	}
 	
 	@Override
@@ -93,12 +93,12 @@ public class House extends Building
 	@Override
 	public void tick()
 	{
-		if(state == Building.STATE_CONSTRUCTION)
+		if(state == Build.STATE_CONSTRUCTION)
 		{
 			if((getTicks() > 15 || Cheats.isFastCitizenProduction()))
-				state = Building.STATE_NORMAL;
+				state = Build.STATE_NORMAL;
 		}
-		else if(state == Building.STATE_NORMAL)
+		else if(state == Build.STATE_NORMAL)
 		{
 			if(level != MAX_LEVEL && getTicks() % 20 == 0)
 			{
@@ -176,15 +176,15 @@ public class House extends Building
 		if(level == 0)
 		{
 			// Check if 4 1x1 houses are forming a quad
-			Building b[] = new Building[3]; // quad neighbors
+			Build b[] = new Build[3]; // quad neighbors
 			int nxy[][] = {{1, 0}, {0, 1}, {1, 1}}; // neighboring
 			for(int i = 0; i < 3; i++)
 			{
-				b[i] = worldRef.getBuilding(posX + nxy[i][0], posY + nxy[i][1]);
+				b[i] = worldRef.getBuild(posX + nxy[i][0], posY + nxy[i][1]);
 				if(b[i] == null ||
 					!b[i].isHouse() ||
 					!b[i].is1x1() ||
-					b[i].getState() != Building.STATE_NORMAL)
+					b[i].getState() != Build.STATE_NORMAL)
 				{
 					return false;
 				}
@@ -277,7 +277,7 @@ public class House extends Building
 	}
 
 	@Override
-	public BuildingProperties getProperties()
+	public BuildProperties getProperties()
 	{
 		return properties[level];
 	}

@@ -1,4 +1,4 @@
-package simciv.buildings;
+package simciv.builds;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -12,15 +12,15 @@ import simciv.content.Content;
  * @author Marc
  *
  */
-public class Debris extends Building
+public class Debris extends Build
 {
-	private static BuildingProperties properties;
+	private static BuildProperties properties;
 
 	private String infoString;
 	
 	static
 	{
-		properties = new BuildingProperties("Ruins");
+		properties = new BuildProperties("Ruins");
 		properties.setCost(0).setSize(1, 1, 0).setUnitsCapacity(0).setCategory(BuildCategory.RUINS);
 	}
 	
@@ -30,13 +30,13 @@ public class Debris extends Building
 		infoString = "Ruins";
 	}
 	
-	public void setPropertiesFromBuild(Building b)
+	public void setPropertiesFromBuild(Build b)
 	{
 		infoString = "Ruins of " + b.getProperties().name.toLowerCase();
 	}
 
 	@Override
-	public BuildingProperties getProperties()
+	public BuildProperties getProperties()
 	{
 		return properties;
 	}

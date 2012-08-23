@@ -13,7 +13,7 @@ import simciv.Resource;
 import simciv.Road;
 import simciv.Terrain;
 import simciv.World;
-import simciv.buildings.BuildCategory;
+import simciv.builds.BuildCategory;
 import simciv.ui.base.ProgressBar;
 import simciv.ui.base.RootPane;
 import simciv.ui.base.UIBasicGameState;

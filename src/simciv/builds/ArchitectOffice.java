@@ -1,4 +1,4 @@
-package simciv.buildings;
+package simciv.builds;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -16,7 +16,7 @@ import simciv.units.Citizen;
 
 public class ArchitectOffice extends PassiveWorkplace
 {
-	private static BuildingProperties properties;
+	private static BuildProperties properties;
 	private static SpriteSheet sprites;
 	
 	// TODO factorize : ProductiveWorkplace
@@ -24,7 +24,7 @@ public class ArchitectOffice extends PassiveWorkplace
 	
 	static
 	{
-		properties = new BuildingProperties("Architects office");
+		properties = new BuildProperties("Architects office");
 		properties.setCost(100).setSize(2, 2, 2).setUnitsCapacity(4).setCategory(BuildCategory.ADMINISTRATION);
 	}
 	
@@ -75,7 +75,7 @@ public class ArchitectOffice extends PassiveWorkplace
 	}
 
 	@Override
-	public BuildingProperties getProperties()
+	public BuildProperties getProperties()
 	{
 		return properties;
 	}
@@ -83,7 +83,7 @@ public class ArchitectOffice extends PassiveWorkplace
 	@Override
 	protected void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
-		if(state == Building.STATE_ACTIVE)
+		if(state == Build.STATE_ACTIVE)
 			gfx.drawImage(sprites.getSprite(1, 0), 0, -Game.tilesSize);
 		else
 			gfx.drawImage(sprites.getSprite(0, 0), 0, -Game.tilesSize);

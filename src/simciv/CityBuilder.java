@@ -7,8 +7,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
-import simciv.buildings.Building;
-import simciv.buildings.BuildingFactory;
+import simciv.builds.Build;
+import simciv.builds.BuildFactory;
 import simciv.content.Content;
 
 /**
@@ -47,9 +47,9 @@ public class CityBuilder
 	// State
 	private int mode;
 	private String modeString = "";
-	private Building building; // building to place
-	private Building pointedBuilding;
-	private String buildingString = "";
+	private Build build; // building to place
+	private Build pointedBuild;
+	private String buildString = "";
 	private String infoText = "Testing 1234";
 	private boolean cursorPress = false;
 	private int cursorButton;
@@ -58,7 +58,7 @@ public class CityBuilder
 	{
 		this.worldRef = worldRef;
 		setMode(MODE_CURSOR);
-		setBuildingString("House");
+		setBuildString("House");
 	}
 	
 	public World getWorld()
@@ -92,9 +92,9 @@ public class CityBuilder
 			modeString = "Road mode";
 		else if(mode == MODE_HOUSE)
 		{
-			modeString = "Building mode";
+			modeString = "Build mode";
 			try {
-				setBuildingString("House");
+				setBuildString("House");
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
@@ -108,10 +108,10 @@ public class CityBuilder
 	 * @return : object for chaining
 	 * @throws SlickException 
 	 */
-	public CityBuilder setBuildingString(String bstr) throws SlickException
+	public CityBuilder setBuildString(String bstr) throws SlickException
 	{
-		buildingString = bstr;
-		building = BuildingFactory.createFromName(bstr, worldRef);
+		buildString = bstr;
+		build = BuildFactory.createFromName(bstr, worldRef);
 		return this;
 	}
 	
@@ -185,10 +185,10 @@ public class CityBuilder
 		}
 		else if(mode == MODE_BUILDS || mode == MODE_HOUSE)
 		{
-			w = building.getWidth();
-			h = building.getHeight();
+			w = build.getWidth();
+			h = build.getHeight();
 			
-			if(building.canBePlaced(worldRef.map, x, y))
+			if(build.canBePlaced(worldRef.map, x, y))
 				gfx.setColor(canPlaceColor);
 			else
 				gfx.setColor(cannotPlaceColor);
@@ -203,8 +203,8 @@ public class CityBuilder
 		int h = 1;
 		if(mode == MODE_HOUSE || mode == MODE_BUILDS)
 		{
-			w = building.getWidth();
-			h = building.getHeight();
+			w = build.getWidth();
+			h = build.getHeight();
 		}
 		for(int y = buildZone.minY(); y <= buildZone.maxY(); y += h)
 		{
@@ -217,7 +217,7 @@ public class CityBuilder
 	{
 		gfx.setColor(Color.white);		
 		if(mode == MODE_HOUSE)
-			gfx.drawString(modeString + " / " + buildingString, 100, 30);
+			gfx.drawString(modeString + " / " + buildString, 100, 30);
 		else
 			gfx.drawString(modeString, 100, 30);
 	}
@@ -235,11 +235,11 @@ public class CityBuilder
 			return;
 
 		if(mode == MODE_HOUSE)
-			placeBuilding(buildPos.x, buildPos.y);
+			placeBuild(buildPos.x, buildPos.y);
 		else if(mode == MODE_ERASE)
 			erase(pos.x, pos.y);
 		else if(mode == MODE_BUILDS)
-			placeBuilding(buildPos.x, buildPos.y);
+			placeBuild(buildPos.x, buildPos.y);
 	}
 	
 	public void cursorMoved(Vector2i mapPos)
@@ -251,12 +251,12 @@ public class CityBuilder
 			onPointedCellChanged();
 		}
 		
-		if(building != null)
+		if(build != null)
 		{
 			// The cursor must be at the center of the building to place
-			buildPos.x = pos.x - building.getWidth()/2;
-			buildPos.y = pos.y - building.getHeight()/2;
-			building.setPosition(buildPos.x, buildPos.y);
+			buildPos.x = pos.x - build.getWidth()/2;
+			buildPos.y = pos.y - build.getHeight()/2;
+			build.setPosition(buildPos.x, buildPos.y);
 			
 			updateBuildZone();
 		}
@@ -264,7 +264,7 @@ public class CityBuilder
 	
 	private void onPointedCellChanged()
 	{
-		pointedBuilding = worldRef.getBuilding(pos.x, pos.y);
+		pointedBuild = worldRef.getBuild(pos.x, pos.y);
 		updateInfoText();
 	}
 	
@@ -276,8 +276,8 @@ public class CityBuilder
 		Vector2i endPos = pos;
 		if(mode == MODE_BUILDS || mode == MODE_HOUSE)
 		{
-			w = building.getWidth();
-			h = building.getHeight();
+			w = build.getWidth();
+			h = build.getHeight();
 			startPos = lastClickBuildPos;
 			endPos = buildPos;
 		}
@@ -295,10 +295,10 @@ public class CityBuilder
 	
 	protected void updateInfoText()
 	{
-		if(pointedBuilding == null)
+		if(pointedBuild == null)
 			infoText = "";
 		else
-			infoText = pointedBuilding.getInfoString();
+			infoText = pointedBuild.getInfoString();
 	}
 
 	public void cursorReleased() throws SlickException
@@ -306,7 +306,7 @@ public class CityBuilder
 		if(cursorPress && cursorButton == Input.MOUSE_LEFT_BUTTON)
 		{
 			if(mode == MODE_BUILDS || mode == MODE_HOUSE)
-				placeBuildingsFromZone();
+				placeBuildsFromZone();
 			else if(mode == MODE_ERASE)
 				eraseFromZone();
 		}
@@ -345,7 +345,7 @@ public class CityBuilder
 		boolean res = false;
 		if(worldRef.map.eraseRoad(x, y))
 			res = true;
-		else if(worldRef.eraseBuilding(x, y))
+		else if(worldRef.eraseBuild(x, y))
 			res = true;
 		if(res)
 		{
@@ -372,9 +372,9 @@ public class CityBuilder
 		return nbErased;
 	}
 	
-	private boolean placeBuilding(int x, int y) throws SlickException
+	private boolean placeBuild(int x, int y) throws SlickException
 	{
-		return placeBuilding(x, y, true);
+		return placeBuild(x, y, true);
 	}
 	
 	/**
@@ -385,15 +385,15 @@ public class CityBuilder
 	 * @return true if the build has been placed, false otherwise
 	 * @throws SlickException 
 	 */
-	private boolean placeBuilding(int x, int y, boolean notify) throws SlickException
+	private boolean placeBuild(int x, int y, boolean notify) throws SlickException
 	{
 		// Create a new building
-		Building b = BuildingFactory.createFromName(buildingString, worldRef);
+		Build b = BuildFactory.createFromName(buildString, worldRef);
 
 		if(b != null)
 		{
 			// Place it if possible
-			if(worldRef.placeBuilding(b, x, y))
+			if(worldRef.placeBuild(b, x, y))
 			{
 				worldRef.playerCity.buy(b.getProperties().cost);
 				if(notify)
@@ -409,14 +409,14 @@ public class CityBuilder
 		
 	// SUGG add a tick delay to zone-placed buildings (because they are created at the same time) ?
 	
-	private int placeBuildingsFromZone() throws SlickException
+	private int placeBuildsFromZone() throws SlickException
 	{
 		int nbPlaced = 0;
-		for(int y = buildZone.minY(); y <= buildZone.maxY(); y += building.getHeight())
+		for(int y = buildZone.minY(); y <= buildZone.maxY(); y += build.getHeight())
 		{
-			for(int x = buildZone.minX(); x <= buildZone.maxX(); x += building.getWidth())
+			for(int x = buildZone.minX(); x <= buildZone.maxX(); x += build.getWidth())
 			{
-				if(placeBuilding(x, y, false))
+				if(placeBuild(x, y, false))
 					nbPlaced++;
 			}
 		}

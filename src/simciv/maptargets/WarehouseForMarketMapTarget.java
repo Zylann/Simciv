@@ -3,8 +3,8 @@ package simciv.maptargets;
 import java.util.List;
 
 import simciv.World;
-import simciv.buildings.Building;
-import simciv.buildings.Warehouse;
+import simciv.builds.Build;
+import simciv.builds.Warehouse;
 
 /**
  * Evaluates warehouses that contains resources available for markets
@@ -16,8 +16,8 @@ public class WarehouseForMarketMapTarget implements IMapTarget
 	@Override
 	public boolean evaluate(World world, int x, int y)
 	{
-		List<Building> list = world.getBuildingsAround(x, y);
-		for(Building b : list)
+		List<Build> list = world.getBuildsAround(x, y);
+		for(Build b : list)
 		{
 			if(Warehouse.class.isInstance(b))
 			{

@@ -9,8 +9,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
-import simciv.buildings.Building;
-import simciv.buildings.Warehouse;
+import simciv.builds.Build;
+import simciv.builds.Warehouse;
 import simciv.effects.VisualEffect;
 import simciv.rendering.SortedRender;
 import simciv.units.Citizen;
@@ -32,9 +32,9 @@ public class World
 	private transient boolean fastForward;
 	// TODO improve entity containers dynamics (create a GameComponentMap?)
 	private List<Unit> spawnedUnits = new ArrayList<Unit>();
-	private List<Building> placedBuilds = new ArrayList<Building>();
+	private List<Build> placedBuilds = new ArrayList<Build>();
 	private HashMap<Integer,Unit> units = new HashMap<Integer,Unit>();
-	private HashMap<Integer,Building> buildings = new HashMap<Integer,Building>();
+	private HashMap<Integer,Build> builds = new HashMap<Integer,Build>();
 	private List<VisualEffect> graphicalEffects = new ArrayList<VisualEffect>();
 
 	public World(int width, int height)
@@ -80,13 +80,13 @@ public class World
 				unitsToRemove.add(u);
 		}
 		
-		for(Building b : placedBuilds)
-			addBuilding(b);
+		for(Build b : placedBuilds)
+			addBuild(b);
 		if(!placedBuilds.isEmpty())
 			placedBuilds.clear();
 
-		ArrayList<Building> buildingsToRemove = new ArrayList<Building>();
-		for(Building b : buildings.values())
+		ArrayList<Build> buildingsToRemove = new ArrayList<Build>();
+		for(Build b : builds.values())
 		{
 			if(!b.isDisposed())
 				b.update(gc, game, delta);
@@ -94,8 +94,8 @@ public class World
 				buildingsToRemove.add(b);
 		}
 		
-		for(Building b : buildingsToRemove)
-			removeBuilding(b.getID());
+		for(Build b : buildingsToRemove)
+			removeBuild(b.getID());
 		
 		for(Unit u : unitsToRemove)
 			removeUnit(u.getID());
@@ -169,11 +169,11 @@ public class World
 		return false;
 	}
 	
-	private boolean addBuilding(Building b)
+	private boolean addBuild(Build b)
 	{
-		if(!buildings.containsKey(b.getID()))
+		if(!builds.containsKey(b.getID()))
 		{
-			buildings.put(b.getID(), b);
+			builds.put(b.getID(), b);
 			map.markBuilding(b, true);
 			b.onInit();
 			return true;
@@ -181,11 +181,11 @@ public class World
 		return false;
 	}
 
-	private boolean removeBuilding(int ID)
+	private boolean removeBuild(int ID)
 	{
 		if(ID > 0)
 		{
-			Building b = buildings.remove(ID);
+			Build b = builds.remove(ID);
 			if(b != null)
 			{
 				b.onDestruction();
@@ -203,7 +203,7 @@ public class World
 	 * @param y : y origin
 	 * @return : true if the building has been placed
 	 */
-	public boolean placeBuilding(Building b, int x, int y)
+	public boolean placeBuild(Build b, int x, int y)
 	{
 		b.setPosition(x, y);
 		if(b.canBePlaced(map, x, y))
@@ -220,12 +220,12 @@ public class World
 	 * @param y
 	 * @return : true if the building has been erased.
 	 */
-	public boolean eraseBuilding(int x, int y)
+	public boolean eraseBuild(int x, int y)
 	{
-		int ID = map.getBuildingID(x, y);
+		int ID = map.getBuildID(x, y);
 		if(ID >= 0)
 		{
-			Building b = getBuilding(ID);
+			Build b = getBuild(ID);
 			if(b != null)
 			{
 				b.dispose();
@@ -243,9 +243,9 @@ public class World
 		return units.get(ID);
 	}
 	
-	public Building getBuilding(int ID)
+	public Build getBuild(int ID)
 	{
-		return buildings.get(ID);
+		return builds.get(ID);
 	}
 	
 	/**
@@ -256,11 +256,11 @@ public class World
 	 * @param y
 	 * @return
 	 */
-	public Building getBuilding(int x, int y)
+	public Build getBuild(int x, int y)
 	{
 		if(!map.contains(x, y))
 			return null;
-		return getBuilding(map.getCellExisting(x, y).getBuildingID());
+		return getBuild(map.getCellExisting(x, y).getBuildID());
 	}
 	
 	public Unit getUnit(int x, int y)
@@ -285,7 +285,7 @@ public class World
 		if(!gc.getInput().isKeyDown(Input.KEY_1))
 		{
 			// Register buildings
-			for(Building b : buildings.values())
+			for(Build b : builds.values())
 			{
 				if(mapRange.intersects(
 						b.getX(),
@@ -324,8 +324,8 @@ public class World
 
 	public Warehouse getFreeWarehouse(int x, int y)
 	{
-		List<Building> list = getBuildingsAround(x, y);
-		for(Building b : list)
+		List<Build> list = getBuildsAround(x, y);
+		for(Build b : list)
 		{
 			if(Warehouse.class.isInstance(b))
 			{
@@ -343,44 +343,44 @@ public class World
 	 * @param y
 	 * @return list of buildings
 	 */
-	public ArrayList<Building> getBuildingsAround(int x, int y)
+	public ArrayList<Build> getBuildsAround(int x, int y)
 	{
-		Building b;
-		ArrayList<Building> list = new ArrayList<Building>();
+		Build b;
+		ArrayList<Build> list = new ArrayList<Build>();
 		
-		b = getBuilding(x-1, y);
+		b = getBuild(x-1, y);
 		if(b != null)
 			list.add(b);
-		b = getBuilding(x+1, y);
+		b = getBuild(x+1, y);
 		if(b != null)
 			list.add(b);
-		b = getBuilding(x, y-1);
+		b = getBuild(x, y-1);
 		if(b != null)
 			list.add(b);
-		b = getBuilding(x, y+1);
+		b = getBuild(x, y+1);
 		if(b != null)
 			list.add(b);
 		
 		return list;
 	}
 	
-	public ArrayList<Building> getBuildingsAround(int x0, int y0, int w, int h)
+	public ArrayList<Build> getBuildsAround(int x0, int y0, int w, int h)
 	{
-		Building b;
-		ArrayList<Building> list = new ArrayList<Building>();
+		Build b;
+		ArrayList<Build> list = new ArrayList<Build>();
 		int x, y;
 		
 		for(x = x0-1; x <= x0 + w; x++)
 		{
 			// Top
 			y = y0 - 1;
-			b = getBuilding(x, y);
+			b = getBuild(x, y);
 			if(b != null)
 				list.add(b);
 			
 			// Bottom
 			y = y0 + h;
-			b = getBuilding(x, y);
+			b = getBuild(x, y);
 			if(b != null)
 				list.add(b);
 		}
@@ -389,13 +389,13 @@ public class World
 		{
 			// Left
 			x = x0 - 1;
-			b = getBuilding(x, y);
+			b = getBuild(x, y);
 			if(b != null)
 				list.add(b);
 
 			// Right
 			x = x0 + w;
-			b = getBuilding(x, y);
+			b = getBuild(x, y);
 			if(b != null)
 				list.add(b);
 		}

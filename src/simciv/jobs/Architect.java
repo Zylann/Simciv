@@ -7,8 +7,8 @@ import org.newdawn.slick.SpriteSheet;
 
 import simciv.Game;
 import simciv.PlayerCity;
-import simciv.buildings.Building;
-import simciv.buildings.Workplace;
+import simciv.builds.Build;
+import simciv.builds.Workplace;
 import simciv.content.Content;
 import simciv.units.Citizen;
 
@@ -26,9 +26,9 @@ public class Architect extends Job
 	@Override
 	public void tick()
 	{
-		List<Building> builds = me.getWorld().getBuildingsAround(me.getX(), me.getY());
+		List<Build> builds = me.getWorld().getBuildsAround(me.getX(), me.getY());
 		PlayerCity city = me.getWorld().playerCity;
-		for(Building b : builds)
+		for(Build b : builds)
 		{
 			if(b.needsMaintenance())
 			{

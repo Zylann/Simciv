@@ -10,8 +10,8 @@ import org.newdawn.slick.SlickException;
 
 import simciv.CityBuilder;
 import simciv.World;
-import simciv.buildings.Building;
-import simciv.buildings.BuildingFactory;
+import simciv.builds.Build;
+import simciv.builds.BuildFactory;
 import simciv.ui.base.Menu;
 import simciv.ui.base.MenuItem;
 import simciv.ui.base.UIRenderer;
@@ -86,7 +86,7 @@ public class BuildMenu extends Menu
 				try {
 					parentBuildMenuBar.cityBuilderRef
 						.setMode(CityBuilder.MODE_BUILDS)
-						.setBuildingString(buildString);
+						.setBuildString(buildString);
 				} catch (SlickException e) {
 					e.printStackTrace();
 				}
@@ -96,7 +96,7 @@ public class BuildMenu extends Menu
 		public void updateInfos(World worldRef) throws SlickException
 		{
 			// Name
-			Building b = BuildingFactory.createFromName(buildString, worldRef);
+			Build b = BuildFactory.createFromName(buildString, worldRef);
 			setText(b.getProperties().name);
 			
 			// Cost

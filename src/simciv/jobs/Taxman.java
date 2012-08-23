@@ -6,9 +6,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 
 import simciv.Game;
-import simciv.buildings.Building;
-import simciv.buildings.House;
-import simciv.buildings.Workplace;
+import simciv.builds.Build;
+import simciv.builds.House;
+import simciv.builds.Workplace;
 import simciv.content.Content;
 import simciv.units.Citizen;
 
@@ -27,8 +27,8 @@ public class Taxman extends Job
 	public void tick()
 	{
 		float totalMoneyCollected = 0;
-		List<Building> builds = me.getWorld().getBuildingsAround(me.getX(), me.getY());
-		for(Building b : builds)
+		List<Build> builds = me.getWorld().getBuildsAround(me.getX(), me.getY());
+		for(Build b : builds)
 		{
 			if(b.isHouse())
 			{

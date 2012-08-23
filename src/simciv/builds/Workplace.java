@@ -1,4 +1,4 @@
-package simciv.buildings;
+package simciv.builds;
 
 import java.util.HashMap;
 
@@ -9,7 +9,7 @@ import simciv.World;
 import simciv.jobs.Job;
 import simciv.units.Citizen;
 
-public abstract class Workplace extends Building
+public abstract class Workplace extends Build
 {	
 	// References to citizen working here
 	HashMap<Integer,Citizen> employees = new HashMap<Integer,Citizen>();
@@ -94,7 +94,7 @@ public abstract class Workplace extends Building
 	
 	public void renderDefault(Graphics gfx, SpriteSheet sprites)
 	{
-		if(state == Building.STATE_ACTIVE)
+		if(state == Build.STATE_ACTIVE)
 			gfx.drawImage(sprites.getSprite(1, 0), 0, -getZHeight() * Game.tilesSize);
 		else
 			gfx.drawImage(sprites.getSprite(0, 0), 0, -getZHeight() * Game.tilesSize);
@@ -112,19 +112,19 @@ public abstract class Workplace extends Building
 	@Override
 	protected void tick()
 	{
-		if(state == Building.STATE_NORMAL)
+		if(state == Build.STATE_NORMAL)
 		{
 			if(!needEmployees())
 			{
-				state = Building.STATE_ACTIVE;
+				state = Build.STATE_ACTIVE;
 				onActivityStart();
 			}
 		}
-		else if(state == Building.STATE_ACTIVE)
+		else if(state == Build.STATE_ACTIVE)
 		{
 			if(needEmployees())
 			{
-				state = Building.STATE_NORMAL;
+				state = Build.STATE_NORMAL;
 				onActivityStop();
 			}
 		}

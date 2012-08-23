@@ -1,4 +1,4 @@
-package simciv.buildings;
+package simciv.builds;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -22,7 +22,7 @@ import simciv.units.Citizen;
 // ex : Warehouse.isAtLeastOneHaveFood()
 public class Warehouse extends PassiveWorkplace
 {
-	private static BuildingProperties properties;
+	private static BuildProperties properties;
 	private static SpriteSheet sprites;
 	private static final int NB_SLOTS = 8;
 	
@@ -31,14 +31,14 @@ public class Warehouse extends PassiveWorkplace
 
 	static
 	{
-		properties = new BuildingProperties("Warehouse");
+		properties = new BuildProperties("Warehouse");
 		properties.setUnitsCapacity(4).setSize(3, 3, 1).setCost(50).setCategory(BuildCategory.INDUSTRY);
 	}
 	
 	public Warehouse(World w)
 	{
 		super(w);
-		state = Building.STATE_NORMAL;
+		state = Build.STATE_NORMAL;
 		full = false;
 		
 		for(int i = 0; i < resourceSlots.length; i++)
@@ -53,7 +53,7 @@ public class Warehouse extends PassiveWorkplace
 	}
 
 	@Override
-	public BuildingProperties getProperties()
+	public BuildProperties getProperties()
 	{
 		return properties;
 	}
@@ -109,7 +109,7 @@ public class Warehouse extends PassiveWorkplace
 	public void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		// Floor
-		if(state == Building.STATE_ACTIVE)
+		if(state == Build.STATE_ACTIVE)
 			gfx.drawImage(sprites.getSprite(1, 0), 0, -Game.tilesSize);
 		else
 			gfx.drawImage(sprites.getSprite(0, 0), 0, -Game.tilesSize);

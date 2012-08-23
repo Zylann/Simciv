@@ -1,4 +1,4 @@
-package simciv.buildings;
+package simciv.builds;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -21,18 +21,18 @@ import simciv.units.Citizen;
 public class Market extends PassiveWorkplace
 {
 	private static SpriteSheet sprites;
-	private static BuildingProperties properties;
+	private static BuildProperties properties;
 	
 	static
 	{
-		properties = new BuildingProperties("Market");
+		properties = new BuildProperties("Market");
 		properties.setCost(50).setSize(2, 2, 1).setUnitsCapacity(6).setCategory(BuildCategory.MARKETING);
 	}
 	
 	public Market(World w)
 	{
 		super(w);
-		state = Building.STATE_NORMAL;
+		state = Build.STATE_NORMAL;
 		if(sprites == null)
 		{
 			sprites = new SpriteSheet(Content.images.buildMarket,
@@ -65,7 +65,7 @@ public class Market extends PassiveWorkplace
 	}
 
 	@Override
-	public BuildingProperties getProperties()
+	public BuildProperties getProperties()
 	{
 		return properties;
 	}

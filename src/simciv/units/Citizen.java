@@ -13,9 +13,9 @@ import simciv.Resource;
 import simciv.ResourceBag;
 import simciv.ResourceSlot;
 import simciv.World;
-import simciv.buildings.Building;
-import simciv.buildings.House;
-import simciv.buildings.Workplace;
+import simciv.builds.Build;
+import simciv.builds.House;
+import simciv.builds.Workplace;
 import simciv.effects.RisingIcon;
 import simciv.jobs.Job;
 import simciv.movements.RandomRoadMovement;
@@ -48,7 +48,7 @@ public class Citizen extends Unit
 	public static final int FEED_STARVING = 100;
 	public static final int FEED_MIN = 0;
 	
-	private Building buildingRef; // reference to the building the citizen currently is in
+	private Build buildingRef; // reference to the building the citizen currently is in
 	private House houseRef; // if null, the Citizen is homeless
 	private Job job; // Job of the Citizen
 	private int tickTimeRandom; // Tick time variation constant in milliseconds
@@ -205,8 +205,8 @@ public class Citizen extends Unit
 	{
 		if(job != null)
 			return;
-		ArrayList<Building> builds = worldRef.getBuildingsAround(posX, posY);
-		for(Building b : builds)
+		ArrayList<Build> builds = worldRef.getBuildsAround(posX, posY);
+		for(Build b : builds)
 		{
 			if(b.isWorkplace())
 			{
@@ -252,7 +252,7 @@ public class Citizen extends Unit
 	 * @param b : building
 	 * @return true if success
 	 */
-	public boolean enterBuilding(Building b)
+	public boolean enterBuilding(Build b)
 	{
 		if(buildingRef != null)
 			return false;

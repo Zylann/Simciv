@@ -8,10 +8,10 @@ import org.newdawn.slick.SpriteSheet;
 import simciv.Direction2D;
 import simciv.Game;
 import simciv.ResourceSlot;
-import simciv.buildings.Building;
-import simciv.buildings.Workplace;
+import simciv.builds.Build;
+import simciv.builds.Workplace;
 import simciv.content.Content;
-import simciv.maptargets.BuildingMapTarget;
+import simciv.maptargets.BuildMapTarget;
 import simciv.maptargets.FreeWarehouseMapTarget;
 import simciv.units.Citizen;
 import simciv.units.Unit;
@@ -130,8 +130,8 @@ public class Conveyer extends Job
 	
 	private void distributeResources()
 	{
-		List<Building> buildingsAround = me.getWorld().getBuildingsAround(me.getX(), me.getY());
-		for(Building b : buildingsAround)
+		List<Build> buildingsAround = me.getWorld().getBuildsAround(me.getX(), me.getY());
+		for(Build b : buildingsAround)
 		{
 			if(b.isAcceptResources())
 				b.storeResource(carriedResource);
@@ -142,8 +142,8 @@ public class Conveyer extends Job
 	
 	private int getTargetBuildingID()
 	{
-		if(BuildingMapTarget.class.isInstance(me.getMovementTarget()))
-			return ((BuildingMapTarget)(me.getMovementTarget())).buildingID;
+		if(BuildMapTarget.class.isInstance(me.getMovementTarget()))
+			return ((BuildMapTarget)(me.getMovementTarget())).buildingID;
 		return -1;
 	}
 	

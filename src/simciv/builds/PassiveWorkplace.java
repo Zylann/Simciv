@@ -1,4 +1,4 @@
-package simciv.buildings;
+package simciv.builds;
 
 import simciv.World;
 

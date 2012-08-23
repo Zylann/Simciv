@@ -1,4 +1,4 @@
-package simciv.buildings;
+package simciv.builds;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -27,7 +27,7 @@ import simciv.units.Citizen;
  */
 public class FarmLand extends Workplace
 {	
-	private static BuildingProperties properties;
+	private static BuildProperties properties;
 	private static SpriteSheet sprites;
 	private static SpriteSheet cropsSprites;
 
@@ -41,7 +41,7 @@ public class FarmLand extends Workplace
 	
 	static
 	{
-		properties = new BuildingProperties("Farmland");
+		properties = new BuildProperties("Farmland");
 		properties.setUnitsCapacity(5).setSize(3, 3, 0).setCost(10).setCategory(BuildCategory.FOOD);
 	}
 	
@@ -51,7 +51,7 @@ public class FarmLand extends Workplace
 		ticksPerLevel = secondsToTicks(60);
 		ticksBeforeNextLevel = ticksPerLevel;
 		cropsLevel = MIN_LEVEL;
-		state = Building.STATE_NORMAL;
+		state = Build.STATE_NORMAL;
 		
 		if(sprites == null)
 		{
@@ -89,7 +89,7 @@ public class FarmLand extends Workplace
 	
 	private void onLevelUp()
 	{
-		if(state == Building.STATE_ACTIVE)
+		if(state == Build.STATE_ACTIVE)
 		{
 			if(cropsLevel == ROTTEN_LEVEL)
 				cropsLevel = 0; // The field is cleaned up
@@ -127,13 +127,13 @@ public class FarmLand extends Workplace
 	public void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		// Soil
-		if(state == Building.STATE_NORMAL || needEmployees())
+		if(state == Build.STATE_NORMAL || needEmployees())
 			gfx.drawImage(sprites.getSprite(0, 0), 0, 0);
 		else
 			gfx.drawImage(sprites.getSprite(1, 0), 0, 0);
 		
 		// Crops
-		if(state == Building.STATE_ACTIVE || cropsLevel != 0)
+		if(state == Build.STATE_ACTIVE || cropsLevel != 0)
 		{
 			for(int j = 0; j < 3; j++)
 			{
@@ -156,7 +156,7 @@ public class FarmLand extends Workplace
 	}
 
 	@Override
-	public BuildingProperties getProperties()
+	public BuildProperties getProperties()
 	{
 		return properties;
 	}

@@ -1,11 +1,11 @@
-package simciv.buildings;
+package simciv.builds;
 
 /**
  * Common properties for each building.
  * @author Marc
  *
  */
-public class BuildingProperties
+public class BuildProperties
 {
 	public String name; // Displayable name
 	public int width;
@@ -15,7 +15,7 @@ public class BuildingProperties
 	public int cost; // Base cost
 	public byte category;
 	
-	public BuildingProperties(String name)
+	public BuildProperties(String name)
 	{
 		this.name = name;
 		width = 1;
@@ -32,7 +32,7 @@ public class BuildingProperties
 	 * @param zHeight : virtual height (as we are in 2D), but may be useful later (for rendering).
 	 * @return object for chaining
 	 */
-	public BuildingProperties setSize(int width, int height, int zHeight)
+	public BuildProperties setSize(int width, int height, int zHeight)
 	{
 		this.width = width >= 1 ? width : 1;
 		this.height = height >= 1 ? height : 1;
@@ -40,19 +40,19 @@ public class BuildingProperties
 		return this;
 	}
 	
-	public BuildingProperties setCost(int cost)
+	public BuildProperties setCost(int cost)
 	{
 		this.cost = cost;
 		return this;
 	}
 	
-	public BuildingProperties setUnitsCapacity(int capacity)
+	public BuildProperties setUnitsCapacity(int capacity)
 	{
 		this.unitsCapacity = capacity >= 0 ? capacity : 0;
 		return this;
 	}
 	
-	public BuildingProperties setCategory(byte categoryID)
+	public BuildProperties setCategory(byte categoryID)
 	{
 		this.category = categoryID;
 		return this;

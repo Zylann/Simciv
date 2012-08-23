@@ -29,7 +29,7 @@ import simciv.ui.base.UIStateBasedGame;
 public class Game extends UIStateBasedGame
 {
 	// Game constants
-	public static final String title = "Simciv - indev - release 2";
+	public static final String title = "Simciv - indev - release 3";
 	public static final int tilesSize = 16;
 	public static final int defaultScreenWidth = 800;
 	public static final int defaultScreenHeight = 600;

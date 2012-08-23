@@ -1,4 +1,4 @@
-package simciv.buildings;
+package simciv.builds;
 
 import java.util.HashMap;
 
@@ -13,7 +13,7 @@ import simciv.World;
  * @author Marc
  * 
  */
-public class BuildingFactory
+public class BuildFactory
 {
 	@SuppressWarnings("rawtypes")
 	private static HashMap<String,Class> stringToClassMapping = new HashMap<String,Class>();
@@ -41,15 +41,15 @@ public class BuildingFactory
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static Building createFromName(String s, World world) throws SlickException
+	public static Build createFromName(String s, World world) throws SlickException
 	{
-		Building b = null;
+		Build b = null;
 		try
 		{
 			Class buildingClass = (Class) stringToClassMapping.get(s);
 			if(buildingClass != null)
 			{
-				b = (Building) buildingClass.getConstructor(new Class[]
+				b = (Build) buildingClass.getConstructor(new Class[]
 				{ World.class }).newInstance(new Object[]
 				{ world });
 			}
@@ -62,7 +62,7 @@ public class BuildingFactory
 		return b;
 	}
 	
-	public static String getBuildingString(Building b)
+	public static String getBuildString(Build b)
 	{
 		return (String) classToStringMapping.get(b.getClass());
 	}

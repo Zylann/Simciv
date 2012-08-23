@@ -15,8 +15,8 @@ import simciv.MapCell;
 import simciv.PathFinder;
 import simciv.Vector2i;
 import simciv.World;
-import simciv.buildings.Building;
-import simciv.maptargets.BuildingMapTarget;
+import simciv.builds.Build;
+import simciv.maptargets.BuildMapTarget;
 import simciv.maptargets.IMapTarget;
 import simciv.movements.IMovement;
 import simciv.movements.PathMovement;
@@ -109,9 +109,9 @@ public abstract class Unit extends Entity
 		setMovement(null);
 	}
 	
-	public void findAndGoTo(Building b)
+	public void findAndGoTo(Build b)
 	{
-		findAndGoTo(new BuildingMapTarget(b.getID()));
+		findAndGoTo(new BuildMapTarget(b.getID()));
 	}
 	
 	private void tickPathFinding()
