@@ -99,6 +99,8 @@ public class MarketDelivery extends Job
 	 */
 	private void distributeResources()
 	{
+		if(carriedResource.isEmpty())
+			return;
 		List<Build> buildings = me.getWorld().getBuildsAround(me.getX(), me.getY());
 		for(Build b : buildings)
 		{

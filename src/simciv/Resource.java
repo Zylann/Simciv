@@ -58,6 +58,12 @@ public class Resource
 		return r;
 	}
 	
+	/**
+	 * Get properties for the specified resource ID.
+	 * The ID MUST be valid.
+	 * @param id : resource id in [0, Resource.COUNT]
+	 * @return
+	 */
 	public static Resource get(byte id)
 	{
 		return list[id];

@@ -130,6 +130,8 @@ public class Conveyer extends Job
 	
 	private void distributeResources()
 	{
+		if(carriedResource.isEmpty())
+			return;
 		List<Build> buildingsAround = me.getWorld().getBuildsAround(me.getX(), me.getY());
 		for(Build b : buildingsAround)
 		{
