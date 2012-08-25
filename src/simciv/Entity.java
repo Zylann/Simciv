@@ -161,8 +161,8 @@ public abstract class Entity extends GameComponent
 		if(timeBeforeNextTick < 0)
 		{
 			timeBeforeNextTick += getTickTime();
-			if(timeBeforeNextTick < 0)
-				timeBeforeNextTick = 0;
+//			if(timeBeforeNextTick < 0)
+//				timeBeforeNextTick = 0;
 			
 			tickEntity();
 			
