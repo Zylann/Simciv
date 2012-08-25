@@ -75,7 +75,7 @@ public class ContentLoadingScreen extends BasicGameState
 			// loading finished, entering next state
 			LoadingList.setDeferredLoading(false);
 			Content.indexAll();
-			game.enterState(Game.STATE_GAME_LOADING);
+			game.enterState(Game.STATE_MAIN_MENU);
 		}
 	}
 

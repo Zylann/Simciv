@@ -8,6 +8,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.CityBuilder;
+import simciv.Game;
 import simciv.IntRange2D;
 import simciv.MinimapUpdater;
 import simciv.Resource;
@@ -51,7 +52,7 @@ public class GamePlay extends UIBasicGameState
 	private MinimapUpdater minimapUpdater;
 	private BuildMenuBar menuBar;
 	private IndicatorsBar indicatorsBar;
-	private boolean closeRequested = false;
+	private boolean quitGameRequested = false;
 	private boolean paused = false;
 	private boolean debugInfoVisible = false;
 	private long renderTime;
@@ -87,17 +88,23 @@ public class GamePlay extends UIBasicGameState
 		
 		// Pause window
 		
-		pauseWindow = new Window(ui, 0, 0, 150, 60, "Game paused");
+		pauseWindow = new Window(ui, 0, 0, 150, 85, "Game paused");
 		
 		PushButton resumeButton = new PushButton(pauseWindow, 0, 10, "Resume game");
-		PushButton quitButton = new PushButton(pauseWindow, 0, 28, "Quit game");
 		resumeButton.setAlign(Widget.ALIGN_CENTER_X);
 		resumeButton.addActionListener(new TogglePauseAction());
+		pauseWindow.add(resumeButton);
+		
+		PushButton saveButton = new PushButton(pauseWindow, 0, 28, "Save game");
+		saveButton.setAlign(Widget.ALIGN_CENTER_X);
+		saveButton.setEnabled(false);
+		pauseWindow.add(saveButton);
+
+		PushButton quitButton = new PushButton(pauseWindow, 0, 54, "Quit game");
 		quitButton.setAlign(Widget.ALIGN_CENTER_X);
 		quitButton.addActionListener(new QuitGameAction());
-		
-		pauseWindow.add(resumeButton);
 		pauseWindow.add(quitButton);
+		
 		pauseWindow.setOnCloseAction(new TogglePauseAction());
 		pauseWindow.setDraggable(false);
 		pauseWindow.setVisible(false);
@@ -170,6 +177,9 @@ public class GamePlay extends UIBasicGameState
 	@Override
 	public void enter(GameContainer gc, StateBasedGame game) throws SlickException
 	{
+		quitGameRequested = false;
+		paused = false;
+		
 		// Create and init minimap
 		minimapUpdater = new MinimapUpdater(map);
 		map.grid.addListener(minimapUpdater);
@@ -180,11 +190,12 @@ public class GamePlay extends UIBasicGameState
 		
 		// Create view
 		view = new View(0, 0, 2);
-		view.setWorldSize(map.grid.getWidth(), map.grid.getHeight());
-				
+		view.setMapSize(map.grid.getWidth(), map.grid.getHeight());
+		
 		// Because we will always draw the map on the entire screen at each frame
 		gc.setClearEachFrame(false);
 		
+		ui = null;
 		super.enter(gc, game); // Note : the UI is created here, it depends on the code above
 	}
 
@@ -209,9 +220,9 @@ public class GamePlay extends UIBasicGameState
 		
 		Input input = gc.getInput();
 		
-		if(closeRequested)
+		if(quitGameRequested)
 		{
-			((simciv.Game)game).close();
+			game.enterState(Game.STATE_MAIN_MENU);
 		}
 		
 		view.update(gc, delta / 1000.f);
@@ -384,7 +395,7 @@ public class GamePlay extends UIBasicGameState
 	{
 		@Override
 		public void actionPerformed(Widget sender) {
-			closeRequested = true;
+			quitGameRequested = true;
 		}
 	}
 

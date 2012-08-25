@@ -18,6 +18,7 @@ import simciv.content.Content;
 import simciv.gamestates.GameLoadingScreen;
 import simciv.gamestates.GamePlay;
 import simciv.gamestates.ContentLoadingScreen;
+import simciv.gamestates.MainMenu;
 import simciv.ui.base.UIStateBasedGame;
 
 /**
@@ -35,7 +36,9 @@ public class Game extends UIStateBasedGame
 	public static final int defaultScreenHeight = 600;
 	
 	// State constants
+	public static final int STATE_NULL = 0;
 	public static final int STATE_CONTENT_LOADING = 1;
+	public static final int STATE_MAIN_MENU = 2;
 	public static final int STATE_GAME_LOADING = 3;
 	public static final int STATE_GAMEPLAY = 4;
 
@@ -119,6 +122,7 @@ public class Game extends UIStateBasedGame
 		// Create states
 		addState(new ContentLoadingScreen(STATE_CONTENT_LOADING));
 		addState(new GameLoadingScreen(STATE_GAME_LOADING));
+		addState(new MainMenu(STATE_MAIN_MENU));
 		gamePlay = new GamePlay(STATE_GAMEPLAY);
 		addState(gamePlay);
 	}

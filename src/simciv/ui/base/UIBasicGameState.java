@@ -13,6 +13,13 @@ public abstract class UIBasicGameState extends BasicGameState
 {
 	public RootPane ui;
 	
+	/**
+	 * Creates the UI associated with this game state.
+	 * If the ui member is null, this method is called each time the state is entered.
+	 * @param container
+	 * @param game
+	 * @throws SlickException
+	 */
 	protected abstract void createUI(GameContainer container, final StateBasedGame game)
 			throws SlickException;
 
@@ -26,4 +33,5 @@ public abstract class UIBasicGameState extends BasicGameState
 		}
 		((UIStateBasedGame) game).setUI(ui);
 	}
+	
 }
