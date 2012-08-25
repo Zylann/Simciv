@@ -26,6 +26,8 @@ public class WidgetContainer extends Widget
 	{
 		if(child == null)
 			throw new SlickException("Cannot add a null child widget");
+		if(children.contains(child))
+			throw new SlickException("A child has been added twice");
 		children.add(child);
 	}
 	
