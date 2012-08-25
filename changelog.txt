@@ -1,4 +1,13 @@
-Simciv indev release 2 (work in progress) :
+Simciv indev release 3 (work in progress) :
+
+---
+
+Simciv indev release 2.01 :
+
++ Fixed early starves
++ Fixed resource distribution lags
+
+Simciv indev release 2 :
 
 + Added money counter (and building costs)
 + Added taxmen offices and taxmen

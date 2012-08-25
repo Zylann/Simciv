@@ -8,15 +8,19 @@ Description :
 
 Releases :
 
-	SimCiv indev release 2 : work in progress...
-	SimCiv indev release 1 : http://www.mediafire.com/?i5bgd97wlom8a67
+	Last :
+	SimCiv indev release 2.01 : http://www.mediafire.com/?388tj634yvyu5gw
+	
+	Older :
+	SimCiv indev release 2.00 : http://www.mediafire.com/download.php?1u4jbfy32d2cs2k
+	SimCiv indev release 1.00 : http://www.mediafire.com/?i5bgd97wlom8a67
 
 Current features (for development version) :
 
 	- Random map generation (grass, trees, bushes, water)
-	- Placing builds and roads
+	- Place builds and roads
 	- Job system
-	- Economy (through taxes and markets)
+	- Economy (taxes, markets...)
 	- Builds maintenance
 	- Farmlands with growing crops
 	- Draggable/hideable minimap
