@@ -16,6 +16,7 @@ import simciv.units.Unit;
 
 /**
  * The map contains the terrain and the city (units and buildings).
+ * All the data concerning a player's game is stored here.
  * Note : units don't all belong to the city (ducks, nomads...)
  * @author Marc
  *
@@ -25,10 +26,10 @@ public class Map
 	public MapGrid grid;
 	public PlayerCity playerCity;
 	public WorldTime time;
-	private transient boolean fastForward;
 	private EntityMap builds;
 	private EntityMap units;
-	private List<VisualEffect> graphicalEffects;
+	private transient List<VisualEffect> graphicalEffects;
+	private transient boolean fastForward;
 
 	public Map(int width, int height)
 	{

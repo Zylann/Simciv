@@ -9,10 +9,15 @@ import simciv.Map;
 import simciv.jobs.Job;
 import simciv.units.Citizen;
 
+/**
+ * A workplace is a build that have employees and execute specific tasks (production, services...)
+ * @author Marc
+ *
+ */
 public abstract class Workplace extends Build
 {	
 	// References to citizen working here
-	HashMap<Integer,Citizen> employees = new HashMap<Integer,Citizen>();
+	protected HashMap<Integer,Citizen> employees = new HashMap<Integer,Citizen>();
 	
 	public Workplace(Map m)
 	{

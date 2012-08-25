@@ -29,7 +29,7 @@ public class View
 		this.scale = scale;
 	}
 	
-	public void setWorldSize(int sizeX, int sizeY)
+	public void setMapSize(int sizeX, int sizeY)
 	{
 		worldSize.x = scale * Game.tilesSize * (sizeX > 0 ? sizeX : 0);
 		worldSize.y = scale * Game.tilesSize * (sizeY > 0 ? sizeY : 0);

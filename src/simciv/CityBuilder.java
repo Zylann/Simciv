@@ -54,9 +54,9 @@ public class CityBuilder
 	private boolean cursorPress = false;
 	private int cursorButton;
 	
-	public CityBuilder(Map worldRef) throws SlickException
+	public CityBuilder(Map mapRef) throws SlickException
 	{
-		this.mapRef = worldRef;
+		this.mapRef = mapRef;
 		setMode(MODE_CURSOR);
 		setBuildString("House");
 	}
