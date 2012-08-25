@@ -7,10 +7,10 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Cheats;
 import simciv.Game;
-import simciv.Map;
+import simciv.MapGrid;
 import simciv.Resource;
 import simciv.ResourceSlot;
-import simciv.World;
+import simciv.Map;
 import simciv.content.Content;
 import simciv.jobs.Conveyer;
 import simciv.jobs.InternalJob;
@@ -45,9 +45,9 @@ public class FarmLand extends Workplace
 		properties.setUnitsCapacity(5).setSize(3, 3, 0).setCost(10).setCategory(BuildCategory.FOOD);
 	}
 	
-	public FarmLand(World w)
+	public FarmLand(Map m)
 	{
-		super(w);
+		super(m);
 		ticksPerLevel = secondsToTicks(60);
 		ticksBeforeNextLevel = ticksPerLevel;
 		cropsLevel = MIN_LEVEL;
@@ -193,7 +193,7 @@ public class FarmLand extends Workplace
 	}
 
 	@Override
-	public boolean canBePlaced(Map map, int x, int y)
+	public boolean canBePlaced(MapGrid map, int x, int y)
 	{
 		return super.canBePlaced(map, x, y) && map.isArable(x, y, getWidth(), getHeight());
 	}

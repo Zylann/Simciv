@@ -16,7 +16,7 @@ import simciv.Game;
 import simciv.ResourceSlot;
 import simciv.SoundEngine;
 import simciv.Vector2i;
-import simciv.World;
+import simciv.Map;
 import simciv.content.Content;
 import simciv.effects.RisingIcon;
 import simciv.maptargets.RoadMapTarget;
@@ -49,9 +49,9 @@ public class House extends Build
 	private byte level;
 	private byte nbCitizensToProduce;
 
-	public House(World w)
+	public House(Map m)
 	{
-		super(w);
+		super(m);
 		
 		if(sprites == null)
 		{
@@ -86,7 +86,7 @@ public class House extends Build
 				totalMoneyCollected += c.payTax();
 		}
 		if(totalMoneyCollected > 0)
-			worldRef.addGraphicalEffect(new RisingIcon(getX(), getY(), Content.images.effectGold));
+			mapRef.addGraphicalEffect(new RisingIcon(getX(), getY(), Content.images.effectGold));
 		return totalMoneyCollected;
 	}
 
@@ -128,7 +128,7 @@ public class House extends Build
 		// It must have free space to appear
 		RoadMapTarget roads = new RoadMapTarget();
 		ArrayList<Vector2i> availablePositions = 
-			worldRef.map.getAvailablePositionsAround(this, roads, worldRef);		
+			mapRef.grid.getAvailablePositionsAround(this, roads, mapRef);		
 		if(availablePositions.isEmpty())
 			return 0;
 		
@@ -136,12 +136,12 @@ public class House extends Build
 		byte citizensProduced = 0;
 		for(byte i = 0; i < nbToProduce; i++)
 		{
-			Citizen c = new Citizen(worldRef);
+			Citizen c = new Citizen(mapRef);
 			if(addInhabitant(c))
 			{
 				// It will appear at random following available positions
 				Vector2i unitPos = availablePositions.get((int) (availablePositions.size() * Math.random()));
-				worldRef.spawnUnit(c, unitPos.x, unitPos.y);
+				mapRef.spawnUnit(c, unitPos.x, unitPos.y);
 				citizensProduced++;
 			}
 		}
@@ -181,7 +181,7 @@ public class House extends Build
 			int nxy[][] = {{1, 0}, {0, 1}, {1, 1}}; // neighboring
 			for(int i = 0; i < 3; i++)
 			{
-				b[i] = worldRef.getBuild(getX() + nxy[i][0], getY() + nxy[i][1]);
+				b[i] = mapRef.getBuild(getX() + nxy[i][0], getY() + nxy[i][1]);
 				if(b[i] == null ||
 					!b[i].isHouse() ||
 					!b[i].is1x1() ||
@@ -193,7 +193,7 @@ public class House extends Build
 			
 			// Check if the future 2x2 house will have roads nearby
 			RoadMapTarget roads = new RoadMapTarget();
-			if(worldRef.map.getAvailablePositionsAround(getX(), getY(), 2, 2, roads, worldRef).isEmpty())
+			if(mapRef.grid.getAvailablePositionsAround(getX(), getY(), 2, 2, roads, mapRef).isEmpty())
 				return false;
 			
 			// Merge houses			
@@ -206,7 +206,7 @@ public class House extends Build
 			level++;
 
 			// Mark the map (we know that cells are free, as they were occupied by houses)
-			worldRef.map.markBuilding(this, true);
+			mapRef.grid.markBuilding(this, true);
 			
 			return true;
 		}
@@ -335,7 +335,7 @@ public class House extends Build
 				bought = true;
 		}
 		if(bought)
-			worldRef.addGraphicalEffect(new RisingIcon(getX(), getY(), Content.images.effectGold));
+			mapRef.addGraphicalEffect(new RisingIcon(getX(), getY(), Content.images.effectGold));
 	}
 	
 	public float getMeanHungerRatio()

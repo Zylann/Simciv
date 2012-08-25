@@ -132,7 +132,7 @@ public class Conveyer extends Job
 	{
 		if(carriedResource.isEmpty())
 			return;
-		List<Build> buildingsAround = me.getWorld().getBuildsAround(me.getX(), me.getY());
+		List<Build> buildingsAround = me.getMap().getBuildsAround(me.getX(), me.getY());
 		for(Build b : buildingsAround)
 		{
 			if(b.isAcceptResources())

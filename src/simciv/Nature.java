@@ -23,7 +23,7 @@ public class Nature
 	private static Image treeSprites[] = new Image[3];
 	private static SpriteSheet bushSprites;
 	
-	public static void loadContent()
+	public static void initialize()
 	{
 		treeSprites[0] = Content.images.natureTree;
 		treeSprites[1] = Content.images.natureTree2;

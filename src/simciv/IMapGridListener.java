@@ -1,6 +1,6 @@
 package simciv;
 
-public interface IMapListener
+public interface IMapGridListener
 {
 	public void onCellChange(MapCell cell, int x, int y);
 }

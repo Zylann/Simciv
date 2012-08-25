@@ -17,8 +17,7 @@ import simciv.maptargets.IMapTarget;
  * @author Marc
  *
  */
-// TODO PERF create a single pathfinder instance (not included in each unit) working with requests ;
-// so we can use a unique 2D matrix for visited cells and speed up unit thinkings
+// TODO limit the amount of requests to keep the game frametime smooth (in case of big stress)
 public class PathFinder
 {
 	// States
@@ -37,20 +36,20 @@ public class PathFinder
 	private int maxSteps;
 	private HashMap<Vector2i, Byte> visited; // at, fromDirection
 	private ArrayList<Vector2i> leaves;
-	private transient World worldRef;
+	private transient Map mapRef;
 	
 	/**
 	 * Constructs and initializes the path finder.
-	 * @param map
+	 * @param grid
 	 * @param startX
 	 * @param startY
 	 * @param targetX
 	 * @param targetY
 	 */
-	public PathFinder(World world, int startX, int startY, IMapTarget target)
+	public PathFinder(Map world, int startX, int startY, IMapTarget target)
 	{
 		init(startX, startY, target);
-		worldRef = world;
+		mapRef = world;
 		maxSteps = defaultMaxSteps;
 	}
 		
@@ -88,7 +87,7 @@ public class PathFinder
 	
 	protected boolean isTargetPos(Vector2i pos)
 	{
-		return target.evaluate(worldRef, pos.x, pos.y);
+		return target.evaluate(mapRef, pos.x, pos.y);
 	}
 	
 	/**
@@ -223,7 +222,7 @@ public class PathFinder
 	 */
 	protected boolean canPass(int x, int y)
 	{
-		return worldRef.map.isCrossable(x, y) && worldRef.map.isRoad(x, y);
+		return mapRef.grid.isCrossable(x, y) && mapRef.grid.isRoad(x, y);
 	}
 	
 	// Debug

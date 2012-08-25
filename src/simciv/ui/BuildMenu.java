@@ -9,7 +9,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import simciv.CityBuilder;
-import simciv.World;
+import simciv.Map;
 import simciv.builds.Build;
 import simciv.builds.BuildFactory;
 import simciv.ui.base.Menu;
@@ -55,7 +55,7 @@ public class BuildMenu extends Menu
 		}
 	}
 
-	public void updateInfos(World worldRef) throws SlickException
+	public void updateInfos(Map worldRef) throws SlickException
 	{
 		for(BuildMenuItem item : items)
 			item.updateInfos(worldRef);
@@ -93,7 +93,7 @@ public class BuildMenu extends Menu
 			}
 		}
 
-		public void updateInfos(World worldRef) throws SlickException
+		public void updateInfos(Map worldRef) throws SlickException
 		{
 			// Name
 			Build b = BuildFactory.createFromName(buildString, worldRef);

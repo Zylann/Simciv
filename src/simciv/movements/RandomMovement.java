@@ -27,7 +27,7 @@ public class RandomMovement implements IMovement
 		if(ticksBeforeNextStop > 0)
 		{
 			ticksBeforeNextStop--;
-			u.move(u.getWorld().map.getAvailableDirections(u.getX(), u.getY()));
+			u.move(u.getMap().grid.getAvailableDirections(u.getX(), u.getY()));
 		}
 		else
 		{

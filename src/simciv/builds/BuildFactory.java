@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import org.newdawn.slick.SlickException;
 
-import simciv.World;
+import simciv.Map;
 
 /**
  * Associates Building classes to strings and
@@ -41,7 +41,7 @@ public class BuildFactory
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static Build createFromName(String s, World world) throws SlickException
+	public static Build createFromName(String s, Map map) throws SlickException
 	{
 		Build b = null;
 		try
@@ -50,8 +50,8 @@ public class BuildFactory
 			if(buildingClass != null)
 			{
 				b = (Build) buildingClass.getConstructor(new Class[]
-				{ World.class }).newInstance(new Object[]
-				{ world });
+				{ Map.class }).newInstance(new Object[]
+				{ map });
 			}
 		}
 		catch(Exception exception)

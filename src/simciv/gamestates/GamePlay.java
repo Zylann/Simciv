@@ -15,7 +15,7 @@ import simciv.SoundEngine;
 import simciv.Terrain;
 import simciv.Vector2i;
 import simciv.View;
-import simciv.World;
+import simciv.Map;
 import simciv.content.Content;
 import simciv.ui.BuildMenu;
 import simciv.ui.BuildMenuBar;
@@ -40,7 +40,7 @@ public class GamePlay extends UIBasicGameState
 {
 	private int stateID = -1;
 	private View view;
-	private World world;
+	private Map map;
 	private CityBuilder builder;
 	private InfoBar infoBar;
 	private String debugText = "";
@@ -73,9 +73,9 @@ public class GamePlay extends UIBasicGameState
 	{
 	}
 	
-	public void setWorld(World world)
+	public void setMap(Map world)
 	{
-		this.world = world;
+		this.map = world;
 	}
 
 	@Override
@@ -171,16 +171,16 @@ public class GamePlay extends UIBasicGameState
 	public void enter(GameContainer gc, StateBasedGame game) throws SlickException
 	{
 		// Create and init minimap
-		minimapUpdater = new MinimapUpdater(world);
-		world.map.addListener(minimapUpdater);
-		minimapUpdater.updateCompleteViz(world.map);
+		minimapUpdater = new MinimapUpdater(map);
+		map.grid.addListener(minimapUpdater);
+		minimapUpdater.updateCompleteViz(map.grid);
 		
 		// Create CityBuilder
-		builder = new CityBuilder(world);
+		builder = new CityBuilder(map);
 		
 		// Create view
 		view = new View(0, 0, 2);
-		view.setWorldSize(world.map.getWidth(), world.map.getHeight());
+		view.setWorldSize(map.grid.getWidth(), map.grid.getHeight());
 				
 		// Because we will always draw the map on the entire screen at each frame
 		gc.setClearEachFrame(false);
@@ -223,7 +223,7 @@ public class GamePlay extends UIBasicGameState
 			pointedCell = view.convertCoordsToMap(input.getMouseX(), input.getMouseY());
 			builder.cursorMoved(pointedCell);
 
-			world.update(gc, game, delta);
+			map.update(gc, game, delta);
 			builder.update(gc);
 		}
 		
@@ -235,8 +235,8 @@ public class GamePlay extends UIBasicGameState
 		indicatorsBar.update(
 				Citizen.totalCount,
 				Citizen.totalWithJob,
-				(int) world.playerCity.getMoney(),
-				world.time.getMonthProgressRatio());
+				(int) map.playerCity.getMoney(),
+				map.time.getMonthProgressRatio());
 		
 		// debug
 		updateTime = gc.getTime() - beginUpdateTime;
@@ -258,7 +258,7 @@ public class GamePlay extends UIBasicGameState
 		
 		/* World */
 		
-		world.render(gc, game, gfx, mapRange);
+		map.render(gc, game, gfx, mapRange);
 		
 		/* Builder */
 		
@@ -339,7 +339,7 @@ public class GamePlay extends UIBasicGameState
 	public void keyReleased(int key, char c)
 	{
 		if(key == Input.KEY_G)
-			world.map.toggleRenderGrid();
+			map.grid.toggleRenderGrid();
 		if(key == Input.KEY_P || key == Input.KEY_PAUSE || key == Input.KEY_ESCAPE)
 			togglePause();
 		if(key == Input.KEY_F3)
@@ -353,9 +353,9 @@ public class GamePlay extends UIBasicGameState
 		if(key == Input.KEY_TAB)
 			toggleShowMinimap();
 		if(key == Input.KEY_SPACE)
-			world.setFastForward(!world.isFastForward());
+			map.setFastForward(!map.isFastForward());
 		if(key == Input.KEY_NUMPAD0) // Debug
-			System.out.println(world.playerCity.getResourceTotal(Resource.WHEAT));
+			System.out.println(map.playerCity.getResourceTotal(Resource.WHEAT));
 	}
 	
 	public void togglePause()

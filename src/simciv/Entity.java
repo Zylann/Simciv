@@ -5,10 +5,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 /**
  * An entity is a located game element that can update and draw itself.
- * In this game, the update is discretized into ticks :
- * update() uses real-time parameters, tick() does not.
- * tick() is called at each tick time interval, usually more than the frame time.
- * Tick times are specific to each entity.
+ * In this game, entity coordinates are integers (map grid position)
  * @author Marc
  *
  */
@@ -17,29 +14,26 @@ public abstract class Entity extends GameComponent
 	private int posX;
 	private int posY;
 	private int lifeTime;
-	private int nbTicks;
-	private int timeBeforeNextTick;
 	protected byte state; // different means depending on units or buildings
-	protected short healthPoints;
+	protected int healthPoints;
 	protected byte direction;
-	protected transient World worldRef;
+	protected transient Map mapRef;
 	
-	public Entity(World w)
+	public Entity(Map m)
 	{
 		super();
-		worldRef = w;
+		mapRef = m;
 		direction = Direction2D.SOUTH;
-		timeBeforeNextTick = getTickTime();
 	}
 		
 	public byte getState()
 	{
 		return state;
 	}
-		
-	public World getWorld()
+	
+	public Map getMap()
 	{
-		return worldRef;
+		return mapRef;
 	}
 	
 	public void setState(byte newState)
@@ -47,7 +41,7 @@ public abstract class Entity extends GameComponent
 		state = newState;
 	}
 	
-	public short getHealthPoints()
+	public int getHealthPoints()
 	{
 		return healthPoints;
 	}
@@ -87,34 +81,35 @@ public abstract class Entity extends GameComponent
 		untrack();
 		super.dispose();
 	}
-
-	/**
-	 * Sets entity information on the map, when available.
-	 */
-	protected void track()
-	{
-		// By default, no need to track
-	}
 	
 	/**
-	 * Removes entity information from the map, when available.
+	 * Get entity position/origin X
+	 * @return
 	 */
-	protected void untrack()
-	{
-		// By default, no need to untrack
-	}
-	
 	public int getX()
 	{
 		return posX;
 	}
 	
+	/**
+	 * Get entity position/origin Y
+	 * @return
+	 */
 	public int getY()
 	{
 		return posY;
 	}
 	
+	/**
+	 * Get entity bounding width
+	 * @return
+	 */
 	public abstract int getWidth();
+	
+	/**
+	 * Get entity bounding height
+	 * @return
+	 */
 	public abstract int getHeight();
 	
 	/**
@@ -126,11 +121,6 @@ public abstract class Entity extends GameComponent
 		return lifeTime;
 	}
 		
-	public int getTicks()
-	{
-		return nbTicks;
-	}
-	
 	public void setDirection(byte dir)
 	{
 		direction = dir;
@@ -152,63 +142,27 @@ public abstract class Entity extends GameComponent
 		return false;
 	}
 
+	/**
+	 * Sets entity information on the map grid, if available.
+	 */
+	protected void track()
+	{
+		// By default, no need to track
+	}
+	
+	/**
+	 * Removes entity information from the map grid, if available.
+	 */
+	protected void untrack()
+	{
+		// By default, no need to untrack
+	}
+	
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta)
 	{
 		lifeTime += delta;
-		timeBeforeNextTick -= delta;
-		
-		if(timeBeforeNextTick < 0)
-		{
-			timeBeforeNextTick += getTickTime();
-//			if(timeBeforeNextTick < 0)
-//				timeBeforeNextTick = 0;
-			
-			tickEntity();
-			
-			nbTicks++;
-		}
 	}
-	
-	protected void tickEntity()
-	{
-		tick();
-	}
-	
-	/**
-	 * Returns the tick ratio.
-	 * This value is always increasing, reaching 1 before next call to tick(),
-	 * and turns back to zero after each tick().
-	 * For example, if the entity has waited the half of its time before tick again,
-	 * getK() will return 0.5.
-	 * @return ratio between 0 and 1
-	 */
-	public final float getK()
-	{
-		return (float)timeBeforeNextTick / (float)(getTickTime());
-	}
-	
-	/**
-	 * Converts seconds into ticks looking towards the entity
-	 * @param s : seconds
-	 * @return
-	 */
-	public final int secondsToTicks(float s)
-	{
-		return (int) ((1000.f * s) / getTickTime());
-	}
-		
-	/**
-	 * Returns the time interval between each behavior update.
-	 * It can be used to increase its speed for example.
-	 * @return : time per tick in milliseconds
-	 */
-	protected abstract int getTickTime();
-
-	/**
-	 * Called regularly to make the entity "live" and execute its tasks.
-	 */
-	protected abstract void tick();
 
 }
 

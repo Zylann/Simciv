@@ -101,7 +101,7 @@ public class MarketDelivery extends Job
 	{
 		if(carriedResource.isEmpty())
 			return;
-		List<Build> buildings = me.getWorld().getBuildsAround(me.getX(), me.getY());
+		List<Build> buildings = me.getMap().getBuildsAround(me.getX(), me.getY());
 		for(Build b : buildings)
 		{
 			if(b.isHouse())
@@ -111,7 +111,7 @@ public class MarketDelivery extends Job
 
 	private void retrieveResourcesIfPossible()
 	{
-		List<Build> buildings = me.getWorld().getBuildsAround(me.getX(), me.getY());
+		List<Build> buildings = me.getMap().getBuildsAround(me.getX(), me.getY());
 		for(Build b : buildings)
 		{
 			if(Warehouse.class.isInstance(b))

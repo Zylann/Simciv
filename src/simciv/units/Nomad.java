@@ -4,7 +4,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 
 import simciv.Game;
-import simciv.World;
+import simciv.Map;
 import simciv.content.Content;
 import simciv.movements.RandomMovement;
 
@@ -12,9 +12,9 @@ public class Nomad extends Unit
 {
 	private static SpriteSheet sprites;
 	
-	public Nomad(World w)
+	public Nomad(Map m)
 	{
-		super(w);
+		super(m);
 		setMovement(new RandomMovement());
 		
 		if(sprites == null)

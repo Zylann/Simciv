@@ -2,7 +2,7 @@ package simciv.maptargets;
 
 import java.util.List;
 
-import simciv.World;
+import simciv.Map;
 import simciv.builds.Build;
 import simciv.builds.Warehouse;
 
@@ -14,7 +14,7 @@ import simciv.builds.Warehouse;
 public class WarehouseForMarketMapTarget implements IMapTarget
 {
 	@Override
-	public boolean evaluate(World world, int x, int y)
+	public boolean evaluate(Map world, int x, int y)
 	{
 		List<Build> list = world.getBuildsAround(x, y);
 		for(Build b : list)

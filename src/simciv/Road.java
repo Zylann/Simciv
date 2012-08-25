@@ -18,7 +18,7 @@ public class Road
 	static Image tileset;
 	static Image tiles[];
 	
-	public static void loadContent() throws SlickException
+	public static void initialize() throws SlickException
 	{
 		tileset = Content.images.terrainRoad;
 		
@@ -80,7 +80,7 @@ public class Road
 		return i;
 	}
 	
-	public static byte getIndex(Map map, int x, int y)
+	public static byte getIndex(MapGrid map, int x, int y)
 	{
 		return getIndex(
 				map.isRoad(x-1, y),
@@ -89,17 +89,17 @@ public class Road
 				map.isRoad(x, y+1));
 	}
 	
-	public static boolean isAvailableDirections(Map map, int x, int y)
+	public static boolean isAvailableDirections(MapGrid map, int x, int y)
 	{
 		return getIndex(map, x, y) != 0;
 	}
 	
-	public static List<Byte> getAvailableDirections(Map map, int x, int y)
+	public static List<Byte> getAvailableDirections(MapGrid map, int x, int y)
 	{
 		return getAvailableDirections(map, x, y, (byte)-1);
 	}
 	
-	public static List<Byte> getAvailableDirections(Map map, int x, int y, byte except)
+	public static List<Byte> getAvailableDirections(MapGrid map, int x, int y, byte except)
 	{
 		ArrayList<Byte> res = new ArrayList<Byte>();
 						

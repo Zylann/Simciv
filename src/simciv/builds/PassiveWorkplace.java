@@ -1,6 +1,6 @@
 package simciv.builds;
 
-import simciv.World;
+import simciv.Map;
 
 /**
  * A passive workplace doesn't produce anything.
@@ -9,9 +9,9 @@ import simciv.World;
  */
 public abstract class PassiveWorkplace extends Workplace
 {
-	public PassiveWorkplace(World w)
+	public PassiveWorkplace(Map m)
 	{
-		super(w);
+		super(m);
 	}
 
 	@Override

@@ -9,12 +9,12 @@ import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Direction2D;
-import simciv.Entity;
 import simciv.Game;
 import simciv.MapCell;
 import simciv.PathFinder;
+import simciv.TickableEntity;
 import simciv.Vector2i;
-import simciv.World;
+import simciv.Map;
 import simciv.builds.Build;
 import simciv.maptargets.BuildMapTarget;
 import simciv.maptargets.IMapTarget;
@@ -28,7 +28,7 @@ import simciv.movements.PathMovement;
  * @author Marc
  *
  */
-public abstract class Unit extends Entity
+public abstract class Unit extends TickableEntity
 {	
 	// States
 	public static final byte NORMAL = 1;
@@ -40,9 +40,9 @@ public abstract class Unit extends Entity
 	private PathFinder pathFinder;
 	private Build buildingRef; // reference to the building the unit currently is in
 	
-	public Unit(World w)
+	public Unit(Map m)
 	{
-		super(w);
+		super(m);
 		direction = Direction2D.EAST;
 		isAlive = true;
 		state = NORMAL;
@@ -70,13 +70,13 @@ public abstract class Unit extends Entity
 	@Override
 	protected final void track()
 	{
-		worldRef.map.getCellExisting(getX(), getY()).setUnitInfo(getID());
+		mapRef.grid.getCellExisting(getX(), getY()).setUnitInfo(getID());
 	}
 
 	@Override
 	protected final void untrack()
 	{
-		MapCell lastCell = worldRef.map.getCellExisting(getX(), getY());
+		MapCell lastCell = mapRef.grid.getCellExisting(getX(), getY());
 		if(lastCell.getUnitID() == getID())
 			lastCell.eraseUnitInfo();
 	}
@@ -131,7 +131,7 @@ public abstract class Unit extends Entity
 		if(target == null)
 			return;
 		
-		pathFinder = new PathFinder(worldRef, getX(), getY(), target);
+		pathFinder = new PathFinder(mapRef, getX(), getY(), target);
 		
 		setState(Unit.THINKING);
 		setDirection(Direction2D.NONE);
@@ -224,8 +224,8 @@ public abstract class Unit extends Entity
 			int nextPosX = getX() + Direction2D.vectors[direction].x;
 			int nextPosY = getY() + Direction2D.vectors[direction].y;
 			
-			if(worldRef.map.isCrossable(nextPosX, nextPosY) && 
-					worldRef.map.isRoad(nextPosX, nextPosY))
+			if(mapRef.grid.isCrossable(nextPosX, nextPosY) && 
+					mapRef.grid.isRoad(nextPosX, nextPosY))
 			{
 				move();
 				return true;

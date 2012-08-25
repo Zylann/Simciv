@@ -11,7 +11,7 @@ import simciv.MathHelper;
 import simciv.Resource;
 import simciv.ResourceBag;
 import simciv.ResourceSlot;
-import simciv.World;
+import simciv.Map;
 import simciv.builds.Build;
 import simciv.builds.House;
 import simciv.builds.Workplace;
@@ -40,7 +40,7 @@ public class Citizen extends Unit
 	public static final int TICK_TIME_BASIC = 400;
 	private static final float TICK_TIME_VARIATION = 100;
 	private static final int TICK_TIME_MIN = 200;
-	private static final int INITIAL_FOOD = 6;
+	private static final int INITIAL_FOOD = 7;
 	
 	// Feed levels (in citizen ticks)
 	public static final int FEED_MAX = 400;
@@ -56,9 +56,9 @@ public class Citizen extends Unit
 	private int feedLevel;
 	private ResourceBag ownedResources;
 
-	public Citizen(World w)
+	public Citizen(Map m)
 	{
-		super(w);
+		super(m);
 		// Each citizen have a slightly different basic tickTime
 		tickTimeRandom = (int)(TICK_TIME_VARIATION * (Math.random() - 0.5f));
 		setTickTimeWithRandom(TICK_TIME_BASIC);
@@ -105,7 +105,7 @@ public class Citizen extends Unit
 		if(job != null)
 		{
 			playPaySound();
-			return worldRef.playerCity.getIncomeTaxRatio() * (float)job.getIncome();
+			return mapRef.playerCity.getIncomeTaxRatio() * (float)job.getIncome();
 		}
 		return 0;
 	}
@@ -144,7 +144,7 @@ public class Citizen extends Unit
 		tickHunger();
 		
 		// Taxes
-		if(beenTaxed && worldRef.time.isFirstDayOfMonth())
+		if(beenTaxed && mapRef.time.isFirstDayOfMonth())
 			beenTaxed = false;
 		
 		// Job
@@ -187,7 +187,7 @@ public class Citizen extends Unit
 	public void kill()
 	{
 		super.kill();
-		worldRef.addGraphicalEffect(
+		mapRef.addGraphicalEffect(
 				new RisingIcon(getX(), getY(), Content.images.effectDeath));
 	}
 
@@ -204,7 +204,7 @@ public class Citizen extends Unit
 	{
 		if(job != null)
 			return;
-		ArrayList<Build> builds = worldRef.getBuildsAround(getX(), getY());
+		ArrayList<Build> builds = mapRef.getBuildsAround(getX(), getY());
 		for(Build b : builds)
 		{
 			if(b.isWorkplace())
@@ -219,7 +219,7 @@ public class Citizen extends Unit
 						job.onBegin();
 						setTickTimeWithRandom(TICK_TIME_BASIC + job.getTickTimeOverride());
 						// Visual feedback
-						worldRef.addGraphicalEffect(
+						mapRef.addGraphicalEffect(
 								new RisingIcon(
 										workplace.getX(), workplace.getY(),
 										Content.images.effectGreenStar));
@@ -318,7 +318,7 @@ public class Citizen extends Unit
 	protected void buyResource(ResourceSlot r, int amount)
 	{
 		ownedResources.addFrom(r, amount);
-		worldRef.playerCity.gainMoney(0.5f);
+		mapRef.playerCity.gainMoney(0.5f);
 		playPaySound();
 	}
 	
@@ -328,7 +328,7 @@ public class Citizen extends Unit
 	public void transformToNomad()
 	{
 		dispose();
-		worldRef.spawnUnit(new Nomad(worldRef), getX(), getY());
+		mapRef.spawnUnit(new Nomad(mapRef), getX(), getY());
 	}
 	
 }

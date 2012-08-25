@@ -26,8 +26,8 @@ public class Architect extends Job
 	@Override
 	public void tick()
 	{
-		List<Build> builds = me.getWorld().getBuildsAround(me.getX(), me.getY());
-		PlayerCity city = me.getWorld().playerCity;
+		List<Build> builds = me.getMap().getBuildsAround(me.getX(), me.getY());
+		PlayerCity city = me.getMap().playerCity;
 		for(Build b : builds)
 		{
 			if(b.needsMaintenance())

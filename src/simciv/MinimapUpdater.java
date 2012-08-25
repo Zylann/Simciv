@@ -12,7 +12,7 @@ import simciv.content.Content;
  * @author Marc
  *
  */
-public class MinimapUpdater implements IMapListener
+public class MinimapUpdater implements IMapGridListener
 {
 	private static Image mapMask;
 	private static final int MASK_BASE = 16; // in pixels
@@ -21,12 +21,12 @@ public class MinimapUpdater implements IMapListener
 	private ImageBuffer pixels;
 	private Image viz;
 	private int nextVizUpdateTime; // in ms
-	private World worldRef;
+	private Map worldRef;
 	
-	public MinimapUpdater(World w) throws SlickException
+	public MinimapUpdater(Map w) throws SlickException
 	{
 		worldRef = w;
-		pixels = new ImageBuffer(w.map.getWidth(), w.map.getHeight());
+		pixels = new ImageBuffer(w.grid.getWidth(), w.grid.getHeight());
 		viz = pixels.getImage(Image.FILTER_NEAREST);
 		
 		mapMask = Content.images.uiMinimapMask;
@@ -42,7 +42,7 @@ public class MinimapUpdater implements IMapListener
 		}
 	}
 	
-	public void updateCompleteViz(Map m)
+	public void updateCompleteViz(MapGrid m)
 	{
 		for(int y = 0; y < m.getHeight(); y++)
 		{

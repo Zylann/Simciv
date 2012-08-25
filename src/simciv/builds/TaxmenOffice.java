@@ -6,7 +6,7 @@ import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Game;
-import simciv.World;
+import simciv.Map;
 import simciv.content.Content;
 import simciv.jobs.InternalJob;
 import simciv.jobs.Job;
@@ -25,9 +25,9 @@ public class TaxmenOffice extends PassiveWorkplace
 		properties.setCost(200).setSize(2, 2, 1).setUnitsCapacity(6).setCategory(BuildCategory.ADMINISTRATION);
 	}
 	
-	public TaxmenOffice(World w)
+	public TaxmenOffice(Map m)
 	{
-		super(w);
+		super(m);
 		state = Build.STATE_NORMAL;
 
 		if(sprites == null)

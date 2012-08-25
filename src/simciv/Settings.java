@@ -7,6 +7,7 @@ package simciv;
  */
 public class Settings
 {
+	// Video settings
 	public int framerate;
 	public int screenWidth;
 	public int screenHeight;

@@ -4,7 +4,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
-import simciv.World;
+import simciv.Map;
 import simciv.content.Content;
 
 /**
@@ -24,7 +24,7 @@ public class Debris extends Build
 		properties.setCost(0).setSize(1, 1, 0).setUnitsCapacity(0).setCategory(BuildCategory.RUINS);
 	}
 	
-	public Debris(World w)
+	public Debris(Map w)
 	{
 		super(w);
 		infoString = "Ruins";

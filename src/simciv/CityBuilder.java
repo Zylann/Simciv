@@ -42,7 +42,7 @@ public class CityBuilder
  	private IntRange2D buildZone = new IntRange2D();
  	
  	// World access
-	private transient World worldRef;
+	private transient Map mapRef;
 	
 	// State
 	private int mode;
@@ -54,16 +54,16 @@ public class CityBuilder
 	private boolean cursorPress = false;
 	private int cursorButton;
 	
-	public CityBuilder(World worldRef) throws SlickException
+	public CityBuilder(Map worldRef) throws SlickException
 	{
-		this.worldRef = worldRef;
+		this.mapRef = worldRef;
 		setMode(MODE_CURSOR);
 		setBuildString("House");
 	}
 	
-	public World getWorld()
+	public Map getWorld()
 	{
-		return worldRef;
+		return mapRef;
 	}
 
 	public static void loadContent() throws SlickException
@@ -111,7 +111,7 @@ public class CityBuilder
 	public CityBuilder setBuildString(String bstr) throws SlickException
 	{
 		buildString = bstr;
-		build = BuildFactory.createFromName(bstr, worldRef);
+		build = BuildFactory.createFromName(bstr, mapRef);
 		return this;
 	}
 	
@@ -133,7 +133,7 @@ public class CityBuilder
 	public void render(Graphics gfx)
 	{
 		// Pointed cell
-		if(worldRef.map.contains(pos.x, pos.y))
+		if(mapRef.grid.contains(pos.x, pos.y))
 		{
 			gfx.pushTransform();
 			gfx.scale(Game.tilesSize, Game.tilesSize);
@@ -163,7 +163,7 @@ public class CityBuilder
 			{
 				gfx.translate(pos.x, pos.y);
 				
-				if(worldRef.map.canPlaceObject(pos.x, pos.y))
+				if(mapRef.grid.canPlaceObject(pos.x, pos.y))
 					gfx.setColor(canPlaceColor);
 				else
 					gfx.setColor(cannotPlaceColor);
@@ -188,7 +188,7 @@ public class CityBuilder
 			w = build.getWidth();
 			h = build.getHeight();
 			
-			if(build.canBePlaced(worldRef.map, x, y))
+			if(build.canBePlaced(mapRef.grid, x, y))
 				gfx.setColor(canPlaceColor);
 			else
 				gfx.setColor(cannotPlaceColor);
@@ -264,7 +264,7 @@ public class CityBuilder
 	
 	private void onPointedCellChanged()
 	{
-		pointedBuild = worldRef.getBuild(pos.x, pos.y);
+		pointedBuild = mapRef.getBuild(pos.x, pos.y);
 		updateInfoText();
 	}
 	
@@ -321,9 +321,9 @@ public class CityBuilder
 	private void placeRoad()
 	{
 		// TODO enable auto-pathfinding by letting the mouse pressed
-		if(worldRef.map.placeRoad(pos.x, pos.y))
+		if(mapRef.grid.placeRoad(pos.x, pos.y))
 		{
-			worldRef.playerCity.buy(Road.cost);
+			mapRef.playerCity.buy(Road.cost);
 			placeSound.play();
 		}
 	}
@@ -343,13 +343,13 @@ public class CityBuilder
 	private boolean erase(int x, int y, boolean notify)
 	{
 		boolean res = false;
-		if(worldRef.map.eraseRoad(x, y))
+		if(mapRef.grid.eraseRoad(x, y))
 			res = true;
-		else if(worldRef.eraseBuild(x, y))
+		else if(mapRef.eraseBuild(x, y))
 			res = true;
 		if(res)
 		{
-			worldRef.playerCity.buy(erasingCost);
+			mapRef.playerCity.buy(erasingCost);
 			if(notify)
 				eraseSound.play();
 		}
@@ -388,14 +388,14 @@ public class CityBuilder
 	private boolean placeBuild(int x, int y, boolean notify) throws SlickException
 	{
 		// Create a new building
-		Build b = BuildFactory.createFromName(buildString, worldRef);
+		Build b = BuildFactory.createFromName(buildString, mapRef);
 
 		if(b != null)
 		{
 			// Place it if possible
-			if(worldRef.placeBuild(b, x, y))
+			if(mapRef.placeBuild(b, x, y))
 			{
-				worldRef.playerCity.buy(b.getProperties().cost);
+				mapRef.playerCity.buy(b.getProperties().cost);
 				if(notify)
 				{
 					placeSound.play();

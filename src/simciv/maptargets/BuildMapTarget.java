@@ -1,6 +1,6 @@
 package simciv.maptargets;
 
-import simciv.World;
+import simciv.Map;
 
 /**
  * Returns true if a certain building is around the given pos.
@@ -17,9 +17,9 @@ public class BuildMapTarget implements IMapTarget
 	}
 
 	@Override
-	public boolean evaluate(World world, int x, int y)
+	public boolean evaluate(Map world, int x, int y)
 	{
-		return world.map.isBuildAroundWithID(buildingID, x, y);
+		return world.grid.isBuildAroundWithID(buildingID, x, y);
 	}
 	
 }

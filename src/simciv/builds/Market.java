@@ -6,7 +6,7 @@ import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Game;
-import simciv.World;
+import simciv.Map;
 import simciv.content.Content;
 import simciv.jobs.InternalJob;
 import simciv.jobs.Job;
@@ -29,9 +29,9 @@ public class Market extends PassiveWorkplace
 		properties.setCost(50).setSize(2, 2, 1).setUnitsCapacity(6).setCategory(BuildCategory.MARKETING);
 	}
 	
-	public Market(World w)
+	public Market(Map m)
 	{
-		super(w);
+		super(m);
 		state = Build.STATE_NORMAL;
 		if(sprites == null)
 		{

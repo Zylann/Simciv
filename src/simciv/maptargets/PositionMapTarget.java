@@ -1,6 +1,6 @@
 package simciv.maptargets;
 
-import simciv.World;
+import simciv.Map;
 
 /**
  * Returns true if the given position is evaluated, false otherwise
@@ -19,7 +19,7 @@ public class PositionMapTarget implements IMapTarget
 	}
 	
 	@Override
-	public boolean evaluate(World world, int x, int y)
+	public boolean evaluate(Map world, int x, int y)
 	{
 		return targetX == x && targetY == y;
 	}

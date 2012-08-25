@@ -29,18 +29,18 @@ public class MapGenerator extends Thread
     @Override
 	public void run() // Note : to execute the thread, use start().
 	{
-    	generate(mapRef);
+    	generateTerrain(mapRef.grid);
 	}
 
-	public void generate(Map map)
+	public void generateTerrain(MapGrid grid)
     {
     	int x, y;
     	double heightNoise, forestNoise, localNoise, bushNoise;
 		MapCell c = new MapCell();
 		
-    	for(y = 0; y < map.getHeight(); y++)
+    	for(y = 0; y < grid.getHeight(); y++)
     	{
-    		for(x = 0; x < map.getWidth(); x++)
+    		for(x = 0; x < grid.getWidth(); x++)
     		{
     			heightNoise = Noise.getPerlin((float)x, (float)y, seed, 4, 0.5f, 64.f);
     			localNoise = Noise.getf(x, y, seed+1);
@@ -93,11 +93,11 @@ public class MapGenerator extends Thread
     			else
     				c.terrainID = Terrain.WATER; // sea
     			    			    			
-    			map.getCellExisting(x, y).set(c);
+    			grid.getCellExisting(x, y).set(c);
     		}
     		
     		// Update generation progress
-    		progress = (int) (100 * (float)y / (float)map.getHeight());
+    		progress = (int) (100 * (float)y / (float)grid.getHeight());
     	}
     	
     	finished = true;

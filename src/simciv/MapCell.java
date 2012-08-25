@@ -167,7 +167,7 @@ public class MapCell
 		}
 	}
 
-	public Color getMinimapColor(World w)
+	public Color getMinimapColor(Map w)
 	{
 		if(isBuild())
 		{

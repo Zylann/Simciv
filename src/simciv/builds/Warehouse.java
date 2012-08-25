@@ -7,7 +7,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Game;
 import simciv.ResourceSlot;
-import simciv.World;
+import simciv.Map;
 import simciv.content.Content;
 import simciv.jobs.InternalJob;
 import simciv.jobs.Job;
@@ -35,9 +35,9 @@ public class Warehouse extends PassiveWorkplace
 		properties.setUnitsCapacity(4).setSize(3, 3, 1).setCost(50).setCategory(BuildCategory.INDUSTRY);
 	}
 	
-	public Warehouse(World w)
+	public Warehouse(Map m)
 	{
-		super(w);
+		super(m);
 		state = Build.STATE_NORMAL;
 		full = false;
 		
@@ -78,7 +78,7 @@ public class Warehouse extends PassiveWorkplace
 				break;
 		}
 		int storedAmount = oldAmount - r.getAmount();
-		worldRef.playerCity.onResourceStored(type, storedAmount);
+		mapRef.playerCity.onResourceStored(type, storedAmount);
 		
 		full = !r.isEmpty();
 	}
@@ -98,7 +98,7 @@ public class Warehouse extends PassiveWorkplace
 		}
 		
 		int retrievedAmount = r.getAmount() - oldAmount;
-		worldRef.playerCity.onResourceUsed(type, retrievedAmount);
+		mapRef.playerCity.onResourceUsed(type, retrievedAmount);
 		
 		if(retrieved)
 			full = false;

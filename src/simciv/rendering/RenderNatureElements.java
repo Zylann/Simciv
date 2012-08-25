@@ -6,7 +6,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Game;
 import simciv.IRenderable;
-import simciv.Map;
+import simciv.MapGrid;
 
 /**
  * Renders a line of natural elements
@@ -15,12 +15,12 @@ import simciv.Map;
  */
 public class RenderNatureElements implements IRenderable
 {
-	Map mapRef;
+	MapGrid mapRef;
 	int startX;
 	int y;
 	int maxX;
 	
-	public RenderNatureElements(Map map, int startX, int y, int maxX)
+	public RenderNatureElements(MapGrid map, int startX, int y, int maxX)
 	{
 		this.startX = startX;
 		this.y = y;

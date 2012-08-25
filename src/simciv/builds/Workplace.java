@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 import simciv.Game;
-import simciv.World;
+import simciv.Map;
 import simciv.jobs.Job;
 import simciv.units.Citizen;
 
@@ -14,9 +14,9 @@ public abstract class Workplace extends Build
 	// References to citizen working here
 	HashMap<Integer,Citizen> employees = new HashMap<Integer,Citizen>();
 	
-	public Workplace(World w)
+	public Workplace(Map m)
 	{
-		super(w);
+		super(m);
 		employees = new HashMap<Integer,Citizen>();
 	}
 	

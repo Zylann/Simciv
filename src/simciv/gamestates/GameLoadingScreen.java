@@ -12,7 +12,7 @@ import simciv.Nature;
 import simciv.Resource;
 import simciv.Road;
 import simciv.Terrain;
-import simciv.World;
+import simciv.Map;
 import simciv.builds.BuildCategory;
 import simciv.ui.base.ProgressBar;
 import simciv.ui.base.RootPane;
@@ -24,7 +24,7 @@ public class GameLoadingScreen extends UIBasicGameState
 {
 	private int stateID = -1;
 	private MapGenerator mapGenerator;
-	private World world;
+	private Map map;
 	private ProgressBar progressBar;
 	
 	public GameLoadingScreen(int stateID)
@@ -65,13 +65,13 @@ public class GameLoadingScreen extends UIBasicGameState
 		
 		Terrain.initialize();
 		Resource.initialize();
-		Road.loadContent();
+		Road.initialize();
 		CityBuilder.loadContent();
-		Nature.loadContent();
+		Nature.initialize();
 		BuildCategory.initialize();
 		
-		world = new World(256, 256);
-		mapGenerator = new MapGenerator(131183, world.map);
+		map = new Map(256, 256);
+		mapGenerator = new MapGenerator(131183, map);
 		mapGenerator.start();
 	}
 
@@ -96,7 +96,7 @@ public class GameLoadingScreen extends UIBasicGameState
 			throws SlickException
 	{
 		super.leave(container, game);		
-		((simciv.Game)game).gamePlay.setWorld(world);
+		((simciv.Game)game).gamePlay.setMap(map);
 	}
 
 }

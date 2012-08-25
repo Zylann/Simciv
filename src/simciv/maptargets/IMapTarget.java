@@ -1,6 +1,6 @@
 package simciv.maptargets;
 
-import simciv.World;
+import simciv.Map;
 
 /**
  * A map target is an object that can evaluate a position on the map,
@@ -10,5 +10,5 @@ import simciv.World;
  */
 public interface IMapTarget
 {
-	public boolean evaluate(World world, int x, int y);
+	public boolean evaluate(Map world, int x, int y);
 }

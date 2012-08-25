@@ -1,6 +1,6 @@
 package simciv.maptargets;
 
-import simciv.World;
+import simciv.Map;
 
 /**
  * Returns true if there is a free warehouse around the given position
@@ -10,7 +10,7 @@ import simciv.World;
 public class FreeWarehouseMapTarget implements IMapTarget
 {
 	@Override
-	public boolean evaluate(World world, int x, int y)
+	public boolean evaluate(Map world, int x, int y)
 	{
 		return world.getFreeWarehouse(x, y) != null;
 	}

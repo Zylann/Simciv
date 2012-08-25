@@ -27,7 +27,7 @@ public class Taxman extends Job
 	public void tick()
 	{
 		float totalMoneyCollected = 0;
-		List<Build> builds = me.getWorld().getBuildsAround(me.getX(), me.getY());
+		List<Build> builds = me.getMap().getBuildsAround(me.getX(), me.getY());
 		for(Build b : builds)
 		{
 			if(b.isHouse())
@@ -36,7 +36,7 @@ public class Taxman extends Job
 				totalMoneyCollected += moneyCollected;
 			}
 		}
-		me.getWorld().playerCity.gainMoney((int) totalMoneyCollected);
+		me.getMap().playerCity.gainMoney((int) totalMoneyCollected);
 	}
 
 	@Override

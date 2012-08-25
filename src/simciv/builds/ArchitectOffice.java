@@ -6,7 +6,7 @@ import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Game;
-import simciv.World;
+import simciv.Map;
 import simciv.content.Content;
 import simciv.jobs.Architect;
 import simciv.jobs.InternalJob;
@@ -28,9 +28,9 @@ public class ArchitectOffice extends PassiveWorkplace
 		properties.setCost(100).setSize(2, 2, 2).setUnitsCapacity(4).setCategory(BuildCategory.ADMINISTRATION);
 	}
 	
-	public ArchitectOffice(World w)
+	public ArchitectOffice(Map m)
 	{
-		super(w);
+		super(m);
 		if(sprites == null)
 		{
 			sprites = new SpriteSheet(Content.images.buildArchitectOffice,

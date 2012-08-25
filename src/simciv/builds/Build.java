@@ -7,12 +7,12 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
-import simciv.Entity;
 import simciv.Game;
-import simciv.Map;
+import simciv.MapGrid;
 import simciv.MathHelper;
 import simciv.ResourceSlot;
-import simciv.World;
+import simciv.Map;
+import simciv.TickableEntity;
 import simciv.content.Content;
 import simciv.effects.SmokeExplosion;
 
@@ -24,7 +24,7 @@ import simciv.effects.SmokeExplosion;
  * @author Marc
  *
  */
-public abstract class Build extends Entity
+public abstract class Build extends TickableEntity
 {
 	// Common states
 	public static final byte STATE_CONSTRUCTION = 0;
@@ -34,9 +34,9 @@ public abstract class Build extends Entity
 	// Solidness
 	protected int solidness;
 	
-	public Build(World w)
+	public Build(Map m)
 	{
-		super(w);
+		super(m);
 		state = STATE_NORMAL;
 		solidness = getSolidnessMax();
 	}
@@ -63,13 +63,13 @@ public abstract class Build extends Entity
 		// Leave ruins
 		for(int y = getY(); y < getY() + getHeight(); y++)
 		{
-			for(int x = getX(); x < getY() + getWidth(); x++)
+			for(int x = getX(); x < getX() + getWidth(); x++)
 			{
-				Debris d = new Debris(worldRef);
+				Debris d = new Debris(mapRef);
 				d.setPropertiesFromBuild(this);
-				worldRef.placeBuild(d, x, y);
+				mapRef.placeBuild(d, x, y);
 				
-				worldRef.addGraphicalEffect(
+				mapRef.addGraphicalEffect(
 						new SmokeExplosion(x, y, 8, 1.5f, Game.tilesSize/2));
 			}
 		}
@@ -78,7 +78,7 @@ public abstract class Build extends Entity
 	@Override
 	public void dispose()
 	{
-		worldRef.map.markBuilding(this, false);
+		mapRef.grid.markBuilding(this, false);
 		super.dispose();
 	}
 
@@ -86,19 +86,19 @@ public abstract class Build extends Entity
 	public void onInit()
 	{
 		super.onInit();
-		worldRef.map.markBuilding(this, true);
+		mapRef.grid.markBuilding(this, true);
 	}
 	
 	@Override
 	protected final void track()
 	{
-		worldRef.map.markBuilding(this, true);
+		mapRef.grid.markBuilding(this, true);
 	}
 
 	@Override
 	protected final void untrack()
 	{
-		worldRef.map.markBuilding(this, false);
+		mapRef.grid.markBuilding(this, false);
 	}
 
 	@Override
@@ -292,7 +292,7 @@ public abstract class Build extends Entity
 	 * @param y : origin Y in cells
 	 * @return true if can be placed, false otherwise
 	 */
-	public boolean canBePlaced(Map map, int x, int y)
+	public boolean canBePlaced(MapGrid map, int x, int y)
 	{
 		return map.canPlaceObject(x, y, getWidth(), getHeight());
 	}
