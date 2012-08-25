@@ -9,10 +9,9 @@ package simciv;
 public class Cheats
 {
 	private static boolean enabled = false;
-	private static boolean fastCitizenProduction = true;
+	private static boolean fastCitizenProduction = false;
 	private static boolean fastFarmlandGrow = false;
 	private static boolean infiniteMoney = false;
-	private static boolean fastForwardEnabled = true;
 	
 	public static void onCommand(String cmd)
 	{
@@ -26,8 +25,6 @@ public class Cheats
 				fastCitizenProduction = !fastCitizenProduction;
 			else if(cmd == "eldorado")
 				infiniteMoney = !infiniteMoney;
-			else if(cmd == "timelord")
-				fastForwardEnabled = !fastForwardEnabled;
 		}
 		else if(cmd == "icheat")
 		{
@@ -53,11 +50,6 @@ public class Cheats
 	public static boolean isInfiniteMoney()
 	{
 		return enabled && infiniteMoney;
-	}
-
-	public static boolean isFastForwardEnabled()
-	{
-		return enabled && fastForwardEnabled ;
 	}
 
 }
