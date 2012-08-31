@@ -30,7 +30,7 @@ import simciv.ui.base.UIStateBasedGame;
 public class Game extends UIStateBasedGame
 {
 	// Game constants
-	public static final String title = "Simciv - indev - release 3";
+	public static final String title = "Simciv indev 3.0";
 	public static final int tilesSize = 16;
 	public static final int defaultScreenWidth = 800;
 	public static final int defaultScreenHeight = 600;
@@ -48,7 +48,6 @@ public class Game extends UIStateBasedGame
 	private static CanvasGameContainer canvas;
 	private static Container contentPane;
 	private static JFrame frame;
-	//private static AppGameContainer gameContainer; // old container
 	
 	// The game
 	private static Game game;
@@ -91,15 +90,6 @@ public class Game extends UIStateBasedGame
 			contentPane.add(canvas);
 			
 			canvas.start(); // Starts the game
-
-			// Old code
-			// AppGameContainer gc = new AppGameContainer(new Game(title));
-			// Note : fullscreen works with 800x600 and 1600x1200
-			// gc.setDisplayMode(screenWidth, screenHeight, false);
-			// gc.setTargetFrameRate(framerate);
-			// gc.setVSync(true);
-			// gc.setSmoothDeltas(true);
-			// gc.setUpdateOnlyWhenVisible(true);
 			
 		} catch (SlickException e)
 		{
