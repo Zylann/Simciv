@@ -8,11 +8,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import simciv.Game;
 import simciv.Map;
 import simciv.content.Content;
-import simciv.jobs.InternalJob;
-import simciv.jobs.Job;
-import simciv.jobs.Taxman;
-import simciv.movements.RandomRoadMovement;
-import simciv.units.Citizen;
+import simciv.units.Job;
 
 public class TaxmenOffice extends PassiveWorkplace
 {
@@ -41,43 +37,19 @@ public class TaxmenOffice extends PassiveWorkplace
 	@Override
 	protected void onActivityStart()
 	{
-		for(Citizen emp : employees.values())
-		{
-			if(emp.getJob().getID() == Job.TAXMAN && !emp.isOut())
-			{
-				emp.exitBuilding(); // mission begin
-				emp.setMovement(new RandomRoadMovement());
-			}
-		}
+		addAndSpawnUnitsAround(Job.TAXMAN, 2);
 	}
 
 	@Override
 	protected void onActivityStop()
 	{
-		// TODO out employees must end their mission
+		removeAllUnits();
 	}
 
 	@Override
-	public void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
+	public void renderBuild(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		renderDefault(gfx, sprites);
-	}
-
-	@Override
-	public Job giveNextJob(Citizen citizen)
-	{
-		if(needEmployees())
-		{
-			Job job;
-			if(employees.size() < 4) // 4 internals,
-				job = new InternalJob(citizen, this, Job.TAXMEN_OFFICE_INTERNAL);
-			else // and 2 for patrol
-				job = new Taxman(citizen, this);
-				
-			addEmployee(citizen);
-			return job;
-		}
-		return null;
 	}
 
 	@Override

@@ -10,9 +10,9 @@ import simciv.Map;
 public class FreeWarehouseMapTarget implements IMapTarget
 {
 	@Override
-	public boolean evaluate(Map world, int x, int y)
+	public boolean evaluate(Map m, int x, int y)
 	{
-		return world.getFreeWarehouse(x, y) != null;
+		return m.getFreeWarehouse(x, y) != null;
 	}
 
 }

@@ -12,11 +12,7 @@ import simciv.Resource;
 import simciv.ResourceSlot;
 import simciv.Map;
 import simciv.content.Content;
-import simciv.jobs.Conveyer;
-import simciv.jobs.InternalJob;
-import simciv.jobs.Job;
-import simciv.maptargets.FreeWarehouseMapTarget;
-import simciv.units.Citizen;
+import simciv.units.Conveyer;
 
 /**
  * Farmlands are used to raise one type of plant.
@@ -107,24 +103,19 @@ public class FarmLand extends Workplace
 		if(cropsLevel != MAX_LEVEL)
 			return;
 		
-		// Tell free conveyers to distribute crops
-		for(Citizen emp : employees.values())
-		{
-			if(emp.getJob().getID() == Job.CONVEYER && !emp.isOut())
-			{
-				Conveyer job = (Conveyer)(emp.getJob());
-				int harvestResult = (int) (50 + 25.f * Math.random());
-				job.addResourceCarriage(new ResourceSlot(Resource.WHEAT, harvestResult));
-				emp.exitBuilding();
-				emp.findAndGoTo(new FreeWarehouseMapTarget());
-			}
-		}
+		int harvestResult = (int) (50 + 25.f * Math.random());
 
+		Conveyer conveyers[] = new Conveyer[1];
+		conveyers[0] = new Conveyer(mapRef, this);
+		conveyers[0].addResourceCarriage(new ResourceSlot(Resource.WHEAT, harvestResult));
+		
+		addAndSpawnUnitsAround(conveyers);
+		
 		cropsLevel = 0; // The field is cleaned up
 	}
 
 	@Override
-	public void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
+	public void renderBuild(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		// Soil
 		if(state == Build.STATE_NORMAL || needEmployees())
@@ -173,23 +164,6 @@ public class FarmLand extends Workplace
 	protected int getTickTime()
 	{
 		return 500; // 1/2 second
-	}
-
-	@Override
-	public Job giveNextJob(Citizen citizen)
-	{
-		if(needEmployees())
-		{
-			// 4 farmers, 1 conveyer
-			Job job;
-			if(employees.size() < 4)
-				job = new InternalJob(citizen, this, Job.FARMER);
-			else
-				job = new Conveyer(citizen, this);
-			addEmployee(citizen);
-			return job;
-		}
-		return null;
 	}
 
 	@Override

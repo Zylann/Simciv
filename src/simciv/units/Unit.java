@@ -38,12 +38,12 @@ public abstract class Unit extends TickableEntity
 	private boolean isMoving;
 	private IMovement movement;
 	private PathFinder pathFinder;
-	private Build buildingRef; // reference to the building the unit currently is in
+	private Build buildRef; // reference to the building the unit currently is in
 	
 	public Unit(Map m)
 	{
 		super(m);
-		direction = Direction2D.EAST;
+		direction = Direction2D.random();
 		isAlive = true;
 		state = NORMAL;
 	}
@@ -89,9 +89,9 @@ public abstract class Unit extends TickableEntity
 	 */
 	public boolean enterBuilding(Build b)
 	{
-		if(buildingRef != null)
+		if(buildRef != null)
 			return false;
-		buildingRef = b;
+		buildRef = b;
 		setMovement(null);
 		setDirection(Direction2D.NONE);
 		untrack();
@@ -104,9 +104,9 @@ public abstract class Unit extends TickableEntity
 	 */
 	public boolean exitBuilding()
 	{
-		if(buildingRef == null)
+		if(buildRef == null)
 			return false;
-		buildingRef = null;
+		buildRef = null;
 		if(!isDisposed())
 			track();
 		return true;
@@ -118,7 +118,7 @@ public abstract class Unit extends TickableEntity
 	 */
 	public boolean isOut()
 	{
-		return buildingRef == null;
+		return buildRef == null;
 	}
 
 	/**
@@ -170,7 +170,7 @@ public abstract class Unit extends TickableEntity
 		}
 	}
 	
-	public void setMovement(IMovement mvt)
+	protected void setMovement(IMovement mvt)
 	{
 		movement = mvt;
 	}
@@ -314,7 +314,7 @@ public abstract class Unit extends TickableEntity
 	{
 		return isOut();
 	}
-		
+	
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{

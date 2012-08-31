@@ -1,5 +1,7 @@
 package simciv.builds;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -13,8 +15,10 @@ import simciv.MathHelper;
 import simciv.ResourceSlot;
 import simciv.Map;
 import simciv.TickableEntity;
+import simciv.Vector2i;
 import simciv.content.Content;
 import simciv.effects.SmokeExplosion;
+import simciv.maptargets.RoadMapTarget;
 
 // FIXME sometimes, the map is left unconstructible. Bug origin is unknown...
 
@@ -74,14 +78,7 @@ public abstract class Build extends TickableEntity
 			}
 		}
 	}
-		
-	@Override
-	public void dispose()
-	{
-		mapRef.grid.markBuilding(this, false);
-		super.dispose();
-	}
-
+	
 	@Override
 	public void onInit()
 	{
@@ -155,6 +152,14 @@ public abstract class Build extends TickableEntity
 		healthPoints = 100;
 	}
 	
+	protected boolean isRoadNearby()
+	{
+		RoadMapTarget roads = new RoadMapTarget();
+		ArrayList<Vector2i> availablePositions = 
+			mapRef.grid.getAvailablePositionsAround(this, roads, mapRef);		
+		return !availablePositions.isEmpty();
+	}
+	
 	/**
 	 * Returns the on-floor width of the building in cells
 	 * @return
@@ -191,7 +196,7 @@ public abstract class Build extends TickableEntity
 	 */
 	public final boolean is1x1()
 	{
-		return getProperties().width == 1 && getProperties().height == 1;
+		return getWidth() == 1 && getHeight() == 1;
 	}
 	
 	public final void renderAsConstructing(Graphics gfx)
@@ -254,7 +259,7 @@ public abstract class Build extends TickableEntity
 		gfx.pushTransform();
 		gfx.translate(getX() * Game.tilesSize, getY() * Game.tilesSize);
 				
-		renderBuilding(gc, game, gfx);
+		renderBuild(gc, game, gfx);
 		
 		if(gc.getInput().isKeyDown(Input.KEY_4))
 			renderSolidnessRatio(gfx, 0, 0);
@@ -283,7 +288,7 @@ public abstract class Build extends TickableEntity
 		gfx.drawImage(sprite, 0, -getZHeight() * Game.tilesSize);
 	}
 
-	protected abstract void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx);
+	protected abstract void renderBuild(GameContainer gc, StateBasedGame game, Graphics gfx);
 
 	/**
 	 * Determines if the building can be placed on a certain position on the map.

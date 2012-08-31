@@ -14,9 +14,9 @@ import simciv.builds.Warehouse;
 public class WarehouseForMarketMapTarget implements IMapTarget
 {
 	@Override
-	public boolean evaluate(Map world, int x, int y)
+	public boolean evaluate(Map m, int x, int y)
 	{
-		List<Build> list = world.getBuildsAround(x, y);
+		List<Build> list = m.getBuildsAround(x, y);
 		for(Build b : list)
 		{
 			if(Warehouse.class.isInstance(b))

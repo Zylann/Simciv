@@ -1,4 +1,4 @@
-package simciv.jobs;
+package simciv.units;
 
 import java.util.List;
 
@@ -6,19 +6,28 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 
 import simciv.Game;
+import simciv.Map;
 import simciv.PlayerCity;
 import simciv.builds.Build;
 import simciv.builds.Workplace;
 import simciv.content.Content;
-import simciv.units.Citizen;
+import simciv.movements.RandomRoadMovement;
 
-public class Architect extends Job
+/**
+ * Architects walks randomly through the city, and repair builds.
+ * Each maintenance costs money.
+ * @author Marc
+ *
+ */
+public class Architect extends Citizen
 {
 	private static SpriteSheet unitSprites;
 	
-	public Architect(Citizen citizen, Workplace workplace)
+	public Architect(Map m, Workplace w)
 	{
-		super(citizen, workplace);
+		super(m, w);
+		setMovement(new RandomRoadMovement());
+		
 		if(unitSprites == null)
 			unitSprites = new SpriteSheet(Content.images.unitArchitect, Game.tilesSize, Game.tilesSize);
 	}
@@ -26,27 +35,23 @@ public class Architect extends Job
 	@Override
 	public void tick()
 	{
-		List<Build> builds = me.getMap().getBuildsAround(me.getX(), me.getY());
-		PlayerCity city = me.getMap().playerCity;
+		PlayerCity city = mapRef.playerCity;
+		List<Build> builds = mapRef.getBuildsAround(getX(), getY());
+		
+		// Repair builds around the current position
 		for(Build b : builds)
 		{
 			if(b.needsMaintenance())
 			{
+				b.repair();
 				float cost = b.getSurfaceArea() * 0.3f;
-				if(city.getMoney() >= cost && b.onMaintenance())
-					city.buy(cost);
+				city.buy(cost);
 			}
 		}
 	}
 
 	@Override
-	public void onBegin()
-	{
-		me.enterBuilding(workplaceRef);
-	}
-
-	@Override
-	public byte getID()
+	public byte getJobID()
 	{
 		return Job.ARCHITECT;
 	}
@@ -54,19 +59,7 @@ public class Architect extends Job
 	@Override
 	public void renderUnit(Graphics gfx)
 	{
-		me.defaultRender(gfx, unitSprites);
-	}
-
-	@Override
-	public int getIncome()
-	{
-		return 15;
-	}
-
-	@Override
-	public int getTickTimeOverride()
-	{
-		return 200;
+		defaultRender(gfx, unitSprites);
 	}
 
 }

@@ -8,7 +8,7 @@ public class BuildCategory
 	public static final byte FOOD = 1;
 	public static final byte INDUSTRY = 2;
 	public static final byte ADMINISTRATION = 3;
-	public static final byte MARKETING = 4;
+	public static final byte TRADE = 4;
 	public static final byte RUINS = 5;
 	public static final byte COUNT = 6;
 	
@@ -33,7 +33,7 @@ public class BuildCategory
 		set(new BuildCategory(FOOD, "Food", new Color(64, 224, 0)));
 		set(new BuildCategory(INDUSTRY, "Industry", new Color(128, 128, 128)));
 		set(new BuildCategory(ADMINISTRATION, "Administration", new Color(64, 128, 255)));
-		set(new BuildCategory(MARKETING, "Marketing", new Color(255, 128, 128)));
+		set(new BuildCategory(TRADE, "Marketing", new Color(255, 128, 128)));
 		set(new BuildCategory(RUINS, "Ruins", new Color(64, 64, 64)));
 		
 	}

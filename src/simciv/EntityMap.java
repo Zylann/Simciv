@@ -32,6 +32,11 @@ public class EntityMap
 	 */
 	public void add(Entity e)
 	{
+		if(e == null)
+		{
+			System.out.println("ERROR: null entity added to an entity map !");
+			return;
+		}
 		newEntities.put(e.getID(), e);
 	}
 	
@@ -46,12 +51,19 @@ public class EntityMap
 			e.dispose();
 	}
 
+	/**
+	 * Gets an entity from its ID
+	 * @param ID : ID of the entity
+	 * @return the entity, null if not in the container
+	 */
 	public Entity get(int ID)
 	{
 		return entities.get(ID);
 	}
 	
 	/**
+	 * Gets the contained entities as a collection.
+	 * Note : do not modify this collection, better use it read-only
 	 * @return game components contained in the map as a Collection
 	 */
 	public Collection<Entity> asCollection()
@@ -76,16 +88,16 @@ public class EntityMap
 		newEntities.clear();
 		for(Entity e : entities.values())
 		{
-			e.update(gc, game, delta);
 			if(e.isDisposed())
 				disposedEntities.add(e.getID());
+			else
+				e.update(gc, game, delta);
 		}
 		for(Integer id : disposedEntities)
 		{
 			Entity e = entities.get(id);
-			if(e != null)
-				e.onDestruction();
-			entities.remove(e.getID());
+			e.onDestruction();
+			entities.remove(id);
 		}
 		disposedEntities.clear();
 	}

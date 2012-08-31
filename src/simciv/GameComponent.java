@@ -40,7 +40,7 @@ public abstract class GameComponent implements IRenderable
 		disposed = false;
 	}
 	
-	public boolean isInitialized()
+	public final boolean isInitialized()
 	{
 		return initialized;
 	}
@@ -55,16 +55,26 @@ public abstract class GameComponent implements IRenderable
 	}
 	
 	/**
-	 * Sets the disposed flag to false, i.e it will be deleted as soon as possible.
-	 * Note : this is more convenient than set the component to null, as we can control
-	 * the object's lifespan.
+	 * Sets the disposed flag to false, i.e it will be deleted as soon as possible by the component manager.
+	 * Note 1 : in many cases, the object will not be deleted immediately.
+	 * Note 2 : this is more convenient than set the component to null, as we can control the object's lifespan.
 	 * Overriding : don't forget to call super.dispose() !
 	 */
-	public void dispose()
+	public final void dispose()
 	{
+		if(!disposed)
+			onDispose();
 		disposed = true;
 	}
 	
+	/**
+	 * Called when dispose() is called and the game component were not disposed before.
+	 * If dispose is called again, this method will not be called again.
+	 */
+	protected void onDispose()
+	{
+	}
+
 	public final boolean isDisposed()
 	{
 		return disposed;
@@ -89,8 +99,8 @@ public abstract class GameComponent implements IRenderable
 	public abstract void update(GameContainer gc, StateBasedGame game, int delta);
 	
 	/**
-	 * Called just before the object to be deleted.
-	 * (Note that it is always the last method to be called)
+	 * Called just before the object to be deleted (nulled).
+	 * Note that it is always the last method to be called.
 	 */
 	public abstract void onDestruction();
 	

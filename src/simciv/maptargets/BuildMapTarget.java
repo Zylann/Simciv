@@ -17,9 +17,9 @@ public class BuildMapTarget implements IMapTarget
 	}
 
 	@Override
-	public boolean evaluate(Map world, int x, int y)
+	public boolean evaluate(Map m, int x, int y)
 	{
-		return world.grid.isBuildAroundWithID(buildingID, x, y);
+		return m.grid.isBuildAroundWithID(buildingID, x, y);
 	}
 	
 }

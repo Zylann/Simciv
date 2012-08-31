@@ -1,4 +1,4 @@
-package simciv.jobs;
+package simciv.units;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 
 import simciv.Game;
+import simciv.Map;
 import simciv.ResourceSlot;
 import simciv.builds.Build;
 import simciv.builds.House;
@@ -14,32 +15,26 @@ import simciv.builds.Workplace;
 import simciv.content.Content;
 import simciv.maptargets.WarehouseForMarketMapTarget;
 import simciv.movements.RandomRoadMovement;
-import simciv.units.Citizen;
-import simciv.units.Unit;
 
 /**
  * Deliver resources to citizen houses
  * @author Marc
  *
  */
-public class MarketDelivery extends Job
+public class MarketDelivery extends Citizen
 {
 	private static SpriteSheet unitSprites;
 	
 	private ResourceSlot carriedResource;
 	
-	public MarketDelivery(Citizen citizen, Workplace workplace)
+	public MarketDelivery(Map m, Workplace workplace)
 	{
-		super(citizen, workplace);
+		super(m, workplace);
+		//setMovement(new RandomRoadMovement());
 		carriedResource = new ResourceSlot();
+		
 		if(unitSprites == null)
 			unitSprites = new SpriteSheet(Content.images.unitMarketDelivery, Game.tilesSize, Game.tilesSize);
-	}
-
-	@Override
-	public void onBegin()
-	{
-		me.enterBuilding(workplaceRef);
 	}
 	
 	public void addResourceCarriage(ResourceSlot r)
@@ -50,10 +45,10 @@ public class MarketDelivery extends Job
 	@Override
 	public void tick()
 	{
-		if(!me.isOut())
+		if(!isOut())
 			return;
 		
-		if(me.getState() == Unit.THINKING)
+		if(getState() == Unit.THINKING)
 			return;
 
 		/*
@@ -66,9 +61,9 @@ public class MarketDelivery extends Job
 		 * go to 2).
 		 */
 		
-		if(carriedResource.isEmpty() && !me.isMovement())
+		if(carriedResource.isEmpty() && !isMovement())
 		{
-			me.findAndGoTo(new WarehouseForMarketMapTarget());
+			findAndGoTo(new WarehouseForMarketMapTarget());
 		}
 		else
 		{
@@ -76,19 +71,19 @@ public class MarketDelivery extends Job
 			distributeResources();
 			if(!wasEmpty && carriedResource.isEmpty())
 			{
-				me.findAndGoTo(new WarehouseForMarketMapTarget());
+				findAndGoTo(new WarehouseForMarketMapTarget());
 			}
 			else
 			{				
-				if(me.isMovementBlocked())
-					me.findAndGoTo(me.getMovementTarget());
-				else if(me.isMovementFinished())
+				if(isMovementBlocked())
+					findAndGoTo(getMovementTarget());
+				else if(isMovementFinished())
 				{
 					retrieveResourcesIfPossible();
 					if(carriedResource.isEmpty())
-						me.findAndGoTo(me.getMovementTarget());
+						findAndGoTo(getMovementTarget());
 					else
-						me.setMovement(new RandomRoadMovement());
+						setMovement(new RandomRoadMovement());
 				}
 			}
 		}
@@ -101,7 +96,7 @@ public class MarketDelivery extends Job
 	{
 		if(carriedResource.isEmpty())
 			return;
-		List<Build> buildings = me.getMap().getBuildsAround(me.getX(), me.getY());
+		List<Build> buildings = mapRef.getBuildsAround(getX(), getY());
 		for(Build b : buildings)
 		{
 			if(b.isHouse())
@@ -111,7 +106,7 @@ public class MarketDelivery extends Job
 
 	private void retrieveResourcesIfPossible()
 	{
-		List<Build> buildings = me.getMap().getBuildsAround(me.getX(), me.getY());
+		List<Build> buildings = mapRef.getBuildsAround(getX(), getY());
 		for(Build b : buildings)
 		{
 			if(Warehouse.class.isInstance(b))
@@ -128,21 +123,15 @@ public class MarketDelivery extends Job
 	public void renderUnit(Graphics gfx)
 	{
 		if(carriedResource.isEmpty())
-			me.defaultRender(gfx, unitSprites, 4); // render without bag
+			defaultRender(gfx, unitSprites, 4); // render without bag
 		else
-			me.defaultRender(gfx, unitSprites); // render with a bag
+			defaultRender(gfx, unitSprites); // render with a bag
 	}
 
 	@Override
-	public byte getID()
+	public byte getJobID()
 	{
 		return Job.MARKET_DELIVERY;
-	}
-
-	@Override
-	public int getIncome()
-	{
-		return 14;
 	}
 
 }

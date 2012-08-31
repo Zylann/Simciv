@@ -1,8 +1,6 @@
 package simciv.builds;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -13,17 +11,21 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Cheats;
 import simciv.Game;
+import simciv.Resource;
+import simciv.ResourceBag;
 import simciv.ResourceSlot;
-import simciv.SoundEngine;
-import simciv.Vector2i;
 import simciv.Map;
 import simciv.content.Content;
 import simciv.effects.RisingIcon;
 import simciv.maptargets.RoadMapTarget;
-import simciv.units.Citizen;
 
 /**
- * Every citizen need a house. Houses produce citizens.
+ * Houses produce citizen. They can evoluate with some conditions.
+ * There is no object to hold citizen information : houses just have a population counter.
+ * If they get a job, the corresponding workplace gets referenced.
+ * The number of workplaces referenced this way musn't exceed the population counter.
+ * Each workplace reference means that 1 inhabitant is working here.
+ * Then, the same workplace might be referenced more than one time.
  * @author Marc
  *
  */
@@ -33,25 +35,43 @@ public class House extends Build
 	private static SpriteSheet sprites[];
 	private static byte MAX_LEVEL = 1; // Note : in code, the first level is 0.
 	
+	// Feed levels (in house ticks)
+	public static final int FEED_MAX = 200;
+	public static final int FEED_HUNGRY = 125;
+	public static final int FEED_STARVING = 50;
+	public static final int FEED_MIN = 0;
+	
+	// Initial food units per inhabitant
+	private static final int INITIAL_FOOD_PER_INHABITANT = 7;
+
 	static
 	{
 		properties = new BuildProperties[MAX_LEVEL+1];
 		
 		properties[0] = new BuildProperties("House lv.1")
-			.setUnitsCapacity(2).setCost(10).setSize(1, 1, 1).setCategory(BuildCategory.HOUSES);
+			.setUnitsCapacity(1).setCost(10).setSize(1, 1, 1).setCategory(BuildCategory.HOUSES);
 		
 		properties[1] = new BuildProperties("House lv.2")
-			.setUnitsCapacity(8).setCost(50).setSize(2, 2, 2).setCategory(BuildCategory.HOUSES);
+			.setUnitsCapacity(5).setCost(50).setSize(2, 2, 2).setCategory(BuildCategory.HOUSES);
 	}
 
-	// References to citizen living here
-	private HashMap<Integer,Citizen> inhabitants = new HashMap<Integer,Citizen>();
 	private byte level;
 	private byte nbCitizensToProduce;
+	private byte nbInhabitants;
+	private ArrayList<Workplace> workers; // workers.size() < nbInhabitants
+	private ResourceBag resources;
+	private int feedLevel;
+	private boolean beenTaxed;
 
 	public House(Map m)
 	{
 		super(m);
+		direction = (byte) (4 * Math.random());
+		level = 0;
+		nbCitizensToProduce = 1;
+		state = Build.STATE_CONSTRUCTION;
+		workers = new ArrayList<Workplace>();
+		resources = new ResourceBag();
 		
 		if(sprites == null)
 		{
@@ -63,12 +83,7 @@ public class House extends Build
 				
 			img = Content.images.buildHouseLv2;
 			sprites[1] = new SpriteSheet(img, properties[1].width * Game.tilesSize, img.getHeight());
-		}
-		
-		direction = (byte) (4 * Math.random());
-		level = 0;
-		nbCitizensToProduce = 1;
-		state = Build.STATE_CONSTRUCTION;
+		}		
 	}
 	
 	@Override
@@ -77,16 +92,25 @@ public class House extends Build
 		return true;
 	}
 	
+	public boolean isBeenTaxed()
+	{
+		return beenTaxed;
+	}
+	
 	public float payTaxes()
 	{
 		float totalMoneyCollected = 0;
-		for(Citizen c : inhabitants.values())
-		{
-			if(!c.isBeenTaxed())
-				totalMoneyCollected += c.payTax();
-		}
+		
+		for(Workplace w : workers)
+			totalMoneyCollected += w.getSalary();
+		
+		totalMoneyCollected *= mapRef.playerCity.getIncomeTaxRatio();
+
 		if(totalMoneyCollected > 0)
 			mapRef.addGraphicalEffect(new RisingIcon(getX(), getY(), Content.images.effectGold));
+		
+		beenTaxed = true;
+		
 		return totalMoneyCollected;
 	}
 
@@ -100,69 +124,84 @@ public class House extends Build
 		}
 		else if(state == Build.STATE_NORMAL)
 		{
-			if(level != MAX_LEVEL && getTicks() % 20 == 0)
-			{
-				if(tryLevelUp())
-					nbCitizensToProduce++;
-				// TODO create new citizen if the usual inhabitants number is inferior (if they died)
+			if(getTicks() % 20 == 0)
+			{				
+				if(level != MAX_LEVEL)
+					tryLevelUp();
+				
+				if(getNbInhabitants() < getMaxInhabitants())
+				{
+					byte foodType = resources.getContainedFoodType();
+					if(foodType != Resource.NONE)
+						nbCitizensToProduce++;
+				}
 			}
 			
 			if(nbCitizensToProduce != 0)
 				nbCitizensToProduce -= produceCitizens(nbCitizensToProduce);
+			
+			tickHunger();
 		}
+		
+		if(mapRef.time.isFirstDayOfMonth())
+			beenTaxed = false;
 	}
 
-	/**
-	 * Produces nbToProduce citizens, following conditions :
-	 * - There must be room for them in the house
-	 * - The map must comport roads nearby
-	 * @param nbToProduce : number of citizen to produce
-	 * @return the amount effectively produced, always in [0, nbToProduce]
-	 */
-	protected byte produceCitizens(byte nbToProduce)
+	protected void tickHunger()
 	{
-		// It must have room for the new inhabitant
-		if(!isRoomForInhabitant())
-			return 0;
+		if(getNbInhabitants() == 0)
+			return;
 		
-		// It must have free space to appear
-		RoadMapTarget roads = new RoadMapTarget();
-		ArrayList<Vector2i> availablePositions = 
-			mapRef.grid.getAvailablePositionsAround(this, roads, mapRef);		
-		if(availablePositions.isEmpty())
-			return 0;
-		
-		// Produce citizens
-		byte citizensProduced = 0;
-		for(byte i = 0; i < nbToProduce; i++)
+		if(feedLevel > FEED_MIN)
 		{
-			Citizen c = new Citizen(mapRef);
-			if(addInhabitant(c))
-			{
-				// It will appear at random following available positions
-				Vector2i unitPos = availablePositions.get((int) (availablePositions.size() * Math.random()));
-				mapRef.spawnUnit(c, unitPos.x, unitPos.y);
-				citizensProduced++;
-			}
+			feedLevel -= getNbInhabitants();
+			if(feedLevel < FEED_MIN)
+				feedLevel = FEED_MIN;
 		}
 		
-		if(citizensProduced != 0)
-			SoundEngine.instance().play(Content.sounds.unitNewCitizen, 1.f, 0.25f);
-		
-		return citizensProduced;
+		if(feedLevel <= FEED_HUNGRY)
+		{
+			byte foodType = resources.getContainedFoodType();
+			if(foodType != Resource.NONE)
+			{
+				resources.subtract(foodType, 1);
+				feedLevel = FEED_MAX;
+			}
+			else
+			{
+				if(feedLevel <= FEED_STARVING)
+				{
+					if(feedLevel == FEED_MIN)
+					{
+						if(Math.random() < 0.1f)
+							removeInhabitant();
+					}
+				}
+			}
+		}
 	}
 	
 	/**
-	 * Puts all the content of this house into another, and destroys it
+	 * Puts all the content of this house into another, and make it disappear
 	 * @param other
 	 */
 	protected void mergeTo(House other)
 	{
-		for(Citizen c : inhabitants.values())
-			c.setHouse(other);
-		other.inhabitants.putAll(this.inhabitants);
-		this.inhabitants.clear();
+		// Merge inhabitants
 		other.nbCitizensToProduce += this.nbCitizensToProduce;
+		other.nbInhabitants += this.nbInhabitants;
+		nbCitizensToProduce = 0;
+		nbInhabitants = 0;
+		
+		// Merge resources
+		other.resources.addAllFrom(resources);
+		
+		// Update workers
+		for(Workplace w : workers)
+			w.changeEmployeeHouse(this, other);
+		other.workers.addAll(workers);
+		
+		// Remove this house (now empty)
 		dispose();
 	}
 	
@@ -206,7 +245,8 @@ public class House extends Build
 			level++;
 
 			// Mark the map (we know that cells are free, as they were occupied by houses)
-			mapRef.grid.markBuilding(this, true);
+			//mapRef.grid.markBuilding(this, true);
+			track();
 			
 			return true;
 		}
@@ -215,34 +255,123 @@ public class House extends Build
 	
 	public boolean isRoomForInhabitant()
 	{
-		return inhabitants.size() < getProperties().unitsCapacity;
-	}
-
-	public boolean addInhabitant(Citizen c)
-	{
-		if(isRoomForInhabitant())
-		{
-			if(inhabitants.put(c.getID(), c) == null)
-			{
-				c.setHouse(this);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public void removeInhabitant(int id)
-	{
-		inhabitants.remove(id);
+		return nbInhabitants < getProperties().unitsCapacity;
 	}
 	
+	/**
+	 * Produces nbToProduce citizens, following conditions :
+	 * - There must be room for them in the house,
+	 * - The map must comport roads nearby.
+	 * The population total will be increased.
+	 * @param nbToProduce : number of citizen to produce
+	 * @return the amount effectively produced
+	 */
+	protected byte produceCitizens(byte nbToProduce)
+	{		
+		if(nbToProduce <= 0 || !isRoomForInhabitant() || !isRoadNearby())
+			return 0; // Cannot produce citizen
+		
+		// Produce citizens
+		byte oldNbInhabitants = nbInhabitants;
+		nbInhabitants += nbToProduce;
+		if(nbInhabitants > getProperties().unitsCapacity)
+			nbInhabitants = (byte) getProperties().unitsCapacity;
+		byte nbProduced = (byte) (nbInhabitants - oldNbInhabitants);
+		
+		// Initial food for new inhabitants
+		resources.addAllFrom(new ResourceSlot(
+				Resource.WHEAT, INITIAL_FOOD_PER_INHABITANT * nbProduced));
+		
+		mapRef.playerCity.population += nbProduced;
+		
+		return nbProduced;
+	}
+	
+	public void addWorker(Workplace w)
+	{
+		workers.add(w);
+	}
+	
+	/**
+	 * Remvoves an inhabitant from the house.
+	 * If all of them have a job, the referenced workplaces will be notified.
+	 * The population total will be decreased.
+	 */
+	public void removeInhabitant()
+	{
+		removeInhabitantWorkingAt(null);
+	}
+
+	/**
+	 * Removes a working inhabitant from the house.
+	 * The workplace will be notified.
+	 * The population total will be decreased.
+	 * @param workplace : the place where the inhabitant works.
+	 * 		If null, this method will only remove an inhabitant.
+	 * 		If null and there is only workers, one of them will be removed too.
+	 */
+	public void removeInhabitantWorkingAt(Workplace workplace)
+	{
+		if(nbInhabitants == 0)
+			return;
+		
+		if(workplace != null)
+		{
+			if(!workers.remove(workplace))
+				return;
+			workplace.removeEmployee(this, false); // false : do not propagate to the house (circular)
+		}
+		else if(!workers.isEmpty() && workers.size() == nbInhabitants)
+		{
+			Workplace w = workers.get(0);
+			w.removeEmployee(this, false); // false : do not propagate to the house (circular)
+			workers.remove(w);
+		}
+
+		nbInhabitants--;
+		mapRef.playerCity.population--;
+	}
+	
+	/**
+	 * Removes all the inhabitants of the house.
+	 * If they have a job, the corresponding workplaces will be notified.
+	 * The population total will be decreased.
+	 */
+	public void removeAllInhabitants()
+	{
+		if(nbInhabitants == 0)
+			return;
+		
+		mapRef.playerCity.population -= nbInhabitants;
+		nbInhabitants = 0;
+		
+		for(Workplace w : workers)
+			w.removeEmployee(this, false); // false : do not propagate to the house (circular)
+		workers.clear();
+	}
+	
+	/**
+	 * Makes a worker living in this house to loose his job.
+	 * @param w : corresponding workplace
+	 * @param notify : if true, the workplace will be notified.
+	 */
+	public void removeWorker(Workplace w, boolean notify)
+	{
+		workers.remove(w);
+		if(notify)
+			w.removeEmployee(this, false);
+	}
+	
+	/**
+	 * @return true if the house has no inhabitants and will not produce them soon.
+	 */
 	public boolean isAbandonned()
 	{
-		return nbCitizensToProduce == 0 && inhabitants.size() == 0;
+		return nbCitizensToProduce == 0 && nbInhabitants == 0;
 	}
 
 	@Override
-	public void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
+	public void renderBuild(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		if(state == STATE_CONSTRUCTION)
 			renderAsConstructing(gfx);
@@ -265,12 +394,15 @@ public class House extends Build
 			if(gc.getInput().isKeyDown(Input.KEY_3))
 				renderHungerRatio(gfx, 0, 0);
 		}
+		
+		gfx.setColor(Color.white);
+		gfx.drawString("" + getNbInhabitants(), 0, 0);
 	}
 	
 	private void renderHungerRatio(Graphics gfx, int x, int y)
 	{
 		float w = (float)(getWidth() * Game.tilesSize - 1);
-		float t = getLowestHungerRatio() * w;
+		float t = getHungerRatio() * w;
 		gfx.setColor(Color.green);
 		gfx.fillRect(x, y, t, 2);
 		gfx.setColor(Color.red);
@@ -286,8 +418,8 @@ public class House extends Build
 	@Override
 	public void onDestruction()
 	{
-		for(Citizen c : inhabitants.values())
-			c.kill();
+		removeAllInhabitants();
+		nbCitizensToProduce = 0;
 	}
 
 	@Override
@@ -298,13 +430,29 @@ public class House extends Build
 
 	public int getNbInhabitants()
 	{
-		return inhabitants.size();
+		return nbInhabitants;
+	}
+	
+	/**
+	 * @return how many inhabitants have a job
+	 */
+	public int getNbWorkers()
+	{
+		return workers.size();
+	}
+	
+	public int getMaxInhabitants()
+	{
+		return getProperties().unitsCapacity;
 	}
 
 	@Override
 	public String getInfoString()
 	{
-		return "[" + getProperties().name + "] inhabitants : " + getNbInhabitants();
+		String str = "[" + getProperties().name + "] inhabitants : " + getNbInhabitants();
+		if(getNbInhabitants() > 0)
+			str += ", " + workers.size() + " with a job";
+		return str;
 	}
 	
 	/**
@@ -313,49 +461,38 @@ public class House extends Build
 	 */
 	public boolean isInhabitantHaveJob()
 	{
-		for(Citizen c : inhabitants.values())
-		{
-			if(c.getJob() != null)
-				return true;
-		}
-		return false;
+		return !workers.isEmpty();
 	}
 	
-	public void onDistributedResource(ResourceSlot r)
+	public boolean onDistributedResource(ResourceSlot r)
 	{
 		// At least one inhabitant of the house must have a job,
 		// in order to the others to benefit of resources distribution.
 		if(!isInhabitantHaveJob())
-			return;
+			return false;
 		
-		boolean bought = false;
-		for(Citizen c : inhabitants.values())
+		if(!resources.containsFood() && r.getSpecs().isFood())
 		{
-			if(c.onDistributedResource(r))
-				bought = true;
-		}
-		if(bought)
+			buyResource(r, 4);
 			mapRef.addGraphicalEffect(new RisingIcon(getX(), getY(), Content.images.effectGold));
-	}
-	
-	public float getMeanHungerRatio()
-	{
-		float sum = 0;
-		for(Citizen c : inhabitants.values())
-			sum += c.getHungerRatio();
-		return sum / (float)(inhabitants.size());
-	}
-	
-	public float getLowestHungerRatio()
-	{
-		float r = 1;
-		for(Citizen c : inhabitants.values())
-		{
-			float r2 = c.getHungerRatio();
-			if(r2 < r)
-				r = r2;
+			return true;
 		}
-		return r;
+		
+		return false;
+	}
+	
+	protected void buyResource(ResourceSlot r, int amount)
+	{
+		resources.addFrom(r, amount);
+		mapRef.playerCity.gainMoney(0.5f);
+	}
+	
+	public float getHungerRatio()
+	{
+		if(resources.containsFood())
+			return 1;
+		else
+			return (float)feedLevel / (float)FEED_MAX;
 	}
 
 	@Override

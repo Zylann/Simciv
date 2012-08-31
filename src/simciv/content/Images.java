@@ -18,7 +18,7 @@ public class Images
 	public Image buildDebris;
 	
 	// Units
-	public Image unitCitizen;
+	public Image unitEmployer;
 	public Image unitConveyer;
 	public Image unitNomad;
 	public Image unitDuck;

@@ -5,7 +5,13 @@
 <resources>
 
 	<!-- Textures -->
-
+	
+	<!--
+	TODO : Maybe the syntax will change for somewhat like this in the future : 
+	<image id="test" src="test.png"/>
+	<spritesheet id="test" hcount="2" vcount="1" src="test.png"/>
+	 -->
+	
 	<resource type="image" id="buildConstructing1x1">buildplace.png</resource>
 	<resource type="image" id="buildFarmland">farmland.png</resource>
 	<resource type="image" id="buildFarmlandCrops">crops.png</resource>
@@ -18,7 +24,7 @@
 	<resource type="image" id="buildArchitectOffice">architects.png</resource>
 	<resource type="image" id="buildDebris">debris.png</resource>
 	
-	<resource type="image" id="unitCitizen">citizen.png</resource>
+	<resource type="image" id="unitEmployer">citizen.png</resource>
 	<resource type="image" id="unitConveyer">transporter_only.png</resource>
 	<resource type="image" id="unitNomad">nomad.png</resource>
 	<resource type="image" id="unitTaxman">taxman.png</resource>

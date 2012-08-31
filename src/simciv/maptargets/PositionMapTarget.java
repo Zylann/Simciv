@@ -19,7 +19,7 @@ public class PositionMapTarget implements IMapTarget
 	}
 	
 	@Override
-	public boolean evaluate(Map world, int x, int y)
+	public boolean evaluate(Map m, int x, int y)
 	{
 		return targetX == x && targetY == y;
 	}

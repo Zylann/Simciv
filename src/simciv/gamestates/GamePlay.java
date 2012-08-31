@@ -30,7 +30,6 @@ import simciv.ui.base.UIBasicGameState;
 import simciv.ui.base.UIRenderer;
 import simciv.ui.base.Widget;
 import simciv.ui.base.Window;
-import simciv.units.Citizen;
 
 /**
  * Main state of the game
@@ -184,7 +183,7 @@ public class GamePlay extends UIBasicGameState
 		minimapUpdater = new MinimapUpdater(map);
 		map.grid.addListener(minimapUpdater);
 		minimapUpdater.updateCompleteViz(map.grid);
-		
+				
 		// Create CityBuilder
 		builder = new CityBuilder(map);
 		
@@ -244,8 +243,8 @@ public class GamePlay extends UIBasicGameState
 		SoundEngine.instance().update(delta);
 		
 		indicatorsBar.update(
-				Citizen.totalCount,
-				Citizen.totalWithJob,
+				map.playerCity.population,
+				map.playerCity.workingPopulation,
 				(int) map.playerCity.getMoney(),
 				map.time.getMonthProgressRatio());
 		

@@ -9,6 +9,8 @@ import java.util.HashMap;
  */
 public class PlayerCity
 {
+	public int population;
+	public int workingPopulation;
 	protected float money;
 	protected float incomeTaxRatio;
 	private HashMap<Byte, Integer> storedResources; // resource type, total amount
@@ -95,6 +97,13 @@ public class PlayerCity
 		if(total == null)
 			return 0;
 		return total;
+	}
+	
+	class ResourceStorageInfo
+	{
+		public int amount;
+		public int freeSpaceInOccupiedSlots;
+		// TODO
 	}
 
 }

@@ -1,5 +1,6 @@
 package simciv.builds;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
@@ -9,9 +10,6 @@ import simciv.Game;
 import simciv.ResourceSlot;
 import simciv.Map;
 import simciv.content.Content;
-import simciv.jobs.InternalJob;
-import simciv.jobs.Job;
-import simciv.units.Citizen;
 
 /**
  * A Warehouse is a building for storing resources.
@@ -26,7 +24,7 @@ public class Warehouse extends PassiveWorkplace
 	private static SpriteSheet sprites;
 	private static final int NB_SLOTS = 8;
 	
-	private ResourceSlot resourceSlots[] = new ResourceSlot[NB_SLOTS];
+	private ResourceSlot resourceSlots[];
 	private boolean full;
 
 	static
@@ -39,6 +37,7 @@ public class Warehouse extends PassiveWorkplace
 	{
 		super(m);
 		state = Build.STATE_NORMAL;
+		resourceSlots = new ResourceSlot[NB_SLOTS];
 		full = false;
 		
 		for(int i = 0; i < resourceSlots.length; i++)
@@ -50,6 +49,11 @@ public class Warehouse extends PassiveWorkplace
 					getWidth() * Game.tilesSize,
 					(getHeight() + getZHeight())* Game.tilesSize);
 		}
+	}
+		
+	public boolean isFull()
+	{
+		return full;
 	}
 
 	@Override
@@ -71,16 +75,19 @@ public class Warehouse extends PassiveWorkplace
 		byte type = r.getType();
 		
 		// Iterate over slots
+		full = true;
 		for(ResourceSlot slot : resourceSlots)
 		{
-			slot.addAllFrom(r);
-			if(r.isEmpty())
-				break;
+			if(!slot.isFull())
+			{
+				full = false;
+				if(!r.isEmpty())
+					slot.addAllFrom(r);
+			}
 		}
+		
 		int storedAmount = oldAmount - r.getAmount();
 		mapRef.playerCity.onResourceStored(type, storedAmount);
-		
-		full = !r.isEmpty();
 	}
 	
 	public boolean retrieveResource(ResourceSlot r)
@@ -106,7 +113,7 @@ public class Warehouse extends PassiveWorkplace
 	}
 	
 	@Override
-	public void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
+	public void renderBuild(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		// Floor
 		if(state == Build.STATE_ACTIVE)
@@ -126,25 +133,16 @@ public class Warehouse extends PassiveWorkplace
 		renderSlot(gfx, 5, 0, 					Game.tilesSize * 2);
 		renderSlot(gfx, 6, Game.tilesSize, 		Game.tilesSize * 2);
 		renderSlot(gfx, 7, Game.tilesSize * 2, 	Game.tilesSize * 2);
+		
+		gfx.setColor(Color.white);
+		gfx.drawString("" + getNbEmployees(), 0, 0);
 	}
 	
 	private void renderSlot(Graphics gfx, int i, int gx, int gy)
 	{
 		resourceSlots[i].renderStorage(gfx, gx, gy);
 	}
-	
-	@Override
-	public Job giveNextJob(Citizen citizen)
-	{
-		if(needEmployees())
-		{
-			Job job = new InternalJob(citizen, this, Job.WAREHOUSE_INTERNAL);
-			addEmployee(citizen);
-			return job;
-		}
-		return null;
-	}
-	
+		
 	public int getLoad()
 	{
 		float k = 0;

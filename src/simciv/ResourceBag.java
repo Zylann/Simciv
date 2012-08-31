@@ -33,6 +33,12 @@ public class ResourceBag
 	{
 		addFrom(r, -1);
 	}
+	
+	public void addAllFrom(ResourceBag resources)
+	{
+		for(ResourceSlot s : resources.slots.values())
+			addAllFrom(s);
+	}
 
 	public int getAmount(byte type)
 	{
@@ -73,7 +79,7 @@ public class ResourceBag
 		return true;
 	}
 	
-	public boolean add(byte type, int amount)
+	public boolean addToExisting(byte type, int amount)
 	{
 		ResourceSlot slot = slots.get(type);
 		if(slot == null)
@@ -86,7 +92,7 @@ public class ResourceBag
 	{
 		return slots.size();
 	}
-	
+		
 }
 
 

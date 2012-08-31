@@ -336,7 +336,7 @@ public class MapGrid
 				if(contains(x, y))
 				{
 					getCellExisting(x, y).renderGround(x, y, gfx);
-//					getCellExisting(x, y).renderData(gfx, x, y); // debug
+					getCellExisting(x, y).renderData(gfx, x, y); // debug
 				}
 			}
 		}

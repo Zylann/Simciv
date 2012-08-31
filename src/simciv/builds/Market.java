@@ -8,10 +8,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import simciv.Game;
 import simciv.Map;
 import simciv.content.Content;
-import simciv.jobs.InternalJob;
-import simciv.jobs.Job;
-import simciv.jobs.MarketDelivery;
-import simciv.units.Citizen;
+import simciv.units.Job;
 
 /**
  * A market allows distributing resources to the populaion
@@ -26,7 +23,7 @@ public class Market extends PassiveWorkplace
 	static
 	{
 		properties = new BuildProperties("Market");
-		properties.setCost(50).setSize(2, 2, 1).setUnitsCapacity(6).setCategory(BuildCategory.MARKETING);
+		properties.setCost(50).setSize(2, 2, 1).setUnitsCapacity(6).setCategory(BuildCategory.TRADE);
 	}
 	
 	public Market(Map m)
@@ -42,26 +39,9 @@ public class Market extends PassiveWorkplace
 	}
 
 	@Override
-	public void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
+	public void renderBuild(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		renderDefault(gfx, sprites);
-	}
-
-	@Override
-	public Job giveNextJob(Citizen citizen)
-	{
-		if(needEmployees())
-		{
-			Job job;
-			if(employees.size() < 3) // 3 internals,
-				job = new InternalJob(citizen, this, Job.MARKET_INTERNAL);
-			else // and 3 delivery men
-				job = new MarketDelivery(citizen, this);
-			
-			addEmployee(citizen);
-			return job;
-		}
-		return null;
 	}
 
 	@Override
@@ -73,21 +53,13 @@ public class Market extends PassiveWorkplace
 	@Override
 	protected void onActivityStart()
 	{
-		sendDelivery();
+		addAndSpawnUnitsAround(Job.MARKET_DELIVERY, 3);
 	}
 
 	@Override
 	protected void onActivityStop()
 	{
-	}
-	
-	private void sendDelivery()
-	{
-		for(Citizen emp : employees.values())
-		{
-			if(!emp.isOut() && emp.getJob().getID() == Job.MARKET_DELIVERY)
-				emp.exitBuilding();
-		}
+		removeAllUnits();
 	}
 
 }

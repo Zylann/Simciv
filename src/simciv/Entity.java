@@ -76,10 +76,10 @@ public abstract class Entity extends GameComponent
 	}
 
 	@Override
-	public void dispose()
+	protected void onDispose()
 	{
+		super.onDispose();
 		untrack();
-		super.dispose();
 	}
 	
 	/**

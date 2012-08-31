@@ -96,9 +96,9 @@ public class Map
 		units.add(u);
 	}
 	
-	public void spawnUnit(Unit unit)
+	public void spawnUnit(Unit u)
 	{
-		spawnUnit(unit, unit.getX(), unit.getY());
+		units.add(u);
 	}
 	
 	/**
@@ -216,9 +216,7 @@ public class Map
 		
 		// Draw elements in the right order
 		grid.renderGround(mapRange, gc, gfx); // Ground at first
-		
-		renderMgr.render(gc, game, gfx);
-		
+		renderMgr.render(gc, game, gfx); // Objects, builds, units		
 		// Draw effects on the top
 		for(VisualEffect e : graphicalEffects)
 			e.render(gfx);

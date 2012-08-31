@@ -163,7 +163,7 @@ public class MapCell
 		{
 			gfx.setColor(new Color(255, 128, 128));
 			gfx.setLineWidth(2);
-			gfx.drawRect(x * Game.tilesSize, y * Game.tilesSize, Game.tilesSize, Game.tilesSize);
+			gfx.drawRect(x * Game.tilesSize, y * Game.tilesSize, Game.tilesSize-2, Game.tilesSize-2);
 		}
 	}
 

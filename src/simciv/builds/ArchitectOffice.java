@@ -8,11 +8,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import simciv.Game;
 import simciv.Map;
 import simciv.content.Content;
-import simciv.jobs.Architect;
-import simciv.jobs.InternalJob;
-import simciv.jobs.Job;
-import simciv.movements.RandomRoadMovement;
-import simciv.units.Citizen;
+import simciv.units.Job;
 
 public class ArchitectOffice extends PassiveWorkplace
 {
@@ -20,7 +16,6 @@ public class ArchitectOffice extends PassiveWorkplace
 	private static SpriteSheet sprites;
 	
 	// TODO factorize : ProductiveWorkplace
-	// TODO factorize : PassiveWorkplace
 	
 	static
 	{
@@ -40,38 +35,15 @@ public class ArchitectOffice extends PassiveWorkplace
 	}
 
 	@Override
-	public Job giveNextJob(Citizen citizen)
-	{
-		if(needEmployees())
-		{
-			Job job;
-			if(employees.size() < 2)
-				job = new InternalJob(citizen, this, Job.ARCHITECT_INTERNAL);
-			else
-				job = new Architect(citizen, this);
-			
-			addEmployee(citizen);
-			return job;
-		}
-		return null;
-	}
-
-	@Override
 	protected void onActivityStart()
 	{
-		for(Citizen emp : employees.values())
-		{
-			if(emp.getJob().getID() == Job.ARCHITECT && !emp.isOut())
-			{
-				emp.exitBuilding(); // mission begin
-				emp.setMovement(new RandomRoadMovement());
-			}
-		}
+		addAndSpawnUnitsAround(Job.ARCHITECT, 2);
 	}
 
 	@Override
 	protected void onActivityStop()
 	{
+		removeAllUnits();
 	}
 
 	@Override
@@ -81,7 +53,7 @@ public class ArchitectOffice extends PassiveWorkplace
 	}
 
 	@Override
-	protected void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
+	protected void renderBuild(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		if(state == Build.STATE_ACTIVE)
 			gfx.drawImage(sprites.getSprite(1, 0), 0, -Game.tilesSize);

@@ -5,9 +5,9 @@ import simciv.Map;
 public class RoadMapTarget implements IMapTarget
 {
 	@Override
-	public boolean evaluate(Map world, int x, int y)
+	public boolean evaluate(Map m, int x, int y)
 	{
-		return world.grid.isRoad(x, y);
+		return m.grid.isRoad(x, y);
 	}
 
 }

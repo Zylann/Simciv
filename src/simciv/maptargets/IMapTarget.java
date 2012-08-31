@@ -10,5 +10,5 @@ import simciv.Map;
  */
 public interface IMapTarget
 {
-	public boolean evaluate(Map world, int x, int y);
+	public boolean evaluate(Map m, int x, int y);
 }

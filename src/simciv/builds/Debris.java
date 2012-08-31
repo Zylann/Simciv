@@ -60,7 +60,7 @@ public class Debris extends Build
 	}
 
 	@Override
-	protected void renderBuilding(GameContainer gc, StateBasedGame game, Graphics gfx)
+	protected void renderBuild(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		gfx.drawImage(Content.images.buildDebris, 0, 0);
 	}
