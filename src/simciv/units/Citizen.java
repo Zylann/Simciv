@@ -1,7 +1,6 @@
 package simciv.units;
 
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
 import simciv.Game;
@@ -17,7 +16,7 @@ import simciv.content.Content;
  */
 public abstract class Citizen extends Unit
 {
-	private static SpriteSheet thinkingAnim;
+	private static final long serialVersionUID = 1L;
 	
 	public static final int TICK_TIME_BASIC = 400;
 	private static final float TICK_TIME_VARIATION = 100;
@@ -25,22 +24,28 @@ public abstract class Citizen extends Unit
 	
 	private int tickTimeRandom; // Tick time variation constant in milliseconds
 	private int tickTime; // Tick time interval in milliseconds (modified value)
-	protected Workplace workplaceRef;
+	private int workplaceID;
+	private transient Workplace workplace;
 
 	public Citizen(Map m, Workplace w)
 	{
 		super(m);
-		workplaceRef = w;
+		workplaceID = w.getID();
 		// Each citizen have a slightly different basic tickTime
 		tickTimeRandom = (int)(TICK_TIME_VARIATION * (Math.random() - 0.5f));
-		setTickTimeWithRandom(TICK_TIME_BASIC);
-		
-		if(thinkingAnim == null)
-		{
-			Image thinkingSprite = Content.images.unitThinking;
-			int b = thinkingSprite.getHeight();
-			thinkingAnim = new SpriteSheet(thinkingSprite, b, b);
-		}		
+		setTickTimeWithRandom(TICK_TIME_BASIC);		
+	}
+	
+	protected int getWorkplaceID()
+	{
+		return workplaceID;
+	}
+	
+	protected Workplace getWorkplace()
+	{
+		if(workplace == null)
+			workplace = (Workplace)mapRef.getBuild(workplaceID);
+		return workplace;
 	}
 
 	public void setTickTimeWithRandom(int newTickTime)
@@ -52,6 +57,7 @@ public abstract class Citizen extends Unit
 	
 	public void renderThinkingIcon(Graphics gfx)
 	{
+		SpriteSheet thinkingAnim = Content.sprites.unitThinking;
 		int gx = Game.tilesSize - thinkingAnim.getWidth() / thinkingAnim.getHorizontalCount();
 		gfx.drawImage(thinkingAnim.getSprite(getTicks() % 2 == 0 ? 0 : 1, 0), gx, 0);
 	}
@@ -61,10 +67,11 @@ public abstract class Citizen extends Unit
 	{
 		super.kill();
 		
-		workplaceRef.onUnitKilled(this);
+		getWorkplace().onUnitKilled(this);
 		
 		mapRef.addGraphicalEffect(
-				new RisingIcon(getX(), getY(), Content.images.effectDeath));
+			new RisingIcon(
+				getX(), getY(), Content.sprites.effectDeath));
 	}
 
 	@Override
@@ -85,7 +92,7 @@ public abstract class Citizen extends Unit
 	@Override
 	public void onDestruction()
 	{
-		workplaceRef.removeDisposedUnit(this);
+		getWorkplace().removeDisposedUnit(this);
 	}
 	
 	public abstract byte getJobID();

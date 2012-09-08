@@ -14,6 +14,8 @@ import simciv.content.Content;
  */
 public class Debris extends Build
 {
+	private static final long serialVersionUID = 1L;
+
 	private static BuildProperties properties;
 
 	private String infoString;
@@ -62,7 +64,7 @@ public class Debris extends Build
 	@Override
 	protected void renderBuild(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
-		gfx.drawImage(Content.images.buildDebris, 0, 0);
+		gfx.drawImage(Content.sprites.buildDebris, 0, 0);
 	}
 
 	@Override

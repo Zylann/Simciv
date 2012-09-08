@@ -3,9 +3,7 @@ package simciv.units;
 import java.util.List;
 
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SpriteSheet;
 
-import simciv.Game;
 import simciv.Map;
 import simciv.builds.Build;
 import simciv.builds.House;
@@ -22,15 +20,12 @@ import simciv.movements.RandomRoadMovement;
  */
 public class Employer extends Citizen
 {
-	private static SpriteSheet unitSprites;
+	private static final long serialVersionUID = 1L;
 	
 	public Employer(Map m, Workplace w)
 	{
 		super(m, w);
 		setMovement(new RandomRoadMovement());
-		
-		if(unitSprites == null)
-			unitSprites = new SpriteSheet(Content.images.unitEmployer, Game.tilesSize, Game.tilesSize);
 	}
 
 	@Override
@@ -42,13 +37,15 @@ public class Employer extends Citizen
 	@Override
 	protected void renderUnit(Graphics gfx)
 	{
-		defaultRender(gfx, unitSprites);
+		defaultRender(gfx, Content.sprites.unitEmployer);
 	}
 
 	@Override
 	protected void tick()
 	{
-		if(!workplaceRef.needEmployees())
+		Workplace workplace = getWorkplace();
+		
+		if(!workplace.needEmployees())
 			dispose();
 		
 		// Search for redundant people
@@ -62,21 +59,21 @@ public class Employer extends Citizen
 				int availablePeople = h.getNbInhabitants() - h.getNbWorkers();					
 				if(availablePeople > 0)
 				{
-					int neededEmployees = workplaceRef.getNbNeededEmployees();					
+					int neededEmployees = workplace.getNbNeededEmployees();					
 					if(availablePeople > neededEmployees)
 						availablePeople = neededEmployees;
 
 					for(int i = 0; i < availablePeople; i++)
 					{
-						h.addWorker(workplaceRef);
-						workplaceRef.addEmployee(h);
+						h.addWorker(workplace);
+						workplace.addEmployee(h);
 					}
 					
 					// Visual feedback
 					mapRef.addGraphicalEffect(
-							new RisingIcon(
-									b.getX(), b.getY(), 
-									Content.images.effectGreenStar));
+						new RisingIcon(
+							b.getX(), b.getY(), 
+							Content.sprites.effectGreenStar));
 				}
 			}
 		}

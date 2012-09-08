@@ -1,5 +1,7 @@
 package simciv;
 
+import java.io.Serializable;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -12,8 +14,10 @@ import org.newdawn.slick.state.StateBasedGame;
  * @author Marc
  *
  */
-public abstract class TickableEntity extends Entity
+public abstract class TickableEntity extends Entity implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	private int nbTicks;
 	private int timeBeforeNextTick;
 

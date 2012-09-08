@@ -48,20 +48,9 @@ public class UIRenderer
 	private void loadContent()
 	{
 		font = Content.globalFont;
-		
-		Image frameBackgroundImg = Content.images.uiFrame;
-		frameBackground = new SpriteSheet(frameBackgroundImg, FRAME_BASE, FRAME_BASE);
-		
-		Image windowTitleBarBackgroundImg = Content.images.uiWindowTitleBar;
-		windowTitleBarBackground =
-			new SpriteSheet(windowTitleBarBackgroundImg,
-					windowTitleBarBackgroundImg.getHeight(),
-					windowTitleBarBackgroundImg.getHeight());
-		
-		progressBarSprites = new SpriteSheet(
-				Content.images.uiProgressBar, 
-				ProgressBar.height, 
-				ProgressBar.height);
+		frameBackground = Content.sprites.uiFrame;
+		windowTitleBarBackground = Content.sprites.uiWindowTitleBar;
+		progressBarSprites = Content.sprites.uiProgressBar;
 	}
 	
 	public void setGlobalScale(int s)
@@ -215,7 +204,7 @@ public class UIRenderer
 
 	public void renderWindowCloseButton(Graphics gfx, WindowCloseButton w)
 	{
-		renderButton(gfx, w, Content.images.uiWindowCloseButton, null, null, 0);
+		renderButton(gfx, w, Content.sprites.uiWindowCloseButton, null, null, 0);
 	}
 
 	private void renderButton(Graphics gfx, Button w, Image sprite, Image icon, String text, int pressOffset)
@@ -254,17 +243,17 @@ public class UIRenderer
 	
 	public void renderMenuItem(Graphics gfx, MenuItem w)
 	{
-		renderButton(gfx, w, Content.images.uiMenuItem, null, w.getText(), 1);
+		renderButton(gfx, w, Content.sprites.uiMenuItem, null, w.getText(), 1);
 	}
 	
 	public void renderToolButton(Graphics gfx, ToolButton w)
 	{
-		renderButton(gfx, w, Content.images.uiToolButton, w.icon, null, 2);
+		renderButton(gfx, w, Content.sprites.uiToolButton, w.icon, null, 2);
 	}
 
 	public void renderPushButton(Graphics gfx, PushButton w)
 	{
-		renderButton(gfx, w, Content.images.uiPushButton, null, w.getText(), 1);
+		renderButton(gfx, w, Content.sprites.uiPushButton, null, w.getText(), 1);
 	}
 
 	public void renderProgressBar(Graphics gfx, ProgressBar w)
@@ -338,7 +327,7 @@ public class UIRenderer
 
 	public void renderMenuBarButton(Graphics gfx, MenuBarButton w)
 	{
-		renderButton(gfx, w, Content.images.uiToolButton, null, null, 2);
+		renderButton(gfx, w, Content.sprites.uiToolButton, null, null, 2);
 		if(w.isPressed())
 			renderLabel(gfx, w.getLabel(), 2);
 		else

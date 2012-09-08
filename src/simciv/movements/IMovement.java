@@ -1,5 +1,7 @@
 package simciv.movements;
 
+import java.io.Serializable;
+
 import simciv.maptargets.IMapTarget;
 import simciv.units.Unit;
 
@@ -8,7 +10,7 @@ import simciv.units.Unit;
  * @author Marc
  *
  */
-public interface IMovement
+public interface IMovement extends Serializable
 {
 	/**
 	 * Makes the unit move

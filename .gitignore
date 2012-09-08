@@ -5,6 +5,7 @@ releases/
 modelio/
 diagrams/
 src_old/
+saves/
 .classpath
 .project
 .settings

@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,6 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
+import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.loading.LoadingList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -22,25 +24,60 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * This loaders parses an XML file listing content files to be loaded.
+ * This loader parses an XML file listing content files and loads them into maps.
  * @author Marc
  *
  */
 public class ContentLoader
 {
-	// Indexed data storage
-	private Map<String, Image> imageMapRef;
-	private Map<String, Sound> soundMapRef;
-	private ContentSettings settingsRef;
+	private Map<String, Image> imageMap;
+	private Map<String, Sound> soundMap;
+	private Map<String, SpriteSheet> spriteSheetMap;
+	private Map<String, String> stringMap;
+	private ContentSettings settings;
 	
-	public ContentLoader(
-			Map<String, Image> imageMap,
-			Map<String, Sound> soundMap,
-			ContentSettings settings)
+	// TODO add language attribute to strings (easier translation of the game)
+	
+	public ContentLoader(ContentSettings settings)
 	{
-		this.imageMapRef = imageMap;
-		this.soundMapRef = soundMap;
-		this.settingsRef = settings;
+		imageMap = new HashMap<String, Image>();
+		soundMap = new HashMap<String, Sound>();
+		spriteSheetMap = new HashMap<String, SpriteSheet>();
+		stringMap = new HashMap<String, String>();
+		this.settings = settings;
+	}
+	
+	public void clear()
+	{
+		imageMap.clear();
+		soundMap.clear();
+		spriteSheetMap.clear();
+		stringMap.clear();
+	}
+	
+	public Image getImage(String id)
+	{
+		return imageMap.get(id);
+	}
+
+	public SpriteSheet getSpriteSheet(String id)
+	{
+		return spriteSheetMap.get(id);
+	}
+	
+	public Sound getSound(String id)
+	{
+		return soundMap.get(id);
+	}
+	
+	public String getString(String id)
+	{
+		return stringMap.get(id);
+	}
+	
+	public int getTotalCount()
+	{
+		return imageMap.size() + spriteSheetMap.size() + soundMap.size() + stringMap.size();
 	}
 	
 	/**
@@ -111,113 +148,117 @@ public class ContentLoader
 		// normalize text representation
 		doc.getDocumentElement().normalize();
 		
-		// getting all resource elements
-		NodeList listResources = doc.getElementsByTagName("resource");
-		int nbResources = listResources.getLength();
+		// Get the content node and its children
+		NodeList tlist = doc.getElementsByTagName("content");
+		if(tlist.getLength() == 0)
+		{
+			System.out.println("INFO: no XML content node found");
+			return;
+		}
+		NodeList contentNodes = tlist.item(0).getChildNodes();
 		
-		if(settingsRef.deferredLoading)
+		if(settings.deferredLoading)
 		{
 			// clear loading list and enable deferred loading
 			LoadingList.setDeferredLoading(true);
 		}
-			
-		// fetching nodes
-		for(int resourceIndex = 0; resourceIndex < nbResources; resourceIndex++)
+		
+		for(int i = 0; i < contentNodes.getLength(); i++)
 		{
-			Node resourceNode = listResources.item(resourceIndex);
-			
-			// if the node is an element
-			if(resourceNode.getNodeType() == Node.ELEMENT_NODE)
+			Node node = contentNodes.item(i);
+			if(node.getNodeType() == Node.ELEMENT_NODE)
 			{
-				Element resourceElement = (Element)resourceNode;				
-				String type = resourceElement.getAttribute("type");
-				
-				// load resource from its type
+				Element contentElement = (Element)node;
+				String type = contentElement.getTagName();
+
 				if(type.equals("image"))
-					addElementAsImage(resourceElement);
+				{
+					loadImageFromXML(contentElement);
+				}
+				else if(type.equals("spritesheet"))
+				{
+					loadSpriteSheetFromXML(contentElement);
+				}
 				else if(type.equals("sound"))
-					addElementAsSound(resourceElement);
+				{
+					loadSoundFromXML(contentElement);
+				}
+				else if(type.equals("string"))
+				{
+					loadStringFromXML(contentElement);
+				}
 			}
-		}		
-	}
-	
-	/**
-	 * load sound from XML node
-	 * @param resourceElement XML sound resource node
-	 * @throws SlickException
-	 */
-	private final void addElementAsSound(Element resourceElement) throws SlickException
-	{
-		loadSound(resourceElement.getAttribute("id"),
-				resourceElement.getTextContent());
-	}
-	
-	/**
-	 * load and index a sound
-	 * @param id : unique identifier
-	 * @param path : sound source path
-	 * @return the sound
-	 * @throws SlickException 
-	 */
-	private Sound loadSound(String id, String path) throws SlickException
-	{
-		// check path
-		if(path == null || path.length() == 0)
-			throw new SlickException("Sound resource [" + id + "] has invalid path");
-		
-		Sound sound = null;
-		
-		// load sound
-		try
-		{
-			sound = new Sound(settingsRef.contentDir + path);
-		}
-		catch(SlickException e)
-		{
-			throw new SlickException("Could not load sound", e);
 		}
 		
-		// index sound
-		return soundMapRef.put(id, sound);
+        System.out.println(getTotalCount());
+	}
+	
+	private void loadStringFromXML(Element stringElement) throws SlickException
+	{
+		String id = stringElement.getAttribute("id");
+		
+		if(id.isEmpty())
+			throw new SlickException("Missing id attribute in string content XML line");
+		
+		String str = stringElement.getTextContent();
+		
+		if(str == null)
+			throw new SlickException("Missing content text in string XML content line");
+		
+		stringMap.put(id, str);
 	}
 
-	/**
-	 * Load image from XML node
-	 * @param resourceElement XML image resource node
-	 * @throws SlickException
-	 */
-	private final void addElementAsImage(Element resourceElement) throws SlickException
+	private void loadSoundFromXML(Element soundElement) throws SlickException
 	{
-		loadImage(resourceElement.getAttribute("id"),
-				resourceElement.getTextContent());
+		String id = soundElement.getAttribute("id");
+		String src = soundElement.getAttribute("src");
+		
+		if(src.isEmpty() || id.isEmpty())
+			throw new SlickException("Missing id or src attribute in sound content XML line");
+		
+		Sound s = new Sound(settings.contentDir + src);
+		
+		soundMap.put(id, s);
 	}
-	
-	/**
-	 * Load and index an image
-	 * @param id image unique identifier
-	 * @param path image source path
-	 * @return loaded image
-	 * @throws SlickException
-	 */
-	private Image loadImage(String id, String path) throws SlickException
+
+	private void loadImageFromXML(Element imageElement) throws SlickException
 	{
-		// checking path
-		if(path == null || path.length() == 0)
-			throw new SlickException("Image resource [" + id + "] has invalid path");
+		String id = imageElement.getAttribute("id");
+		String src = imageElement.getAttribute("src");
 		
-		Image image = null;
+		if(src.isEmpty() || id.isEmpty())
+			throw new SlickException("Missing id or src attribute in image content XML line");
 		
-		// loading image
-		try
-		{
-			image = new Image(settingsRef.contentDir + path);
-		}
-		catch(SlickException e)
-		{
-			throw new SlickException("Could not load image", e);
-		}
+		Image img = new Image(settings.contentDir + src);
+		img.setFilter(settings.defaultImageFilter);
 		
-		return imageMapRef.put(id, image);		
+		imageMap.put(id, img);
+	}
+
+	private void loadSpriteSheetFromXML(Element spritesheetElement) throws SlickException
+	{
+		String id = spritesheetElement.getAttribute("id");
+		String src = spritesheetElement.getAttribute("src");
+		String twStr = spritesheetElement.getAttribute("tw");
+		String thStr = spritesheetElement.getAttribute("th");		
+		
+		if(src.isEmpty() || id.isEmpty())
+			throw new SlickException("Missing id or src attribute in spritesheet content XML line");
+		
+		if(twStr.isEmpty() || thStr.isEmpty())
+			throw new SlickException("Missing tw or th attribute in spritesheet content XML line");
+		
+		int tw = Integer.parseInt(twStr);
+		int th = Integer.parseInt(thStr);
+		
+		if(tw <= 0 || th <= 0)
+			throw new SlickException("Invalid value of tw or th in spritesheet content XML line");
+		
+		Image img = new Image(settings.contentDir + src);
+		img.setFilter(settings.defaultImageFilter);
+		SpriteSheet sprites = new SpriteSheet(img, tw, th);
+		
+		spriteSheetMap.put(id, sprites);
 	}
 	
 }

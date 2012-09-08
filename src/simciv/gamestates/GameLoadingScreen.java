@@ -5,37 +5,18 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import simciv.CityBuilder;
 import simciv.Game;
-import simciv.MapGenerator;
-import simciv.Nature;
-import simciv.Resource;
-import simciv.Road;
-import simciv.Terrain;
-import simciv.Map;
-import simciv.builds.BuildCategory;
-import simciv.ui.base.ProgressBar;
-import simciv.ui.base.RootPane;
-import simciv.ui.base.UIBasicGameState;
-import simciv.ui.base.UIRenderer;
-import simciv.ui.base.Widget;
+import simciv.persistence.GameLoaderThread;
+import simciv.persistence.GameSaveData;
 
-public class GameLoadingScreen extends UIBasicGameState
+public class GameLoadingScreen extends GameInitScreen
 {
-	private int stateID = -1;
-	private MapGenerator mapGenerator;
-	private Map map;
-	private ProgressBar progressBar;
+	private GameSaveData gameData;
+	private GameLoaderThread gameLoader;
 	
 	public GameLoadingScreen(int stateID)
 	{
-		this.stateID = stateID;
-	}
-	
-	@Override
-	public int getID()
-	{
-		return stateID;
+		super(stateID);
 	}
 	
 	@Override
@@ -43,63 +24,45 @@ public class GameLoadingScreen extends UIBasicGameState
 			throws SlickException
 	{
 	}
-
-	@Override
-	protected void createUI(GameContainer container, StateBasedGame game)
-			throws SlickException
-	{
-		UIRenderer.instance().setGlobalScale(2);
-		int gs = UIRenderer.instance().getGlobalScale();
-		ui = new RootPane(container.getWidth() / gs, container.getHeight() / gs);
-
-		progressBar = new ProgressBar(ui, 0, 0, 300);
-		progressBar.setAlign(Widget.ALIGN_CENTER);
-		ui.add(progressBar);
-	}
-
+	
 	@Override
 	public void enter(GameContainer container, StateBasedGame game)
 			throws SlickException
 	{
 		super.enter(container, game);
 		
-		Terrain.initialize();
-		Resource.initialize();
-		Road.initialize();
-		CityBuilder.loadContent();
-		Nature.initialize();
-		BuildCategory.initialize();
+		gameData = new GameSaveData("map");
+		gameLoader = new GameLoaderThread(gameData);
+		gameLoader.start();
+	}
+
+	@Override
+	public void render(GameContainer gc, StateBasedGame sbg, Graphics gfx)
+			throws SlickException
+	{
+	}
+
+	@Override
+	public void update(GameContainer gc, StateBasedGame sbg, int delta)
+			throws SlickException
+	{
+		if(gameLoader.isFinished())
+		{
+			if(gameLoader.isSuccess())
+			{
+				simciv.Game game = (simciv.Game)sbg;
+				game.cityView.setMap(gameData.map);
+				game.cityView.setIsGameBeginning(true);
+				game.enterState(Game.STATE_CITY_VIEW);
+			}
+			else
+			{
+				System.out.println("Couldn't load saved game.");
+				sbg.enterState(Game.STATE_MAIN_MENU);
+			}
+		}
+	}
 		
-		map = new Map(256, 256);
-		mapGenerator = new MapGenerator(131183, map);
-		mapGenerator.start();
-	}
-
-	@Override
-	public void update(GameContainer gc, StateBasedGame game, int delta)
-			throws SlickException
-	{
-		progressBar.setProgress(mapGenerator.getProgress());
-		
-		if(mapGenerator.isFinished())
-			game.enterState(Game.STATE_GAMEPLAY);
-	}
-
-	@Override
-	public void render(GameContainer gc, StateBasedGame game, Graphics gfx)
-			throws SlickException
-	{
-	}
-	
-	@Override
-	public void leave(GameContainer container, StateBasedGame game)
-			throws SlickException
-	{
-		super.leave(container, game);		
-		((simciv.Game)game).gamePlay.setMap(map);
-	}
-
 }
-
 
 

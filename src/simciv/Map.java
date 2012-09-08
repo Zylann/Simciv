@@ -1,6 +1,12 @@
 package simciv;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.newdawn.slick.GameContainer;
@@ -15,22 +21,22 @@ import simciv.rendering.SortedRender;
 import simciv.units.Unit;
 
 /**
- * The map contains the terrain and the city (units and buildings).
- * All the data concerning a player's game is stored here.
- * Note : units don't all belong to the city (ducks, nomads...)
+ * The map contains a terrain and a city (units and buildings).
+ * This is the main object of the game, as almost all the data is stored in it.
  * @author Marc
  *
  */
 public class Map
 {
 	public MapGrid grid;
+	public View view;
 	public PlayerCity playerCity;
 	public WorldTime time;
 	private EntityMap builds;
 	private EntityMap units;
 	private transient List<VisualEffect> graphicalEffects;
 	private transient boolean fastForward;
-
+	
 	public Map(int width, int height)
 	{
 		grid = new MapGrid(width, height);
@@ -39,6 +45,8 @@ public class Map
 		builds = new EntityMap();
 		units = new EntityMap();
 		graphicalEffects = new ArrayList<VisualEffect>();
+		view = new View(0, 0, 2);
+		view.setMapSize(width, height);
 	}
 
 	public boolean isFastForward()
@@ -58,6 +66,8 @@ public class Map
 	 */
 	public void update(GameContainer gc, StateBasedGame game, int delta)
 	{
+		view.update(gc, delta / 1000.f);
+		
 		if(fastForward)
 			delta *= 4;
 		
@@ -135,9 +145,6 @@ public class Map
 			if(b != null)
 			{
 				b.dispose();
-//				map.markBuilding(b, false);
-//				b.onDestruction();
-//				buildings.remove(ID);
 				return true;
 			}
 		}
@@ -182,8 +189,11 @@ public class Map
 	 * @param gc
 	 * @param gfx
 	 */
-	public void render(GameContainer gc, StateBasedGame game, Graphics gfx, IntRange2D mapRange)
-	{		
+	public void render(GameContainer gc, StateBasedGame game, Graphics gfx)
+	{
+		view.configureGraphicsForWorldRendering(gfx);
+		IntRange2D mapRange = view.getMapRange(gc);
+		
 		SortedRender renderMgr = new SortedRender();
 		
 		grid.registerElementsForSortedRender(mapRange, renderMgr);
@@ -305,6 +315,90 @@ public class Map
 		}
 		
 		return list;
+	}
+	
+	// Saving
+	
+	public void writeToSave(DataOutputStream dos) throws IOException
+	{
+		ObjectOutputStream oos = new ObjectOutputStream(dos);
+		
+		// Save grid
+		System.out.println("Saving terrain...");
+		oos.writeObject(grid);
+		
+		// Save view
+		System.out.println("Saving view info...");
+		oos.writeObject(view);
+		
+		// Save builds
+		System.out.println("Saving builds...");
+		oos.writeObject(builds);
+		
+		// Save units
+		System.out.println("Saving units...");
+		oos.writeObject(units);
+		
+		// Save city
+		System.out.println("Saving city info...");
+		oos.writeObject(playerCity);
+		
+		// Save world time
+		System.out.println("Saving time info...");
+		oos.writeObject(time);
+		
+		oos.flush();
+	}
+	
+	public void readFromSave(DataInputStream dis) throws IOException, ClassNotFoundException
+	{
+		ObjectInputStream ois = new ObjectInputStream(dis);
+		
+		// Load grid
+		System.out.println("Loading terrain...");
+		grid = (MapGrid)ois.readObject();
+		
+		// Load view
+		System.out.println("Loading view info...");
+		view = (View)ois.readObject();
+
+		// Load builds
+		System.out.println("Loading builds...");
+		builds = (EntityMap)ois.readObject();
+		
+		// Load units
+		System.out.println("Loading units...");
+		units = (EntityMap)ois.readObject();
+		
+		// Load city
+		System.out.println("Loading city info...");
+		playerCity = (PlayerCity)ois.readObject();
+		
+		// Load world time
+		System.out.println("Loading time info...");
+		time = (WorldTime)ois.readObject();
+		
+		System.out.println("Recomputing data...");		
+		recomputeData();
+	}
+	
+	/**
+	 * Recomputes computed transient data.
+	 * Must be called after deserialisation.
+	 */
+	public void recomputeData()
+	{
+		view.setMapSize(grid.getWidth(), grid.getHeight());
+		
+		Collection<Entity> entities = units.asCollection();
+		for(Entity e : entities)
+			e.setMap(this);
+
+		entities = units.asCollection();
+		for(Entity e : entities)
+			e.setMap(this);
+		
+		playerCity.recomputeData(builds.asCollection());
 	}
 	
 }

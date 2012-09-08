@@ -1,12 +1,15 @@
 package simciv;
 
+import java.io.Serializable;
+
 /**
  * Maintains a virtual world time from real game time
  * @author Marc
  *
  */
-public class WorldTime
+public class WorldTime implements Serializable
 {
+	private static final long serialVersionUID = 1L;
 	private static final int millisecondsPerDay = 4000; // 1s = 6h
 	
 	private int time; // in real milliseconds

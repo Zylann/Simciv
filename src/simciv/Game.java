@@ -6,8 +6,6 @@ import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.JFrame;
 import org.newdawn.slick.CanvasGameContainer;
 import org.newdawn.slick.GameContainer;
@@ -15,9 +13,10 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.GameState;
 
 import simciv.content.Content;
-import simciv.gamestates.GameLoadingScreen;
-import simciv.gamestates.GamePlay;
+import simciv.gamestates.GameCreatingScreen;
+import simciv.gamestates.CityView;
 import simciv.gamestates.ContentLoadingScreen;
+import simciv.gamestates.GameLoadingScreen;
 import simciv.gamestates.MainMenu;
 import simciv.ui.base.UIStateBasedGame;
 
@@ -29,6 +28,8 @@ import simciv.ui.base.UIStateBasedGame;
  */
 public class Game extends UIStateBasedGame
 {
+	/* Static vars */ 
+	
 	// Game constants
 	public static final String title = "Simciv indev 3.0";
 	public static final int tilesSize = 16;
@@ -39,8 +40,9 @@ public class Game extends UIStateBasedGame
 	public static final int STATE_NULL = 0;
 	public static final int STATE_CONTENT_LOADING = 1;
 	public static final int STATE_MAIN_MENU = 2;
-	public static final int STATE_GAME_LOADING = 3;
-	public static final int STATE_GAMEPLAY = 4;
+	public static final int STATE_GAME_CREATING = 3;
+	public static final int STATE_GAME_LOADING = 4;
+	public static final int STATE_CITY_VIEW = 5;
 
 	public static Settings settings;
 	
@@ -51,17 +53,20 @@ public class Game extends UIStateBasedGame
 	
 	// The game
 	private static Game game;
+	
+	/* Instance vars */
+	public GameData gameData;
 
 	// States
-	private List<GameState> states = new ArrayList<GameState>();
-	public GamePlay gamePlay; // direct access
-
+	private ArrayList<GameState> states;
+	public CityView cityView; // direct access
+	
 	public static void main(String[] args)
 	{
 		settings = new Settings();
 		
 		try
-		{
+		{			
 			// Create game and canvas
 			game = new Game(title);
 			canvas = new CanvasGameContainer(game);
@@ -90,7 +95,7 @@ public class Game extends UIStateBasedGame
 			contentPane.add(canvas);
 			
 			canvas.start(); // Starts the game
-			
+		
 		} catch (SlickException e)
 		{
 			e.printStackTrace();
@@ -98,7 +103,7 @@ public class Game extends UIStateBasedGame
 		
 		// FIXME on game close : "AL lib: alc_cleanup: 1 device not closed" (serious or not?)
 	}
-	
+
 	public void close()
 	{
 		canvas.getContainer().exit(); // Note : doesn't work without frame.dispose()
@@ -109,12 +114,15 @@ public class Game extends UIStateBasedGame
 	{
 		super(title);
 
+		states = new ArrayList<GameState>();
+
 		// Create states
 		addState(new ContentLoadingScreen(STATE_CONTENT_LOADING));
+		addState(new GameCreatingScreen(STATE_GAME_CREATING));
 		addState(new GameLoadingScreen(STATE_GAME_LOADING));
 		addState(new MainMenu(STATE_MAIN_MENU));
-		gamePlay = new GamePlay(STATE_GAMEPLAY);
-		addState(gamePlay);
+		cityView = new CityView(STATE_CITY_VIEW);
+		addState(cityView);
 	}
 
 	@Override
@@ -127,12 +135,11 @@ public class Game extends UIStateBasedGame
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException
 	{
-		// Load global font (minimal)
 		Content.loadMinimalContent();
-
+		
 		// Load content (deferred)
 		Content.loadFromContentFile("data/content.xml");
-
+		
 		// Initialize states
 		for (GameState state : states)
 			state.init(container, this);

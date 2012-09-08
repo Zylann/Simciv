@@ -3,8 +3,6 @@ package simciv.ui;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SpriteSheet;
-
 import simciv.content.Content;
 import simciv.ui.base.BasicWidget;
 import simciv.ui.base.UIRenderer;
@@ -17,7 +15,6 @@ import simciv.ui.base.WidgetContainer;
  */
 public class IndicatorsBar extends BasicWidget
 {
-	private static SpriteSheet background;
 	private static final int HEIGHT = 24;
 	private static final int WIDTH = 110;
 	
@@ -30,8 +27,6 @@ public class IndicatorsBar extends BasicWidget
 	public IndicatorsBar(WidgetContainer parent, int x, int y)
 	{
 		super(parent, x, y, WIDTH, HEIGHT);
-		if(background == null)
-			background = new SpriteSheet(Content.images.uiResourceBar, HEIGHT, HEIGHT);
 	}
 	
 	public void setWorldTime(float monthProgressRatio)
@@ -61,17 +56,17 @@ public class IndicatorsBar extends BasicWidget
 	
 		// Background
 		int b = height;
-		UIRenderer.instance().renderBar(gfx, background, 0, 0, width, height, b, 0);
+		UIRenderer.instance().renderBar(gfx, Content.sprites.uiResourceBar, 0, 0, width, height, b, 0);
 		
 		gfx.setColor(Color.black);
 
 		// Population
-		gfx.drawImage(Content.images.uiIndicatorsPopulation, 4, 4); // Icon
+		gfx.drawImage(Content.sprites.uiIndicatorsPopulation, 4, 4); // Icon
 		String populationText = "" + population; // Text
 		gfx.drawString(populationText, 24, 6);
 		
 		// Money
-		gfx.drawImage(Content.images.uiIndicatorsMoney, 50, 4); // Icon
+		gfx.drawImage(Content.sprites.uiIndicatorsMoney, 50, 4); // Icon
 		String moneyText = "" + money;
 		if(money < 500)
 		{

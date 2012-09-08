@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- all resources indexes (images, sounds etc.) are stored here -->
+<!-- media resources of the game are loaded by reading this file -->
 
-<resources>
+<content>
 
 	<!-- Textures -->
 	
@@ -12,87 +12,91 @@
 	<spritesheet id="test" hcount="2" vcount="1" src="test.png"/>
 	 -->
 	
-	<resource type="image" id="buildConstructing1x1">buildplace.png</resource>
-	<resource type="image" id="buildFarmland">farmland.png</resource>
-	<resource type="image" id="buildFarmlandCrops">crops.png</resource>
-	<resource type="image" id="buildFarmlandRottenCrops">rotten_crops.png</resource>
-	<resource type="image" id="buildHouseLv1">house1.png</resource>
-	<resource type="image" id="buildHouseLv2">house2_2x2.png</resource>
-	<resource type="image" id="buildWarehouse">warehouse.png</resource>
-	<resource type="image" id="buildTaxmenOffice">taxmen_office.png</resource>
-	<resource type="image" id="buildMarket">market.png</resource>
-	<resource type="image" id="buildArchitectOffice">architects.png</resource>
-	<resource type="image" id="buildDebris">debris.png</resource>
+	<image id="buildConstructing1x1" src="buildplace.png"/>
+	<spritesheet id="buildFarmland" tw="48" th="48" src="farmland.png"/>
+	<spritesheet id="buildFarmlandCrops" tw="16" th="16" src="crops.png"/>
+	<image id="buildFarmlandRottenCrops" src="rotten_crops.png"/>	
+	<spritesheet id="buildHouseLv1" tw="16" th="32" src="house1.png"/>
+	<spritesheet id="buildHouseLv2" tw="32" th="48" src="house2_2x2.png"/>
+	<spritesheet id="buildWarehouse" tw="48" th="64" src="warehouse.png"/>
+	<spritesheet id="buildTaxmenOffice" tw="32" th="48" src="taxmen_office.png"/>
+	<spritesheet id="buildMarket" tw="32" th="48" src="market.png"/>
+	<spritesheet id="buildArchitectOffice" tw="32" th="48" src="architects.png"/>
+	<image id="buildDebris" src="debris.png"/>
 	
-	<resource type="image" id="unitEmployer">citizen.png</resource>
-	<resource type="image" id="unitConveyer">transporter_only.png</resource>
-	<resource type="image" id="unitNomad">nomad.png</resource>
-	<resource type="image" id="unitTaxman">taxman.png</resource>
-	<resource type="image" id="unitDuck">duck.png</resource>
-	<resource type="image" id="unitMarketDelivery">delivery_man.png</resource>
-	<resource type="image" id="unitArchitect">architect.png</resource>
-	<resource type="image" id="unitThinking">think.png</resource>
+	<spritesheet id="unitEmployer" tw="16" th="16" src="citizen.png"/>
+	<spritesheet id="unitConveyer" tw="16" th="16" src="transporter_only.png"/>
+	<spritesheet id="unitNomad" tw="16" th="16" src="nomad.png"/>
+	<spritesheet id="unitTaxman" tw="16" th="16" src="taxman.png"/>
+	<spritesheet id="unitDuck" tw="16" th="16" src="duck.png"/>
+	<spritesheet id="unitMarketDelivery" tw="16" th="16" src="delivery_man.png"/>
+	<spritesheet id="unitArchitect" tw="16" th="16" src="architect.png"/>
+	<spritesheet id="unitThinking" tw="5" th="5" src="think.png"/>
 	
-	<resource type="image" id="resourceEmptyCarriage">carriage.png</resource>
-	<resource type="image" id="resourceWheat">res_wheat.png</resource>
-	<resource type="image" id="resourceWheatCarriage">carriage_wheat.png</resource>
+	<spritesheet id="resourceEmptyCarriage" tw="16" th="16" src="carriage.png"/>
+	<spritesheet id="resourceWheat" tw="16" th="16" src="res_wheat.png"/>
+	<spritesheet id="resourceWheatCarriage" tw="16" th="16" src="carriage_wheat.png"/>
 	
-	<resource type="image" id="terrainRoad">road.png</resource>
-	<resource type="image" id="terrainGrass">grass.png</resource>
-	<resource type="image" id="terrainWater">water.png</resource>
-	<resource type="image" id="terrainDust">dust.png</resource>
+	<image id="terrainRoad" src="road.png"/>
+	<image id="terrainGrass" src="grass.png"/>
+	<image id="terrainWater" src="water.png"/>
+	<image id="terrainDust" src="dust.png"/>
 	
-	<resource type="image" id="natureTree">tree.png</resource>
-	<resource type="image" id="natureTree2">tree2.png</resource>
-	<resource type="image" id="natureTree3">tree3.png</resource>
-	<resource type="image" id="natureBush">bush.png</resource>
+	<image id="natureTree" src="tree.png"/>
+	<image id="natureTree2" src="tree2.png"/>
+	<image id="natureTree3" src="tree3.png"/>
+	<spritesheet id="natureBush" tw="16" th="16" src="bush.png"/>
 	
-	<resource type="image" id="uiToolButton">ui_button_24x24.png</resource>
-	<resource type="image" id="uiCategHouse">ui_house.png</resource>
-	<resource type="image" id="uiCategRoad">ui_road.png</resource>
-	<resource type="image" id="uiCategErase">ui_erase.png</resource>
-	<resource type="image" id="uiCategFood">ui_bread.png</resource>
-	<resource type="image" id="uiCategIndustry">ui_factory.png</resource>
-	<resource type="image" id="uiCategCursor">ui_categMouse.png</resource>
-	<resource type="image" id="uiCategAdmin">ui_categAdmin.png</resource>
-	<resource type="image" id="uiCategMarketing">ui_categMarketing.png</resource>
-	<resource type="image" id="uiMenuItem">ui_menu_item.png</resource>
-	<resource type="image" id="uiFrame">ui_frame.png</resource>
-	<resource type="image" id="uiWindowTitleBar">ui_winbar.png</resource>
-	<resource type="image" id="uiWindowCloseButton">ui_winclosebtn.png</resource>
-	<resource type="image" id="uiPushButton">ui_push_button.png</resource>
-	<resource type="image" id="uiProgressBar">ui_progressBar.png</resource>
+	<!--  TODO -->
 	
-	<resource type="image" id="uiRedCross">red_cross.png</resource>
-	<resource type="image" id="uiMinimapMask">minimap_mask.png</resource>
-	<resource type="image" id="uiResourceBar">resource_bar.png</resource>
-	<resource type="image" id="uiIndicatorsPopulation">citizen_icon.png</resource>
-	<resource type="image" id="uiIndicatorsMoney">ui_money.png</resource>
+	<spritesheet id="uiToolButton" tw="24" th="24" src="ui_button_24x24.png"/>
+	<image id="uiCategHouse" src="ui_house.png"/>
+	<image id="uiCategRoad" src="ui_road.png"/>
+	<image id="uiCategErase" src="ui_erase.png"/>
+	<image id="uiCategFood" src="ui_bread.png"/>
+	<image id="uiCategIndustry" src="ui_factory.png"/>
+	<image id="uiCategCursor" src="ui_categMouse.png"/>
+	<image id="uiCategAdmin" src="ui_categAdmin.png"/>
+	<image id="uiCategMarketing" src="ui_categMarketing.png"/>
+	<spritesheet id="uiMenuItem" tw="128" th="16" src="ui_menu_item.png"/>
+	<spritesheet id="uiFrame" tw="16" th="16" src="ui_frame.png"/>
+	<spritesheet id="uiWindowTitleBar" tw="16" th="16" src="ui_winbar.png"/>
+	<spritesheet id="uiWindowCloseButton" tw="16" th="16" src="ui_winclosebtn.png"/>
+	<spritesheet id="uiPushButton" tw="128" th="16" src="ui_push_button.png"/>
+	<spritesheet id="uiProgressBar" tw="8" th="8" src="ui_progressBar.png"/>
 	
-	<resource type="image" id="effectGreenStar">green_star.png</resource>
-	<resource type="image" id="effectGold">gold_fx.png</resource>
-	<resource type="image" id="effectDeath">death.png</resource>
-	<resource type="image" id="effectSmoke">smoke.png</resource>
+	<image id="uiRedCross" src="red_cross.png"/>
+	<image id="uiMinimapMask" src="minimap_mask.png"/>
+	<spritesheet id="uiResourceBar" tw="24" th="24" src="resource_bar.png"/>
+	<image id="uiIndicatorsPopulation" src="citizen_icon.png"/>
+	<image id="uiIndicatorsMoney" src="ui_money.png"/>
 	
-	<resource type="image" id="test">test.png</resource>
+	<image id="effectGreenStar" src="green_star.png"/>
+	<image id="effectGold" src="gold_fx.png"/>
+	<image id="effectDeath" src="death.png"/>
+	<spritesheet id="effectSmoke" tw="8" th="8" src="smoke.png"/>
+	
+	<image id="test" src="test.png"/>
 	
 	<!-- Sounds -->
 	
-	<resource type="sound" id="buildCollapse">buildCollapse.ogg</resource>
+	<sound id="buildCollapse" src="buildCollapse.ogg"/>
 	
-	<resource type="sound" id="unitNewCitizen">door_open.ogg</resource>
-	<resource type="sound" id="unitPay">coinBounce.ogg</resource>
+	<sound id="unitNewCitizen" src="door_open.ogg"/>
+	<sound id="unitPay" src="coinBounce.ogg"/>
 	
-	<resource type="sound" id="uiButtonPress">click2.ogg</resource>
-	<resource type="sound" id="uiClick">click.ogg</resource>
-	<resource type="sound" id="uiReverseClick">click_reverse.ogg</resource>
-	<resource type="sound" id="uiErase">erase.ogg</resource>
-	<resource type="sound" id="uiPlace">place.ogg</resource>
+	<sound id="uiButtonPress" src="click2.ogg"/>
+	<sound id="uiClick" src="click.ogg"/>
+	<sound id="uiReverseClick" src="click_reverse.ogg"/>
+	<sound id="uiErase" src="erase.ogg"/>
+	<sound id="uiPlace" src="place.ogg"/>
 	
-	<resource type="sound" id="test">test.ogg</resource>
+	<sound id="test" src="test.ogg"/>
 
 	<!-- Strings -->
 
-	<resource type="text" id="test">Hello world !</resource>
+	<string id="test">Hello world !</string>
 
-</resources>
+</content>
+
+

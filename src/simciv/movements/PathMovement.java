@@ -14,6 +14,8 @@ import simciv.units.Unit;
  */
 public class PathMovement implements IMovement
 {
+	private static final long serialVersionUID = 1L;
+	
 	private LinkedList<Vector2i> path; // TODO create a Path class storing directions (lighter)
 	private boolean blocked;
 	public IMapTarget target; // Target that was used to build the path
@@ -33,18 +35,12 @@ public class PathMovement implements IMovement
 		
 		Vector2i pos = new Vector2i(u.getX(), u.getY());
 		Vector2i nextPos = path.pop();
-//		System.out.println("Following path (next is " + nextPos + ")"); // debug
 		
 		u.setDirection(Direction2D.toDirection(pos, nextPos));
 		if(!u.moveIfPossible())
 		{
-//			System.out.println("Can't move (d=" + u.getDirection() + ")"); // debug
 			blocked = true;
-		}
-				
-		// Debug
-//		if(path.isEmpty())
-//			System.out.println("End of path");
+		}				
 	}
 
 	@Override

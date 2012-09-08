@@ -10,7 +10,7 @@ public class Cheats
 {
 	private static boolean enabled = false;
 	private static boolean fastCitizenProduction = false;
-	private static boolean fastFarmlandGrow = false;
+	private static boolean fastFarmlandGrow = true;
 	private static boolean infiniteMoney = false;
 	
 	public static void onCommand(String cmd)

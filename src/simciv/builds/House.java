@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
@@ -31,8 +30,9 @@ import simciv.maptargets.RoadMapTarget;
  */
 public class House extends Build
 {
+	private static final long serialVersionUID = 1L;
+
 	private static BuildProperties properties[];
-	private static SpriteSheet sprites[];
 	private static byte MAX_LEVEL = 1; // Note : in code, the first level is 0.
 	
 	// Feed levels (in house ticks)
@@ -58,7 +58,7 @@ public class House extends Build
 	private byte level;
 	private byte nbCitizensToProduce;
 	private byte nbInhabitants;
-	private ArrayList<Workplace> workers; // workers.size() < nbInhabitants
+	private ArrayList<Integer> workers; // workplaces IDs
 	private ResourceBag resources;
 	private int feedLevel;
 	private boolean beenTaxed;
@@ -70,20 +70,8 @@ public class House extends Build
 		level = 0;
 		nbCitizensToProduce = 1;
 		state = Build.STATE_CONSTRUCTION;
-		workers = new ArrayList<Workplace>();
+		workers = new ArrayList<Integer>();
 		resources = new ResourceBag();
-		
-		if(sprites == null)
-		{
-			sprites = new SpriteSheet[MAX_LEVEL+1];
-			Image img;
-				
-			img = Content.images.buildHouseLv1;
-			sprites[0] = new SpriteSheet(img, properties[0].width * Game.tilesSize, img.getHeight());
-				
-			img = Content.images.buildHouseLv2;
-			sprites[1] = new SpriteSheet(img, properties[1].width * Game.tilesSize, img.getHeight());
-		}		
 	}
 	
 	@Override
@@ -97,17 +85,22 @@ public class House extends Build
 		return beenTaxed;
 	}
 	
+	public float getTotalSalary()
+	{
+		float total = 0;
+		for(Integer wID : workers)
+			total += ((Workplace)mapRef.getBuild(wID)).getSalary();
+		return total;
+	}
+	
 	public float payTaxes()
 	{
-		float totalMoneyCollected = 0;
-		
-		for(Workplace w : workers)
-			totalMoneyCollected += w.getSalary();
-		
-		totalMoneyCollected *= mapRef.playerCity.getIncomeTaxRatio();
+		float totalMoneyCollected =
+			getTotalSalary() * mapRef.playerCity.getIncomeTaxRatio();
 
 		if(totalMoneyCollected > 0)
-			mapRef.addGraphicalEffect(new RisingIcon(getX(), getY(), Content.images.effectGold));
+			mapRef.addGraphicalEffect(
+				new RisingIcon(getX(), getY(), Content.sprites.effectGold));
 		
 		beenTaxed = true;
 		
@@ -197,8 +190,8 @@ public class House extends Build
 		other.resources.addAllFrom(resources);
 		
 		// Update workers
-		for(Workplace w : workers)
-			w.changeEmployeeHouse(this, other);
+		for(Integer wID : workers)
+			((Workplace)mapRef.getBuild(wID)).changeEmployeeHouse(this, other);
 		other.workers.addAll(workers);
 		
 		// Remove this house (now empty)
@@ -289,7 +282,7 @@ public class House extends Build
 	
 	public void addWorker(Workplace w)
 	{
-		workers.add(w);
+		workers.add(w.getID());
 	}
 	
 	/**
@@ -317,15 +310,16 @@ public class House extends Build
 		
 		if(workplace != null)
 		{
-			if(!workers.remove(workplace))
+			if(!workers.remove((Object)(workplace.getID())))
 				return;
 			workplace.removeEmployee(this, false); // false : do not propagate to the house (circular)
 		}
 		else if(!workers.isEmpty() && workers.size() == nbInhabitants)
 		{
-			Workplace w = workers.get(0);
+			int wID = workers.get(0);
+			Workplace w = (Workplace)mapRef.getBuild(wID);
 			w.removeEmployee(this, false); // false : do not propagate to the house (circular)
-			workers.remove(w);
+			workers.remove((Object)wID);
 		}
 
 		nbInhabitants--;
@@ -345,8 +339,16 @@ public class House extends Build
 		mapRef.playerCity.population -= nbInhabitants;
 		nbInhabitants = 0;
 		
-		for(Workplace w : workers)
+		removeAllWorkers();
+	}
+	
+	private void removeAllWorkers()
+	{
+		for(Integer wID : workers)
+		{
+			Workplace w = (Workplace)mapRef.getBuild(wID);
 			w.removeEmployee(this, false); // false : do not propagate to the house (circular)
+		}
 		workers.clear();
 	}
 	
@@ -357,7 +359,7 @@ public class House extends Build
 	 */
 	public void removeWorker(Workplace w, boolean notify)
 	{
-		workers.remove(w);
+		workers.remove((Object)(w.getID()));
 		if(notify)
 			w.removeEmployee(this, false);
 	}
@@ -377,20 +379,25 @@ public class House extends Build
 			renderAsConstructing(gfx);
 		else
 		{
+			SpriteSheet sprites;			
 			int shift = 0;
+			
 			if(level == 0)
 			{
 				if(isAbandonned())
 					shift = 4;
+				sprites = Content.sprites.buildHouseLv1;
 				// Note : directionnal sprites are only supported with the first level yet
-				gfx.drawImage(sprites[level].getSprite(direction + shift, 0), 0, -Game.tilesSize);
+				gfx.drawImage(sprites.getSprite(direction + shift, 0), 0, -Game.tilesSize);
 			}
 			else
 			{
 				if(isAbandonned())
 					shift = 1;
-				gfx.drawImage(sprites[level].getSprite(shift, 0), 0, -Game.tilesSize);
+				sprites = Content.sprites.buildHouseLv2;
+				gfx.drawImage(sprites.getSprite(shift, 0), 0, -Game.tilesSize);
 			}
+			
 			if(gc.getInput().isKeyDown(Input.KEY_3))
 				renderHungerRatio(gfx, 0, 0);
 		}
@@ -474,7 +481,9 @@ public class House extends Build
 		if(!resources.containsFood() && r.getSpecs().isFood())
 		{
 			buyResource(r, 4);
-			mapRef.addGraphicalEffect(new RisingIcon(getX(), getY(), Content.images.effectGold));
+			mapRef.addGraphicalEffect(
+				new RisingIcon(
+					getX(), getY(), Content.sprites.effectGold));
 			return true;
 		}
 		

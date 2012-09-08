@@ -1,32 +1,43 @@
 package simciv;
 
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
+
+import simciv.builds.Build;
+import simciv.builds.House;
+import simciv.builds.Warehouse;
 
 /**
  * Global Informations about player's city
  * @author Marc
  *
  */
-public class PlayerCity
+public class PlayerCity extends City implements Serializable
 {
-	public int population;
-	public int workingPopulation;
+	private static final long serialVersionUID = 1L;
+	
 	protected float money;
 	protected float incomeTaxRatio;
-	private HashMap<Byte, Integer> storedResources; // resource type, total amount
+	// Computed data
+	public transient int population;
+	public transient int workingPopulation;
+	protected transient HashMap<Integer, Warehouse> warehouses;
 	
 	public PlayerCity()
 	{
+		super();
 		money = 3000;
 		incomeTaxRatio = 0.09f; // 9 %
-		storedResources = new HashMap<Byte, Integer>();
+		warehouses = new HashMap<Integer, Warehouse>();
+		name = "My city";
 	}
 	
 	public float getMoney()
 	{
 		return money;
 	}
-		
+	
 	public void setMoney(float m)
 	{
 		money = m;
@@ -58,52 +69,62 @@ public class PlayerCity
 		money += amount;
 	}
 	
-	public void onResourceStored(byte type, int amount)
+	public void registerWarehouse(Warehouse w)
 	{
-		if(amount < 0)
-			return;
-		Integer total = storedResources.get(type); // Find the associated total
-		if(total == null) // If not mapped
-		{
-			// Create mapping
-			storedResources.put(type, amount);
-		}
-		else // The mapping exist
-		{
-			// Add amount to the mapped value
-			storedResources.put(type, total + amount);
-		}
+		warehouses.put(w.getID(), w);
 	}
 	
-	public void onResourceUsed(byte type, int amount)
+	public void unregisterWarehouse(Warehouse w)
 	{
-		if(amount < 0)
-			return;
-		Integer total = storedResources.get(type);
-		if(total != null)
+		warehouses.remove(w.getID());
+	}
+	
+	public int getFreeSpaceForResource(Map m, byte type)
+	{
+		int total = 0;
+		for(Warehouse w : warehouses.values())
 		{
-			total -= amount;
-			storedResources.put(type, total);
-			if(total == 0)
-				storedResources.remove(type);
-			else if(total < 0)
-				System.out.println("ERR: resource total reached negative value");
+			total += w.getFreeSpaceForResource(type);
 		}
+		return total;
 	}
 	
 	public int getResourceTotal(byte type)
 	{
-		Integer total = storedResources.get(type);
-		if(total == null)
-			return 0;
+		int total = 0;
+		for(Warehouse w : warehouses.values())
+		{
+			total += w.getResourceTotal(type);
+		}
 		return total;
 	}
 	
-	class ResourceStorageInfo
+	/**
+	 * Recompute computed data of the city from the map.
+	 * Must be called after map and city deserialization.
+	 * @param builds : all builds of the map
+	 */
+	public void recomputeData(Collection<Entity> builds)
 	{
-		public int amount;
-		public int freeSpaceInOccupiedSlots;
-		// TODO
+		warehouses = new HashMap<Integer, Warehouse>();
+		population = 0;
+		workingPopulation = 0;
+		
+		for(Entity e : builds)
+		{
+			Build b = (Build)e;
+			if(Warehouse.class.isInstance(b))
+			{
+				Warehouse w = (Warehouse)b;
+				warehouses.put(w.getID(), w);
+			}
+			else if(House.class.isInstance(b))
+			{
+				House h = (House)b;
+				population += h.getNbInhabitants();
+				workingPopulation += h.getNbWorkers();
+			}
+		}
 	}
 
 }

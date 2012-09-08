@@ -3,9 +3,6 @@ package simciv.units;
 import java.util.List;
 
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SpriteSheet;
-
-import simciv.Game;
 import simciv.Map;
 import simciv.builds.Build;
 import simciv.builds.House;
@@ -15,15 +12,12 @@ import simciv.movements.RandomRoadMovement;
 
 public class Taxman extends Citizen
 {
-	private static SpriteSheet unitSprites;
+	private static final long serialVersionUID = 1L;
 	
 	public Taxman(Map m, Workplace workplace)
 	{
 		super(m, workplace);
 		setMovement(new RandomRoadMovement());
-		
-		if(unitSprites == null)
-			unitSprites = new SpriteSheet(Content.images.unitTaxman, Game.tilesSize, Game.tilesSize);
 	}
 
 	@Override
@@ -55,7 +49,7 @@ public class Taxman extends Citizen
 	@Override
 	public void renderUnit(Graphics gfx)
 	{
-		defaultRender(gfx, unitSprites);
+		defaultRender(gfx, Content.sprites.unitTaxman);
 	}
 
 }

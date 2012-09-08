@@ -1,5 +1,7 @@
 package simciv;
 
+import java.io.Serializable;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -15,15 +17,17 @@ import org.newdawn.slick.state.StateBasedGame;
  * @author Marc
  *
  */
-public abstract class GameComponent implements IRenderable
+public abstract class GameComponent implements IRenderable, Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	// Used to generate unique IDs
 	// It MUST start with 1, 0 is reserved for "null" (map storage convenience)
 	private static int nextID = 1;
 	
 	private int ID = -1; // Unique numeric identifier
-	private transient boolean initialized;
-	private transient boolean disposed; // If true, the object must be destroyed
+	private boolean initialized;
+	private boolean disposed; // If true, the object must be destroyed
 	
 	public static final int makeUniqueID()
 	{

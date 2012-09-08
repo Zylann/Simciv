@@ -3,10 +3,7 @@ package simciv.units;
 import java.util.List;
 
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SpriteSheet;
-
 import simciv.Direction2D;
-import simciv.Game;
 import simciv.Map;
 import simciv.ResourceSlot;
 import simciv.builds.Build;
@@ -22,8 +19,7 @@ import simciv.maptargets.FreeWarehouseMapTarget;
  */
 public class Conveyer extends Citizen
 {
-	// Sprites
-	private static SpriteSheet unitSprites;
+	private static final long serialVersionUID = 1L;
 	
 	private ResourceSlot carriedResource;
 	
@@ -31,9 +27,6 @@ public class Conveyer extends Citizen
 	{
 		super(m, w);
 		carriedResource = new ResourceSlot();
-		
-		if(unitSprites == null)
-			unitSprites = new SpriteSheet(Content.images.unitConveyer, Game.tilesSize, Game.tilesSize);
 	}
 	
 	@Override
@@ -72,7 +65,7 @@ public class Conveyer extends Citizen
 			if(!carriedResource.isEmpty()) // if still resources left, search another warehouse
 				findAndGoTo(new FreeWarehouseMapTarget());
 			
-			if(getTargetBuildingID() == workplaceRef.getID())
+			if(getTargetBuildingID() == getWorkplaceID())
 			{
 				// End of mission, ready for the next
 				setMovement(null);
@@ -88,8 +81,8 @@ public class Conveyer extends Citizen
 			if(carriedResource.isEmpty()) // I have no resource to distribute
 			{
 				// Go back to workplace
-				if(getMovementTarget() == null || getTargetBuildingID() != workplaceRef.getID())
-					findAndGoTo(workplaceRef);
+				if(getMovementTarget() == null || getTargetBuildingID() != getWorkplaceID())
+					findAndGoTo(getWorkplace());
 			}
 			else // I have resource to distribute
 			{
@@ -109,7 +102,7 @@ public class Conveyer extends Citizen
 				b.storeResource(carriedResource);
 		}
 		if(carriedResource.isEmpty()) // if no resources left,
-			findAndGoTo(workplaceRef); // Back to my workplace
+			findAndGoTo(getWorkplace()); // Back to my workplace
 	}
 	
 	private int getTargetBuildingID()
@@ -125,11 +118,11 @@ public class Conveyer extends Citizen
 		if(getDirection() == Direction2D.NORTH)
 		{
 			carriedResource.renderCarriage(gfx, 0, 0, getDirection());
-			defaultRender(gfx, unitSprites);
+			defaultRender(gfx, Content.sprites.unitConveyer);
 		}
 		else
 		{
-			defaultRender(gfx, unitSprites);
+			defaultRender(gfx, Content.sprites.unitConveyer);
 			carriedResource.renderCarriage(gfx, 0, 0, getDirection());
 		}
 	}

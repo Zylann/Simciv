@@ -30,6 +30,8 @@ import simciv.maptargets.RoadMapTarget;
  */
 public abstract class Build extends TickableEntity
 {
+	private static final long serialVersionUID = 1L;
+
 	// Common states
 	public static final byte STATE_CONSTRUCTION = 0;
 	public static final byte STATE_NORMAL = 1;
@@ -202,7 +204,7 @@ public abstract class Build extends TickableEntity
 	public final void renderAsConstructing(Graphics gfx)
 	{
 		// TODO handle size upper than 1x1
-		gfx.drawImage(Content.images.buildConstructing1x1, 0, 0);
+		gfx.drawImage(Content.sprites.buildConstructing1x1, 0, 0);
 	}
 
 	/**

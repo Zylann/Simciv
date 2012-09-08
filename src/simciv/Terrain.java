@@ -26,9 +26,9 @@ public class Terrain
 		
 		// Create terrains
 		set(new Terrain(VOID, "void", null)).setMinimapColor(Color.black);
-		set(new Terrain(WATER, "water", Content.images.terrainWater));
-		set(new Terrain(GRASS, "grass", Content.images.terrainGrass));
-		set(new Terrain(DUST, "dust", Content.images.terrainDust));
+		set(new Terrain(WATER, "water", Content.sprites.terrainWater));
+		set(new Terrain(GRASS, "grass", Content.sprites.terrainGrass));
+		set(new Terrain(DUST, "dust", Content.sprites.terrainDust));
 		
 		// Load content		
 		for(int i = 0; i < count; i++)

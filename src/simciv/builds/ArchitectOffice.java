@@ -2,7 +2,6 @@ package simciv.builds;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Game;
@@ -12,8 +11,9 @@ import simciv.units.Job;
 
 public class ArchitectOffice extends PassiveWorkplace
 {
+	private static final long serialVersionUID = 1L;
+
 	private static BuildProperties properties;
-	private static SpriteSheet sprites;
 	
 	// TODO factorize : ProductiveWorkplace
 	
@@ -26,12 +26,6 @@ public class ArchitectOffice extends PassiveWorkplace
 	public ArchitectOffice(Map m)
 	{
 		super(m);
-		if(sprites == null)
-		{
-			sprites = new SpriteSheet(Content.images.buildArchitectOffice,
-					getWidth() * Game.tilesSize,
-					3 * Game.tilesSize);
-		}
 	}
 
 	@Override
@@ -56,9 +50,9 @@ public class ArchitectOffice extends PassiveWorkplace
 	protected void renderBuild(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		if(state == Build.STATE_ACTIVE)
-			gfx.drawImage(sprites.getSprite(1, 0), 0, -Game.tilesSize);
+			gfx.drawImage(Content.sprites.buildArchitectOffice.getSprite(1, 0), 0, -Game.tilesSize);
 		else
-			gfx.drawImage(sprites.getSprite(0, 0), 0, -Game.tilesSize);
+			gfx.drawImage(Content.sprites.buildArchitectOffice.getSprite(0, 0), 0, -Game.tilesSize);
 	}
 
 }

@@ -1,5 +1,6 @@
 package simciv;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,8 +13,10 @@ import org.newdawn.slick.state.StateBasedGame;
  * @author Marc
  *
  */
-public class EntityMap
+public class EntityMap implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	private HashMap<Integer, Entity> entities;
 	private HashMap<Integer, Entity> newEntities;
 	private ArrayList<Integer> disposedEntities;
@@ -83,7 +86,8 @@ public class EntityMap
 		for(Entity e : newEntities.values())
 		{
 			entities.put(e.getID(), e);
-			e.onInit();
+			if(!e.isInitialized())
+				e.onInit();
 		}
 		newEntities.clear();
 		for(Entity e : entities.values())
@@ -101,7 +105,7 @@ public class EntityMap
 		}
 		disposedEntities.clear();
 	}
-
+		
 }
 
 

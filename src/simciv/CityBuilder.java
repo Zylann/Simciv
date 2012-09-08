@@ -152,12 +152,12 @@ public class CityBuilder
 				else
 					renderPlaceZone(gfx);
 				
-				gfx.drawImage(Content.images.uiRedCross,
+				gfx.drawImage(Content.sprites.uiRedCross,
 						pos.x, pos.y, 
 						pos.x+1, pos.y+1, 
 						0, 0,
-						Content.images.uiRedCross.getWidth(),
-						Content.images.uiRedCross.getHeight());
+						Content.sprites.uiRedCross.getWidth(),
+						Content.sprites.uiRedCross.getHeight());
 			}
 			else if(mode == MODE_ROAD)
 			{

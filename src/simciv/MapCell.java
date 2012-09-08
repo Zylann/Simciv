@@ -1,5 +1,7 @@
 package simciv;
 
+import java.io.Serializable;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
@@ -8,8 +10,10 @@ import org.newdawn.slick.Graphics;
  * @author Marc
  *
  */
-public class MapCell
+public class MapCell implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	public byte terrainID;	// Ground information
 	public byte nature;		// Natural objects
 	public byte road;		// Road configuration, -1 for none.
@@ -20,10 +24,10 @@ public class MapCell
 	// i = 30 lowest bits : building ID
 	// o = last bit : isOrigin : is this cell at the origin of the building?
 	// e = next bit : isEntryPoint : is this cell at an entry point of the building?
-	private transient int buildInfo;
+	private int buildInfo;
 	
 	// ID of the last unit on the cell, 0 if none
-	private transient int unitInfo;
+	private int unitInfo;
 	
 	private static int BUILD_INFO_ID_MASK = 0x3fffffff; // 30 bits to 1, 2 higher bits to 0
 	private static int BUILD_INFO_ORIGIN_MASK = 0x80000000; // 2 higher bits : 10

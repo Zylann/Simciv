@@ -1,10 +1,10 @@
 package simciv;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
@@ -18,8 +18,10 @@ import simciv.maptargets.IMapTarget;
  *
  */
 // TODO limit the amount of requests to keep the game frametime smooth (in case of big stress)
-public class PathFinder
+public class PathFinder implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	// States
 	public static final byte INIT = 0;
 	public static final byte RUNNING = 1;
@@ -52,7 +54,12 @@ public class PathFinder
 		mapRef = world;
 		maxSteps = defaultMaxSteps;
 	}
-		
+	
+	public void setMap(Map m)
+	{
+		mapRef = m;
+	}
+			
 	public void setMaxSteps(int maxSteps)
 	{
 		this.maxSteps = maxSteps;
@@ -95,7 +102,7 @@ public class PathFinder
 	 * @return
 	 */
 	public boolean step()
-	{
+	{		
 		if(isFinished())
 			return true;
 

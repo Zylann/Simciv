@@ -1,13 +1,13 @@
 package simciv;
 
-public class MapGenerator extends Thread
+public class MapGeneratorThread extends Thread
 {
 	private int seed;
 	private Map mapRef;
 	private int progress;
 	private boolean finished;
 	
-	public MapGenerator(int seed, Map map)
+	public MapGeneratorThread(int seed, Map map)
 	{
 		this.seed = seed;
 		finished = false;
@@ -25,7 +25,7 @@ public class MapGenerator extends Thread
 		// Note : should be synchronized, but progress is read-only and use locks would slow the process a bit
 		return progress;
 	}
-   
+	
     @Override
 	public void run() // Note : to execute the thread, use start().
 	{

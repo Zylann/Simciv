@@ -6,6 +6,8 @@ import simciv.units.Unit;
 
 public class RandomRoadMovement implements IMovement
 {
+	private static final long serialVersionUID = 1L;
+
 	public RandomRoadMovement()
 	{
 	}

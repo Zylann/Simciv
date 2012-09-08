@@ -2,18 +2,17 @@ package simciv.builds;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
-import simciv.Game;
 import simciv.Map;
 import simciv.content.Content;
 import simciv.units.Job;
 
 public class TaxmenOffice extends PassiveWorkplace
 {
+	private static final long serialVersionUID = 1L;
+	
 	private static BuildProperties properties;
-	private static SpriteSheet sprites;
 	
 	static
 	{
@@ -25,13 +24,6 @@ public class TaxmenOffice extends PassiveWorkplace
 	{
 		super(m);
 		state = Build.STATE_NORMAL;
-
-		if(sprites == null)
-		{
-			sprites = new SpriteSheet(Content.images.buildTaxmenOffice, 
-					Game.tilesSize * getWidth(),
-					Game.tilesSize * (getHeight() + getZHeight()));
-		}
 	}
 	
 	@Override
@@ -49,7 +41,7 @@ public class TaxmenOffice extends PassiveWorkplace
 	@Override
 	public void renderBuild(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
-		renderDefault(gfx, sprites);
+		renderDefault(gfx, Content.sprites.buildTaxmenOffice);
 	}
 
 	@Override

@@ -1,5 +1,8 @@
 package simciv;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Direction2D
 {
 	public static final byte NONE = -1;
@@ -22,6 +25,12 @@ public class Direction2D
 		vectors[SOUTH] = new Vector2i(0, 1);
 	}
 	
+	/**
+	 * Converts 2 vectors into a directionnal constant (4-connexity)
+	 * @param from
+	 * @param to
+	 * @return directionnal constant
+	 */
 	public static byte toDirection(Vector2i from, Vector2i to)
 	{
 		int dx = to.x - from.x;
@@ -45,9 +54,33 @@ public class Direction2D
 		return NONE;
 	}
 	
+	/**
+	 * Converts a series of points into a series of directionnal constants
+	 * (uses toDirection())
+	 * @param points
+	 * @return
+	 */
+	public static LinkedList<Byte> toDirectionsPath(List<Vector2i> points)
+	{
+		LinkedList<Byte> path = new LinkedList<Byte>();
+		Vector2i lastPos = null;
+		for(Vector2i pos : points)
+		{
+			if(lastPos != null)
+				path.add(toDirection(lastPos, pos));
+			lastPos = pos;
+		}
+		return path;
+	}
+	
+	/**
+	 * @return a non-NONE random directionnal constant
+	 */
 	public static byte random()
 	{
 		return (byte) (4 * Math.random());
 	}
 	
 }
+
+

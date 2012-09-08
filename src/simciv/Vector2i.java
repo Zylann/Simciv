@@ -1,12 +1,16 @@
 package simciv;
 
+import java.io.Serializable;
+
 /**
  * A simple class for handling 2D integer coordinates
  * @author Marc
  *
  */
-public class Vector2i
+public class Vector2i implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	public int x;
 	public int y;
 	

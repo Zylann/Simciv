@@ -29,7 +29,7 @@ public class MinimapUpdater implements IMapGridListener
 		pixels = new ImageBuffer(w.grid.getWidth(), w.grid.getHeight());
 		viz = pixels.getImage(Image.FILTER_NEAREST);
 		
-		mapMask = Content.images.uiMinimapMask;
+		mapMask = Content.sprites.uiMinimapMask;
 	}
 	
 	public void update(int delta) throws SlickException

@@ -29,16 +29,17 @@ import simciv.movements.PathMovement;
  *
  */
 public abstract class Unit extends TickableEntity
-{	
+{
+	private static final long serialVersionUID = 1L;
+
 	// States
 	public static final byte NORMAL = 1;
-	public static final byte THINKING = 2;	
+	public static final byte THINKING = 2;
 	
 	private boolean isAlive;
 	private boolean isMoving;
 	private IMovement movement;
 	private PathFinder pathFinder;
-	private Build buildRef; // reference to the building the unit currently is in
 	
 	public Unit(Map m)
 	{
@@ -48,6 +49,12 @@ public abstract class Unit extends TickableEntity
 		state = NORMAL;
 	}
 	
+	public void setMap(Map m)
+	{
+		super.setMap(m);
+		pathFinder.setMap(m);
+	}
+
 	@Override
 	protected final void tickEntity()
 	{		
@@ -80,47 +87,7 @@ public abstract class Unit extends TickableEntity
 		if(lastCell.getUnitID() == getID())
 			lastCell.eraseUnitInfo();
 	}
-
-	/**
-	 * Makes the unit come in a building
-	 * Note : the building's units list is not affected.
-	 * @param b : building
-	 * @return true if success
-	 */
-	public boolean enterBuilding(Build b)
-	{
-		if(buildRef != null)
-			return false;
-		buildRef = b;
-		setMovement(null);
-		setDirection(Direction2D.NONE);
-		untrack();
-		return true;
-	}
 	
-	/**
-	 * Makes the unit come out a building
-	 * @return true if the unit was in a building
-	 */
-	public boolean exitBuilding()
-	{
-		if(buildRef == null)
-			return false;
-		buildRef = null;
-		if(!isDisposed())
-			track();
-		return true;
-	}
-	
-	/**
-	 * Is the unit outside?
-	 * @return
-	 */
-	public boolean isOut()
-	{
-		return buildRef == null;
-	}
-
 	/**
 	 * Starts pathfinding and go to the specified target when a path is found.
 	 * The unit will be on the state THINKING while pathfinding.
@@ -308,11 +275,11 @@ public abstract class Unit extends TickableEntity
 		isAlive = false;
 		dispose();
 	}
-		
+	
 	@Override
 	public boolean isVisible()
 	{
-		return isOut();
+		return true;
 	}
 	
 	@Override

@@ -3,8 +3,6 @@ package simciv;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SpriteSheet;
-
 import simciv.content.Content;
 
 /**
@@ -20,16 +18,14 @@ public class Nature
 	public static final byte BUSH = 2;
 	// TODO add flowers and tall grass
 	
+	// TODO use spritesheets
 	private static Image treeSprites[] = new Image[3];
-	private static SpriteSheet bushSprites;
 	
 	public static void initialize()
 	{
-		treeSprites[0] = Content.images.natureTree;
-		treeSprites[1] = Content.images.natureTree2;
-		treeSprites[2] = Content.images.natureTree3;
-		
-		bushSprites = new SpriteSheet(Content.images.natureBush, Game.tilesSize, Game.tilesSize);
+		treeSprites[0] = Content.sprites.natureTree;
+		treeSprites[1] = Content.sprites.natureTree2;
+		treeSprites[2] = Content.sprites.natureTree3;
 	}
 	
 	/**
@@ -76,7 +72,7 @@ public class Nature
 			else if((cell.noise & 0x20) != 0) // 0001 000
 				i = 1;
 			
-			gfx.drawImage(bushSprites.getSprite(i, 0), gx, gy);
+			gfx.drawImage(Content.sprites.natureBush.getSprite(i, 0), gx, gy);
 		}
 	}
 

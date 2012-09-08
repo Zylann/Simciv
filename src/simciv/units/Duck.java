@@ -1,30 +1,25 @@
 package simciv.units;
 
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SpriteSheet;
 
-import simciv.Game;
 import simciv.Map;
 import simciv.content.Content;
 import simciv.movements.RandomMovement;
 
 public class Duck extends Unit
 {
-	private static SpriteSheet sprites;
+	private static final long serialVersionUID = 1L;
 	
 	public Duck(Map m)
 	{
 		super(m);
-		setMovement(new RandomMovement());
-		
-		if(sprites == null)
-			sprites = new SpriteSheet(Content.images.unitDuck, Game.tilesSize, Game.tilesSize);
+		setMovement(new RandomMovement());		
 	}
 
 	@Override
 	protected void renderUnit(Graphics gfx)
 	{
-		defaultRender(gfx, sprites);
+		defaultRender(gfx, Content.sprites.unitDuck);
 	}
 
 	@Override

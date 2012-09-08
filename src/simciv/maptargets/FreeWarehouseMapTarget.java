@@ -9,6 +9,8 @@ import simciv.Map;
  */
 public class FreeWarehouseMapTarget implements IMapTarget
 {
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public boolean evaluate(Map m, int x, int y)
 	{

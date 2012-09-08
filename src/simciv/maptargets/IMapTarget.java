@@ -1,5 +1,7 @@
 package simciv.maptargets;
 
+import java.io.Serializable;
+
 import simciv.Map;
 
 /**
@@ -8,7 +10,7 @@ import simciv.Map;
  * @author Marc
  *
  */
-public interface IMapTarget
+public interface IMapTarget extends Serializable
 {
 	public boolean evaluate(Map m, int x, int y);
 }

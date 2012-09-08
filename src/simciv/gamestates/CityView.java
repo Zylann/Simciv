@@ -9,15 +9,14 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.CityBuilder;
 import simciv.Game;
-import simciv.IntRange2D;
 import simciv.MinimapUpdater;
-import simciv.Resource;
 import simciv.SoundEngine;
 import simciv.Terrain;
 import simciv.Vector2i;
-import simciv.View;
 import simciv.Map;
 import simciv.content.Content;
+import simciv.persistence.GameSaveData;
+import simciv.persistence.GameSaverThread;
 import simciv.ui.BuildMenu;
 import simciv.ui.BuildMenuBar;
 import simciv.ui.InfoBar;
@@ -32,14 +31,13 @@ import simciv.ui.base.Widget;
 import simciv.ui.base.Window;
 
 /**
- * Main state of the game
+ * Main state of the game (city management)
  * @author Marc
  *
  */
-public class GamePlay extends UIBasicGameState
+public class CityView extends UIBasicGameState
 {
 	private int stateID = -1;
-	private View view;
 	private Map map;
 	private CityBuilder builder;
 	private InfoBar infoBar;
@@ -51,13 +49,15 @@ public class GamePlay extends UIBasicGameState
 	private MinimapUpdater minimapUpdater;
 	private BuildMenuBar menuBar;
 	private IndicatorsBar indicatorsBar;
-	private boolean quitGameRequested = false;
-	private boolean paused = false;
-	private boolean debugInfoVisible = false;
+	private GameSaverThread gameSaver;
+	private boolean quitGameRequested;
+	private boolean paused;
+	private boolean debugInfoVisible;
+	private boolean isGameBeginning;
 	private long renderTime;
 	private long updateTime;
 	
-	public GamePlay(int stateID)
+	public CityView(int stateID)
 	{
 		this.stateID = stateID;
 	}
@@ -73,9 +73,22 @@ public class GamePlay extends UIBasicGameState
 	{
 	}
 	
-	public void setMap(Map world)
+	/**
+	 * Sets the isGameBeginning flag to the given value.
+	 * If true, the state will enter as if its was the beginning of the game
+	 * (and some of the attributes  of the state will be initialized, like the map).
+	 * If false, the state will enter as if we are already in the game and
+	 * will not re-initialize its attributes.
+	 * @param b
+	 */
+	public void setIsGameBeginning(boolean b)
 	{
-		this.map = world;
+		isGameBeginning = b;
+	}
+	
+	public void setMap(Map m)
+	{
+		this.map = m;
 	}
 
 	@Override
@@ -96,7 +109,7 @@ public class GamePlay extends UIBasicGameState
 		
 		PushButton saveButton = new PushButton(pauseWindow, 0, 28, "Save game");
 		saveButton.setAlign(Widget.ALIGN_CENTER_X);
-		saveButton.setEnabled(false);
+		saveButton.addActionListener(new SaveGameAction());
 		pauseWindow.add(saveButton);
 
 		PushButton quitButton = new PushButton(pauseWindow, 0, 54, "Quit game");
@@ -117,7 +130,7 @@ public class GamePlay extends UIBasicGameState
 		
 		minimapWindow = new Window(ui, 0, 0, 134, 134, "Minimap");
 		minimap = new Minimap(minimapWindow, 0, 0, 0, 0);
-		minimap.setView(view);
+		minimap.setView(map.view);
 		minimap.setViz(minimapUpdater.getViz());
 		minimap.setVisible(true);
 		minimapWindow.add(minimap);
@@ -127,37 +140,37 @@ public class GamePlay extends UIBasicGameState
 		ui.add(minimapWindow);
 
 		// Mouse tool
-		menuBar.addMode(Content.images.uiCategCursor, "Pointer", CityBuilder.MODE_CURSOR);
+		menuBar.addMode(Content.sprites.uiCategCursor, "Pointer", CityBuilder.MODE_CURSOR);
 		
 		// Erase
-		menuBar.addMode(Content.images.uiCategErase, "Erase", CityBuilder.MODE_ERASE);
+		menuBar.addMode(Content.sprites.uiCategErase, "Erase", CityBuilder.MODE_ERASE);
 		
 		// Roads
-		menuBar.addMode(Content.images.uiCategRoad, "Trace roads", CityBuilder.MODE_ROAD);
+		menuBar.addMode(Content.sprites.uiCategRoad, "Trace roads", CityBuilder.MODE_ROAD);
 		
 		// Houses
-		menuBar.addMode(Content.images.uiCategHouse, "Place houses", CityBuilder.MODE_HOUSE);
+		menuBar.addMode(Content.sprites.uiCategHouse, "Place houses", CityBuilder.MODE_HOUSE);
 		
 		// Food
 		BuildMenu foodMenu = new BuildMenu(menuBar, 0, menuBar.getHeight(), 128);
 		foodMenu.addBuild("FarmLand");
-		menuBar.addCategory(Content.images.uiCategFood, "Food", foodMenu);
+		menuBar.addCategory(Content.sprites.uiCategFood, "Food", foodMenu);
 
 		// Industry
 		BuildMenu industryMenu = new BuildMenu(menuBar, 0, menuBar.getHeight(), 128);
 		industryMenu.addBuild("Warehouse");
-		menuBar.addCategory(Content.images.uiCategIndustry, "Industry", industryMenu);
+		menuBar.addCategory(Content.sprites.uiCategIndustry, "Industry", industryMenu);
 		
 		// Administration
 		BuildMenu adminMenu = new BuildMenu(menuBar, 0, menuBar.getHeight(), 128);
 		adminMenu.addBuild("TaxmenOffice");
 		adminMenu.addBuild("ArchitectOffice");
-		menuBar.addCategory(Content.images.uiCategAdmin, "Administration", adminMenu);
+		menuBar.addCategory(Content.sprites.uiCategAdmin, "Administration", adminMenu);
 
 		// Marketing
 		BuildMenu marketMenu = new BuildMenu(menuBar, 0, menuBar.getHeight(), 128);
 		marketMenu.addBuild("Market");
-		menuBar.addCategory(Content.images.uiCategMarketing, "Marketing and exchanges", marketMenu);
+		menuBar.addCategory(Content.sprites.uiCategMarketing, "Marketing and exchanges", marketMenu);
 		
 		ui.add(menuBar);
 		
@@ -179,22 +192,24 @@ public class GamePlay extends UIBasicGameState
 		quitGameRequested = false;
 		paused = false;
 		
-		// Create and init minimap
-		minimapUpdater = new MinimapUpdater(map);
-		map.grid.addListener(minimapUpdater);
-		minimapUpdater.updateCompleteViz(map.grid);
-				
-		// Create CityBuilder
-		builder = new CityBuilder(map);
+		if(isGameBeginning)
+		{			
+			// Create and init minimap
+			minimapUpdater = new MinimapUpdater(map);
+			map.grid.addListener(minimapUpdater);
+			minimapUpdater.updateCompleteViz(map.grid);
+					
+			// Create CityBuilder
+			builder = new CityBuilder(map);
+						
+			ui = null;
+			
+			isGameBeginning = false;
+		}
 		
-		// Create view
-		view = new View(0, 0, 2);
-		view.setMapSize(map.grid.getWidth(), map.grid.getHeight());
-		
-		// Because we will always draw the map on the entire screen at each frame
+		// Because we will always draw the map at first on the entire screen at each frame
 		gc.setClearEachFrame(false);
 		
-		ui = null;
 		super.enter(gc, game); // Note : the UI is created here, it depends on the code above
 	}
 
@@ -219,34 +234,36 @@ public class GamePlay extends UIBasicGameState
 		
 		Input input = gc.getInput();
 		
-		if(quitGameRequested)
-		{
-			game.enterState(Game.STATE_MAIN_MENU);
-		}
-		
-		view.update(gc, delta / 1000.f);
 		Terrain.updateTerrains(delta);
+
+		if(gameSaver != null && !gameSaver.isFinished())
+			paused = true; // The game is saving
+		else
+		{
+			if(quitGameRequested)
+				game.enterState(Game.STATE_MAIN_MENU);
+		}
 		
 		if(!paused)
 		{
 			// Pointed cell
-			pointedCell = view.convertCoordsToMap(input.getMouseX(), input.getMouseY());
+			pointedCell = map.view.convertCoordsToMap(input.getMouseX(), input.getMouseY());
 			builder.cursorMoved(pointedCell);
 
 			map.update(gc, game, delta);
 			builder.update(gc);
-		}
-		
-		minimapUpdater.update(delta);
-		minimap.setViz(minimapUpdater.getViz());
+			
+			minimapUpdater.update(delta);
+			minimap.setViz(minimapUpdater.getViz());
+			
+			indicatorsBar.update(
+					map.playerCity.population,
+					map.playerCity.workingPopulation,
+					(int) map.playerCity.getMoney(),
+					map.time.getMonthProgressRatio());
+		}		
 		
 		SoundEngine.instance().update(delta);
-		
-		indicatorsBar.update(
-				map.playerCity.population,
-				map.playerCity.workingPopulation,
-				(int) map.playerCity.getMoney(),
-				map.time.getMonthProgressRatio());
 		
 		// debug
 		updateTime = gc.getTime() - beginUpdateTime;
@@ -261,14 +278,10 @@ public class GamePlay extends UIBasicGameState
 	{		
 		// Debug
 		long beginRenderTime = gc.getTime();
-
-		// World view
-		view.configureGraphicsForWorldRendering(gfx);
-		IntRange2D mapRange = view.getMapRange(gc);
 		
 		/* World */
 		
-		map.render(gc, game, gfx, mapRange);
+		map.render(gc, game, gfx);
 		
 		/* Builder */
 		
@@ -327,7 +340,7 @@ public class GamePlay extends UIBasicGameState
 	{
 		if(!paused)
 		{
-			pointedCell = view.convertCoordsToMap(newx, newy);
+			pointedCell = map.view.convertCoordsToMap(newx, newy);
 			builder.cursorMoved(pointedCell);
 		}
 	}
@@ -364,8 +377,6 @@ public class GamePlay extends UIBasicGameState
 			toggleShowMinimap();
 		if(key == Input.KEY_SPACE)
 			map.setFastForward(!map.isFastForward());
-		if(key == Input.KEY_NUMPAD0) // Debug
-			System.out.println(map.playerCity.getResourceTotal(Resource.WHEAT));
 	}
 	
 	public void togglePause()
@@ -395,6 +406,17 @@ public class GamePlay extends UIBasicGameState
 		@Override
 		public void actionPerformed(Widget sender) {
 			quitGameRequested = true;
+		}
+	}
+	
+	class SaveGameAction implements IActionListener
+	{
+		@Override
+		public void actionPerformed(Widget sender) {
+			GameSaveData saveData = new GameSaveData("map");
+			saveData.map = map;
+			gameSaver = new GameSaverThread(saveData);
+			gameSaver.save();
 		}
 	}
 

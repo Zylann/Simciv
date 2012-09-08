@@ -2,10 +2,8 @@ package simciv.builds;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
-import simciv.Game;
 import simciv.Map;
 import simciv.content.Content;
 import simciv.units.Job;
@@ -17,7 +15,8 @@ import simciv.units.Job;
  */
 public class Market extends PassiveWorkplace
 {
-	private static SpriteSheet sprites;
+	private static final long serialVersionUID = 1L;
+
 	private static BuildProperties properties;
 	
 	static
@@ -30,18 +29,12 @@ public class Market extends PassiveWorkplace
 	{
 		super(m);
 		state = Build.STATE_NORMAL;
-		if(sprites == null)
-		{
-			sprites = new SpriteSheet(Content.images.buildMarket,
-					getWidth() * Game.tilesSize,
-					(getHeight() + getZHeight()) * Game.tilesSize);
-		}
 	}
 
 	@Override
 	public void renderBuild(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
-		renderDefault(gfx, sprites);
+		renderDefault(gfx, Content.sprites.buildMarket);
 	}
 
 	@Override

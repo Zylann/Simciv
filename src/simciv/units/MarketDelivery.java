@@ -3,9 +3,7 @@ package simciv.units;
 import java.util.List;
 
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SpriteSheet;
 
-import simciv.Game;
 import simciv.Map;
 import simciv.ResourceSlot;
 import simciv.builds.Build;
@@ -23,7 +21,7 @@ import simciv.movements.RandomRoadMovement;
  */
 public class MarketDelivery extends Citizen
 {
-	private static SpriteSheet unitSprites;
+	private static final long serialVersionUID = 1L;
 	
 	private ResourceSlot carriedResource;
 	
@@ -31,10 +29,7 @@ public class MarketDelivery extends Citizen
 	{
 		super(m, workplace);
 		//setMovement(new RandomRoadMovement());
-		carriedResource = new ResourceSlot();
-		
-		if(unitSprites == null)
-			unitSprites = new SpriteSheet(Content.images.unitMarketDelivery, Game.tilesSize, Game.tilesSize);
+		carriedResource = new ResourceSlot();		
 	}
 	
 	public void addResourceCarriage(ResourceSlot r)
@@ -45,9 +40,6 @@ public class MarketDelivery extends Citizen
 	@Override
 	public void tick()
 	{
-		if(!isOut())
-			return;
-		
 		if(getState() == Unit.THINKING)
 			return;
 
@@ -123,9 +115,9 @@ public class MarketDelivery extends Citizen
 	public void renderUnit(Graphics gfx)
 	{
 		if(carriedResource.isEmpty())
-			defaultRender(gfx, unitSprites, 4); // render without bag
+			defaultRender(gfx, Content.sprites.unitMarketDelivery, 4); // render without bag
 		else
-			defaultRender(gfx, unitSprites); // render with a bag
+			defaultRender(gfx, Content.sprites.unitMarketDelivery); // render with a bag
 	}
 
 	@Override

@@ -9,6 +9,8 @@ import simciv.Map;
  */
 public class PositionMapTarget implements IMapTarget
 {
+	private static final long serialVersionUID = 1L;
+	
 	public int targetX;
 	public int targetY;
 	

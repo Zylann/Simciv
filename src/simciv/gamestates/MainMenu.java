@@ -69,7 +69,7 @@ public class MainMenu extends UIBasicGameState
 		PushButton loadGameBtn = new PushButton(panel, 0, 28, "Load game");
 		loadGameBtn.setAlign(Widget.ALIGN_CENTER_X);
 		loadGameBtn.addActionListener(new LoadGameAction());
-		loadGameBtn.setEnabled(false);
+//		loadGameBtn.setEnabled(false);
 		panel.add(loadGameBtn);
 
 		PushButton exitBtn = new PushButton(panel, 0, 56, "Quit");
@@ -93,7 +93,7 @@ public class MainMenu extends UIBasicGameState
 		if(closeRequested)
 			((simciv.Game)game).close();		
 		if(newGame)
-			game.enterState(Game.STATE_GAME_LOADING);
+			game.enterState(Game.STATE_GAME_CREATING);
 		if(loadGame)
 			game.enterState(Game.STATE_GAME_LOADING);
 

@@ -23,9 +23,7 @@ public class Resource
 	
 	// list
 	private static Resource list[];
-	
-	private static SpriteSheet emptyCarriageSprites;
-	
+		
 	// Attributes
 	private byte ID;
 	private String name;
@@ -35,17 +33,12 @@ public class Resource
 	private boolean isFood;
 	
 	public static void initialize()
-	{
-		emptyCarriageSprites = new SpriteSheet(
-				Content.images.resourceEmptyCarriage, 
-				Game.tilesSize,
-				Game.tilesSize);
-		
+	{		
 		list = new Resource[COUNT];
 		
 		set(new Resource(WOOD, "Wood", 100));
 		set(new Resource(WHEAT, "Wheat", 100))
-			.setSprites(Content.images.resourceWheatCarriage, Content.images.resourceWheat)
+			.setSprites(Content.sprites.resourceWheatCarriage, Content.sprites.resourceWheat)
 			.setIsFood(true);
 		set(new Resource(STRAW, "Straw", 100));
 		set(new Resource(CLAY, "Clay", 100));
@@ -109,7 +102,7 @@ public class Resource
 	{
 		if(direction == Direction2D.NONE)
 			direction = Direction2D.SOUTH;
-		gfx.drawImage(emptyCarriageSprites.getSprite(0, direction), x, y);
+		gfx.drawImage(Content.sprites.resourceEmptyCarriage.getSprite(0, direction), x, y);
 	}
 
 	public void renderStorage(Graphics gfx, int x, int y, int amount)

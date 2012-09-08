@@ -1,5 +1,7 @@
 package simciv;
 
+import java.io.Serializable;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -9,8 +11,10 @@ import org.newdawn.slick.state.StateBasedGame;
  * @author Marc
  *
  */
-public abstract class Entity extends GameComponent
+public abstract class Entity extends GameComponent implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	private int posX;
 	private int posY;
 	private int lifeTime;
@@ -25,7 +29,12 @@ public abstract class Entity extends GameComponent
 		mapRef = m;
 		direction = Direction2D.SOUTH;
 	}
-		
+	
+	public void setMap(Map m)
+	{
+		mapRef = m;
+	}
+	
 	public byte getState()
 	{
 		return state;

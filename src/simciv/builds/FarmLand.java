@@ -2,7 +2,6 @@ package simciv.builds;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Cheats;
@@ -22,10 +21,10 @@ import simciv.units.Conveyer;
  *
  */
 public class FarmLand extends Workplace
-{	
+{
+	private static final long serialVersionUID = 1L;
+
 	private static BuildProperties properties;
-	private static SpriteSheet sprites;
-	private static SpriteSheet cropsSprites;
 
 	private static byte MIN_LEVEL = 0;
 	private static byte MAX_LEVEL = 7;
@@ -47,17 +46,7 @@ public class FarmLand extends Workplace
 		ticksPerLevel = secondsToTicks(60);
 		ticksBeforeNextLevel = ticksPerLevel;
 		cropsLevel = MIN_LEVEL;
-		state = Build.STATE_NORMAL;
-		
-		if(sprites == null)
-		{
-			sprites = new SpriteSheet(Content.images.buildFarmland,
-					getWidth() * Game.tilesSize,
-					getHeight() * Game.tilesSize);
-			cropsSprites = new SpriteSheet(Content.images.buildFarmlandCrops,
-					Game.tilesSize,
-					Game.tilesSize);
-		}
+		state = Build.STATE_NORMAL;		
 	}
 	
 	@Override
@@ -119,9 +108,9 @@ public class FarmLand extends Workplace
 	{
 		// Soil
 		if(state == Build.STATE_NORMAL || needEmployees())
-			gfx.drawImage(sprites.getSprite(0, 0), 0, 0);
+			gfx.drawImage(Content.sprites.buildFarmland.getSprite(0, 0), 0, 0);
 		else
-			gfx.drawImage(sprites.getSprite(1, 0), 0, 0);
+			gfx.drawImage(Content.sprites.buildFarmland.getSprite(1, 0), 0, 0);
 		
 		// Crops
 		if(state == Build.STATE_ACTIVE || cropsLevel != 0)
@@ -133,14 +122,15 @@ public class FarmLand extends Workplace
 					if(cropsLevel != ROTTEN_LEVEL)
 					{
 						gfx.drawImage(
-								cropsSprites.getSprite(cropsLevel, 0),
-								i * Game.tilesSize,
-								j * Game.tilesSize);
+							Content.sprites.buildFarmlandCrops.getSprite(cropsLevel, 0),
+							i * Game.tilesSize,
+							j * Game.tilesSize);
 					}
 					else
-						gfx.drawImage(Content.images.buildFarmlandRottenCrops, 
-								i * Game.tilesSize,
-								j * Game.tilesSize);
+						gfx.drawImage(
+							Content.sprites.buildFarmlandCrops, 
+							i * Game.tilesSize,
+							j * Game.tilesSize);
 				}
 			}
 		}

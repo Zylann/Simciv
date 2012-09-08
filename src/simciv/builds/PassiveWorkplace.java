@@ -9,6 +9,8 @@ import simciv.Map;
  */
 public abstract class PassiveWorkplace extends Workplace
 {
+	private static final long serialVersionUID = 1L;
+
 	public PassiveWorkplace(Map m)
 	{
 		super(m);

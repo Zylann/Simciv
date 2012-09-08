@@ -7,6 +7,8 @@ import simciv.units.Unit;
 
 public class RandomMovement implements IMovement
 {
+	private static final long serialVersionUID = 1L;
+	
 	protected int ticksBeforeNextMove;
 	protected int ticksBeforeNextStop;
 	

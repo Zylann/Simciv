@@ -2,8 +2,6 @@ package simciv.builds;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
@@ -15,6 +13,7 @@ import simciv.maptargets.RoadMapTarget;
 import simciv.units.Citizen;
 import simciv.units.Employer;
 import simciv.units.Job;
+import simciv.units.Unit;
 
 /**
  * A workplace is a build that have employees and execute specific tasks (production, services...).
@@ -28,15 +27,17 @@ import simciv.units.Job;
  */
 public abstract class Workplace extends Build
 {
-	private ArrayList<House> employees; // House of each employee
-	protected TreeMap<Integer, Citizen> units; // ID of citizen, citizen unit
+	private static final long serialVersionUID = 1L;
+	
+	private ArrayList<Integer> employees; // House ID of each employee
+	protected ArrayList<Integer> units; // ID of citizens
 	private Employer employer;
 	
 	public Workplace(Map m)
 	{
 		super(m);
-		employees = new ArrayList<House>();
-		units = new TreeMap<Integer, Citizen>();
+		employees = new ArrayList<Integer>();
+		units = new ArrayList<Integer>();
 	}
 
 	@Override
@@ -87,7 +88,7 @@ public abstract class Workplace extends Build
 	{
 		if(needEmployees())
 		{
-			employees.add(empHouse);
+			employees.add(empHouse.getID());
 			mapRef.playerCity.workingPopulation++;
 			return true;
 		}
@@ -164,7 +165,7 @@ public abstract class Workplace extends Build
 	{
 		if(units.size() == getNbEmployees())
 			return false;
-		units.put(c.getID(), c);
+		units.add(c.getID());
 		mapRef.spawnUnit(c, x, y);
 		return true;
 	}
@@ -176,9 +177,11 @@ public abstract class Workplace extends Build
 	{
 		if(units.isEmpty())
 			return;
-		Citizen c = units.remove(units.firstKey());
-		if(!c.isDisposed())
-			c.dispose();
+		
+		int cID = units.get(0);
+		Unit u = mapRef.getUnit(cID);
+		u.dispose();
+		units.remove(0);
 	}
 	
 	/**
@@ -187,7 +190,7 @@ public abstract class Workplace extends Build
 	 */
 	public void removeDisposedUnit(Citizen citizen)
 	{
-		units.remove(citizen.getID());
+		units.remove((Object)(citizen.getID()));
 	}
 	
 	/**
@@ -196,8 +199,11 @@ public abstract class Workplace extends Build
 	 */
 	protected void removeAllUnits()
 	{
-		for(Citizen c : units.values())
-			c.dispose();
+		for(Integer cID : units)
+		{
+			Unit u = mapRef.getUnit(cID);
+			u.dispose();
+		}
 		units.clear();
 	}
 	
@@ -213,7 +219,7 @@ public abstract class Workplace extends Build
 		if(employees.isEmpty())
 			return;
 		
-		if(!employees.remove(empHouse))
+		if(!employees.remove((Object)(empHouse.getID())))
 			return;
 		
 		mapRef.playerCity.workingPopulation--;
@@ -232,8 +238,8 @@ public abstract class Workplace extends Build
 	 */
 	public void changeEmployeeHouse(House oldHouse, House newHouse)
 	{
-		if(employees.remove(oldHouse))
-			employees.add(newHouse);
+		if(employees.remove((Object)(oldHouse.getID())))
+			employees.add(newHouse.getID());
 		else
 			System.out.println("ERROR: Workplace.changeEmployeeHouse");
 	}
@@ -246,8 +252,11 @@ public abstract class Workplace extends Build
 	{
 		removeAllUnits();
 		
-		for(House h : employees)
+		for(Integer hID : employees)
+		{
+			House h = (House)(mapRef.getBuild(hID));
 			h.removeWorker(this, false);
+		}
 		
 		mapRef.playerCity.workingPopulation -= employees.size();
 		employees.clear();
@@ -261,8 +270,9 @@ public abstract class Workplace extends Build
 	 */
 	public void onUnitKilled(Citizen u)
 	{
-		units.remove(u.getID());
-		House h = employees.get(0);
+		units.remove((Object)(u.getID()));
+		int hID = employees.get(0);
+		House h = (House)mapRef.getBuild(hID);
 		h.removeInhabitantWorkingAt(this);
 	}
 	
@@ -382,7 +392,7 @@ public abstract class Workplace extends Build
 	{
 		return 12;
 	}
-	
+
 }
 
 

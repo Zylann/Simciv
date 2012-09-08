@@ -1,5 +1,6 @@
 package simciv;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,13 +19,15 @@ import simciv.rendering.SortedRender;
  * @author Marc
  *
  */
-public class MapGrid
+public class MapGrid implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	private MapCell cells[]; // 2D access is made using (width * y + x).
 	private int width;
 	private int height;	
 	private boolean renderGrid;
-	private List<IMapGridListener> listeners;
+	private transient List<IMapGridListener> listeners;
 
 	/**
 	 * Creates an empty map
@@ -48,6 +51,8 @@ public class MapGrid
 	
 	public void addListener(IMapGridListener l)
 	{
+		if(listeners == null)
+			listeners = new ArrayList<IMapGridListener>();
 		listeners.add(l);
 	}
 	

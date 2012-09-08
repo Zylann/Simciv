@@ -2,8 +2,6 @@ package simciv.effects;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SpriteSheet;
-import simciv.Game;
 import simciv.MathHelper;
 import simciv.content.Content;
 
@@ -14,8 +12,6 @@ import simciv.content.Content;
  */
 public class SmokeExplosion extends VisualEffect
 {
-	private static SpriteSheet sprites;
-	
 	private SmokeParticle particles[];
 	private boolean finished;
 	
@@ -32,9 +28,6 @@ public class SmokeExplosion extends VisualEffect
 		particles = new SmokeParticle[nbParticles];
 		finished = false;
 		
-		if(sprites == null)
-			sprites = new SpriteSheet(Content.images.effectSmoke, Game.tilesSize/2, Game.tilesSize/2);
-
 		// Generate particles
 		float durationVariation = meanDuration / 4;
 		for(int i = 0; i < particles.length; i++)
@@ -88,13 +81,13 @@ public class SmokeExplosion extends VisualEffect
 			velX = MathHelper.randS(32.f);
 			velY = -32.f * (float) (Math.random());
 			color = new Color(224, 224, 224, 255);
-			sprite = MathHelper.randInt(0, sprites.getHorizontalCount());
+			sprite = MathHelper.randInt(0, Content.sprites.effectSmoke.getHorizontalCount());
 		}
 		
 		public void render(Graphics gfx)
 		{
 			color.a = getK();
-			gfx.drawImage(sprites.getSprite(sprite, 0), posX, posY, color);
+			gfx.drawImage(Content.sprites.effectSmoke.getSprite(sprite, 0), posX, posY, color);
 		}
 	}
 	

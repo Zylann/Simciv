@@ -3,10 +3,10 @@ package simciv.builds;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Game;
+import simciv.Resource;
 import simciv.ResourceSlot;
 import simciv.Map;
 import simciv.content.Content;
@@ -20,12 +20,14 @@ import simciv.content.Content;
 // ex : Warehouse.isAtLeastOneHaveFood()
 public class Warehouse extends PassiveWorkplace
 {
+	private static final long serialVersionUID = 1L;
+	
 	private static BuildProperties properties;
-	private static SpriteSheet sprites;
 	private static final int NB_SLOTS = 8;
 	
 	private ResourceSlot resourceSlots[];
 	private boolean full;
+	private boolean empty;
 
 	static
 	{
@@ -39,21 +41,34 @@ public class Warehouse extends PassiveWorkplace
 		state = Build.STATE_NORMAL;
 		resourceSlots = new ResourceSlot[NB_SLOTS];
 		full = false;
+		empty = true;
 		
 		for(int i = 0; i < resourceSlots.length; i++)
-			resourceSlots[i] = new ResourceSlot();
-		
-		if(sprites == null)
-		{
-			sprites = new SpriteSheet(Content.images.buildWarehouse,
-					getWidth() * Game.tilesSize,
-					(getHeight() + getZHeight())* Game.tilesSize);
-		}
+			resourceSlots[i] = new ResourceSlot();		
+	}
+	
+	@Override
+	public void onInit()
+	{
+		super.onInit();
+		mapRef.playerCity.registerWarehouse(this);
+	}
+
+	@Override
+	protected void onDispose()
+	{
+		super.onDispose();
+		mapRef.playerCity.unregisterWarehouse(this);
 	}
 		
 	public boolean isFull()
 	{
 		return full;
+	}
+	
+	public boolean isEmpty()
+	{
+		return empty;
 	}
 
 	@Override
@@ -71,9 +86,6 @@ public class Warehouse extends PassiveWorkplace
 	@Override
 	public void storeResource(ResourceSlot r)
 	{
-		int oldAmount = r.getAmount();
-		byte type = r.getType();
-		
 		// Iterate over slots
 		full = true;
 		for(ResourceSlot slot : resourceSlots)
@@ -82,34 +94,81 @@ public class Warehouse extends PassiveWorkplace
 			{
 				full = false;
 				if(!r.isEmpty())
-					slot.addAllFrom(r);
+				{
+					if(slot.addAllFrom(r))
+						empty = false;
+				}
 			}
 		}
-		
-		int storedAmount = oldAmount - r.getAmount();
-		mapRef.playerCity.onResourceStored(type, storedAmount);
 	}
 	
+	/**
+	 * Gets a resource from the warehouse until the given slot is full.
+	 * @param r
+	 * @return true if the given slot has been modified.
+	 */
 	public boolean retrieveResource(ResourceSlot r)
 	{
 		boolean retrieved = false;
-		int oldAmount = r.getAmount();
-		byte type = r.getType();
+		empty = true;
 		
 		for(ResourceSlot slot : resourceSlots)
 		{
-			if(r.addAllFrom(slot))
-				retrieved = true;
-			if(r.isFull())
-				break;
+			if(!r.isFull())
+			{
+				if(r.addAllFrom(slot))
+					retrieved = true;
+			}
+			if(!slot.isEmpty())
+				empty = false;
 		}
-		
-		int retrievedAmount = r.getAmount() - oldAmount;
-		mapRef.playerCity.onResourceUsed(type, retrievedAmount);
-		
+				
 		if(retrieved)
 			full = false;
 		return retrieved;
+	}
+	
+	/**
+	 * Computes the free space for storing the given type of resource.
+	 * It may differ depending on the resource type.
+	 * @param type : resource type
+	 * @return free space in the warehouse
+	 */
+	public int getFreeSpaceForResource(byte type)
+	{
+		int stackLimit = Resource.get(type).getStackLimit();
+		
+		if(empty)
+			return stackLimit * resourceSlots.length;
+		if(full)
+			return 0;
+		
+		int space = 0;
+		for(ResourceSlot s : resourceSlots)
+		{
+			if(s.isEmpty())
+				space += stackLimit;
+			else if(s.getType() == type)
+				space += s.getFreeSpace();
+		}
+		
+		return space;
+	}
+	
+	/**
+	 * Counts how many resources of the given type are contained in the warehouse
+	 * @param type : resource type
+	 * @return total in units
+	 */
+	public int getResourceTotal(byte type)
+	{
+		int total = 0;		
+		for(ResourceSlot s : resourceSlots)
+		{
+			if(s.getType() == type)
+				total += s.getAmount();
+		}
+		return total;
 	}
 	
 	@Override
@@ -117,9 +176,9 @@ public class Warehouse extends PassiveWorkplace
 	{
 		// Floor
 		if(state == Build.STATE_ACTIVE)
-			gfx.drawImage(sprites.getSprite(1, 0), 0, -Game.tilesSize);
+			gfx.drawImage(Content.sprites.buildWarehouse.getSprite(1, 0), 0, -Game.tilesSize);
 		else
-			gfx.drawImage(sprites.getSprite(0, 0), 0, -Game.tilesSize);
+			gfx.drawImage(Content.sprites.buildWarehouse.getSprite(0, 0), 0, -Game.tilesSize);
 			
 		// Resources
 		
@@ -189,7 +248,7 @@ public class Warehouse extends PassiveWorkplace
 	protected void onActivityStop()
 	{
 	}
-	
+
 }
 
 

@@ -1,5 +1,7 @@
 package simciv;
 
+import java.io.Serializable;
+
 import org.newdawn.slick.Graphics;
 
 /**
@@ -7,8 +9,10 @@ import org.newdawn.slick.Graphics;
  * @author Marc
  *
  */
-public class ResourceSlot
+public class ResourceSlot implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	private byte type; // resource type (or last type stored)
 	private int amount;
 	
@@ -23,6 +27,12 @@ public class ResourceSlot
 		set(type, amount);
 	}
 	
+	/**
+	 * Sets the type and the amount of resource in the slot.
+	 * Stack limits are not checked.
+	 * @param type : resource type
+	 * @param amount : resource amount
+	 */
 	private void set(byte type, int amount)
 	{
 		this.type = type;
@@ -52,6 +62,15 @@ public class ResourceSlot
 	public Resource getSpecs()
 	{
 		return Resource.get(type);
+	}
+	
+	/**
+	 * Returns the available space left in the slot
+	 * @return
+	 */
+	public int getFreeSpace()
+	{
+		return getSpecs().getStackLimit() - amount;
 	}
 	
 	/**
@@ -97,6 +116,11 @@ public class ResourceSlot
 		return true;
 	}
 	
+	/**
+	 * Adds as much as possible resources from the given slot.
+	 * @param other : source
+	 * @return : true if more than 0 resources has been moved
+	 */
 	public boolean addAllFrom(ResourceSlot other)
 	{
 		return addFrom(other, -1);

@@ -3,9 +3,6 @@ package simciv.units;
 import java.util.List;
 
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SpriteSheet;
-
-import simciv.Game;
 import simciv.Map;
 import simciv.PlayerCity;
 import simciv.builds.Build;
@@ -21,15 +18,12 @@ import simciv.movements.RandomRoadMovement;
  */
 public class Architect extends Citizen
 {
-	private static SpriteSheet unitSprites;
+	private static final long serialVersionUID = 1L;
 	
 	public Architect(Map m, Workplace w)
 	{
 		super(m, w);
 		setMovement(new RandomRoadMovement());
-		
-		if(unitSprites == null)
-			unitSprites = new SpriteSheet(Content.images.unitArchitect, Game.tilesSize, Game.tilesSize);
 	}
 
 	@Override
@@ -59,7 +53,7 @@ public class Architect extends Citizen
 	@Override
 	public void renderUnit(Graphics gfx)
 	{
-		defaultRender(gfx, unitSprites);
+		defaultRender(gfx, Content.sprites.unitArchitect);
 	}
 
 }

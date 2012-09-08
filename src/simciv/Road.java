@@ -20,7 +20,7 @@ public class Road
 	
 	public static void initialize() throws SlickException
 	{
-		tileset = Content.images.terrainRoad;
+		tileset = Content.sprites.terrainRoad;
 		
 		int nbTiles = 16;		
 		int tilePos[][] =

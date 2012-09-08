@@ -1,13 +1,12 @@
 package simciv.content;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
+import org.newdawn.slick.SpriteSheet;
 
 
 /**
@@ -19,17 +18,16 @@ import org.newdawn.slick.Sound;
 public class Content
 {
 	// Direct access
-	public static Images images;
+	public static Sprites sprites;
 	public static Sounds sounds;
+	
 	// Static content (loading is hardcoded)
 	public static AngelCodeFont globalFont;
 	
-	// Files mapping : path => file
-	public static Map<String, Image> imageMap = new HashMap<String, Image>();
-	public static Map<String, Sound> soundMap = new HashMap<String, Sound>();
-	
 	// Content settings
 	public static ContentSettings settings = new ContentSettings();
+	
+	private static ContentLoader loader;
 	
 	/**
 	 * Loads content from an XML file and put it in the mapping only.
@@ -40,7 +38,8 @@ public class Content
 	 */
 	public static void loadFromContentFile(String filename) throws SlickException
 	{
-		ContentLoader loader = new ContentLoader(imageMap, soundMap, settings);
+		if(loader == null)
+			loader = new ContentLoader(settings);
 		loader.loadRessources(filename);
 	}
 	
@@ -53,7 +52,10 @@ public class Content
 	
 	public static int getTotalCount()
 	{
-		return imageMap.size() + soundMap.size();
+		if(loader == null)
+			return 0;
+		
+		return loader.getTotalCount();
 	}
 
 	/**
@@ -63,35 +65,54 @@ public class Content
 	 */
 	public static void indexAll() throws SlickException
 	{
-		indexImages();
+		indexSprites();
 		indexSounds();
 	}
 	
-	private static void indexImages() throws SlickException
+	private static void indexSprites() throws SlickException
 	{
-		Images newImages = new Images();
-		Field[] fields = newImages.getClass().getDeclaredFields();
+		Sprites newSprites = new Sprites();
+		Field[] fields = newSprites.getClass().getDeclaredFields();
 		
 		for(Field field : fields)
 		{
-			String imgID = field.getName();
-			Image img = imageMap.get(imgID);
-			if(img == null)
-				throw new SlickException("Image not found (ID = " + imgID + ")");
-			img.setFilter(settings.defaultImageFilter);
-			try
+			String ID = field.getName();
+			
+			if(field.getType() == Image.class)
 			{
-				field.set(newImages, img);
-			} catch (IllegalArgumentException e)
+				Image img = loader.getImage(ID);
+				if(img == null)
+					throw new SlickException("Image not found (ID = " + ID + ")");
+				try
+				{
+					field.set(newSprites, img);
+				} catch (IllegalArgumentException e)
+				{
+					e.printStackTrace();
+				} catch (IllegalAccessException e)
+				{
+					e.printStackTrace();
+				}
+			}
+			else if(field.getType() == SpriteSheet.class)
 			{
-				e.printStackTrace();
-			} catch (IllegalAccessException e)
-			{
-				e.printStackTrace();
+				SpriteSheet spr = loader.getSpriteSheet(ID);
+				if(spr == null)
+					throw new SlickException("SpriteSheet not found (ID = " + ID + ")");
+				try
+				{
+					field.set(newSprites, spr);
+				} catch (IllegalArgumentException e)
+				{
+					e.printStackTrace();
+				} catch (IllegalAccessException e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 		
-		images = newImages;
+		sprites = newSprites;
 	}
 	
 	private static void indexSounds() throws SlickException
@@ -102,7 +123,7 @@ public class Content
 		for(Field field : fields)
 		{
 			String sndID = field.getName();
-			Sound snd = soundMap.get(sndID);
+			Sound snd = loader.getSound(sndID);
 			if(snd == null)
 				throw new SlickException("Sound not found (ID = " + sndID + ")");
 			try

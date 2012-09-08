@@ -1,5 +1,6 @@
 package simciv;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -7,8 +8,10 @@ import java.util.HashMap;
  * @author Marc
  *
  */
-public class ResourceBag
+public class ResourceBag implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	private HashMap<Byte, ResourceSlot> slots; // Type, slot
 	
 	public ResourceBag()

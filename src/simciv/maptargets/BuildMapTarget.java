@@ -9,6 +9,8 @@ import simciv.Map;
  */
 public class BuildMapTarget implements IMapTarget
 {
+	private static final long serialVersionUID = 1L;
+	
 	public int buildingID;
 
 	public BuildMapTarget(int ID)
