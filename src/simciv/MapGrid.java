@@ -341,7 +341,7 @@ public class MapGrid implements Serializable
 				if(contains(x, y))
 				{
 					getCellExisting(x, y).renderGround(x, y, gfx);
-					getCellExisting(x, y).renderData(gfx, x, y); // debug
+//					getCellExisting(x, y).renderData(gfx, x, y); // debug
 				}
 			}
 		}
@@ -562,6 +562,13 @@ public class MapGrid implements Serializable
 			}
 		}
 		return true;
+	}
+
+	public boolean isArable(int x, int y)
+	{
+		if(!contains(x, y))
+			return false;
+		return getCellExisting(x, y).isArable();
 	}
 
 }

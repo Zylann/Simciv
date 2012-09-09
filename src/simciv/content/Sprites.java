@@ -21,6 +21,7 @@ public class Sprites
 	public SpriteSheet buildTaxmenOffice;
 	public SpriteSheet buildMarket;
 	public SpriteSheet buildArchitectOffice;
+	public SpriteSheet buildWaterSource;
 	public Image buildDebris;
 	
 	// Units

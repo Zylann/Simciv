@@ -31,6 +31,7 @@ public class BuildFactory
 		addMapping(Market.class, "Market");
 		addMapping(ArchitectOffice.class, "ArchitectOffice");
 		addMapping(Debris.class, "Debris");
+		addMapping(WaterSource.class, "WaterSource");
 	}
 
 	@SuppressWarnings("rawtypes")

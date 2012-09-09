@@ -10,13 +10,14 @@
 	<image id="buildConstructing1x1" src="buildplace.png"/>
 	<spritesheet id="buildFarmland" tw="48" th="48" src="farmland.png"/>
 	<spritesheet id="buildFarmlandCrops" tw="16" th="16" src="crops.png"/>
-	<image id="buildFarmlandRottenCrops" src="rotten_crops.png"/>	
+	<image id="buildFarmlandRottenCrops" src="rotten_crops.png"/>
 	<spritesheet id="buildHouseLv1" tw="16" th="32" src="house1.png"/>
 	<spritesheet id="buildHouseLv2" tw="32" th="48" src="house2_2x2.png"/>
 	<spritesheet id="buildWarehouse" tw="48" th="64" src="warehouse.png"/>
 	<spritesheet id="buildTaxmenOffice" tw="32" th="48" src="taxmen_office.png"/>
 	<spritesheet id="buildMarket" tw="32" th="48" src="market.png"/>
 	<spritesheet id="buildArchitectOffice" tw="32" th="48" src="architects.png"/>
+	<spritesheet id="buildWaterSource" tw="16" th="16" src="water_source.png"/>
 	<image id="buildDebris" src="debris.png"/>
 	
 	<!-- Units -->
