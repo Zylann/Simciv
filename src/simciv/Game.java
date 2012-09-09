@@ -52,9 +52,6 @@ public class Game extends UIStateBasedGame
 	
 	// The game
 	private static Game game;
-	
-	/* Instance vars */
-	public GameData gameData;
 
 	// States
 	private ArrayList<GameState> states;
