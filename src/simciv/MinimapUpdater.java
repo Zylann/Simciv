@@ -14,7 +14,6 @@ import simciv.content.Content;
  */
 public class MinimapUpdater implements IMapGridListener
 {
-	private static Image mapMask;
 	private static final int MASK_BASE = 16; // in pixels
 	private static final int VIZ_UPDATE_TIME = 1000; // in ms
 	
@@ -28,8 +27,6 @@ public class MinimapUpdater implements IMapGridListener
 		worldRef = w;
 		pixels = new ImageBuffer(w.grid.getWidth(), w.grid.getHeight());
 		viz = pixels.getImage(Image.FILTER_NEAREST);
-		
-		mapMask = Content.sprites.uiMinimapMask;
 	}
 	
 	public void update(int delta) throws SlickException
@@ -71,7 +68,7 @@ public class MinimapUpdater implements IMapGridListener
 			maskY = y;
 				
 		Color clr = cell.getMinimapColor(worldRef);
-		clr = clr.multiply(mapMask.getColor(maskX, maskY));
+		clr = clr.multiply(Content.sprites.uiMinimapMask.getColor(maskX, maskY));
 		
 		pixels.setRGBA(x, y,
 				(int)(255.f * clr.r),
