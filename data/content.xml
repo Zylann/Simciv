@@ -6,12 +6,6 @@
 
 	<!-- Textures -->
 	
-	<!--
-	TODO : Maybe the syntax will change for somewhat like this in the future : 
-	<image id="test" src="test.png"/>
-	<spritesheet id="test" hcount="2" vcount="1" src="test.png"/>
-	 -->
-	
 	<image id="buildConstructing1x1" src="buildplace.png"/>
 	<spritesheet id="buildFarmland" tw="48" th="48" src="farmland.png"/>
 	<spritesheet id="buildFarmlandCrops" tw="16" th="16" src="crops.png"/>
@@ -46,8 +40,6 @@
 	<image id="natureTree2" src="tree2.png"/>
 	<image id="natureTree3" src="tree3.png"/>
 	<spritesheet id="natureBush" tw="16" th="16" src="bush.png"/>
-	
-	<!--  TODO -->
 	
 	<spritesheet id="uiToolButton" tw="24" th="24" src="ui_button_24x24.png"/>
 	<image id="uiCategHouse" src="ui_house.png"/>
@@ -94,6 +86,10 @@
 	<sound id="test" src="test.ogg"/>
 
 	<!-- Strings -->
+	
+	<!-- 
+	TODO : language attribute for strings
+	 -->
 
 	<string id="test">Hello world !</string>
 

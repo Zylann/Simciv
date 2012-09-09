@@ -12,7 +12,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.GameState;
 
-import simciv.content.Content;
 import simciv.gamestates.GameCreatingScreen;
 import simciv.gamestates.CityView;
 import simciv.gamestates.ContentLoadingScreen;
@@ -134,12 +133,7 @@ public class Game extends UIStateBasedGame
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException
-	{
-		Content.loadMinimalContent();
-		
-		// Load content (deferred)
-		Content.loadFromContentFile("data/content.xml");
-		
+	{		
 		// Initialize states
 		for (GameState state : states)
 			state.init(container, this);

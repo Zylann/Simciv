@@ -16,7 +16,6 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.loading.LoadingList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -88,11 +87,12 @@ public class ContentLoader
 	 */
 	public void loadRessources(String filename) throws SlickException
 	{
-        // open resources file
+		// open resources file
         File file = new File(filename);
         InputStream is = null;
         try
         {
+    		System.out.println("Reading " + filename + "...");    		
 			is = new DataInputStream(new FileInputStream(file));
 			// load resources
 			loadResources(is);
@@ -157,12 +157,6 @@ public class ContentLoader
 		}
 		NodeList contentNodes = tlist.item(0).getChildNodes();
 		
-		if(settings.deferredLoading)
-		{
-			// clear loading list and enable deferred loading
-			LoadingList.setDeferredLoading(true);
-		}
-		
 		for(int i = 0; i < contentNodes.getLength(); i++)
 		{
 			Node node = contentNodes.item(i);
@@ -190,7 +184,7 @@ public class ContentLoader
 			}
 		}
 		
-        System.out.println(getTotalCount());
+		System.out.println(getTotalCount() + " content files read");
 	}
 	
 	private void loadStringFromXML(Element stringElement) throws SlickException
