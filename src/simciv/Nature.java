@@ -17,15 +17,12 @@ public class Nature
 	public static final byte TREE = 1;
 	public static final byte BUSH = 2;
 	// TODO add flowers and tall grass
-	
-	// TODO use spritesheets
-	private static Image treeSprites[] = new Image[3];
-	
+
 	public static void initialize()
 	{
-		treeSprites[0] = Content.sprites.natureTree;
-		treeSprites[1] = Content.sprites.natureTree2;
-		treeSprites[2] = Content.sprites.natureTree3;
+//		treeSprites[0] = Content.sprites.natureTree;
+//		treeSprites[1] = Content.sprites.natureTree2;
+//		treeSprites[2] = Content.sprites.natureTree3;
 	}
 	
 	/**
@@ -59,7 +56,8 @@ public class Nature
 			else if((cell.noise & 0x20) != 0) // 0010 000
 				i = 2;
 			
-			gfx.drawImage(treeSprites[i], gx, gy - (treeSprites[i].getHeight() - Game.tilesSize));
+			Image treeImg = Content.sprites.natureTree.getSprite(i, 0);
+			gfx.drawImage(treeImg, gx, gy - (treeImg.getHeight() - Game.tilesSize));
 		}
 		else if(cell.nature == BUSH)
 		{

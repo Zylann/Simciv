@@ -45,9 +45,7 @@ public class Sprites
 	public Image terrainDust;
 	
 	// Nature
-	public Image natureTree;
-	public Image natureTree2;
-	public Image natureTree3;
+	public SpriteSheet natureTree;
 	public SpriteSheet natureBush;
 	
 	// UI

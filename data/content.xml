@@ -6,6 +6,7 @@
 
 	<!-- Textures -->
 	
+	<!-- Builds -->
 	<image id="buildConstructing1x1" src="buildplace.png"/>
 	<spritesheet id="buildFarmland" tw="48" th="48" src="farmland.png"/>
 	<spritesheet id="buildFarmlandCrops" tw="16" th="16" src="crops.png"/>
@@ -18,6 +19,7 @@
 	<spritesheet id="buildArchitectOffice" tw="32" th="48" src="architects.png"/>
 	<image id="buildDebris" src="debris.png"/>
 	
+	<!-- Units -->
 	<spritesheet id="unitEmployer" tw="16" th="16" src="citizen.png"/>
 	<spritesheet id="unitConveyer" tw="16" th="16" src="transporter_only.png"/>
 	<spritesheet id="unitNomad" tw="16" th="16" src="nomad.png"/>
@@ -27,20 +29,22 @@
 	<spritesheet id="unitArchitect" tw="16" th="16" src="architect.png"/>
 	<spritesheet id="unitThinking" tw="5" th="5" src="think.png"/>
 	
+	<!-- Resources -->
 	<spritesheet id="resourceEmptyCarriage" tw="16" th="16" src="carriage.png"/>
 	<spritesheet id="resourceWheat" tw="16" th="16" src="res_wheat.png"/>
 	<spritesheet id="resourceWheatCarriage" tw="16" th="16" src="carriage_wheat.png"/>
 	
+	<!-- Terrain -->
 	<image id="terrainRoad" src="road.png"/>
 	<image id="terrainGrass" src="grass.png"/>
 	<image id="terrainWater" src="water.png"/>
 	<image id="terrainDust" src="dust.png"/>
 	
-	<image id="natureTree" src="tree.png"/>
-	<image id="natureTree2" src="tree2.png"/>
-	<image id="natureTree3" src="tree3.png"/>
+	<!-- Nature -->
+	<spritesheet id="natureTree" tw="16" th="32" src="trees.png"/>
 	<spritesheet id="natureBush" tw="16" th="16" src="bush.png"/>
 	
+	<!-- UI -->
 	<spritesheet id="uiToolButton" tw="24" th="24" src="ui_button_24x24.png"/>
 	<image id="uiCategHouse" src="ui_house.png"/>
 	<image id="uiCategRoad" src="ui_road.png"/>
@@ -63,6 +67,8 @@
 	<image id="uiIndicatorsPopulation" src="citizen_icon.png"/>
 	<image id="uiIndicatorsMoney" src="ui_money.png"/>
 	
+	
+	<!-- Effects -->
 	<image id="effectGreenStar" src="green_star.png"/>
 	<image id="effectGold" src="gold_fx.png"/>
 	<image id="effectDeath" src="death.png"/>
@@ -72,11 +78,14 @@
 	
 	<!-- Sounds -->
 	
+	<!-- Builds -->
 	<sound id="buildCollapse" src="buildCollapse.ogg"/>
 	
+	<!-- Units -->
 	<sound id="unitNewCitizen" src="door_open.ogg"/>
 	<sound id="unitPay" src="coinBounce.ogg"/>
 	
+	<!-- UI -->
 	<sound id="uiButtonPress" src="click2.ogg"/>
 	<sound id="uiClick" src="click.ogg"/>
 	<sound id="uiReverseClick" src="click_reverse.ogg"/>
