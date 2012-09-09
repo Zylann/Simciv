@@ -2,7 +2,6 @@ package simciv.builds;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 import simciv.Game;
@@ -298,8 +297,9 @@ public abstract class Workplace extends Build
 			gfx.drawImage(sprites.getSprite(1, 0), 0, -getZHeight() * Game.tilesSize);
 		else
 			gfx.drawImage(sprites.getSprite(0, 0), 0, -getZHeight() * Game.tilesSize);
-		gfx.setColor(Color.white);
-		gfx.drawString("" + getNbEmployees(), 0, 0);
+		// Debug
+//		gfx.setColor(Color.white);
+//		gfx.drawString("" + getNbEmployees(), 0, 0);
 	}
 
 	@Override

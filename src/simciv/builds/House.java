@@ -402,8 +402,9 @@ public class House extends Build
 				renderHungerRatio(gfx, 0, 0);
 		}
 		
-		gfx.setColor(Color.white);
-		gfx.drawString("" + getNbInhabitants(), 0, 0);
+		// debug
+//		gfx.setColor(Color.white);
+//		gfx.drawString("" + getNbInhabitants(), 0, 0);
 	}
 	
 	private void renderHungerRatio(Graphics gfx, int x, int y)

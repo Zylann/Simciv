@@ -193,8 +193,9 @@ public class Warehouse extends PassiveWorkplace
 		renderSlot(gfx, 6, Game.tilesSize, 		Game.tilesSize * 2);
 		renderSlot(gfx, 7, Game.tilesSize * 2, 	Game.tilesSize * 2);
 		
-		gfx.setColor(Color.white);
-		gfx.drawString("" + getNbEmployees(), 0, 0);
+		// Debug
+//		gfx.setColor(Color.white);
+//		gfx.drawString("" + getNbEmployees(), 0, 0);
 	}
 	
 	private void renderSlot(Graphics gfx, int i, int gx, int gy)
