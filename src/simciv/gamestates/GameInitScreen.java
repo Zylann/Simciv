@@ -55,7 +55,6 @@ public abstract class GameInitScreen extends UIBasicGameState
 		Resource.initialize();
 		Road.initialize();
 		CityBuilder.loadContent();
-		Nature.initialize();
 		BuildCategory.initialize();
 	}
 

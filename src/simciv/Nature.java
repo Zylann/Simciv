@@ -17,13 +17,6 @@ public class Nature
 	public static final byte TREE = 1;
 	public static final byte BUSH = 2;
 	// TODO add flowers and tall grass
-
-	public static void initialize()
-	{
-//		treeSprites[0] = Content.sprites.natureTree;
-//		treeSprites[1] = Content.sprites.natureTree2;
-//		treeSprites[2] = Content.sprites.natureTree3;
-	}
 	
 	/**
 	 * Renders the natural element from the given cell
