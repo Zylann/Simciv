@@ -16,7 +16,7 @@ public class MenuBarButton extends Button
 	{
 		super(parent, 0, 0, w, h);
 		label = new Label(this, 0, 0, icon);
-		label.setAlign(Widget.ALIGN_CENTER);
+		label.alignToCenter();
 		parentMenuBar = parent;
 	}
 	
@@ -24,7 +24,7 @@ public class MenuBarButton extends Button
 	{
 		super(parent, 0, 0, w, h);
 		label = new Label(this, 0, 0, text);
-		label.setAlign(Widget.ALIGN_CENTER);
+		label.alignToCenter();
 		parentMenuBar = parent;
 	}
 	

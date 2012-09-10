@@ -24,6 +24,8 @@ import simciv.ui.Minimap;
 import simciv.ui.IndicatorsBar;
 import simciv.ui.TimeBar;
 import simciv.ui.base.IActionListener;
+import simciv.ui.base.Notification;
+import simciv.ui.base.NotificationArea;
 import simciv.ui.base.PushButton;
 import simciv.ui.base.RootPane;
 import simciv.ui.base.UIBasicGameState;
@@ -51,6 +53,7 @@ public class CityView extends UIBasicGameState
 	private BuildMenuBar menuBar;
 	private IndicatorsBar indicatorsBar;
 	private TimeBar timeBar;
+	private NotificationArea notificationArea;
 	private GameSaverThread gameSaver;
 	private boolean quitGameRequested;
 	private boolean paused;
@@ -105,24 +108,24 @@ public class CityView extends UIBasicGameState
 		pauseWindow = new Window(ui, 0, 0, 150, 85, "Game paused");
 		
 		PushButton resumeButton = new PushButton(pauseWindow, 0, 10, "Resume game");
-		resumeButton.setAlign(Widget.ALIGN_CENTER_X);
+		resumeButton.setAlignX(Widget.ALIGN_CENTER);
 		resumeButton.addActionListener(new TogglePauseAction());
 		pauseWindow.add(resumeButton);
 		
 		PushButton saveButton = new PushButton(pauseWindow, 0, 28, "Save game");
-		saveButton.setAlign(Widget.ALIGN_CENTER_X);
+		saveButton.setAlignX(Widget.ALIGN_CENTER);
 		saveButton.addActionListener(new SaveGameAction());
 		pauseWindow.add(saveButton);
 
 		PushButton quitButton = new PushButton(pauseWindow, 0, 54, "Quit game");
-		quitButton.setAlign(Widget.ALIGN_CENTER_X);
+		quitButton.setAlignX(Widget.ALIGN_CENTER);
 		quitButton.addActionListener(new QuitGameAction());
 		pauseWindow.add(quitButton);
 		
 		pauseWindow.setOnCloseAction(new TogglePauseAction());
 		pauseWindow.setDraggable(false);
 		pauseWindow.setVisible(false);
-		pauseWindow.setAlign(Widget.ALIGN_CENTER);
+		pauseWindow.alignToCenter();
 		ui.add(pauseWindow);
 		
 		menuBar = new BuildMenuBar(ui, 10, 10);
@@ -137,7 +140,7 @@ public class CityView extends UIBasicGameState
 		minimap.setVisible(true);
 		minimapWindow.add(minimap);
 		minimapWindow.adaptSize();
-		minimapWindow.setAlign(Widget.ALIGN_CENTER);
+		minimapWindow.alignToCenter();
 		minimapWindow.setVisible(false);
 		ui.add(minimapWindow);
 
@@ -197,6 +200,14 @@ public class CityView extends UIBasicGameState
 
 		infoBar = new InfoBar(ui, 0, 0, 300);
 		ui.add(infoBar);
+		
+		// Notifications area
+		
+		notificationArea = new NotificationArea(ui, 0, timeBar.getY() + timeBar.getHeight(), 200);
+		notificationArea.setAlignX(Widget.ALIGN_RIGHT);
+		notificationArea.setMargins(10, 0);
+		ui.add(notificationArea);
+		
 	}
 
 	@Override
@@ -248,6 +259,8 @@ public class CityView extends UIBasicGameState
 		Input input = gc.getInput();
 		
 		Terrain.updateTerrains(delta);
+		
+		notificationArea.update(delta);
 
 		if(gameSaver != null && !gameSaver.isFinished())
 			paused = true; // The game is saving
@@ -377,7 +390,7 @@ public class CityView extends UIBasicGameState
 	public void keyReleased(int key, char c)
 	{
 		if(key == Input.KEY_G)
-			map.grid.toggleRenderGrid();
+			map.grid.toggleRenderGrid();			
 		if(key == Input.KEY_P || key == Input.KEY_PAUSE || key == Input.KEY_ESCAPE)
 			togglePause();
 		if(key == Input.KEY_F3)
@@ -392,6 +405,11 @@ public class CityView extends UIBasicGameState
 			toggleShowMinimap();
 		if(key == Input.KEY_SPACE)
 			map.setFastForward(!map.isFastForward());
+		if(key == Input.KEY_N)
+		{
+			notificationArea.add(
+				new Notification(notificationArea, 200, "Notifications test"));
+		}
 	}
 	
 	public void togglePause()

@@ -22,6 +22,7 @@ public class Label extends BasicWidget
 	{
 		super(parent, x, y, 0, 0);
 		setImage(image);
+		textColor = Color.black;
 	}
 	
 	public Label(Widget parent, int x, int y, String text)

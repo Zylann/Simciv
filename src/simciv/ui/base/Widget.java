@@ -11,9 +11,11 @@ import org.newdawn.slick.Graphics;
 public abstract class Widget
 {
 	public static final byte ALIGN_NONE = 0;
-	public static final byte ALIGN_CENTER = 1;
-	public static final byte ALIGN_CENTER_X = 2;
-	public static final byte ALIGN_CENTER_Y = 3;
+	public static final byte ALIGN_LEFT = 1;
+	public static final byte ALIGN_RIGHT = 2;
+	public static final byte ALIGN_TOP = 3;
+	public static final byte ALIGN_BOTTOM = 4;
+	public static final byte ALIGN_CENTER = 5;
 	
 	// Relative position towards its parent
 	protected int posX;
@@ -24,13 +26,17 @@ public abstract class Widget
 	
 	protected boolean visible;
 	protected Widget parent;
-	protected byte align;
+	protected byte alignX;
+	protected byte alignY;
+	protected int marginX;
+	protected int marginY;
 	
 	public Widget(Widget parent, int x, int y, int w, int h)
 	{
 		this.parent = parent;
 		visible = true;
-		align = ALIGN_NONE;
+		alignX = ALIGN_NONE;
+		alignY = ALIGN_NONE;
 		posX = x;
 		posY = y;
 		width = w > 0 ? w : 0;
@@ -206,28 +212,61 @@ public abstract class Widget
 			y < selfY + this.height ;
 	}
 	
+	public void setMargins(int mx, int my)
+	{
+		marginX = mx;
+		marginY = my;
+		layout();
+	}
+	
 	/**
-	 * Called when the parent widget is resized
+	 * Updates widget's positionning towards its parent.
+	 * Called when the parent widget is resized.
 	 */
 	public void layout()
 	{
-		switch(align)
+		if(parent == null)
+			return;
+		
+		switch(alignX)
 		{
-		case ALIGN_CENTER : alignToCenter(true, true); break;
-		case ALIGN_CENTER_X : alignToCenter(true, false); break;
-		case ALIGN_CENTER_Y : alignToCenter(false, true); break;
+		case ALIGN_LEFT :	posX = marginX;	break;
+		case ALIGN_CENTER :	posX = (parent.getWidth() - getWidth()) / 2; break;
+		case ALIGN_RIGHT :  posX = parent.getWidth() - getWidth() - marginX; break;
+		default : break;
+		}
+		
+		switch(alignY)
+		{
+		case ALIGN_TOP :	posY = marginY; break;
+		case ALIGN_CENTER : posY = (parent.getHeight() - getHeight()) / 2; break;
+		case ALIGN_BOTTOM : posY = parent.getHeight() - getHeight() - marginY; break;
 		default : break;
 		}
 	}
 	
-	/**
-	 * Sets and updates widget's alignment.
-	 * @param a
-	 */
-	public void setAlign(byte a)
+	public void setAlign(byte alignX, byte alignY)
 	{
-		align = a;
+		this.alignX = alignX;
+		this.alignY = alignY;
 		layout();
+	}
+	
+	public void setAlignX(byte alignX)
+	{
+		this.alignX = alignX;
+		layout();
+	}
+	
+	public void setAlignY(byte alignY)
+	{
+		this.alignY = alignY;
+		layout();
+	}
+	
+	public void alignToCenter()
+	{
+		setAlign(Widget.ALIGN_CENTER, Widget.ALIGN_CENTER);
 	}
 	
 	/**
@@ -241,17 +280,7 @@ public abstract class Widget
 	{
 		return false;
 	}
-	
-	private void alignToCenter(boolean onX, boolean onY)
-	{
-		if(parent == null)
-			return;
-		if(onX)
-			posX = (parent.getWidth() - getWidth()) / 2;
-		if(onY)
-			posY = (parent.getHeight() - getHeight()) / 2;
-	}
-	
+		
 	// Each of these methods below return a boolean.
 	// If true, the event will be consumed by the GUI.
 	// If false, it will be forwarded to the game.

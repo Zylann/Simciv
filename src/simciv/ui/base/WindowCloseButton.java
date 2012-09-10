@@ -8,7 +8,7 @@ public class WindowCloseButton extends Button
 	public static final int width = 24;
 	public static final int height = 16;
 	
-	IActionListener action;
+	private IActionListener action;
 	
 	public WindowCloseButton(Window parent)
 	{

@@ -36,7 +36,7 @@ public class MainMenu extends UIBasicGameState
 	}
 	
 	@Override
-	public void init(GameContainer arg0, StateBasedGame arg1)
+	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException
 	{
 	}
@@ -59,31 +59,29 @@ public class MainMenu extends UIBasicGameState
 		ui = new RootPane(container.getWidth() / gs, container.getHeight() / gs);
 		
 		Panel panel = new Panel(ui, 0, 0, 150, 85);
-		panel.setAlign(Widget.ALIGN_CENTER);
+		panel.alignToCenter();
 		ui.add(panel);
 		
 		PushButton newGameBtn = new PushButton(panel, 0, 10, "New game");
-		newGameBtn.setAlign(Widget.ALIGN_CENTER_X);
+		newGameBtn.setAlignX(Widget.ALIGN_CENTER);
 		newGameBtn.addActionListener(new NewGameAction());
 		panel.add(newGameBtn);
 		
 		PushButton loadGameBtn = new PushButton(panel, 0, 28, "Load game");
-		loadGameBtn.setAlign(Widget.ALIGN_CENTER_X);
+		loadGameBtn.setAlignX(Widget.ALIGN_CENTER);
 		loadGameBtn.addActionListener(new LoadGameAction());
-//		loadGameBtn.setEnabled(false);
 		panel.add(loadGameBtn);
 
 		PushButton exitBtn = new PushButton(panel, 0, 56, "Quit");
-		exitBtn.setAlign(Widget.ALIGN_CENTER_X);
+		exitBtn.setAlignX(Widget.ALIGN_CENTER);
 		exitBtn.addActionListener(new QuitGameAction());
 		panel.add(exitBtn);
 		
 		// Main title
 		Label title = new Label(ui, 0, 50, Game.title);
-		title.setAlign(Widget.ALIGN_CENTER_X);
+		title.setAlignX(Widget.ALIGN_CENTER);
 		title.setTextColor(Color.white);
 		ui.add(title);
-		
 	}
 	
 	@Override
@@ -103,9 +101,8 @@ public class MainMenu extends UIBasicGameState
 			game.enterState(Game.STATE_GAME_CREATING);
 		if(loadGame)
 			game.enterState(Game.STATE_GAME_LOADING);
-
 	}
-	
+
 	class QuitGameAction implements IActionListener
 	{
 		@Override

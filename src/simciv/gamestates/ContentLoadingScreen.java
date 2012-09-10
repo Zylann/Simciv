@@ -43,7 +43,6 @@ public class ContentLoadingScreen extends BasicGameState
 	{
 		System.out.println("Loading game content...");
 		
-		Content.loadMinimalContent();		
 		Content.loadFromContentFile("data/content.xml");
 		Content.indexAll();
 		
