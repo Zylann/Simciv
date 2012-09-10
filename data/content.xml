@@ -68,8 +68,8 @@
 	<spritesheet id="uiResourceBar" tw="24" th="24" src="resource_bar.png"/>
 	<image id="uiIndicatorsPopulation" src="citizen_icon.png"/>
 	<image id="uiIndicatorsMoney" src="ui_money.png"/>
-	
-	
+	<spritesheet id="uiTimeBar" tw="16" th="16" src="time_bar.png"/>
+		
 	<!-- Effects -->
 	<image id="effectGreenStar" src="green_star.png"/>
 	<image id="effectGold" src="gold_fx.png"/>

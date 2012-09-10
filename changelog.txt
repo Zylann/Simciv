@@ -3,6 +3,7 @@ Simciv indev release 3 (work in progress) :
 + The game can be saved and loaded (only 1 save file yet)
 + Added main menu
 + Added water sources
++ Added time bar showing the current date
 * New population and job systems
 * Citizen can come again if there is room and food in houses
 * Only houses and farmland can be repeated (by cursor drag)

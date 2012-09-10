@@ -22,6 +22,7 @@ import simciv.ui.BuildMenuBar;
 import simciv.ui.InfoBar;
 import simciv.ui.Minimap;
 import simciv.ui.IndicatorsBar;
+import simciv.ui.TimeBar;
 import simciv.ui.base.IActionListener;
 import simciv.ui.base.PushButton;
 import simciv.ui.base.RootPane;
@@ -49,6 +50,7 @@ public class CityView extends UIBasicGameState
 	private MinimapUpdater minimapUpdater;
 	private BuildMenuBar menuBar;
 	private IndicatorsBar indicatorsBar;
+	private TimeBar timeBar;
 	private GameSaverThread gameSaver;
 	private boolean quitGameRequested;
 	private boolean paused;
@@ -185,6 +187,12 @@ public class CityView extends UIBasicGameState
 		indicatorsBar.setPosition(ui.getWidth() - indicatorsBar.getWidth() - 10, 10);
 		ui.add(indicatorsBar);
 		
+		// Time bar
+		
+		timeBar = new TimeBar(ui, 0, 0);
+		timeBar.setPosition(ui.getWidth() - timeBar.getWidth() - 10, 34);
+		ui.add(timeBar);
+		
 		// Info bar
 
 		infoBar = new InfoBar(ui, 0, 0, 300);
@@ -266,6 +274,8 @@ public class CityView extends UIBasicGameState
 					map.playerCity.workingPopulation,
 					(int) map.playerCity.getMoney(),
 					map.time.getMonthProgressRatio());
+			
+			timeBar.update(map.time.toString());
 		}		
 		
 		SoundEngine.instance().update(delta);

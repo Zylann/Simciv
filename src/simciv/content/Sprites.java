@@ -71,6 +71,7 @@ public class Sprites
 	public SpriteSheet uiPushButton;
 	public SpriteSheet uiProgressBar;
 	public Image uiRedCross;
+	public SpriteSheet uiTimeBar;
 	
 	// Effects
 	public Image effectGreenStar;
