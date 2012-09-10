@@ -5,13 +5,14 @@ Simciv indev release 3 (work in progress) :
 + Added water sources
 * New population and job systems
 * Citizen can come again if there is room and food in houses
+* Only houses and farmland can be repeated (by cursor drag)
 
-Simciv indev release 2.01 :
+Simciv indev release 2.01 (2012-08-25) :
 
 + Fixed early starves
 + Fixed resource distribution lags
 
-Simciv indev release 2 :
+Simciv indev release 2 (2012-08-23) :
 
 + Added money counter (and building costs)
 + Added taxmen offices and taxmen
