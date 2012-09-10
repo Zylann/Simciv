@@ -131,7 +131,7 @@ public class FarmLand extends Workplace
 					}
 					else
 						gfx.drawImage(
-							Content.sprites.buildFarmlandCrops, 
+							Content.sprites.buildFarmlandRottenCrops, 
 							i * Game.tilesSize,
 							j * Game.tilesSize);
 				}
