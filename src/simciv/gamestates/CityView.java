@@ -154,7 +154,6 @@ public class CityView extends UIBasicGameState
 		// Food
 		BuildMenu foodMenu = new BuildMenu(menuBar, 0, menuBar.getHeight(), 128);
 		foodMenu.addBuild("FarmLand");
-		foodMenu.addBuild("WaterSource");
 		menuBar.addCategory(Content.sprites.uiCategFood, "Food", foodMenu);
 
 		// Industry
@@ -172,6 +171,11 @@ public class CityView extends UIBasicGameState
 		BuildMenu marketMenu = new BuildMenu(menuBar, 0, menuBar.getHeight(), 128);
 		marketMenu.addBuild("Market");
 		menuBar.addCategory(Content.sprites.uiCategMarketing, "Marketing and exchanges", marketMenu);
+		
+		// Health
+		BuildMenu healthMenu = new BuildMenu(menuBar, 0, menuBar.getHeight(), 128);
+		healthMenu.addBuild("WaterSource");
+		menuBar.addCategory(Content.sprites.uiCategHealth, "Health", healthMenu);
 		
 		ui.add(menuBar);
 		

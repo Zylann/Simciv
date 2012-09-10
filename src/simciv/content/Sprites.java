@@ -59,6 +59,7 @@ public class Sprites
 	public Image uiCategCursor;
 	public Image uiCategAdmin;
 	public Image uiCategMarketing;
+	public Image uiCategHealth;
 	public SpriteSheet uiMenuItem;
 	public SpriteSheet uiFrame;
 	public SpriteSheet uiWindowTitleBar;

@@ -55,6 +55,7 @@
 	<image id="uiCategCursor" src="ui_categMouse.png"/>
 	<image id="uiCategAdmin" src="ui_categAdmin.png"/>
 	<image id="uiCategMarketing" src="ui_categMarketing.png"/>
+	<image id="uiCategHealth" src="ui_categHealth.png"/>
 	<spritesheet id="uiMenuItem" tw="128" th="16" src="ui_menu_item.png"/>
 	<spritesheet id="uiFrame" tw="16" th="16" src="ui_frame.png"/>
 	<spritesheet id="uiWindowTitleBar" tw="16" th="16" src="ui_winbar.png"/>
