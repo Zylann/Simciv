@@ -23,12 +23,12 @@ Current features (for development version) :
 	- Economy (taxes, markets...)
 	- Builds maintenance
 	- Farmlands with growing crops
+	- Ability to save/load a game (only 1 save yet)
 	- Draggable/hideable minimap
 	See more in the changelog file !
 
 Some planned features and ideas :
 
-	- Ability to save/load a game
 	- Savage units
 	- Moar builds
 	- Technological tree

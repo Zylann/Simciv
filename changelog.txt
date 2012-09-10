@@ -1,6 +1,10 @@
 Simciv indev release 3 (work in progress) :
 
----
++ The game can be saved and loaded (only 1 save file yet)
++ Added main menu
++ Added water sources
+* New population and job systems
+* Citizen can come again if there is room and food in houses
 
 Simciv indev release 2.01 :
 
