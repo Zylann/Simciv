@@ -36,7 +36,6 @@ public class WorldTime implements Serializable
 	private int day; // in virtual days
 	private int month; // in virtual months
 	private int year; // in virtual years
-	private boolean isNewYearDay;
 	
 	public WorldTime()
 	{
@@ -49,7 +48,6 @@ public class WorldTime implements Serializable
 		
 		int lastDay = day;
 		day = (time / millisecondsPerDay) % DAYS_PER_MONTH + 1;
-		isNewYearDay = false;
 		
 		if(day == 1 && lastDay != 1)
 		{
@@ -58,7 +56,6 @@ public class WorldTime implements Serializable
 			{
 				year++;
 				month = 0;
-				isNewYearDay = true;
 			}
 		}
 	}
@@ -85,7 +82,7 @@ public class WorldTime implements Serializable
 	
 	public boolean isNewYearDay()
 	{
-		return isNewYearDay;
+		return day == 1 && month == 0;
 	}
 	
 	@Override
