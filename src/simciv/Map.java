@@ -28,15 +28,35 @@ import simciv.units.Unit;
  */
 public class Map
 {
+	/** Terrain of the map **/
 	public MapGrid grid;
+	
+	/** View clip */
 	public View view;
+	
+	/** Information about player's city **/
 	public PlayerCity playerCity;
+	
+	/** Date **/
 	public WorldTime time;
+	
+	/** All builds on the map **/
 	private EntityMap builds;
+	
+	/** All units on the map **/
 	private EntityMap units;
+	
+	/** All visual effects on the map **/
 	private transient List<VisualEffect> graphicalEffects;
+	
+	/** If true, the map will speed-up its updates **/
 	private transient boolean fastForward;
 	
+	/**
+	 * Constructs an empty map from given size
+	 * @param width : map size X in cells
+	 * @param height : map size Y in cells
+	 */
 	public Map(int width, int height)
 	{
 		grid = new MapGrid(width, height);
@@ -49,11 +69,19 @@ public class Map
 		view.setMapSize(width, height);
 	}
 
+	/**
+	 * Tests if fast forward is enabled.
+	 * @return fastForward flag
+	 */
 	public boolean isFastForward()
 	{
 		return fastForward;
 	}
 
+	/**
+	 * Sets fast forward. If true, the map will speed-up its updates.
+	 * @param e
+	 */
 	public void setFastForward(boolean e)
 	{
 		fastForward = e;
@@ -87,16 +115,21 @@ public class Map
 		graphicalEffects.removeAll(finishedGraphicalEffects);
 	}
 
+	/**
+	 * Adds a graphical effect.
+	 * Note : do not call this method from a VisualEffect's method
+	 * (concurrent modification is not supported).
+	 * @param e : effect
+	 */
 	public void addGraphicalEffect(VisualEffect e)
 	{
 		graphicalEffects.add(e);
 	}
 	
 	/**
-	 * Spawns an unit in the world at (x,y).
-	 * It will be active at next world update, because it allows to spawn units
-	 * while iterating on the units map.
-	 * @param u : unit
+	 * Spawns an unit on the map at (x,y).
+	 * It will be active on next update.
+	 * @param u : new unit
 	 * @param x : x coordinate in map cells
 	 * @param y : y coordinate in map cells
 	 */
@@ -106,6 +139,11 @@ public class Map
 		units.add(u);
 	}
 	
+	/**
+	 * Spawns an unit on the map at (x,y).
+	 * It will be active on next update.
+	 * @param u : new unit
+	 */
 	public void spawnUnit(Unit u)
 	{
 		units.add(u);
@@ -151,20 +189,29 @@ public class Map
 		return false;
 	}
 	
+	/**
+	 * Finds and returns the unit having the given ID.
+	 * @param ID : ID of the unit
+	 * @return the unit having the ID, null if not found
+	 */
 	public Unit getUnit(int ID)
 	{
 		return (Unit)(units.get(ID));
 	}
 	
+	/**
+	 * Finds and returns the build having the given ID.
+	 * @param ID : ID of the unit
+	 * @return the build having the ID, null if not found
+	 */
 	public Build getBuild(int ID)
 	{
 		return (Build)(builds.get(ID));
 	}
 	
 	/**
-	 * Get the building occupying the cell at (x, y).
+	 * Gets the building occupying the cell at (x, y).
 	 * Returns null if there is no building.
-	 * @param worldRef
 	 * @param x
 	 * @param y
 	 * @return
@@ -176,6 +223,13 @@ public class Map
 		return getBuild(grid.getCellExisting(x, y).getBuildID());
 	}
 	
+	/**
+	 * Gets one of the units occupying the cell at (x, y).
+	 * Returns null if there is no unit.
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public Unit getUnit(int x, int y)
 	{
 		if(!grid.contains(x, y))
@@ -252,7 +306,6 @@ public class Map
 	
 	/**
 	 * Get a list of buildings around the given position
-	 * @param worldRef
 	 * @param x
 	 * @param y
 	 * @return list of buildings
@@ -278,6 +331,14 @@ public class Map
 		return list;
 	}
 	
+	/**
+	 * Get a list of buildings around the given rect
+	 * @param x0
+	 * @param y0
+	 * @param w
+	 * @param h
+	 * @return list of buildings
+	 */
 	public ArrayList<Build> getBuildsAround(int x0, int y0, int w, int h)
 	{
 		Build b;
@@ -319,6 +380,9 @@ public class Map
 	
 	// Saving
 	
+	/**
+	 * Saves the map in an output stream
+	 */
 	public void writeToSave(DataOutputStream dos) throws IOException
 	{
 		ObjectOutputStream oos = new ObjectOutputStream(dos);
@@ -350,6 +414,12 @@ public class Map
 		oos.flush();
 	}
 	
+	/**
+	 * Loads map's content by reading an input stream
+	 * @param dis
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public void readFromSave(DataInputStream dis) throws IOException, ClassNotFoundException
 	{
 		ObjectInputStream ois = new ObjectInputStream(dis);

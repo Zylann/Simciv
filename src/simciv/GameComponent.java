@@ -21,14 +21,24 @@ public abstract class GameComponent implements IRenderable, Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	// Used to generate unique IDs
-	// It MUST start with 1, 0 is reserved for "null" (map storage convenience)
+	/** Used to generate unique IDs **/
+	/* It MUST start with 1, 0 is reserved for "null" (map storage convenience) */
 	private static int nextID = 1;
 	
-	private int ID = -1; // Unique numeric identifier
-	private boolean initialized;
-	private boolean disposed; // If true, the object must be destroyed
+	/** Unique numeric identifier **/
+	private int ID = -1;
 	
+	/** True if the component has been initialized **/
+	private boolean initialized;
+	
+	/** True if the component has been disposed 
+	 * (Means that we don't need this component anymore) **/
+	private boolean disposed;
+	
+	/**
+	 * Computes an unique ID for a new game component.
+	 * @return new ID
+	 */
 	public static final int makeUniqueID()
 	{
 		return nextID++;
@@ -44,6 +54,9 @@ public abstract class GameComponent implements IRenderable, Serializable
 		disposed = false;
 	}
 	
+	/**
+	 * @return true if the component is initialized
+	 */
 	public final boolean isInitialized()
 	{
 		return initialized;
@@ -79,6 +92,11 @@ public abstract class GameComponent implements IRenderable, Serializable
 	{
 	}
 
+	/**
+	 * True if the component has been disposed 
+	 * (Means that we don't need this component anymore)
+	 * @return isDisposed flag
+	 */
 	public final boolean isDisposed()
 	{
 		return disposed;
