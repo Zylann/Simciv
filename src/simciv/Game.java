@@ -5,6 +5,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import org.newdawn.slick.CanvasGameContainer;
@@ -12,6 +13,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.GameState;
 
+import simciv.content.Content;
 import simciv.gamestates.GameCreatingScreen;
 import simciv.gamestates.CityView;
 import simciv.gamestates.ContentLoadingScreen;
@@ -133,6 +135,8 @@ public class Game extends UIStateBasedGame
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException
 	{		
+		Content.loadMinimalContent();
+
 		// Initialize states
 		for (GameState state : states)
 			state.init(container, this);
