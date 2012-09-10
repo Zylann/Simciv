@@ -1,5 +1,6 @@
 package simciv.ui.base;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -15,6 +16,7 @@ public class Label extends BasicWidget
 {
 	private Image image;
 	private String text;
+	private Color textColor;
 	
 	public Label(Widget parent, int x, int y, Image image)
 	{
@@ -26,6 +28,16 @@ public class Label extends BasicWidget
 	{
 		super(parent, x, y, 0, 0);
 		setText(text);
+	}
+	
+	public void setTextColor(Color clr)
+	{
+		textColor = clr;
+	}
+	
+	public Color getTextColor()
+	{
+		return textColor;
 	}
 	
 	public void setImage(Image image)

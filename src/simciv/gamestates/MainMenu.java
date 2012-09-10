@@ -8,6 +8,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Game;
 import simciv.ui.base.IActionListener;
+import simciv.ui.base.Label;
 import simciv.ui.base.Panel;
 import simciv.ui.base.PushButton;
 import simciv.ui.base.RootPane;
@@ -76,6 +77,12 @@ public class MainMenu extends UIBasicGameState
 		exitBtn.setAlign(Widget.ALIGN_CENTER_X);
 		exitBtn.addActionListener(new QuitGameAction());
 		panel.add(exitBtn);
+		
+		// Main title
+		Label title = new Label(ui, 0, 50, Game.title);
+		title.setAlign(Widget.ALIGN_CENTER_X);
+		title.setTextColor(Color.white);
+		ui.add(title);
 		
 	}
 	

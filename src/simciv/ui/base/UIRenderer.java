@@ -320,7 +320,7 @@ public class UIRenderer
 		
 		if(label.getText() != null)
 		{
-			gfx.setColor(Color.black);
+			gfx.setColor(label.getTextColor());
 			gfx.drawString(label.getText(), x, y);
 		}
 	}
