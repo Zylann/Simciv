@@ -83,13 +83,9 @@ public class BuildMenu extends Menu
 			super.onAction();
 			if(parentBuildMenuBar.cityBuilderRef != null)
 			{
-				try {
-					parentBuildMenuBar.cityBuilderRef
-						.setMode(CityBuilder.MODE_BUILDS)
-						.setBuildString(buildString);
-				} catch (SlickException e) {
-					e.printStackTrace();
-				}
+				parentBuildMenuBar.cityBuilderRef
+					.setMode(CityBuilder.MODE_BUILDS)
+					.setBuildString(buildString);
 			}
 		}
 

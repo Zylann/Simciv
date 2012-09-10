@@ -149,7 +149,7 @@ public class CityView extends UIBasicGameState
 		menuBar.addMode(Content.sprites.uiCategRoad, "Trace roads", CityBuilder.MODE_ROAD);
 		
 		// Houses
-		menuBar.addMode(Content.sprites.uiCategHouse, "Place houses", CityBuilder.MODE_HOUSE);
+		menuBar.addBuild(Content.sprites.uiCategHouse, "Place houses", "House");
 		
 		// Food
 		BuildMenu foodMenu = new BuildMenu(menuBar, 0, menuBar.getHeight(), 128);

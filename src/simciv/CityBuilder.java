@@ -28,8 +28,7 @@ public class CityBuilder
  	public static final int MODE_CURSOR = 0;
  	public static final int MODE_ERASE = 1;
  	public static final int MODE_ROAD = 2;
- 	public static final int MODE_HOUSE = 3;
-	public static final int MODE_BUILDS = 4;
+	public static final int MODE_BUILDS = 3;
 	
 	public static final int erasingCost = 1;
 
@@ -90,28 +89,29 @@ public class CityBuilder
 			modeString = "Erase mode";
 		else if(mode == MODE_ROAD)
 			modeString = "Road mode";
-		else if(mode == MODE_HOUSE)
-		{
-			modeString = "Build mode";
-			try {
-				setBuildString("House");
-			} catch (SlickException e) {
-				e.printStackTrace();
-			}
-		}
+		else if(mode == MODE_BUILDS)
+			modeString = "Builds mode";
 		return this;
 	}
 	
 	/**
-	 * Sets the current building from its class name
+	 * Sets the current building from its class name.
+	 * If the build couldn't be created, this method does nothing, and an error will appear in the console.
 	 * @param bstr : class name
 	 * @return : object for chaining
 	 * @throws SlickException 
 	 */
-	public CityBuilder setBuildString(String bstr) throws SlickException
+	public CityBuilder setBuildString(String bstr)
 	{
-		buildString = bstr;
-		build = BuildFactory.createFromName(bstr, mapRef);
+		try
+		{
+			build = BuildFactory.createFromName(bstr, mapRef);
+			buildString = bstr;
+		} catch (SlickException e)
+		{
+			System.out.println("ERROR: Unrecognized build string '" + bstr + "'");
+			e.printStackTrace();
+		}
 		return this;
 	}
 	
@@ -138,12 +138,15 @@ public class CityBuilder
 			gfx.pushTransform();
 			gfx.scale(Game.tilesSize, Game.tilesSize);
 						
-			if(mode == MODE_HOUSE || mode == MODE_BUILDS)
+			if(mode == MODE_BUILDS)
 			{
 				if(!cursorPress)
 					renderPlaceCursor(gfx, buildPos.x, buildPos.y);
-				else
-					renderPlaceZone(gfx);
+				else if(build != null)
+				{
+					if(build.getProperties().isRepeatable)
+						renderPlaceZone(gfx);
+				}
 			}
 			else if(mode == MODE_ERASE)
 			{
@@ -183,7 +186,7 @@ public class CityBuilder
 		{
 			gfx.setColor(cannotPlaceColor);
 		}
-		else if(mode == MODE_BUILDS || mode == MODE_HOUSE)
+		else if(mode == MODE_BUILDS)
 		{
 			w = build.getWidth();
 			h = build.getHeight();
@@ -201,7 +204,7 @@ public class CityBuilder
 	{
 		int w = 1;
 		int h = 1;
-		if(mode == MODE_HOUSE || mode == MODE_BUILDS)
+		if(mode == MODE_BUILDS)
 		{
 			w = build.getWidth();
 			h = build.getHeight();
@@ -215,8 +218,8 @@ public class CityBuilder
 	
 	public void renderDebugInfo(Graphics gfx)
 	{
-		gfx.setColor(Color.white);		
-		if(mode == MODE_HOUSE)
+		gfx.setColor(Color.white);
+		if(mode == MODE_BUILDS)
 			gfx.drawString(modeString + " / " + buildString, 100, 30);
 		else
 			gfx.drawString(modeString, 100, 30);
@@ -234,9 +237,7 @@ public class CityBuilder
 		else if(button != Input.MOUSE_LEFT_BUTTON)
 			return;
 
-		if(mode == MODE_HOUSE)
-			placeBuild(buildPos.x, buildPos.y);
-		else if(mode == MODE_ERASE)
+		if(mode == MODE_ERASE)
 			erase(pos.x, pos.y);
 		else if(mode == MODE_BUILDS)
 			placeBuild(buildPos.x, buildPos.y);
@@ -251,13 +252,18 @@ public class CityBuilder
 			onPointedCellChanged();
 		}
 		
-		if(build != null)
+		if(mode == MODE_BUILDS && build != null)
 		{
 			// The cursor must be at the center of the building to place
 			buildPos.x = pos.x - build.getWidth()/2;
 			buildPos.y = pos.y - build.getHeight()/2;
-			build.setPosition(buildPos.x, buildPos.y);
+			build.setPosition(buildPos.x, buildPos.y);			
 			
+			if(build.getProperties().isRepeatable)
+				updateBuildZone();
+		}
+		else if(mode == MODE_ERASE)
+		{
 			updateBuildZone();
 		}
 	}
@@ -274,13 +280,15 @@ public class CityBuilder
 		int h = 1;
 		Vector2i startPos = lastClickPos;
 		Vector2i endPos = pos;
-		if(mode == MODE_BUILDS || mode == MODE_HOUSE)
+		
+		if(mode == MODE_BUILDS)
 		{
 			w = build.getWidth();
 			h = build.getHeight();
 			startPos = lastClickBuildPos;
 			endPos = buildPos;
 		}
+		
 		int nbX = Math.abs(startPos.x - endPos.x) / w;
 		int nbY = Math.abs(startPos.y - endPos.y) / h;
 		
@@ -305,8 +313,11 @@ public class CityBuilder
 	{
 		if(cursorPress && cursorButton == Input.MOUSE_LEFT_BUTTON)
 		{
-			if(mode == MODE_BUILDS || mode == MODE_HOUSE)
-				placeBuildsFromZone();
+			if((mode == MODE_BUILDS) && build != null)
+			{
+				if(build.getProperties().isRepeatable)
+					placeBuildsFromZone();
+			}
 			else if(mode == MODE_ERASE)
 				eraseFromZone();
 		}

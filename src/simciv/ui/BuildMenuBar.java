@@ -9,6 +9,11 @@ import simciv.ui.base.MenuBar;
 import simciv.ui.base.MenuBarButton;
 import simciv.ui.base.Widget;
 
+/**
+ * The game BuildMenuBar can hold mode setters, builds setters or categories with more builds in it.
+ * @author Marc
+ *
+ */
 public class BuildMenuBar extends MenuBar
 {
 	public CityBuilder cityBuilderRef;
@@ -28,6 +33,28 @@ public class BuildMenuBar extends MenuBar
 		MenuBarButton b = new MenuBarButton(this, 24, 24, icon);
 		b.addActionListener(new SelectModeAction(mode));
 		add(b, null);
+	}
+	
+	public void addBuild(Image icon, String label, String buildStr) throws SlickException
+	{
+		MenuBarButton b = new MenuBarButton(this, 24, 24, icon);
+		b.addActionListener(new SelectBuildAction(buildStr));
+		add(b, null);
+	}
+	
+	class SelectBuildAction implements IActionListener
+	{
+		String buildString;
+		public SelectBuildAction(String buildStr) {
+			this.buildString = buildStr;
+		}
+		@Override
+		public void actionPerformed(Widget sender) {
+			if(cityBuilderRef != null) {
+				cityBuilderRef.setMode(CityBuilder.MODE_BUILDS);
+				cityBuilderRef.setBuildString(buildString);
+			}
+		}		
 	}
 	
 	class SelectModeAction implements IActionListener

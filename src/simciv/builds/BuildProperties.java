@@ -14,6 +14,7 @@ public class BuildProperties
 	public int unitsCapacity; // Base units capacity
 	public int cost; // Base cost
 	public byte category;
+	public boolean isRepeatable; // Can the build be repeated by dragging the cursor?
 	
 	public BuildProperties(String name)
 	{
@@ -23,6 +24,7 @@ public class BuildProperties
 		zHeight = 1;
 		unitsCapacity = 0;
 		cost = 0;
+		isRepeatable = false;
 	}
 	
 	/**
@@ -55,6 +57,12 @@ public class BuildProperties
 	public BuildProperties setCategory(byte categoryID)
 	{
 		this.category = categoryID;
+		return this;
+	}
+	
+	public BuildProperties setRepeatable(boolean f)
+	{
+		this.isRepeatable = f;
 		return this;
 	}
 	

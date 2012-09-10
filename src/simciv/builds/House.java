@@ -49,10 +49,13 @@ public class House extends Build
 		properties = new BuildProperties[MAX_LEVEL+1];
 		
 		properties[0] = new BuildProperties("House lv.1")
-			.setUnitsCapacity(1).setCost(10).setSize(1, 1, 1).setCategory(BuildCategory.HOUSES);
+			.setUnitsCapacity(1).setCost(10).setSize(1, 1, 1)
+			.setCategory(BuildCategory.HOUSES)
+			.setRepeatable(true);
 		
 		properties[1] = new BuildProperties("House lv.2")
-			.setUnitsCapacity(5).setCost(50).setSize(2, 2, 2).setCategory(BuildCategory.HOUSES);
+			.setUnitsCapacity(5).setCost(50).setSize(2, 2, 2)
+			.setCategory(BuildCategory.HOUSES);
 	}
 
 	private byte level;

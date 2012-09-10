@@ -37,7 +37,10 @@ public class FarmLand extends Workplace
 	static
 	{
 		properties = new BuildProperties("Farmland");
-		properties.setUnitsCapacity(5).setSize(3, 3, 0).setCost(10).setCategory(BuildCategory.FOOD);
+		properties
+			.setUnitsCapacity(5).setSize(3, 3, 0).setCost(10)
+			.setCategory(BuildCategory.FOOD)
+			.setRepeatable(true);
 	}
 	
 	public FarmLand(Map m)
