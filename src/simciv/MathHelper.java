@@ -18,7 +18,7 @@ public class MathHelper
 	 * |..
 	 * O---------> X
 	 * @param x : value between 0 and 1
-	 * @return f(x)
+	 * @return f(x), between 0 and 1
 	 */
     public static float smoothCurve(float x)
     {

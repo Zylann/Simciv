@@ -5,7 +5,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.CityBuilder;
-import simciv.Nature;
 import simciv.Resource;
 import simciv.Road;
 import simciv.Terrain;

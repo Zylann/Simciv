@@ -63,8 +63,10 @@ public class Game extends UIStateBasedGame
 		
 		try
 		{			
-			// Create game and canvas
+			// Create game
 			game = new Game(title);
+			
+			// Create canvas
 			canvas = new CanvasGameContainer(game);
 			canvas.setSize(defaultScreenWidth, defaultScreenHeight);
 			canvas.getContainer().setAlwaysRender(true);
