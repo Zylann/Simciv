@@ -1,6 +1,9 @@
 package simciv;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,19 +16,38 @@ import org.newdawn.slick.state.StateBasedGame;
  * @author Marc
  *
  */
-public class EntityMap implements Serializable
+public class EntityMap implements Externalizable
 {
 	private static final long serialVersionUID = 1L;
 	
+	// The main entity container
 	private HashMap<Integer, Entity> entities;
-	private HashMap<Integer, Entity> newEntities;
-	private ArrayList<Integer> disposedEntities;
+	// Entities added while iterating on the main container
+	private transient HashMap<Integer, Entity> newEntities;
+	// Entities removed while iterating on the main container
+	private transient ArrayList<Integer> disposedEntities;
 	
 	public EntityMap()
 	{
 		entities = new HashMap<Integer, Entity>();
 		newEntities = new HashMap<Integer, Entity>();
 		disposedEntities = new ArrayList<Integer>();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void readExternal(ObjectInput oi) throws IOException, ClassNotFoundException
+	{
+		entities = (HashMap<Integer, Entity>)oi.readObject(); // we know it's a map (see writeExternal)
+		newEntities = new HashMap<Integer, Entity>();
+		disposedEntities = new ArrayList<Integer>();
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput oo) throws IOException
+	{
+		flush();
+		oo.writeObject(entities);
 	}
 	
 	/**
@@ -83,13 +105,6 @@ public class EntityMap implements Serializable
 	 */
 	public void updateAll(GameContainer gc, StateBasedGame game, int delta)
 	{
-		for(Entity e : newEntities.values())
-		{
-			entities.put(e.getID(), e);
-			if(!e.isInitialized())
-				e.onInit();
-		}
-		newEntities.clear();
 		for(Entity e : entities.values())
 		{
 			if(e.isDisposed())
@@ -97,6 +112,25 @@ public class EntityMap implements Serializable
 			else
 				e.update(gc, game, delta);
 		}
+		
+		flush();
+	}
+	
+	/**
+	 * Puts spawned entities in the main map and call their onInit() method,
+	 * calls onDestruction() to each disposed entities and clears them.
+	 * It is called before serialization to make sure that all relevant entities will be saved.
+	 */
+	public void flush()
+	{
+		for(Entity e : newEntities.values())
+		{
+			entities.put(e.getID(), e);
+			if(!e.isInitialized())
+				e.onInit();
+		}
+		newEntities.clear();
+		
 		for(Integer id : disposedEntities)
 		{
 			Entity e = entities.get(id);

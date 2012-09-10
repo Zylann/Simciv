@@ -394,7 +394,7 @@ public class Map
 		for(Entity e : entities)
 			e.setMap(this);
 
-		entities = units.asCollection();
+		entities = builds.asCollection();
 		for(Entity e : entities)
 			e.setMap(this);
 		
