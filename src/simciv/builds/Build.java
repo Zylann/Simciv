@@ -19,6 +19,7 @@ import simciv.Vector2i;
 import simciv.content.Content;
 import simciv.effects.SmokeExplosion;
 import simciv.maptargets.RoadMapTarget;
+import simciv.ui.base.Notification;
 
 // FIXME sometimes, the map is left unconstructible. Bug origin is unknown...
 
@@ -79,6 +80,8 @@ public abstract class Build extends TickableEntity
 						new SmokeExplosion(x, y, 8, 1.5f, Game.tilesSize/2));
 			}
 		}
+		
+		mapRef.sendNotification(Notification.TYPE_WARNING, "A build has collapsed !");
 	}
 	
 	@Override
