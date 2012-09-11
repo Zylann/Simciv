@@ -10,6 +10,8 @@ import org.newdawn.slick.Sound;
 import simciv.builds.Build;
 import simciv.builds.BuildFactory;
 import simciv.content.Content;
+import simciv.ui.base.Notification;
+import simciv.ui.base.NotificationArea;
 
 /**
  * City build interface (do not contains GUI)
@@ -40,8 +42,9 @@ public class CityBuilder
  	private Vector2i lastClickBuildPos = new Vector2i();
  	private IntRange2D buildZone = new IntRange2D();
  	
- 	// World access
+ 	// Map access
 	private transient Map mapRef;
+	private transient NotificationArea notificationsAreaRef;
 	
 	// State
 	private int mode;
@@ -63,6 +66,11 @@ public class CityBuilder
 	public Map getWorld()
 	{
 		return mapRef;
+	}
+	
+	public void setNotificationArea(NotificationArea n)
+	{
+		notificationsAreaRef = n;
 	}
 
 	public static void loadContent() throws SlickException
@@ -240,7 +248,21 @@ public class CityBuilder
 		if(mode == MODE_ERASE)
 			erase(pos.x, pos.y);
 		else if(mode == MODE_BUILDS)
-			placeBuild(buildPos.x, buildPos.y);
+		{
+			if(!placeBuild(buildPos.x, buildPos.y))
+			{
+				if(notificationsAreaRef != null)
+				{
+					Notification n =
+						new Notification(
+							notificationsAreaRef, 200, 
+							Content.sprites.uiIconError, 
+							"You can't build this here.");
+					n.setVisibleTime(3000);
+					notificationsAreaRef.add(n);
+				}
+			}
+		}
 	}
 	
 	public void cursorMoved(Vector2i mapPos)
@@ -417,7 +439,7 @@ public class CityBuilder
 		}
 		return false;
 	}
-	
+		
 	// SUGG add a tick delay to zone-placed buildings (because they are created at the same time) ?
 	
 	private int placeBuildsFromZone() throws SlickException

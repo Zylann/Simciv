@@ -207,6 +207,7 @@ public class CityView extends UIBasicGameState
 		notificationArea.setAlignX(Widget.ALIGN_RIGHT);
 		notificationArea.setMargins(10, 0);
 		ui.add(notificationArea);
+		builder.setNotificationArea(notificationArea);
 		
 	}
 

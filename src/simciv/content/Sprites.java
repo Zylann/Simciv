@@ -76,6 +76,7 @@ public class Sprites
 	public Image uiIconCheck;
 	public Image uiIconInfo;
 	public Image uiIconWarning;
+	public Image uiIconError;
 	
 	// Effects
 	public Image effectGreenStar;

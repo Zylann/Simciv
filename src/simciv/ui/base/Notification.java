@@ -9,7 +9,7 @@ import org.newdawn.slick.Image;
 public class Notification extends BasicWidget
 {
 	public static int HEIGHT = 16;
-	private static int VISIBLE_TIME = 8000; // in milliseconds
+	private static int DEFAULT_VISIBLE_TIME = 6000; // in milliseconds
 	
 	private int timeVisible;
 	private Image icon;
@@ -19,7 +19,7 @@ public class Notification extends BasicWidget
 	public Notification(NotificationArea parent, int width)
 	{
 		super(parent, 0, 0, width, HEIGHT);
-		timeVisible = VISIBLE_TIME;
+		timeVisible = DEFAULT_VISIBLE_TIME;
 		setAlignX(Widget.ALIGN_CENTER);
 		listeners = new ArrayList<IActionListener>();
 	}
@@ -35,6 +35,11 @@ public class Notification extends BasicWidget
 		this(parent, width);
 		this.icon = icon;
 		this.text = text;
+	}
+	
+	public void setVisibleTime(int t)
+	{
+		timeVisible = t;
 	}
 	
 	public void addClickListener(IActionListener l)

@@ -66,6 +66,7 @@
 	<image id="uiIconCheck" src="uiIconCheck.png"/>
 	<image id="uiIconInfo" src="uiIconInfo.png"/>
 	<image id="uiIconWarning" src="uiIconWarning.png"/>
+	<image id="uiIconError" src="uiIconError.png"/>
 	
 	<image id="uiRedCross" src="red_cross.png"/>
 	<image id="uiMinimapMask" src="minimap_mask.png"/>

@@ -66,7 +66,7 @@ public class NotificationArea extends WidgetContainer
 			e.printStackTrace();
 		}
 	}
-	
+		
 	/**
 	 * Updates notifications (they can disappear after a certain time) 
 	 * @param delta : time elapsed
