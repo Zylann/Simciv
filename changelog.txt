@@ -4,6 +4,7 @@ Simciv indev release 3 (work in progress) :
 + Added main menu
 + Added water sources
 + Added time bar showing the current date
++ Added a notification system
 * New population and job systems
 * Citizen can come again if there is room and food in houses
 * Only houses and farmland can be repeated (by cursor drag)
