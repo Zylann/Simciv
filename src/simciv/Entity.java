@@ -15,14 +15,31 @@ public abstract class Entity extends GameComponent implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
-	private int posX;
+	/** Position X of the entity in map cells **/
+	private int posX;	
+	/** Position Y of the entity in map cells **/
 	private int posY;
+	
+	/** Life time of the entity in milliseconds.
+	 * Note that it will not evoluate 1 by 1. **/
 	private int lifeTime;
-	protected byte state; // different means depending on units or buildings
+	
+	/** State of the entity. different meanings depending on the inheriting classes **/
+	protected byte state;
+	
+	/** Health points of the entity. It dies if they reach 0. **/
 	protected int healthPoints;
+	
+	/** Direction of the entity **/
 	protected byte direction;
+	
+	/** Reference to the map where the entity is (parent-child) **/
 	protected transient Map mapRef;
 	
+	/**
+	 * Constructs a basic entity linked to a map.
+	 * @param m
+	 */
 	public Entity(Map m)
 	{
 		super();
@@ -30,6 +47,11 @@ public abstract class Entity extends GameComponent implements Serializable
 		direction = Direction2D.SOUTH;
 	}
 	
+	/**
+	 * Sets the map of the entity.
+	 * Warning : this method is reserved for loading only.
+	 * @param m
+	 */
 	public void setMap(Map m)
 	{
 		mapRef = m;

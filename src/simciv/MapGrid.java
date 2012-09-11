@@ -23,10 +23,18 @@ public class MapGrid implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
-	private MapCell cells[]; // 2D access is made using (width * y + x).
+	/** The array of cells. 2D access is made using (width * y + x). **/
+	private MapCell cells[];
+	
+	/** Grid width **/
 	private int width;
-	private int height;	
+	/** Grid height **/
+	private int height;
+	
+	/** If true, a grid will be rendered to show cells separations (debug) **/
 	private boolean renderGrid;
+	
+	/** List of listeners of the grid. Thet can be notified when the grid changes. **/
 	private transient List<IMapGridListener> listeners;
 
 	/**

@@ -14,23 +14,31 @@ public class MapCell implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
-	public byte terrainID;	// Ground information
-	public byte nature;		// Natural objects
-	public byte road;		// Road configuration, -1 for none.
-	public byte noise;		// Random bits for fancy renderings
+	/** Ground information **/
+	public byte terrainID;
 	
-	// 4 bytes of information about the building occupying the cell (value 0 for none) :
-	// oeiiiiii iiiiiiii iiiiiiii iiiiiiii
-	// i = 30 lowest bits : building ID
-	// o = last bit : isOrigin : is this cell at the origin of the building?
-	// e = next bit : isEntryPoint : is this cell at an entry point of the building?
+	/** Natural objects **/
+	public byte nature;
+	
+	/** Road configuration, -1 for none. **/
+	public byte road;
+	
+	/** Random bits for fancy renderings **/
+	public byte noise;
+	
+	/**
+	 * 4 bytes of information about the building occupying the cell (value 0 for none) :
+	 * oiiiiiii iiiiiiii iiiiiiii iiiiiiii 
+	 * i = 30 lowest bits : building ID (set by tracking)
+	 * e = next bit : isEntryPoint : is this cell at an entry point of the building?
+	 */
 	private int buildInfo;
 	
-	// ID of the last unit on the cell, 0 if none
+	/** ID of the last unit being on the cell (set by tracking), 0 if none **/
 	private int unitInfo;
 	
 	private static int BUILD_INFO_ID_MASK = 0x3fffffff; // 30 bits to 1, 2 higher bits to 0
-	private static int BUILD_INFO_ORIGIN_MASK = 0x80000000; // 2 higher bits : 10
+	private static int BUILD_INFO_ORIGIN_MASK = 0x80000000; // 2 higher bits = 10
 	
 	public MapCell()
 	{

@@ -417,7 +417,7 @@ public class CityBuilder
 		}
 		return false;
 	}
-		
+	
 	// SUGG add a tick delay to zone-placed buildings (because they are created at the same time) ?
 	
 	private int placeBuildsFromZone() throws SlickException

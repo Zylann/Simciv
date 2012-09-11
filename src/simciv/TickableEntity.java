@@ -18,7 +18,10 @@ public abstract class TickableEntity extends Entity implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
+	/** Total ticks (will evoluate 1 by 1) **/
 	private int nbTicks;
+	
+	/** Time left before next tick in milliseconds **/
 	private int timeBeforeNextTick;
 
 	public TickableEntity(Map m)

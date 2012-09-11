@@ -17,13 +17,26 @@ public class PlayerCity extends City implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
+	/** Total money available for the player on this city **/
 	protected float money;
+	
+	/** Tax ratio based on the income of each citizen **/
 	protected float incomeTaxRatio;
+	
 	// Computed data
+	
+	/** Total population (computed) **/
 	public transient int population;
+	
+	/** Total population with a job (computed) **/
 	public transient int workingPopulation;
+	
+	/** List of all warehouses in the city (computed) **/
 	protected transient HashMap<Integer, Warehouse> warehouses;
 	
+	/**
+	 * Constructs global informations about a city controlled by a player
+	 */
 	public PlayerCity()
 	{
 		super();
