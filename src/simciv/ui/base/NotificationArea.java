@@ -7,7 +7,7 @@ import org.newdawn.slick.SlickException;
  * @author Marc
  *
  */
-public class NotificationArea extends WidgetContainer
+public class NotificationArea extends WidgetContainer implements INotificationListener
 {
 	private static int MAX_NOTIFICATIONS = 8;
 	
@@ -85,6 +85,21 @@ public class NotificationArea extends WidgetContainer
 				}
 			}
 		}
+	}
+
+	@Override
+	public void notify(byte type, String message)
+	{
+		Notification n = new Notification(this, type, message);
+		add(n);
+	}
+
+	@Override
+	public void notify(byte type, String message, int timeVisible)
+	{
+		Notification n = new Notification(this, type, message);
+		n.setVisibleTime(timeVisible);
+		add(n);
 	}
 
 }

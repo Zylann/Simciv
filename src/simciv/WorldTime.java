@@ -2,6 +2,8 @@ package simciv;
 
 import java.io.Serializable;
 
+import simciv.ui.base.Notification;
+
 /**
  * Maintains a virtual world time from real game time.
  * Note : this is not based on the real time model,
@@ -42,7 +44,7 @@ public class WorldTime implements Serializable
 		day = 1;
 	}
 	
-	public void update(int delta)
+	public void update(int delta, Map currentMap)
 	{
 		time += delta;
 		
@@ -56,6 +58,13 @@ public class WorldTime implements Serializable
 			{
 				year++;
 				month = 0;
+				
+				if(currentMap != null)
+				{
+					currentMap.sendNotification(
+						Notification.TYPE_INFO, 
+						"We are now in year " + getYear() + ".");
+				}
 			}
 		}
 	}

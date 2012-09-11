@@ -6,35 +6,35 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
+import simciv.content.Content;
+
 public class Notification extends BasicWidget
 {
+	public static final byte TYPE_INFO = 0;
+	public static final byte TYPE_CHECK = 1;
+	public static final byte TYPE_WARNING = 2;
+	public static final byte TYPE_ERROR = 3;
+	
 	public static int HEIGHT = 16;
-	private static int DEFAULT_VISIBLE_TIME = 6000; // in milliseconds
+	public static int DEFAULT_VISIBLE_TIME = 6000; // in milliseconds
 	
 	private int timeVisible;
-	private Image icon;
+	private byte type;
 	private String text;
 	private ArrayList<IActionListener> listeners;
 	
-	public Notification(NotificationArea parent, int width)
+	public Notification(NotificationArea parent, byte type, String text)
 	{
-		super(parent, 0, 0, width, HEIGHT);
+		super(parent, 0, 0, parent.getWidth(), HEIGHT);
 		timeVisible = DEFAULT_VISIBLE_TIME;
-		setAlignX(Widget.ALIGN_CENTER);
+		this.type = type;
+		this.text = text;
 		listeners = new ArrayList<IActionListener>();
 	}
-	
-	public Notification(NotificationArea parent, int width, String text)
+		
+	public byte getType()
 	{
-		this(parent, width);
-		this.text = text;
-	}
-
-	public Notification(NotificationArea parent, int width, Image icon, String text)
-	{
-		this(parent, width);
-		this.icon = icon;
-		this.text = text;
+		return type;
 	}
 	
 	public void setVisibleTime(int t)
@@ -61,7 +61,14 @@ public class Notification extends BasicWidget
 
 	public Image getIcon()
 	{
-		return icon;
+		switch(getType())
+		{
+		case Notification.TYPE_INFO : return Content.sprites.uiIconInfo;
+		case Notification.TYPE_CHECK : return Content.sprites.uiIconCheck;
+		case Notification.TYPE_WARNING : return Content.sprites.uiIconWarning;
+		case Notification.TYPE_ERROR : return Content.sprites.uiIconError;
+		default : return null;
+		}
 	}
 	
 	public String getText()

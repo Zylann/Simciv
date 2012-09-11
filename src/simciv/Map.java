@@ -18,6 +18,7 @@ import simciv.builds.Build;
 import simciv.builds.Warehouse;
 import simciv.effects.VisualEffect;
 import simciv.rendering.SortedRender;
+import simciv.ui.base.INotificationListener;
 import simciv.units.Unit;
 
 /**
@@ -52,6 +53,9 @@ public class Map
 	/** If true, the map will speed-up its updates **/
 	private transient boolean fastForward;
 	
+	/** Notifications **/
+	private transient INotificationListener notifListener;
+	
 	/**
 	 * Constructs an empty map from given size
 	 * @param width : map size X in cells
@@ -67,6 +71,23 @@ public class Map
 		graphicalEffects = new ArrayList<VisualEffect>();
 		view = new View(0, 0, 2);
 		view.setMapSize(width, height);
+	}
+	
+	public void setNotificationListener(INotificationListener notifListener)
+	{
+		this.notifListener = notifListener;
+	}
+	
+	public void sendNotification(byte type, String message)
+	{
+		if(notifListener != null)
+			notifListener.notify(type, message);
+	}
+	
+	public void sendNotification(byte type, String message, int timeVisible)
+	{
+		if(notifListener != null)
+			notifListener.notify(type, message, timeVisible);
 	}
 
 	/**
@@ -99,11 +120,11 @@ public class Map
 		if(fastForward)
 			delta *= 4;
 		
-		time.update(delta);
+		time.update(delta, this);
 		
 		units.updateAll(gc, game, delta);
 		builds.updateAll(gc, game, delta);
-		
+				
 		// Update graphical effects
 		ArrayList<VisualEffect> finishedGraphicalEffects = new ArrayList<VisualEffect>();
 		for(VisualEffect e : graphicalEffects)

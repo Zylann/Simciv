@@ -10,8 +10,8 @@ import org.newdawn.slick.Sound;
 import simciv.builds.Build;
 import simciv.builds.BuildFactory;
 import simciv.content.Content;
+import simciv.ui.base.INotificationListener;
 import simciv.ui.base.Notification;
-import simciv.ui.base.NotificationArea;
 
 /**
  * City build interface (do not contains GUI)
@@ -44,7 +44,7 @@ public class CityBuilder
  	
  	// Map access
 	private transient Map mapRef;
-	private transient NotificationArea notificationsAreaRef;
+	private transient INotificationListener notifListener;
 	
 	// State
 	private int mode;
@@ -68,9 +68,9 @@ public class CityBuilder
 		return mapRef;
 	}
 	
-	public void setNotificationArea(NotificationArea n)
+	public void setNotificationListener(INotificationListener n)
 	{
-		notificationsAreaRef = n;
+		notifListener = n;
 	}
 
 	public static void loadContent() throws SlickException
@@ -251,15 +251,11 @@ public class CityBuilder
 		{
 			if(!placeBuild(buildPos.x, buildPos.y))
 			{
-				if(notificationsAreaRef != null)
+				if(notifListener != null)
 				{
-					Notification n =
-						new Notification(
-							notificationsAreaRef, 200, 
-							Content.sprites.uiIconError, 
-							"You can't build this here.");
-					n.setVisibleTime(3000);
-					notificationsAreaRef.add(n);
+					notifListener.notify(
+							Notification.TYPE_ERROR,
+							"You can't build this here.", 3000);
 				}
 			}
 		}

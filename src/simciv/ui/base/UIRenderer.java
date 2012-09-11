@@ -341,10 +341,11 @@ public class UIRenderer
 		
 		renderBar(gfx, Content.sprites.uiNotification, 0, 0, n.getWidth(), n.getHeight(), n.getHeight(), 0);
 		
-		if(n.getIcon() != null)
+		Image icon = n.getIcon();
+		if(icon != null)
 		{
-			gfx.drawImage(n.getIcon(), 0, 0);
-			gfx.translate(n.getIcon().getWidth() + 2, 0);
+			gfx.drawImage(icon, 0, 0);
+			gfx.translate(icon.getWidth() + 2, 0);
 		}
 		
 		if(n.getText() != null)

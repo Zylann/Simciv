@@ -207,7 +207,8 @@ public class CityView extends UIBasicGameState
 		notificationArea.setAlignX(Widget.ALIGN_RIGHT);
 		notificationArea.setMargins(10, 0);
 		ui.add(notificationArea);
-		builder.setNotificationArea(notificationArea);
+		builder.setNotificationListener(notificationArea);
+		map.setNotificationListener(notificationArea);
 		
 	}
 
@@ -226,12 +227,12 @@ public class CityView extends UIBasicGameState
 					
 			// Create CityBuilder
 			builder = new CityBuilder(map);
-						
+			
 			ui = null;
 			
 			isGameBeginning = false;
 		}
-		
+				
 		// Because we will always draw the map at first on the entire screen at each frame
 		gc.setClearEachFrame(false);
 		
@@ -406,20 +407,25 @@ public class CityView extends UIBasicGameState
 			toggleShowMinimap();
 		if(key == Input.KEY_SPACE)
 			map.setFastForward(!map.isFastForward());
+		
+		// Test
 		if(key == Input.KEY_NUMPAD1)
 		{
 			notificationArea.add(
-				new Notification(notificationArea, 200, Content.sprites.uiIconCheck, "Check test"));
+				new Notification(notificationArea,
+						Notification.TYPE_CHECK, "Check test"));
 		}
 		if(key == Input.KEY_NUMPAD2)
 		{
 			notificationArea.add(
-				new Notification(notificationArea, 200, Content.sprites.uiIconInfo, "Info test"));
+				new Notification(notificationArea,
+						Notification.TYPE_INFO, "Info test"));
 		}
 		if(key == Input.KEY_NUMPAD3)
 		{
 			notificationArea.add(
-				new Notification(notificationArea, 200, Content.sprites.uiIconWarning, "Warning test"));
+				new Notification(notificationArea,
+						Notification.TYPE_WARNING, "Warning test"));
 		}
 	}
 	
