@@ -72,6 +72,10 @@ public class Sprites
 	public SpriteSheet uiProgressBar;
 	public Image uiRedCross;
 	public SpriteSheet uiTimeBar;
+	public SpriteSheet uiNotification;
+	public Image uiIconCheck;
+	public Image uiIconInfo;
+	public Image uiIconWarning;
 	
 	// Effects
 	public Image effectGreenStar;

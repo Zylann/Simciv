@@ -405,10 +405,20 @@ public class CityView extends UIBasicGameState
 			toggleShowMinimap();
 		if(key == Input.KEY_SPACE)
 			map.setFastForward(!map.isFastForward());
-		if(key == Input.KEY_N)
+		if(key == Input.KEY_NUMPAD1)
 		{
 			notificationArea.add(
-				new Notification(notificationArea, 200, "Notifications test"));
+				new Notification(notificationArea, 200, Content.sprites.uiIconCheck, "Check test"));
+		}
+		if(key == Input.KEY_NUMPAD2)
+		{
+			notificationArea.add(
+				new Notification(notificationArea, 200, Content.sprites.uiIconInfo, "Info test"));
+		}
+		if(key == Input.KEY_NUMPAD3)
+		{
+			notificationArea.add(
+				new Notification(notificationArea, 200, Content.sprites.uiIconWarning, "Warning test"));
 		}
 	}
 	

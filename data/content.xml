@@ -62,6 +62,10 @@
 	<spritesheet id="uiWindowCloseButton" tw="16" th="16" src="ui_winclosebtn.png"/>
 	<spritesheet id="uiPushButton" tw="128" th="16" src="ui_push_button.png"/>
 	<spritesheet id="uiProgressBar" tw="8" th="8" src="ui_progressBar.png"/>
+	<spritesheet id="uiNotification" tw="16" th="16" src="ui_notification.png"/>
+	<image id="uiIconCheck" src="uiIconCheck.png"/>
+	<image id="uiIconInfo" src="uiIconInfo.png"/>
+	<image id="uiIconWarning" src="uiIconWarning.png"/>
 	
 	<image id="uiRedCross" src="red_cross.png"/>
 	<image id="uiMinimapMask" src="minimap_mask.png"/>

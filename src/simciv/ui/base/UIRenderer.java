@@ -333,6 +333,28 @@ public class UIRenderer
 		else
 			renderLabel(gfx, w.getLabel(), 0);
 	}
+	
+	public void renderNotification(Graphics gfx, Notification n)
+	{
+		gfx.pushTransform();
+		gfx.translate(n.getAbsoluteX() + 4, n.getAbsoluteY() + 2);
+		
+		renderBar(gfx, Content.sprites.uiNotification, 0, 0, n.getWidth(), n.getHeight(), n.getHeight(), 0);
+		
+		if(n.getIcon() != null)
+		{
+			gfx.drawImage(n.getIcon(), 0, 0);
+			gfx.translate(n.getIcon().getWidth() + 2, 0);
+		}
+		
+		if(n.getText() != null)
+		{
+			gfx.setColor(Color.black);
+			gfx.drawString(n.getText(), 0, 1);
+		}
+		
+		gfx.popTransform();
+	}
 
 }
 
