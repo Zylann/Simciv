@@ -1,11 +1,17 @@
 package simciv.effects;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.state.StateBasedGame;
+
+import backend.GameComponent;
 
 import simciv.Game;
 
-public abstract class VisualEffect
+public abstract class VisualEffect extends GameComponent
 {
+	private static final long serialVersionUID = 1L;
+	
 	// Graphical position
 	protected float posX;
 	protected float posY;
@@ -20,8 +26,9 @@ public abstract class VisualEffect
 		posX = Game.tilesSize * x;
 		posY = Game.tilesSize * y;
 	}
-		
-	public void render(Graphics gfx)
+	
+	@Override
+	public void render(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		gfx.pushTransform();
 		gfx.translate(posX, posY);
@@ -31,9 +38,30 @@ public abstract class VisualEffect
 		gfx.popTransform();
 	}
 
-	public abstract void update(int delta);	
+//	@Override
+//	public void update(GameContainer gc, StateBasedGame game, int delta)
+//	{
+//		// TODO Auto-generated method stub
+//	}
+
 	protected abstract void renderEffect(Graphics gfx);
-	public abstract boolean isFinished();
+
+	@Override
+	public boolean isVisible()
+	{
+		return true;
+	}
+
+	@Override
+	public int getDrawOrder()
+	{
+		return 0;
+	}
+
+	@Override
+	public void onDestruction()
+	{
+	}
 	
 }
 

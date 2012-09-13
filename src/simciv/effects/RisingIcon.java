@@ -1,8 +1,12 @@
 package simciv.effects;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.state.StateBasedGame;
+
+import backend.IntRange2D;
 
 /**
  * Displays an image rising and fading
@@ -11,6 +15,8 @@ import org.newdawn.slick.Image;
  */
 public class RisingIcon extends VisualEffect
 {
+	private static final long serialVersionUID = 1L;
+	
 	private Color color;
 	private Image sprite;
 	private int duration;
@@ -30,18 +36,21 @@ public class RisingIcon extends VisualEffect
 	}
 
 	@Override
-	public void update(int delta)
+	public void getRenderBounds(IntRange2D range)
+	{
+		
+	}
+
+	@Override
+	public void update(GameContainer gc, StateBasedGame game, int delta)
 	{
 		float k = (float)time / (float)duration;
 		posY -= (1.f - k) * 64.f * (float)delta / 1000.f;
 		time += delta;
 		color.a = 1.f - k;
-	}
-
-	@Override
-	public boolean isFinished()
-	{
-		return time >= duration;
+		
+		if(time >= duration)
+			dispose();
 	}
 	
 }

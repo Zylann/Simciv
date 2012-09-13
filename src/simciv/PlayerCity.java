@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 
-import simciv.builds.Build;
+import backend.GameComponent;
+
 import simciv.builds.House;
 import simciv.builds.Warehouse;
 
@@ -117,15 +118,14 @@ public class PlayerCity extends City implements Serializable
 	 * Must be called after map and city deserialization.
 	 * @param builds : all builds of the map
 	 */
-	public void recomputeData(Collection<Entity> builds)
+	public void recomputeData(Collection<GameComponent> builds)
 	{
 		warehouses = new HashMap<Integer, Warehouse>();
 		population = 0;
 		workingPopulation = 0;
 		
-		for(Entity e : builds)
+		for(GameComponent b : builds)
 		{
-			Build b = (Build)e;
 			if(Warehouse.class.isInstance(b))
 			{
 				Warehouse w = (Warehouse)b;

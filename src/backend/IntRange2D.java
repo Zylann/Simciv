@@ -126,6 +126,11 @@ public class IntRange2D
             return false;
         return maxY >= this.minY && minY <= this.maxY;
 	}
+	
+	public boolean intersects(IntRange2D r)
+	{
+		return intersects(r.minX, r.minY, r.maxX, r.maxY);
+	}
 
 	/**
 	 * @return true if the area is 1.

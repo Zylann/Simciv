@@ -14,6 +14,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
+import backend.GameComponent;
+import backend.GameComponentMap;
 import backend.IntRange2D;
 
 import simciv.builds.Build;
@@ -43,14 +45,14 @@ public class Map
 	/** Date **/
 	public WorldTime time;
 	
-	/** All builds on the map **/
+	/** All builds on the map. ONLY Builds may be stored in it. **/
 	private EntityMap builds;
 	
-	/** All units on the map **/
+	/** All units on the map. ONLY Units may be stored in it. **/
 	private EntityMap units;
 	
 	/** All visual effects on the map **/
-	private transient List<VisualEffect> graphicalEffects;
+	private transient GameComponentMap graphicalEffects;
 	
 	/** If true, the map will speed-up its updates **/
 	private transient boolean fastForward;
@@ -70,7 +72,7 @@ public class Map
 		time = new WorldTime();
 		builds = new EntityMap();
 		units = new EntityMap();
-		graphicalEffects = new ArrayList<VisualEffect>();
+		graphicalEffects = new GameComponentMap();
 		view = new ScrollView(0, 0, 2);
 		view.setMapSize(width, height);
 	}
@@ -124,18 +126,14 @@ public class Map
 		
 		time.update(delta, this);
 		
+		// Update units
 		units.updateAll(gc, game, delta);
+		
+		// Update builds
 		builds.updateAll(gc, game, delta);
-				
-		// Update graphical effects
-		ArrayList<VisualEffect> finishedGraphicalEffects = new ArrayList<VisualEffect>();
-		for(VisualEffect e : graphicalEffects)
-		{
-			e.update(delta);
-			if(e.isFinished())
-				finishedGraphicalEffects.add(e);
-		}
-		graphicalEffects.removeAll(finishedGraphicalEffects);
+		
+		// Update effects
+		graphicalEffects.updateAll(gc, game, delta);
 	}
 
 	/**
@@ -146,7 +144,7 @@ public class Map
 	 */
 	public void addGraphicalEffect(VisualEffect e)
 	{
-		graphicalEffects.add(e);
+		graphicalEffects.stageComponent(e);
 	}
 	
 	/**
@@ -159,7 +157,7 @@ public class Map
 	public void spawnUnit(Unit u, int x, int y)
 	{
 		u.setPosition(x, y);
-		units.add(u);
+		units.stageEntity(u);
 	}
 	
 	/**
@@ -169,7 +167,7 @@ public class Map
 	 */
 	public void spawnUnit(Unit u)
 	{
-		units.add(u);
+		units.stageEntity(u);
 	}
 	
 	/**
@@ -185,7 +183,7 @@ public class Map
 		b.setPosition(x, y);
 		if(b.canBePlaced(grid, x, y))
 		{
-			builds.add(b);
+			builds.stageEntity(b);
 			return true;
 		}
 		return false;
@@ -269,7 +267,10 @@ public class Map
 	public void render(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		view.configureGraphicsForWorldRendering(gfx);
+		
 		IntRange2D mapRange = new IntRange2D();
+		IntRange2D cmpRange = new IntRange2D();
+		
 		view.getMapBounds(mapRange);
 		
 		SortedRender renderMgr = new SortedRender();
@@ -279,35 +280,45 @@ public class Map
 		if(!gc.getInput().isKeyDown(Input.KEY_1))
 		{
 			// Register buildings
-			for(Entity b : builds.asCollection())
+			for(GameComponent b : builds.asCollection())
 			{
-				if(mapRange.intersects(
-						b.getX(),
-						b.getY(),
-						b.getX() + b.getWidth() - 1,
-						b.getY() + b.getHeight() - 1))
-					renderMgr.add(b);
+				if(b.isVisible())
+				{
+					b.getRenderBounds(cmpRange);
+					if(mapRange.intersects(cmpRange))
+						renderMgr.add(b);
+				}
 			}
 		}
 
 		if(!gc.getInput().isKeyDown(Input.KEY_2))
 		{
 			// Register units
-			for(Entity u : units.asCollection())
+			for(GameComponent u : units.asCollection())
 			{
-				if(u.isVisible() && mapRange.contains(u.getX(), u.getY()))
-					renderMgr.add(u);
+				if(u.isVisible())
+				{
+					u.getRenderBounds(cmpRange);
+					if(mapRange.intersects(cmpRange))
+						renderMgr.add(u);
+				}
 			}
 		}
 		
 //		long timeBefore = System.currentTimeMillis(); // for debug
 		
 		// Draw elements in the right order
-		grid.renderGround(mapRange, gc, gfx); // Ground at first
-		renderMgr.render(gc, game, gfx); // Objects, builds, units		
+		
+		// Ground at first
+		grid.renderGround(mapRange, gc, gfx); 
+		
+		// Objects, builds, units
+		renderMgr.render(gc, game, gfx); 
+		
 		// Draw effects on the top
-		for(VisualEffect e : graphicalEffects)
-			e.render(gfx);
+		Collection<GameComponent> effects = graphicalEffects.asCollection();
+		for(GameComponent e : effects)
+			e.render(gc, game, gfx);
 		
 //		long time = System.currentTimeMillis() - timeBefore; // for debug
 //		if(gc.getInput().isKeyDown(Input.KEY_T))
@@ -484,13 +495,14 @@ public class Map
 	{
 		view.setMapSize(grid.getWidth(), grid.getHeight());
 		
-		Collection<Entity> entities = units.asCollection();
-		for(Entity e : entities)
-			e.setMap(this);
+		// Set map for units
+		Collection<GameComponent> entities = units.asCollection();
+		for(GameComponent e : entities)
+			((Entity)e).setMap(this);
 
 		entities = builds.asCollection();
-		for(Entity e : entities)
-			e.setMap(this);
+		for(GameComponent e : entities)
+			((Entity)e).setMap(this);
 		
 		playerCity.recomputeData(builds.asCollection());
 	}

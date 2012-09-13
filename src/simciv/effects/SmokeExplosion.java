@@ -1,8 +1,11 @@
 package simciv.effects;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.state.StateBasedGame;
 
+import backend.IntRange2D;
 import backend.MathHelper;
 import simciv.content.Content;
 
@@ -13,8 +16,9 @@ import simciv.content.Content;
  */
 public class SmokeExplosion extends VisualEffect
 {
+	private static final long serialVersionUID = 1L;
+	
 	private SmokeParticle particles[];
-	private boolean finished;
 	
 	/**
 	 * Creates a smoke explosion at (x,y).
@@ -27,7 +31,6 @@ public class SmokeExplosion extends VisualEffect
 	{
 		super(x0, y0);
 		particles = new SmokeParticle[nbParticles];
-		finished = false;
 		
 		// Generate particles
 		float durationVariation = meanDuration / 4;
@@ -40,22 +43,6 @@ public class SmokeExplosion extends VisualEffect
 		}
 	}
 	
-	public void update(int deltaMs)
-	{
-		float delta = deltaMs / 1000.f;
-		finished = true;
-		for(int i = 0; i < particles.length; i++)
-		{
-			if(particles[i] != null)
-			{
-				finished = false;
-				particles[i].update(delta);
-				if(particles[i].isDead())
-					particles[i] = null;
-			}
-		}
-	}
-
 	public void renderEffect(Graphics gfx)
 	{
 		for(int i = 0; i < particles.length; i++)
@@ -66,9 +53,31 @@ public class SmokeExplosion extends VisualEffect
 	}
 	
 	@Override
-	public boolean isFinished()
+	public void getRenderBounds(IntRange2D range)
 	{
-		return finished;
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(GameContainer gc, StateBasedGame game, int delta)
+	{
+		float deltaS = delta / 1000.f;
+		boolean finished = true;
+		
+		for(int i = 0; i < particles.length; i++)
+		{
+			if(particles[i] != null)
+			{
+				finished = false;
+				particles[i].update(deltaS);
+				if(particles[i].isDead())
+					particles[i] = null;
+			}
+		}
+		
+		if(finished)
+			dispose();
 	}
 		
 	class SmokeParticle extends Particle
