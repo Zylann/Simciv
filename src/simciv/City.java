@@ -2,6 +2,8 @@ package simciv;
 
 import java.io.Serializable;
 
+import backend.GameComponent;
+
 public abstract class City implements Serializable
 {
 	private static final long serialVersionUID = 1L;

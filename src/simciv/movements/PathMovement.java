@@ -2,8 +2,9 @@ package simciv.movements;
 
 import java.util.LinkedList;
 
-import simciv.Direction2D;
-import simciv.Vector2i;
+import backend.Direction2D;
+import backend.Vector2i;
+
 import simciv.maptargets.IMapTarget;
 import simciv.units.Unit;
 

@@ -14,6 +14,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
+import backend.IntRange2D;
+
 import simciv.builds.Build;
 import simciv.builds.Warehouse;
 import simciv.effects.VisualEffect;
@@ -33,7 +35,7 @@ public class Map
 	public MapGrid grid;
 	
 	/** View clip */
-	public View view;
+	public ScrollView view;
 	
 	/** Information about player's city **/
 	public PlayerCity playerCity;
@@ -69,7 +71,7 @@ public class Map
 		builds = new EntityMap();
 		units = new EntityMap();
 		graphicalEffects = new ArrayList<VisualEffect>();
-		view = new View(0, 0, 2);
+		view = new ScrollView(0, 0, 2);
 		view.setMapSize(width, height);
 	}
 	
@@ -267,7 +269,8 @@ public class Map
 	public void render(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		view.configureGraphicsForWorldRendering(gfx);
-		IntRange2D mapRange = view.getMapRange(gc);
+		IntRange2D mapRange = new IntRange2D();
+		view.getMapBounds(mapRange);
 		
 		SortedRender renderMgr = new SortedRender();
 		
@@ -451,7 +454,7 @@ public class Map
 		
 		// Load view
 		System.out.println("Loading view info...");
-		view = (View)ois.readObject();
+		view = (ScrollView)ois.readObject();
 
 		// Load builds
 		System.out.println("Loading builds...");

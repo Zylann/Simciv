@@ -8,12 +8,13 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
-import simciv.Direction2D;
+import backend.Direction2D;
+import backend.Vector2i;
+
 import simciv.Game;
 import simciv.MapCell;
 import simciv.PathFinder;
 import simciv.TickableEntity;
-import simciv.Vector2i;
 import simciv.Map;
 import simciv.builds.Build;
 import simciv.maptargets.BuildMapTarget;
@@ -316,7 +317,7 @@ public abstract class Unit extends TickableEntity
 	protected abstract void renderUnit(Graphics gfx);
 
 	@Override
-	protected int getTickTime()
+	public int getTickTime()
 	{
 		return 500;
 	}

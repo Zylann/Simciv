@@ -7,7 +7,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
-import simciv.IRenderable;
+import backend.IRenderable;
+
 
 public class SortedRender
 {

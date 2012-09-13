@@ -8,6 +8,9 @@ import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
+import backend.Direction2D;
+import backend.Vector2i;
+
 import simciv.maptargets.IMapTarget;
 
 /**

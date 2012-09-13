@@ -1,8 +1,10 @@
-package simciv;
+package backend;
 
-import java.util.LinkedList;
-import java.util.List;
-
+/**
+ * Utility class for handling 2D directions
+ * @author Marc
+ *
+ */
 public class Direction2D
 {
 	public static final byte NONE = -1;
@@ -55,31 +57,32 @@ public class Direction2D
 	}
 	
 	/**
-	 * Converts a series of points into a series of directionnal constants
-	 * (uses toDirection())
-	 * @param points
-	 * @return
-	 */
-	public static LinkedList<Byte> toDirectionsPath(List<Vector2i> points)
-	{
-		LinkedList<Byte> path = new LinkedList<Byte>();
-		Vector2i lastPos = null;
-		for(Vector2i pos : points)
-		{
-			if(lastPos != null)
-				path.add(toDirection(lastPos, pos));
-			lastPos = pos;
-		}
-		return path;
-	}
-	
-	/**
 	 * @return a non-NONE random directionnal constant
 	 */
 	public static byte random()
 	{
 		return (byte) (4 * Math.random());
 	}
+	
+	// Unusued
+//	/**
+//	 * Converts a series of points into a series of directionnal constants
+//	 * (uses toDirection())
+//	 * @param points
+//	 * @return
+//	 */
+//	public static LinkedList<Byte> toDirectionsPath(List<Vector2i> points)
+//	{
+//		LinkedList<Byte> path = new LinkedList<Byte>();
+//		Vector2i lastPos = null;
+//		for(Vector2i pos : points)
+//		{
+//			if(lastPos != null)
+//				path.add(toDirection(lastPos, pos));
+//			lastPos = pos;
+//		}
+//		return path;
+//	}
 	
 }
 

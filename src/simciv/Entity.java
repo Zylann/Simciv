@@ -1,9 +1,11 @@
 package simciv;
 
-import java.io.Serializable;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
+
+import backend.Direction2D;
+import backend.GameComponent;
+import backend.IntRange2D;
 
 /**
  * An entity is a located game element that can update and draw itself.
@@ -11,7 +13,7 @@ import org.newdawn.slick.state.StateBasedGame;
  * @author Marc
  *
  */
-public abstract class Entity extends GameComponent implements Serializable
+public abstract class Entity extends GameComponent
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -143,6 +145,12 @@ public abstract class Entity extends GameComponent implements Serializable
 	 */
 	public abstract int getHeight();
 	
+	@Override
+	public void getRenderBounds(IntRange2D range)
+	{
+		range.set(posX, posY, posX + getWidth() - 1, posY + getHeight() - 1);
+	}
+
 	/**
 	 * Returns the life time of the entity in milliseconds
 	 * @return

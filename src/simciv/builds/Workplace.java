@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
+
+import backend.Vector2i;
 import simciv.Game;
 import simciv.Map;
-import simciv.Vector2i;
 import simciv.maptargets.IMapTarget;
 import simciv.maptargets.RoadMapTarget;
 import simciv.units.Citizen;
@@ -312,7 +313,7 @@ public abstract class Workplace extends Build
 	}
 
 	@Override
-	protected void tick()
+	public void tick()
 	{
 		if(employer == null)
 		{

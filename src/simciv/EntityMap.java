@@ -11,6 +11,8 @@ import java.util.HashMap;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
+import backend.GameComponent;
+
 /**
  * Entity container, providing easier methods for handling a group of entities
  * @author Marc

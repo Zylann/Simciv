@@ -4,15 +4,16 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+
 import simciv.Game;
-import simciv.View;
+import simciv.ScrollView;
 import simciv.ui.base.Widget;
 import simciv.ui.base.WidgetContainer;
 
 public class Minimap extends Widget
 {
 	private Image vizRef;
-	private View viewRef;
+	private ScrollView viewRef;
 	private boolean pressed;
 	
 	public Minimap(WidgetContainer parent, int x, int y, int width, int height)
@@ -21,7 +22,7 @@ public class Minimap extends Widget
 		pressed = true;
 	}
 	
-	public void setView(View view)
+	public void setView(ScrollView view)
 	{
 		viewRef = view;
 	}

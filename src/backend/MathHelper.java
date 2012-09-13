@@ -1,4 +1,4 @@
-package simciv;
+package backend;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;

@@ -41,7 +41,7 @@ public class Employer extends Citizen
 	}
 
 	@Override
-	protected void tick()
+	public void tick()
 	{
 		Workplace workplace = getWorkplace();
 		

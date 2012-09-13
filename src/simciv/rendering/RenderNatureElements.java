@@ -4,8 +4,10 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
+import backend.IRenderable;
+import backend.IntRange2D;
+
 import simciv.Game;
-import simciv.IRenderable;
 import simciv.MapGrid;
 
 /**
@@ -49,4 +51,13 @@ public class RenderNatureElements implements IRenderable
 	{
 		return y;
 	}
+
+	@Override
+	public void getRenderBounds(IntRange2D range)
+	{
+		range.set(startX, y, maxX, y);
+	}
+	
 }
+
+

@@ -1,9 +1,9 @@
 package simciv;
 
-import java.io.Serializable;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
+
+import backend.ITickable;
 
 /**
  * Entity with a special update system :
@@ -14,7 +14,7 @@ import org.newdawn.slick.state.StateBasedGame;
  * @author Marc
  *
  */
-public abstract class TickableEntity extends Entity implements Serializable
+public abstract class TickableEntity extends Entity implements ITickable
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -33,6 +33,12 @@ public abstract class TickableEntity extends Entity implements Serializable
 	public int getTicks()
 	{
 		return nbTicks;
+	}
+	
+	@Override
+	public int getTimeBeforeNextTick()
+	{
+		return timeBeforeNextTick;
 	}
 	
 	/**
@@ -57,24 +63,12 @@ public abstract class TickableEntity extends Entity implements Serializable
 	{
 		return (int) ((1000.f * s) / getTickTime());
 	}
-		
-	/**
-	 * Returns the time interval between each behavior update.
-	 * It can be used to increase its speed for example.
-	 * @return : time per tick in milliseconds
-	 */
-	protected abstract int getTickTime();
-
+	
 	protected void tickEntity()
 	{
 		tick();
 	}
-	
-	/**
-	 * Called regularly to make the entity "live" and execute its tasks.
-	 */
-	protected abstract void tick();
-	
+		
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta)
 	{

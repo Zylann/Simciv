@@ -1,5 +1,8 @@
-package simciv;
+package backend;
 
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 
 import org.newdawn.slick.GameContainer;
@@ -46,6 +49,7 @@ public abstract class GameComponent implements IRenderable, Serializable
 	
 	/**
 	 * Constructs a game component with a new unique ID.
+	 * (also default constructor)
 	 */
 	public GameComponent()
 	{
@@ -54,6 +58,35 @@ public abstract class GameComponent implements IRenderable, Serializable
 		disposed = false;
 	}
 	
+	/**
+	 * Reads the component from an object input (custom Serializable method)
+	 * @param oi
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	public void readObject(ObjectInput oi) throws IOException, ClassNotFoundException
+	{
+		ID = oi.readInt();
+		initialized = oi.readBoolean();
+		disposed = oi.readBoolean();
+		
+		// Prevents generation of double IDs
+		if(nextID <= ID)
+			nextID = ID + 1;
+	}
+
+	/**
+	 * Writes the component into an object output (custom Serializable method)
+	 * @param oo
+	 * @throws IOException
+	 */
+	public void writeObject(ObjectOutput oo) throws IOException
+	{
+		oo.writeInt(ID);
+		oo.writeBoolean(initialized);
+		oo.writeBoolean(disposed);
+	}
+
 	/**
 	 * @return true if the component is initialized
 	 */
@@ -104,8 +137,8 @@ public abstract class GameComponent implements IRenderable, Serializable
 	
 	/**
 	 * Called when we start using the component
-	 * (Note that it is always the first method to be called after construction)
 	 * Override : Don't forget to call super.onInit()
+	 * Only works in a context where the component is stored in a GameComponentMap.
 	 */
 	public void onInit()
 	{
@@ -122,7 +155,7 @@ public abstract class GameComponent implements IRenderable, Serializable
 	
 	/**
 	 * Called just before the object to be deleted (nulled).
-	 * Note that it is always the last method to be called.
+	 * Only works in a context where the component is stored in a GameComponentMap.
 	 */
 	public abstract void onDestruction();
 	

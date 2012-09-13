@@ -45,9 +45,9 @@ public class MainMenu extends UIBasicGameState
 	public void enter(GameContainer container, StateBasedGame game)
 			throws SlickException
 	{
-		super.enter(container, game);
 		newGame = false;
 		loadGame = false;
+		super.enter(container, game);
 	}
 
 	@Override
@@ -96,11 +96,13 @@ public class MainMenu extends UIBasicGameState
 			throws SlickException
 	{
 		if(closeRequested)
-			((simciv.Game)game).close();		
+			simciv.Game.close();
 		if(newGame)
 			game.enterState(Game.STATE_GAME_CREATING);
 		if(loadGame)
 			game.enterState(Game.STATE_GAME_LOADING);
+		
+//		Image test = new Image("unexisting");
 	}
 
 	class QuitGameAction implements IActionListener

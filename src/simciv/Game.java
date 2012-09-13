@@ -19,6 +19,7 @@ import simciv.gamestates.CityView;
 import simciv.gamestates.ContentLoadingScreen;
 import simciv.gamestates.GameLoadingScreen;
 import simciv.gamestates.MainMenu;
+import simciv.ui.base.CrashWindow;
 import simciv.ui.base.UIStateBasedGame;
 
 /**
@@ -50,7 +51,7 @@ public class Game extends UIStateBasedGame
 	// Game container
 	private static CanvasGameContainer canvas;
 	private static Container contentPane;
-	private static JFrame frame;
+	private static JFrame gameFrame;
 	
 	// The game
 	private static Game game;
@@ -60,11 +61,11 @@ public class Game extends UIStateBasedGame
 	public CityView cityView; // direct access
 	
 	public static void main(String[] args)
-	{
+	{		
 		settings = new Settings();
 		
 		try
-		{			
+		{
 			// Create game
 			game = new Game(title);
 			
@@ -78,36 +79,62 @@ public class Game extends UIStateBasedGame
 			canvas.getContainer().setUpdateOnlyWhenVisible(true);
 
 			// Create main window
-			frame = new JFrame();
-			frame.setTitle(title);
-			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			frame.addWindowListener(new MainFrameListener());
-			frame.setVisible(true);
+			gameFrame = new JFrame();
+			gameFrame.setTitle(title);
+			gameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			gameFrame.setLocationRelativeTo(null);
+			gameFrame.addWindowListener(new MainFrameListener());
+			gameFrame.setVisible(true);
 			// Note : frame borders are not available before the frame is shown
 			// Setting frame size with content sized to default dimensions
-			frame.setSize(
-					defaultScreenWidth + frame.getInsets().left + frame.getInsets().right,
-					defaultScreenHeight + frame.getInsets().top + frame.getInsets().bottom);
+			gameFrame.setSize(
+					defaultScreenWidth + gameFrame.getInsets().left + gameFrame.getInsets().right,
+					defaultScreenHeight + gameFrame.getInsets().top + gameFrame.getInsets().bottom);
 			
 			// Add canvas to the content pane
-			contentPane = frame.getContentPane();
+			contentPane = gameFrame.getContentPane();
 			contentPane.addComponentListener(new MainComponentListener());
 			contentPane.add(canvas);
-			
+									
 			canvas.start(); // Starts the game
 		
-		} catch (SlickException e)
+		} catch (Throwable t)
 		{
-			e.printStackTrace();
+			t.printStackTrace();
+			onCrash(t);
 		}
 		
 		// FIXME on game close : "AL lib: alc_cleanup: 1 device not closed" (serious or not?)
 	}
+	
+	/**
+	 * Closes the game and displays a crash report window.
+	 * The report is made using the last exception caught and the stack trace.
+	 * @param t : exception that caused the game to crash
+	 */
+	public static void onCrash(Throwable t)
+	{
+		// Close the game
+		close();
+		
+		// Get the stack trace as string
+		StackTraceElement[] stackTrace = t.getStackTrace();
+		String logStr = "";
+		for(StackTraceElement el : stackTrace)
+		{
+			logStr += el.toString() + "\n";
+		}
+		
+		// Open the crash window
+		CrashWindow win = new CrashWindow(gameFrame);
+		win.setErrorDetails(logStr);
+		win.setVisible(true);
+	}
 
-	public void close()
+	public static void close()
 	{
 		canvas.getContainer().exit(); // Note : doesn't work without frame.dispose()
-		frame.dispose();
+		gameFrame.dispose();
 	}
 
 	public Game(String title)
@@ -196,3 +223,5 @@ public class Game extends UIStateBasedGame
 	}
 
 }
+
+

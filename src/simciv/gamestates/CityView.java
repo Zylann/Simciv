@@ -7,12 +7,13 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import backend.SoundEngine;
+import backend.Vector2i;
+
 import simciv.CityBuilder;
 import simciv.Game;
 import simciv.MinimapUpdater;
-import simciv.SoundEngine;
 import simciv.Terrain;
-import simciv.Vector2i;
 import simciv.Map;
 import simciv.content.Content;
 import simciv.persistence.GameSaveData;

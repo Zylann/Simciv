@@ -29,7 +29,7 @@ public abstract class PassiveWorkplace extends Workplace
 	}
 
 	@Override
-	protected int getTickTime()
+	public int getTickTime()
 	{
 		return 1000;
 	}

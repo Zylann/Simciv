@@ -9,13 +9,14 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
+import backend.MathHelper;
+import backend.Vector2i;
+
 import simciv.Game;
 import simciv.MapGrid;
-import simciv.MathHelper;
 import simciv.ResourceSlot;
 import simciv.Map;
 import simciv.TickableEntity;
-import simciv.Vector2i;
 import simciv.content.Content;
 import simciv.effects.SmokeExplosion;
 import simciv.maptargets.RoadMapTarget;
@@ -308,7 +309,7 @@ public abstract class Build extends TickableEntity
 	}
 
 	@Override
-	protected int getTickTime()
+	public int getTickTime()
 	{
 		return 1000; // default is 1s
 	}

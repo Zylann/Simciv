@@ -2,7 +2,8 @@ package simciv.effects;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import simciv.MathHelper;
+
+import backend.MathHelper;
 import simciv.content.Content;
 
 /**

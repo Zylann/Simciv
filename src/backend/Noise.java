@@ -1,4 +1,5 @@
-package simciv;
+package backend;
+
 
 /**
  * A class for generating different kinds of noise (random numbers)

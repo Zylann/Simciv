@@ -38,7 +38,7 @@ public class Nomad extends Unit
 	}
 
 	@Override
-	protected int getTickTime()
+	public int getTickTime()
 	{
 		return 700;
 	}

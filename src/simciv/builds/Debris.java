@@ -68,7 +68,7 @@ public class Debris extends Build
 	}
 
 	@Override
-	protected void tick()
+	public void tick()
 	{
 	}
 

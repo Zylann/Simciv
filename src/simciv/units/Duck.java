@@ -23,7 +23,7 @@ public class Duck extends Unit
 	}
 
 	@Override
-	protected void tick()
+	public void tick()
 	{
 	}
 

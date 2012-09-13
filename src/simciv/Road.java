@@ -8,6 +8,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import backend.Direction2D;
+
 import simciv.content.Content;
 
 public class Road

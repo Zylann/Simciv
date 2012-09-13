@@ -1,4 +1,5 @@
-package simciv;
+package backend;
+
 
 /**
  * Represents a rectangular integer selection of the world,

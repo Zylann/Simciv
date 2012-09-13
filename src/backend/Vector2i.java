@@ -1,4 +1,4 @@
-package simciv;
+package backend;
 
 import java.io.Serializable;
 

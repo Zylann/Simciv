@@ -434,7 +434,7 @@ public class House extends Build
 	}
 
 	@Override
-	protected int getTickTime()
+	public int getTickTime()
 	{
 		return 1000;
 	}

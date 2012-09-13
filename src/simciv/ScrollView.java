@@ -1,56 +1,44 @@
 package simciv;
 
-import java.io.Serializable;
-
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Vector2f;
+
+import backend.IntRange2D;
+import backend.MathHelper;
+import backend.Vector2i;
+import backend.View;
 
 /**
  * Determines what region of the map is currently seen by the player.
  * Allows for conversions between pixel coordinates and map coordinates, and scrolling.
+ * Can be scrolled by using the arrow keys.
  * @author Marc
  *
  */
-public class View implements Serializable
+public class ScrollView extends View
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final float acceleration = 5000.f;
 	private static final float velocityMax = 750.f;
-	
-	private float originX; // in pixels
-	private float originY;
+
 	private transient Vector2f velocity;
 	private transient Vector2i mapSize;
-	private int scale;
-	
-	public View(float x, float y, int scale)
+
+	public ScrollView(float x, float y, int scale)
 	{
-		originX = x;
-		originY = y;
+		super(x, y, scale);
 		mapSize = new Vector2i();
-		this.scale = scale;
 	}
-	
+
 	public void setMapSize(int sizeX, int sizeY)
 	{
 		mapSize = new Vector2i();
 		mapSize.x = scale * Game.tilesSize * (sizeX > 0 ? sizeX : 0);
 		mapSize.y = scale * Game.tilesSize * (sizeY > 0 ? sizeY : 0);
 	}
-	
-	public float getOriginX()
-	{
-		return originX;
-	}
-	
-	public float getOriginY()
-	{
-		return originY;
-	}
-	
+
 	public int getMapX()
 	{
 		return ((int)originX) / scale / Game.tilesSize;
@@ -64,6 +52,8 @@ public class View implements Serializable
 	public void update(GameContainer gc, float delta)
 	{
 		Input input = gc.getInput();
+		
+		setContainerSize(gc.getWidth(), gc.getHeight());
 				
 		float a = acceleration * delta;
 		Vector2f va = new Vector2f();
@@ -126,17 +116,6 @@ public class View implements Serializable
 	}
 
 	/**
-	 * Configures the drawing context before rendering the world.
-	 * @param gfx : context
-	 */
-	public void configureGraphicsForWorldRendering(Graphics gfx)
-	{
-		gfx.resetTransform();
-		gfx.translate(-originX, -originY);
-		gfx.scale(scale, scale);
-	}
-	
-	/**
 	 * Converts screen coordinates into map coordinates,
 	 * using the current state of the view
 	 * @param x
@@ -154,43 +133,11 @@ public class View implements Serializable
 			pos.y -= 1;
 		return pos;
 	}
-	
-	public IntRange2D getRange(GameContainer gc)
+
+	public void getMapBounds(IntRange2D range)
 	{
-		IntRange2D r = new IntRange2D(
-				(int)originX,
-				(int)originY, 
-				(int)originX + gc.getWidth(),
-				(int)originY + gc.getHeight());
-		r.divide(scale);
-		return r;
-	}
-	
-	public IntRange2D getMapRange(GameContainer gc)
-	{
-		IntRange2D r = getRange(gc);
-		r.divide(Game.tilesSize);
-		return r;
+		getBounds(range);
+		range.divide(Game.tilesSize);
 	}
 
-	public int getScale()
-	{
-		return scale;
-	}
-
-	public void setCenter(int mapX, int mapY)
-	{
-		// TODO use real center
-		originX = scale * Game.tilesSize * (mapX - 16);
-		originY = scale * Game.tilesSize * (mapY - 16);
-	}
-
-	public void setOrigin(float x, float y)
-	{
-		originX = scale * Game.tilesSize * x;
-		originY = scale * Game.tilesSize * y;
-	}
-	
 }
-
-

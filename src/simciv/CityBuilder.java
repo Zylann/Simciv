@@ -7,6 +7,9 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
+import backend.IntRange2D;
+import backend.Vector2i;
+
 import simciv.builds.Build;
 import simciv.builds.BuildFactory;
 import simciv.content.Content;

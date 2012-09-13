@@ -1,7 +1,7 @@
 package simciv.movements;
 
-import simciv.Direction2D;
-import simciv.MathHelper;
+import backend.Direction2D;
+import backend.MathHelper;
 import simciv.maptargets.IMapTarget;
 import simciv.units.Unit;
 

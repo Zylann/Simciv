@@ -8,6 +8,10 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
+import backend.Direction2D;
+import backend.IntRange2D;
+import backend.Vector2i;
+
 import simciv.builds.Build;
 import simciv.maptargets.IMapTarget;
 import simciv.rendering.RenderNatureElements;

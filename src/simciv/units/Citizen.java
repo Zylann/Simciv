@@ -75,7 +75,7 @@ public abstract class Citizen extends Unit
 	}
 
 	@Override
-	protected int getTickTime()
+	public int getTickTime()
 	{
 		return tickTime;
 	}

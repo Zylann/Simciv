@@ -1,5 +1,7 @@
 package simciv;
 
+import backend.Noise;
+
 public class MapGeneratorThread extends Thread
 {
 	private int seed;

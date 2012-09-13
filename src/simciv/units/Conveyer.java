@@ -3,7 +3,8 @@ package simciv.units;
 import java.util.List;
 
 import org.newdawn.slick.Graphics;
-import simciv.Direction2D;
+
+import backend.Direction2D;
 import simciv.Map;
 import simciv.ResourceSlot;
 import simciv.builds.Build;

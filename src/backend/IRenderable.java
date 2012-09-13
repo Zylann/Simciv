@@ -1,8 +1,9 @@
-package simciv;
+package backend;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
+
 
 /**
  * An object that can be rendered, and also defining a drawing order.
@@ -31,4 +32,12 @@ public interface IRenderable
 	 */
 	public int getDrawOrder();
 	
+	/**
+	 * Sets the given range object to the graphic bounds of the object
+	 * @param range
+	 */
+	public void getRenderBounds(IntRange2D range);
+	
 }
+
+
