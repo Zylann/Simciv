@@ -8,16 +8,10 @@ public class WindowCloseButton extends Button
 	public static final int width = 24;
 	public static final int height = 16;
 	
-	private IActionListener action;
-	
 	public WindowCloseButton(Window parent)
 	{
 		super(parent, parent.width - width, 0, width, height);
-	}
-
-	public void setActionListener(IActionListener action)
-	{
-		this.action = action;
+		addActionListener(new CloseAction());
 	}
 
 	@Override
@@ -28,15 +22,21 @@ public class WindowCloseButton extends Button
 	@Override
 	protected void onRelease()
 	{
-		((Window)parent).setVisible(false);
-		if(!parent.isVisible() && action != null)
-			action.actionPerformed(this);
+		onAction();
 	}
 
 	@Override
 	public void render(GameContainer gc, Graphics gfx)
 	{
 		UIRenderer.instance().renderWindowCloseButton(gfx, this);
+	}
+	
+	class CloseAction implements IActionListener
+	{
+		@Override
+		public void actionPerformed(Widget sender) {
+			parent.setVisible(false);
+		}		
 	}
 
 }

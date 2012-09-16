@@ -27,7 +27,8 @@ public class GameLoaderThread extends GameSaveIOThread
 		
 		try
 		{
-			FileInputStream fis = new FileInputStream("saves/" + data.saveName + ".ssg");
+			FileInputStream fis = new FileInputStream(
+					GameSaveData.SAVES_DIR + "/" + data.saveName + GameSaveData.SAVES_EXT);
 			DataInputStream dis = new DataInputStream(fis);
 			
 			data.map = new Map(1, 1);

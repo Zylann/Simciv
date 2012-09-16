@@ -6,6 +6,7 @@ import java.util.List;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.util.Log;
 
 /**
  * A widget that can contain another widgets.
@@ -22,6 +23,7 @@ public class WidgetContainer extends Widget
 		children = new ArrayList<Widget>();
 	}
 	
+	// TODO don't throw exceptions, use messages
 	public void add(Widget child) throws SlickException
 	{
 		if(child == null)
@@ -241,6 +243,19 @@ public class WidgetContainer extends Widget
 					w.onHide();
 			}
 		}
+	}
+
+	/**
+	 * Brings a widget to foreground
+	 * Warning : calling while iterating is not supported
+	 * @param widget
+	 */
+	public void popupChild(Widget widget)
+	{
+		if(children.remove(widget))
+			children.add(0, widget);
+		else
+			Log.warn("popupChild : widget not found");
 	}
 
 }

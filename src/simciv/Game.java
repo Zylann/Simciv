@@ -8,10 +8,12 @@ import java.awt.event.WindowListener;
 
 import java.util.ArrayList;
 import javax.swing.JFrame;
-import org.newdawn.slick.CanvasGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.GameState;
+
+import backend.CanvasGameContainer2;
+import backend.ITopExceptionListener;
 
 import simciv.content.Content;
 import simciv.gamestates.GameCreatingScreen;
@@ -28,6 +30,7 @@ import simciv.ui.base.UIStateBasedGame;
  * @author Marc
  * 
  */
+// TODO separate GameWindow and the main class where we use it
 public class Game extends UIStateBasedGame
 {
 	/* Static vars */ 
@@ -49,7 +52,7 @@ public class Game extends UIStateBasedGame
 	public static Settings settings;
 	
 	// Game container
-	private static CanvasGameContainer canvas;
+	private static CanvasGameContainer2 canvas;
 	private static Container contentPane;
 	private static JFrame gameFrame;
 	
@@ -70,13 +73,17 @@ public class Game extends UIStateBasedGame
 			game = new Game(title);
 			
 			// Create canvas
-			canvas = new CanvasGameContainer(game);
+			canvas = new CanvasGameContainer2(game);
 			canvas.setSize(defaultScreenWidth, defaultScreenHeight);
-			canvas.getContainer().setAlwaysRender(true);
-			canvas.getContainer().setTargetFrameRate(settings.framerate);
-			canvas.getContainer().setVSync(settings.useVSync);
-			canvas.getContainer().setSmoothDeltas(settings.smoothDeltasEnabled);
-			canvas.getContainer().setUpdateOnlyWhenVisible(true);
+			canvas.setTopExceptionListener(new TopExceptionListener());
+			
+			// Configure game container
+			GameContainer gc = canvas.getGameContainer();
+//			gc.setAlwaysRender(true);
+			gc.setTargetFrameRate(settings.framerate);
+			gc.setVSync(settings.useVSync);
+			gc.setSmoothDeltas(settings.smoothDeltasEnabled);
+			gc.setUpdateOnlyWhenVisible(true);
 
 			// Create main window
 			gameFrame = new JFrame();
@@ -96,7 +103,7 @@ public class Game extends UIStateBasedGame
 			contentPane.addComponentListener(new MainComponentListener());
 			contentPane.add(canvas);
 									
-			canvas.start(); // Starts the game
+			canvas.start(); // Start the game
 		
 		} catch (Throwable t)
 		{
@@ -108,32 +115,20 @@ public class Game extends UIStateBasedGame
 	}
 	
 	/**
-	 * Closes the game and displays a crash report window.
-	 * The report is made using the last exception caught and the stack trace.
+	 * Displays a crash report window.
 	 * @param t : exception that caused the game to crash
 	 */
 	public static void onCrash(Throwable t)
 	{
-		// Close the game
-		close();
-		
-		// Get the stack trace as string
-		StackTraceElement[] stackTrace = t.getStackTrace();
-		String logStr = "";
-		for(StackTraceElement el : stackTrace)
-		{
-			logStr += el.toString() + "\n";
-		}
-		
 		// Open the crash window
 		CrashWindow win = new CrashWindow(gameFrame);
-		win.setErrorDetails(logStr);
+		win.setErrorDetails("Error log not implemented yet");
 		win.setVisible(true);
 	}
 
 	public static void close()
 	{
-		canvas.getContainer().exit(); // Note : doesn't work without frame.dispose()
+		canvas.getGameContainer().exit(); // Note : doesn't work without frame.dispose()
 		gameFrame.dispose();
 	}
 
@@ -220,6 +215,14 @@ public class Game extends UIStateBasedGame
 
 		@Override
 		public void componentShown(ComponentEvent e) {}
+	}
+	
+	static class TopExceptionListener implements ITopExceptionListener
+	{
+		@Override
+		public void onTopException(Throwable t) {
+			onCrash(t);
+		}
 	}
 
 }

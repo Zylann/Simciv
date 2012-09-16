@@ -7,6 +7,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import backend.PerformanceGraph;
 import backend.SoundEngine;
 import backend.Vector2i;
 
@@ -56,6 +57,7 @@ public class CityView extends UIBasicGameState
 	private TimeBar timeBar;
 	private NotificationArea notificationArea;
 	private GameSaverThread gameSaver;
+	private PerformanceGraph renderTimeGraph;
 	private boolean quitGameRequested;
 	private boolean paused;
 	private boolean debugInfoVisible;
@@ -123,7 +125,7 @@ public class CityView extends UIBasicGameState
 		quitButton.addActionListener(new QuitGameAction());
 		pauseWindow.add(quitButton);
 		
-		pauseWindow.setOnCloseAction(new TogglePauseAction());
+		pauseWindow.addOnCloseAction(new TogglePauseAction());
 		pauseWindow.setDraggable(false);
 		pauseWindow.setVisible(false);
 		pauseWindow.alignToCenter();
@@ -233,6 +235,9 @@ public class CityView extends UIBasicGameState
 			
 			isGameBeginning = false;
 		}
+		
+		if(renderTimeGraph == null)
+			renderTimeGraph = new PerformanceGraph(0, 10);
 				
 		// Because we will always draw the map at first on the entire screen at each frame
 		gc.setClearEachFrame(false);
@@ -332,6 +337,7 @@ public class CityView extends UIBasicGameState
 		
 		// debug
 		renderTime = gc.getTime() - beginRenderTime;
+		renderTimeGraph.pushNextValue(renderTime);
 	}
 	
 	public void renderDebugInfo(GameContainer gc, Graphics gfx)
@@ -349,6 +355,8 @@ public class CityView extends UIBasicGameState
 				+ "(" + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1000000)
 				+ ") MB",
 				600, 10);
+		
+		renderTimeGraph.render(gfx, gc.getWidth() - PerformanceGraph.WIDTH - 10, 10, 50);
 	}
 	
 	@Override

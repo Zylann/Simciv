@@ -8,11 +8,16 @@ import org.newdawn.slick.state.StateBasedGame;
 import simciv.Game;
 import simciv.persistence.GameLoaderThread;
 import simciv.persistence.GameSaveData;
+import simciv.ui.base.IActionListener;
+import simciv.ui.base.MessageBox;
+import simciv.ui.base.Widget;
 
 public class GameLoadingScreen extends GameInitScreen
 {
 	private GameSaveData gameData;
 	private GameLoaderThread gameLoader;
+	private MessageBox errorBox;
+	private boolean backOnError;
 	
 	public GameLoadingScreen(int stateID)
 	{
@@ -26,9 +31,27 @@ public class GameLoadingScreen extends GameInitScreen
 	}
 	
 	@Override
+	protected void createUI(GameContainer container, StateBasedGame game)
+			throws SlickException
+	{
+		backOnError = false;
+		
+		super.createUI(container, game);
+		
+		errorBox = new MessageBox(ui, 0, 0, 150, 70, "Loading error");
+		errorBox.alignToCenter();
+		errorBox.setVisible(false);
+		errorBox.addCloseListener(new CancelAction());
+		ui.add(errorBox);
+		errorBox.popup();
+	}
+
+	@Override
 	public void enter(GameContainer container, StateBasedGame game)
 			throws SlickException
 	{
+		backOnError = false;
+		
 		super.enter(container, game);
 		
 		gameData = new GameSaveData("map");
@@ -55,14 +78,26 @@ public class GameLoadingScreen extends GameInitScreen
 				game.cityView.setIsGameBeginning(true);
 				game.enterState(Game.STATE_CITY_VIEW);
 			}
-			else
+			else if(!errorBox.isVisible() && !backOnError)
 			{
-				System.out.println("Couldn't load saved game.");
+				errorBox.setText("Couldn't load saved game.\n The save file is corrupted or\n not compatible.");
+				errorBox.setVisible(true);
+			}
+			else if(backOnError)
+			{
 				sbg.enterState(Game.STATE_MAIN_MENU);
 			}
+		}		
+	}
+	
+	class CancelAction implements IActionListener
+	{
+		@Override
+		public void actionPerformed(Widget sender) {
+			backOnError = true;
 		}
 	}
-		
+
 }
 
 

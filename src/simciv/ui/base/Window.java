@@ -13,17 +13,17 @@ public class Window extends WidgetContainer
 {
 	private WidgetContainer content;
 	private WindowTitleBar titleBar; 
-	private WindowCloseButton closeButton;
+	private WindowCloseButton winCloseButton;
 	
 	public Window(WidgetContainer parent, int x, int y, int width, int height, String title)
 	{
 		super(parent, x, y, width, height + WindowTitleBar.height);
 		titleBar = new WindowTitleBar(this, title);
-		closeButton = new WindowCloseButton(this);
+		winCloseButton = new WindowCloseButton(this);
 		content = new WidgetContainer(this, 0, titleBar.getHeight(), width, height - titleBar.getHeight());
 		try
 		{
-			super.add(closeButton);
+			super.add(winCloseButton);
 			super.add(titleBar);
 			super.add(content);
 		} catch (SlickException e)
@@ -39,12 +39,12 @@ public class Window extends WidgetContainer
 		width = content.width;
 		height = content.height;
 		titleBar.width = width;
-		closeButton.posX = width - closeButton.getWidth();
+		winCloseButton.posX = width - winCloseButton.getWidth();
 	}
 	
-	public void setOnCloseAction(IActionListener action)
+	public void addOnCloseAction(IActionListener action)
 	{
-		closeButton.setActionListener(action);
+		winCloseButton.addActionListener(action);
 	}
 	
 	public void setDraggable(boolean enabled)

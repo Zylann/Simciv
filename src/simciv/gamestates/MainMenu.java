@@ -7,6 +7,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Game;
+import simciv.persistence.GameSaveData;
 import simciv.ui.base.IActionListener;
 import simciv.ui.base.Label;
 import simciv.ui.base.Panel;
@@ -23,6 +24,7 @@ public class MainMenu extends UIBasicGameState
 	private boolean loadGame;
 	private boolean closeRequested;
 	private Color bgColor = new Color(32, 32, 32);
+	private PushButton loadGameBtn;
 	
 	public MainMenu(int stateID)
 	{
@@ -45,9 +47,13 @@ public class MainMenu extends UIBasicGameState
 	public void enter(GameContainer container, StateBasedGame game)
 			throws SlickException
 	{
+		super.enter(container, game);
+
 		newGame = false;
 		loadGame = false;
-		super.enter(container, game);
+		
+		// Checks if there is at least one save file available
+		loadGameBtn.setEnabled(GameSaveData.isSaveFiles());
 	}
 
 	@Override
@@ -67,7 +73,7 @@ public class MainMenu extends UIBasicGameState
 		newGameBtn.addActionListener(new NewGameAction());
 		panel.add(newGameBtn);
 		
-		PushButton loadGameBtn = new PushButton(panel, 0, 28, "Load game");
+		loadGameBtn = new PushButton(panel, 0, 28, "Load game");
 		loadGameBtn.setAlignX(Widget.ALIGN_CENTER);
 		loadGameBtn.addActionListener(new LoadGameAction());
 		panel.add(loadGameBtn);
@@ -101,8 +107,6 @@ public class MainMenu extends UIBasicGameState
 			game.enterState(Game.STATE_GAME_CREATING);
 		if(loadGame)
 			game.enterState(Game.STATE_GAME_LOADING);
-		
-//		Image test = new Image("unexisting");
 	}
 
 	class QuitGameAction implements IActionListener

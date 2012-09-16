@@ -280,6 +280,16 @@ public abstract class Widget
 	{
 		return false;
 	}
+	
+	/**
+	 * Brings the widget to foreground
+	 * Warning : calling while iterating is not supported
+	 */
+	public void popup()
+	{
+		if(WidgetContainer.class.isInstance(parent))
+			((WidgetContainer)parent).popupChild(this);
+	}
 		
 	// Each of these methods below return a boolean.
 	// If true, the event will be consumed by the GUI.
