@@ -17,7 +17,8 @@ public class WorldTime implements Serializable
 	private static final int millisecondsPerDay = 4000; // 1s = 6h
 	private static final int MONTHS_PER_YEAR = 12;
 	private static final int DAYS_PER_MONTH = 30;
-	
+	// TODO base the time model on the real calendar
+
 	private static final String months[] = 
 	{
 		"January",
@@ -34,16 +35,31 @@ public class WorldTime implements Serializable
 		"December"
 	};
 	
-	private int time; // in real milliseconds
-	private int day; // in virtual days
-	private int month; // in virtual months
-	private int year; // in virtual years
+	/** Real time counter in milliseconds **/
+	private int time;
 	
+	/** Virtual day number **/
+	private int day;
+	
+	/** Virtual month number **/
+	private int month;
+	
+	/** Virtual year number **/
+	private int year;
+	
+	/**
+	 * Constructs a time initialized to the first day of the first month of year 0.
+	 */
 	public WorldTime()
 	{
 		day = 1;
 	}
 	
+	/**
+	 * Updates virtual game time from real time.
+	 * @param delta : real time elapsed in milliseconds
+	 * @param currentMap : the map currently played
+	 */
 	public void update(int delta, Map currentMap)
 	{
 		time += delta;

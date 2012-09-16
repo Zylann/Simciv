@@ -23,7 +23,10 @@ public class ScrollView extends View
 	private static final float acceleration = 5000.f;
 	private static final float velocityMax = 750.f;
 
+	/** Velocity of the view scrolling **/
 	private transient Vector2f velocity;
+	
+	/** Size of the viewed map. Used to prevent the view to go out its bounds. **/
 	private transient Vector2i mapSize;
 
 	public ScrollView(float x, float y, int scale)
