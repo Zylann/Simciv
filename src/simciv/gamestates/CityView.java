@@ -173,6 +173,7 @@ public class CityView extends UIBasicGameState
 		BuildMenu adminMenu = new BuildMenu(menuBar, 0, menuBar.getHeight(), 128);
 		adminMenu.addBuild("TaxmenOffice");
 		adminMenu.addBuild("ArchitectOffice");
+		adminMenu.addBuild("FireStation");
 		menuBar.addCategory(Content.sprites.uiCategAdmin, "Administration", adminMenu);
 
 		// Marketing

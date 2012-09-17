@@ -5,25 +5,23 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Map;
-import simciv.MapGrid;
 import simciv.content.Content;
 
-public class WaterSource extends PassiveWorkplace
+public class FireStation extends PassiveWorkplace
 {
 	private static final long serialVersionUID = 1L;
 	private static BuildProperties properties;
 	
 	static
 	{
-		properties = new BuildProperties("Water source");
-		properties.setUnitsCapacity(2)
-			.setCategory(BuildCategory.FOOD)
-			.setCost(20)
-			.setSize(1, 1, 0)
-			.setFlamable(false);
+		properties = new BuildProperties("Fire station");
+		properties.setCategory(BuildCategory.ADMINISTRATION)
+			.setCost(100)
+			.setSize(2, 2, 1)
+			.setUnitsCapacity(6);
 	}
-
-	public WaterSource(Map m)
+	
+	public FireStation(Map m)
 	{
 		super(m);
 	}
@@ -31,11 +29,15 @@ public class WaterSource extends PassiveWorkplace
 	@Override
 	protected void onActivityStart()
 	{
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	protected void onActivityStop()
 	{
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
@@ -47,13 +49,9 @@ public class WaterSource extends PassiveWorkplace
 	@Override
 	protected void renderBuild(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
-		renderDefault(gfx, Content.sprites.buildWaterSource);
-	}
-
-	@Override
-	public boolean canBePlaced(MapGrid map, int x, int y)
-	{
-		return super.canBePlaced(map, x, y) && map.isArable(x, y);
+		this.renderDefault(gfx, Content.sprites.buildFireStation);
 	}
 
 }
+
+

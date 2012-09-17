@@ -18,6 +18,7 @@
 	<spritesheet id="buildMarket" tw="32" th="48" src="market.png"/>
 	<spritesheet id="buildArchitectOffice" tw="32" th="48" src="architects.png"/>
 	<spritesheet id="buildWaterSource" tw="16" th="16" src="water_source.png"/>
+	<spritesheet id="buildFireStation" tw="32" th="48" src="fire_station.png"/>
 	<image id="buildDebris" src="debris.png"/>
 	
 	<!-- Units -->

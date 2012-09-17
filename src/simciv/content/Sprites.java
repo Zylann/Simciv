@@ -23,6 +23,7 @@ public class Sprites
 	public SpriteSheet buildMarket;
 	public SpriteSheet buildArchitectOffice;
 	public SpriteSheet buildWaterSource;
+	public SpriteSheet buildFireStation;
 	public Image buildDebris;
 	
 	// Units
