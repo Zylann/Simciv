@@ -3,6 +3,7 @@ package simciv.content;
 import java.lang.reflect.Field;
 
 import org.newdawn.slick.AngelCodeFont;
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
@@ -103,6 +104,22 @@ public class Content
 				try
 				{
 					field.set(newSprites, spr);
+				} catch (IllegalArgumentException e)
+				{
+					e.printStackTrace();
+				} catch (IllegalAccessException e)
+				{
+					e.printStackTrace();
+				}
+			}
+			else if(field.getType() == Animation.class)
+			{
+				Animation anim = loader.getAnimation(ID);
+				if(anim == null)
+					throw new SlickException("Animation not found (ID = " + ID + ")");
+				try
+				{
+					field.set(newSprites, anim);
 				} catch (IllegalArgumentException e)
 				{
 					e.printStackTrace();

@@ -1,10 +1,11 @@
 package simciv.content;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
 /**
- * All ready-to-draw spritesheets and images used by the game.
+ * All ready-to-draw spritesheets, animations and images used by the game.
  * @author Marc
  *
  */
@@ -83,6 +84,7 @@ public class Sprites
 	public Image effectGold;
 	public Image effectDeath;
 	public SpriteSheet effectSmoke;
+	public Animation effectFire;
 	
 	// Test
 	public Image test;

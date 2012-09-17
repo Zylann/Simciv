@@ -39,8 +39,22 @@ public abstract class Build extends TickableEntity
 	public static final byte STATE_NORMAL = 1;
 	public static final byte STATE_ACTIVE = 2;
 	
-	// Solidness
+	// Fire levels
+	public static final byte FIRE_MIN = 0;
+	public static final byte FIRE_SMOKE = 80;
+	public static final byte FIRE_BURN = 90;
+	public static final byte FIRE_RUINS = 100;
+		
+	/** Solidness level **/
 	protected int solidness;
+	
+	/**
+	 * Fire risk information :
+	 * 0 to 90 : no fire
+	 * 90 : smoke
+	 * 100 : fire
+	 */
+	protected byte fireRisk;
 	
 	public Build(Map m)
 	{
@@ -60,7 +74,7 @@ public abstract class Build extends TickableEntity
 	 * Destroys the building (as gameplay meaning, for example with a bomb) with destruction effects.
 	 * Note : to erase a building without "destroying" it, use dispose().
 	 */
-	public void destroy()
+	public void destroy(boolean burning)
 	{
 		// Remove the building from the world
 		dispose();
@@ -73,7 +87,7 @@ public abstract class Build extends TickableEntity
 		{
 			for(int x = getX(); x < getX() + getWidth(); x++)
 			{
-				Debris d = new Debris(mapRef);
+				Debris d = new Debris(mapRef, burning);
 				d.setPropertiesFromBuild(this);
 				mapRef.placeBuild(d, x, y);
 				
@@ -84,7 +98,7 @@ public abstract class Build extends TickableEntity
 		
 		mapRef.sendNotification(Notification.TYPE_WARNING, "A build has collapsed !");
 	}
-	
+		
 	@Override
 	public void onInit()
 	{
@@ -107,7 +121,8 @@ public abstract class Build extends TickableEntity
 	@Override
 	protected void tickEntity()
 	{
-		tickSolidness();
+		tickSolidness();		
+		tickFireRisk();
 		super.tickEntity();
 	}
 
@@ -116,7 +131,7 @@ public abstract class Build extends TickableEntity
 		if(Math.random() < 0.5)
 			solidness--;
 		if(solidness == 0)
-			destroy();
+			destroy(false);
 	}
 	
 	public final boolean needsMaintenance()
@@ -267,10 +282,29 @@ public abstract class Build extends TickableEntity
 				
 		renderBuild(gc, game, gfx);
 		
+		if(isFireSmoke())
+			renderSmoke(gfx);
+		
+		if(isFireBurning())
+			renderFire(gfx);
+		
 		if(gc.getInput().isKeyDown(Input.KEY_4))
-			renderSolidnessRatio(gfx, 0, 0);
+			renderSolidnessRatio(gfx);
+		
+		if(gc.getInput().isKeyDown(Input.KEY_5))
+			renderFireRiskRatio(gfx);
 
 		gfx.popTransform();
+	}
+	
+	private void renderBar(Graphics gfx, float r, Color clr0, Color clr1)
+	{
+		float w = (float)(getWidth() * Game.tilesSize - 1);
+		float t = r * w;
+		gfx.setColor(clr1);
+		gfx.fillRect(0, 0, t, 2);
+		gfx.setColor(clr0);
+		gfx.fillRect(t, 0, w - t, 2);
 	}
 	
 	/**
@@ -279,14 +313,20 @@ public abstract class Build extends TickableEntity
 	 * @param x : relative x bar pos in pixels
 	 * @param y : relative y bar pos in pixels
 	 */
-	private void renderSolidnessRatio(Graphics gfx, int x, int y)
+	private void renderFireRiskRatio(Graphics gfx)
 	{
-		float w = (float)(getWidth() * Game.tilesSize - 1);
-		float t = getSolidnessRatio() * w;
-		gfx.setColor(Color.white);
-		gfx.fillRect(x, y, t, 2);
-		gfx.setColor(Color.darkGray);
-		gfx.fillRect(x + t, y, w - t, 2);
+		renderBar(gfx, getFireRiskRatio(), Color.darkGray, Color.orange);
+	}
+
+	/**
+	 * Draws a progress bar representing the solidness ratio.
+	 * @param gfx
+	 * @param x : relative x bar pos in pixels
+	 * @param y : relative y bar pos in pixels
+	 */
+	private void renderSolidnessRatio(Graphics gfx)
+	{
+		renderBar(gfx, getSolidnessRatio(), Color.darkGray, Color.white);
 	}
 
 	protected void renderDefault(Graphics gfx, Image sprite)
@@ -321,6 +361,79 @@ public abstract class Build extends TickableEntity
 	public int getSurfaceArea()
 	{
 		return getWidth() * getHeight();
+	}
+		
+	public float getFireRiskRatio()
+	{
+		if(fireRisk < FIRE_BURN)
+			return (float)fireRisk / (float)FIRE_BURN;
+		return 1;
+	}
+	
+	public boolean isFireSmoke()
+	{
+		return fireRisk >= FIRE_SMOKE && fireRisk < FIRE_BURN;
+	}
+	
+	public boolean isFireBurning()
+	{
+		return fireRisk >= FIRE_BURN && fireRisk != FIRE_RUINS;
+	}
+	
+	public boolean isFlamable()
+	{
+		return getProperties().isFlamable;
+	}
+	
+	public void reduceFireRisk(byte r)
+	{
+		if(fireRisk > r)
+			fireRisk -= r;
+		else
+			fireRisk = 0;
+	}
+	
+	public void extinguishFire()
+	{
+		fireRisk = FIRE_MIN;
+	}
+	
+	protected void tickFireRisk()
+	{
+		if(!isFlamable())
+		{
+			if(fireRisk < FIRE_SMOKE)
+				return;
+		}
+		
+		if(fireRisk < FIRE_BURN)
+		{
+			if(Math.random() < 0.15f)
+			{
+				fireRisk++;
+				if(fireRisk == FIRE_BURN)
+					destroy(true);
+			}
+		}
+		else
+		{	
+			if(Math.random() < 0.4f)
+			{
+				fireRisk++;
+				if(fireRisk == FIRE_RUINS)
+					fireRisk = FIRE_MIN;
+			}
+		}
+	}
+	
+	protected void renderSmoke(Graphics gfx)
+	{
+		// TODO renderSmoke
+	}
+	
+	protected void renderFire(Graphics gfx)
+	{
+		gfx.drawAnimation(Content.sprites.effectFire, 0, -4);
 	}
 	
 }

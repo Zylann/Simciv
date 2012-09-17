@@ -12,6 +12,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
@@ -33,9 +34,11 @@ public class ContentLoader
 	private Map<String, Sound> soundMap;
 	private Map<String, SpriteSheet> spriteSheetMap;
 	private Map<String, String> stringMap;
+	private Map<String, Animation> animationMap;
 	private ContentSettings settings;
 	
 	// TODO add language attribute to strings (easier translation of the game)
+	// TODO write a DTD of the expected XML structure
 	
 	public ContentLoader(ContentSettings settings)
 	{
@@ -43,6 +46,7 @@ public class ContentLoader
 		soundMap = new HashMap<String, Sound>();
 		spriteSheetMap = new HashMap<String, SpriteSheet>();
 		stringMap = new HashMap<String, String>();
+		animationMap = new HashMap<String, Animation>();
 		this.settings = settings;
 	}
 	
@@ -72,6 +76,11 @@ public class ContentLoader
 	public String getString(String id)
 	{
 		return stringMap.get(id);
+	}
+	
+	public Animation getAnimation(String id)
+	{
+		return animationMap.get(id);
 	}
 	
 	public int getTotalCount()
@@ -181,12 +190,16 @@ public class ContentLoader
 				{
 					loadStringFromXML(contentElement);
 				}
+				else if(type.equals("animationsheet"))
+				{
+					loadAnimationSheetFromXML(contentElement);
+				}
 			}
 		}
 		
 		System.out.println(getTotalCount() + " content files read");
 	}
-	
+
 	private void loadStringFromXML(Element stringElement) throws SlickException
 	{
 		String id = stringElement.getAttribute("id");
@@ -255,6 +268,36 @@ public class ContentLoader
 		spriteSheetMap.put(id, sprites);
 	}
 	
+	private void loadAnimationSheetFromXML(Element animSheetElement) throws SlickException
+	{
+		String id = animSheetElement.getAttribute("id");
+		
+		if(id.isEmpty())
+			throw new SlickException("Missing id attribute in string content XML line");
+		
+		String src = animSheetElement.getAttribute("src");
+		String twStr = animSheetElement.getAttribute("tw");
+		String thStr = animSheetElement.getAttribute("th");
+		String frametimeStr = animSheetElement.getAttribute("frametime");
+		
+		if(src.isEmpty() || twStr.isEmpty() || thStr.isEmpty() || frametimeStr.isEmpty())
+			throw new SlickException("Missing arguments (src, tw, th and frametime are required)");
+		
+		int tw = Integer.parseInt(twStr);
+		int th = Integer.parseInt(thStr);
+		int frametime = Integer.parseInt(frametimeStr);
+		
+		if(tw <= 0 || th <= 0 || frametime <= 0)
+			throw new SlickException("Invalid value of tw or th or frametime in spritesheet content XML line");
+		
+		Image img = new Image(settings.contentDir + src);
+		img.setFilter(settings.defaultImageFilter);
+		SpriteSheet sprites = new SpriteSheet(img, tw, th);
+		Animation anim = new Animation(sprites, frametime);
+		
+		animationMap.put(id, anim);
+	}
+
 }
 
 

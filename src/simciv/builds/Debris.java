@@ -23,13 +23,19 @@ public class Debris extends Build
 	static
 	{
 		properties = new BuildProperties("Ruins");
-		properties.setCost(0).setSize(1, 1, 0).setUnitsCapacity(0).setCategory(BuildCategory.RUINS);
+		properties.setCost(0).setSize(1, 1, 0)
+			.setUnitsCapacity(0)
+			.setCategory(BuildCategory.RUINS)
+			.setFlamable(false);
 	}
 	
-	public Debris(Map w)
+	public Debris(Map m, boolean burning)
 	{
-		super(w);
+		super(m);
 		infoString = "Ruins";
+		
+		if(burning)
+			fireRisk = Build.FIRE_BURN;
 	}
 	
 	public void setPropertiesFromBuild(Build b)

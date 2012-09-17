@@ -15,6 +15,7 @@ public class BuildProperties
 	public int cost; // Base cost
 	public byte category;
 	public boolean isRepeatable; // Can the build be repeated by dragging the cursor?
+	public boolean isFlamable;
 	
 	public BuildProperties(String name)
 	{
@@ -25,6 +26,7 @@ public class BuildProperties
 		unitsCapacity = 0;
 		cost = 0;
 		isRepeatable = false;
+		isFlamable = true;
 	}
 	
 	/**
@@ -63,6 +65,12 @@ public class BuildProperties
 	public BuildProperties setRepeatable(boolean f)
 	{
 		this.isRepeatable = f;
+		return this;
+	}
+	
+	public BuildProperties setFlamable(boolean f)
+	{
+		this.isFlamable = f;
 		return this;
 	}
 	
