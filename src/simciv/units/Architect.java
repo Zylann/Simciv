@@ -47,7 +47,7 @@ public class Architect extends Citizen
 	@Override
 	public byte getJobID()
 	{
-		return Job.ARCHITECT;
+		return Jobs.ARCHITECT;
 	}
 
 	@Override

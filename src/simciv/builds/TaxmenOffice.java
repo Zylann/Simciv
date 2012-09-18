@@ -6,7 +6,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Map;
 import simciv.content.Content;
-import simciv.units.Job;
+import simciv.units.Jobs;
 
 public class TaxmenOffice extends PassiveWorkplace
 {
@@ -29,7 +29,7 @@ public class TaxmenOffice extends PassiveWorkplace
 	@Override
 	protected void onActivityStart()
 	{
-		addAndSpawnUnitsAround(Job.TAXMAN, 2);
+		addAndSpawnUnitsAround(Jobs.TAXMAN, 2);
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import simciv.Game;
 import simciv.Map;
 import simciv.content.Content;
-import simciv.units.Job;
+import simciv.units.Jobs;
 
 public class ArchitectOffice extends PassiveWorkplace
 {
@@ -31,7 +31,7 @@ public class ArchitectOffice extends PassiveWorkplace
 	@Override
 	protected void onActivityStart()
 	{
-		addAndSpawnUnitsAround(Job.ARCHITECT, 2);
+		addAndSpawnUnitsAround(Jobs.ARCHITECT, 2);
 	}
 
 	@Override

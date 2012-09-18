@@ -7,16 +7,40 @@ package simciv.builds;
  */
 public class BuildProperties
 {
-	public String name; // Displayable name
+	/** Displayable build name **/
+	public String name;
+	
+	/** Build width **/
 	public int width;
+	
+	/** Build height **/
 	public int height;
+	
+	/** Build Z-wise height (altitude) **/
 	public int zHeight;
-	public int unitsCapacity; // Base units capacity
-	public int cost; // Base cost
+	
+	/** Base units capacity **/
+	public int unitsCapacity;
+	
+	/** Base cost **/
+	public int cost;
+	
+	/** Build category (used in interface) **/
 	public byte category;
-	public boolean isRepeatable; // Can the build be repeated by dragging the cursor?
+	
+	/** Can the build be repeated by dragging the cursor? **/
+	public boolean isRepeatable;
+	
+	/** Is the build flamable? **/
 	public boolean isFlamable;
 	
+	/** Is the build can take fire by itself? **/
+	public boolean canTakeFire;
+	
+	/**
+	 * Constructs a default build properties object
+	 * @param name : build displayable name
+	 */
 	public BuildProperties(String name)
 	{
 		this.name = name;
@@ -27,6 +51,7 @@ public class BuildProperties
 		cost = 0;
 		isRepeatable = false;
 		isFlamable = true;
+		canTakeFire = true;
 	}
 	
 	/**

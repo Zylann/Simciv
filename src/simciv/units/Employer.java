@@ -31,7 +31,7 @@ public class Employer extends Citizen
 	@Override
 	public byte getJobID()
 	{
-		return Job.EMPLOYER;
+		return Jobs.EMPLOYER;
 	}
 
 	@Override
@@ -44,7 +44,11 @@ public class Employer extends Citizen
 	public void tick()
 	{
 		Workplace workplace = getWorkplace();
-		
+		if(workplace == null)
+		{
+			dispose();
+			return;
+		}
 		if(!workplace.needEmployees())
 			dispose();
 		

@@ -6,7 +6,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Map;
 import simciv.content.Content;
-import simciv.units.Job;
+import simciv.units.Jobs;
 
 /**
  * A market allows distributing resources to the populaion
@@ -46,7 +46,7 @@ public class Market extends PassiveWorkplace
 	@Override
 	protected void onActivityStart()
 	{
-		addAndSpawnUnitsAround(Job.MARKET_DELIVERY, 3);
+		addAndSpawnUnitsAround(Jobs.MARKET_DELIVERY, 3);
 	}
 
 	@Override

@@ -115,7 +115,7 @@ public class MarketDelivery extends Citizen
 	public void renderUnit(Graphics gfx)
 	{
 		if(carriedResource.isEmpty())
-			defaultRender(gfx, Content.sprites.unitMarketDelivery, 4); // render without bag
+			renderDefault(gfx, Content.sprites.unitMarketDelivery, 4); // render without bag
 		else
 			defaultRender(gfx, Content.sprites.unitMarketDelivery); // render with a bag
 	}
@@ -123,7 +123,7 @@ public class MarketDelivery extends Citizen
 	@Override
 	public byte getJobID()
 	{
-		return Job.MARKET_DELIVERY;
+		return Jobs.MARKET_DELIVERY;
 	}
 
 }

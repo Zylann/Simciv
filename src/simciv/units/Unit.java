@@ -326,29 +326,20 @@ public abstract class Unit extends TickableEntity
 	 * Renders the unit using a commonly used sprite scheme
 	 * @param gfx
 	 * @param sprites
-	 * @param yShift
+	 * @param tyShift : tile Y coord of the sprites to use on the sheet
 	 */
-	public final void defaultRender(Graphics gfx, SpriteSheet sprites, int yShift)
+	public final void renderDefault(Graphics gfx, SpriteSheet sprites, int tyShift)
 	{
-		// TODO sprite scheme description
-		if(sprites == null)
-		{
-			// For debug : draws a red quad in place of the sprite
-//			gfx.setLineWidth(1);
-//			gfx.setColor(Color.red);
-//			gfx.drawRect(0, 0, Game.tilesSize, Game.tilesSize);
-			return;
-		}
-		
+		// TODO sprite scheme description		
 		if(direction == Direction2D.NONE)
-			gfx.drawImage(sprites.getSprite(0, Direction2D.SOUTH + yShift), 0, 0);
+			gfx.drawImage(sprites.getSprite(0, Direction2D.SOUTH + tyShift), 0, 0);
 		else
-			gfx.drawImage(sprites.getSprite(0, direction + yShift), 0, 0);		
+			gfx.drawImage(sprites.getSprite(0, direction + tyShift), 0, 0);		
 	}
 	
 	public final void defaultRender(Graphics gfx, SpriteSheet sprites)
 	{
-		defaultRender(gfx, sprites, 0);
+		renderDefault(gfx, sprites, 0);
 	}
 		
 }

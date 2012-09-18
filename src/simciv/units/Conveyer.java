@@ -33,7 +33,7 @@ public class Conveyer extends Citizen
 	@Override
 	public byte getJobID()
 	{
-		return Job.CONVEYER;
+		return Jobs.CONVEYER;
 	}
 
 	public void addResourceCarriage(ResourceSlot r)

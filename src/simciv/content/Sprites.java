@@ -35,6 +35,7 @@ public class Sprites
 	public SpriteSheet unitTaxman;
 	public SpriteSheet unitMarketDelivery;
 	public SpriteSheet unitArchitect;
+	public SpriteSheet unitFireman;
 	
 	// Resources
 	public SpriteSheet resourceEmptyCarriage;

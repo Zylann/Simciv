@@ -1,6 +1,7 @@
 package simciv.builds;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -45,16 +46,17 @@ public abstract class Build extends TickableEntity
 	public static final byte FIRE_BURN = 90;
 	public static final byte FIRE_RUINS = 100;
 		
-	/** Solidness level **/
+	/** Solidness level. The build collapses if it reaches 0. **/
 	protected int solidness;
 	
 	/**
-	 * Fire risk information :
-	 * 0 to 90 : no fire
-	 * 90 : smoke
-	 * 100 : fire
+	 * Fire risk information : <br/>
+	 * [FIRE_MIN, FIRE_SMOKE[ : no fire <br/>
+	 * [FIRE_SMOKE, FIRE_BURN[ : smoke <br/>
+	 * [FIRE_BURN, FIRE_RUINS[ : fire is burning <br/>
+	 * FIRE_RUINS : fire stops, back to 0
 	 */
-	protected byte fireRisk;
+	protected byte fireLevel;
 	
 	public Build(Map m)
 	{
@@ -96,7 +98,9 @@ public abstract class Build extends TickableEntity
 			}
 		}
 		
-		mapRef.sendNotification(Notification.TYPE_WARNING, "A build has collapsed !");
+		mapRef.sendNotification(
+				Notification.TYPE_WARNING,
+				"A build " + (burning ? "burned" : "collapsed") + " !");
 	}
 		
 	@Override
@@ -122,7 +126,7 @@ public abstract class Build extends TickableEntity
 	protected void tickEntity()
 	{
 		tickSolidness();		
-		tickFireRisk();
+		tickFireLevel();
 		super.tickEntity();
 	}
 
@@ -173,6 +177,10 @@ public abstract class Build extends TickableEntity
 		healthPoints = 100;
 	}
 	
+	/**
+	 * Returns true if there is at least one road connected to the build
+	 * @return
+	 */
 	protected boolean isRoadNearby()
 	{
 		RoadMapTarget roads = new RoadMapTarget();
@@ -297,6 +305,13 @@ public abstract class Build extends TickableEntity
 		gfx.popTransform();
 	}
 	
+	/**
+	 * Draws a progress bar above the build.
+	 * @param gfx : Graphics context
+	 * @param r : progress ratio in [0, 1]
+	 * @param clr0 : back color
+	 * @param clr1 : fill color
+	 */
 	private void renderBar(Graphics gfx, float r, Color clr0, Color clr1)
 	{
 		float w = (float)(getWidth() * Game.tilesSize - 1);
@@ -308,14 +323,14 @@ public abstract class Build extends TickableEntity
 	}
 	
 	/**
-	 * Draws a progress bar representing the solidness ratio.
+	 * Draws a progress bar representing the fire risk ratio.
 	 * @param gfx
 	 * @param x : relative x bar pos in pixels
 	 * @param y : relative y bar pos in pixels
 	 */
 	private void renderFireRiskRatio(Graphics gfx)
 	{
-		renderBar(gfx, getFireRiskRatio(), Color.darkGray, Color.orange);
+		renderBar(gfx, getFireLevelRatio(), Color.darkGray, Color.orange);
 	}
 
 	/**
@@ -362,66 +377,130 @@ public abstract class Build extends TickableEntity
 	{
 		return getWidth() * getHeight();
 	}
-		
-	public float getFireRiskRatio()
+	
+	/**
+	 * This is an indicator used for display.
+	 * Gets the fire risk ratio. If 1, the build takes fire.
+	 * If the build is on fire, the ratio will decrease until the fire extinguishes itself.
+	 * @return ratio in [0, 1]
+	 */
+	public float getFireLevelRatio()
 	{
-		if(fireRisk < FIRE_BURN)
-			return (float)fireRisk / (float)FIRE_BURN;
-		return 1;
+		if(fireLevel < FIRE_BURN)
+			return (float)fireLevel / (float)FIRE_BURN;
+		else if(fireLevel == 0)
+			return 0;
+		else
+			return (float)(FIRE_RUINS - FIRE_BURN) / (float)(fireLevel - FIRE_BURN);
 	}
 	
+	/**
+	 * Returns true if the build produces smoke from flames (will take fire soon)
+	 * @return
+	 */
 	public boolean isFireSmoke()
 	{
-		return fireRisk >= FIRE_SMOKE && fireRisk < FIRE_BURN;
+		return fireLevel >= FIRE_SMOKE && fireLevel < FIRE_BURN;
 	}
 	
+	/**
+	 * Returns true if the build is burning
+	 * @return
+	 */
 	public boolean isFireBurning()
 	{
-		return fireRisk >= FIRE_BURN && fireRisk != FIRE_RUINS;
+		return fireLevel >= FIRE_BURN && fireLevel != FIRE_RUINS;
 	}
 	
-	public boolean isFlamable()
+	/**
+	 * Decreases fire level of this build.
+	 * Minimum is 0.
+	 * @param r : reduction level
+	 */
+	public void reduceFireLevel(byte r)
 	{
-		return getProperties().isFlamable;
-	}
-	
-	public void reduceFireRisk(byte r)
-	{
-		if(fireRisk > r)
-			fireRisk -= r;
+		if(fireLevel > r)
+			fireLevel -= r;
 		else
-			fireRisk = 0;
+			fireLevel = 0;
+	}
+	
+	/**
+	 * Increases fire level of this build.
+	 * Can set the build on fire.
+	 * If the build is already burning or is not flamable,
+	 * this method will have no effect.
+	 * @param r
+	 */
+	public void increaseFireLevel(byte r)
+	{
+		if(!getProperties().isFlamable)
+			return;
+		
+		if(fireLevel < FIRE_BURN)
+		{
+			if(r >= FIRE_BURN - fireLevel)
+			{
+				fireLevel = FIRE_BURN;
+				destroy(true);
+			}
+			else
+			{
+				fireLevel += r;
+			}
+		}
 	}
 	
 	public void extinguishFire()
 	{
-		fireRisk = FIRE_MIN;
+		fireLevel = FIRE_MIN;
 	}
 	
-	protected void tickFireRisk()
+	protected float getFireRisk()
 	{
-		if(!isFlamable())
+		return 0.1f;
+	}
+	
+	private void tickFireLevel()
+	{		
+		if(fireLevel < FIRE_BURN) // The build is not burning
 		{
-			if(fireRisk < FIRE_SMOKE)
+			if(!getProperties().isFlamable)
 				return;
-		}
-		
-		if(fireRisk < FIRE_BURN)
-		{
-			if(Math.random() < 0.15f)
+
+			// Self fire risk
+			if(getProperties().canTakeFire && Math.random() < getFireRisk())
 			{
-				fireRisk++;
-				if(fireRisk == FIRE_BURN)
+				fireLevel++;
+				if(fireLevel == FIRE_BURN)
+					destroy(true);
+			}
+			
+			if(fireLevel > FIRE_SMOKE && fireLevel < FIRE_BURN && Math.random() < 0.4f)
+			{
+				// There is a fire growing inside...
+				fireLevel++;
+				if(fireLevel == FIRE_BURN)
 					destroy(true);
 			}
 		}
-		else
-		{	
+		else // The build is entirely on fire
+		{
+			// TODO propagate through roads
+			
+			// Fire propagation
+			List<Build> builds = mapRef.getBuildsAround(getX(), getY(), getWidth(), getHeight());
+			for(Build b : builds)
+			{
+				b.increaseFireLevel((byte) (Math.random() < 0.5f ? 1 : 2));
+			}
+			
+			// Fire extinction
 			if(Math.random() < 0.4f)
 			{
-				fireRisk++;
-				if(fireRisk == FIRE_RUINS)
-					fireRisk = FIRE_MIN;
+				fireLevel++;
+				if(fireLevel == FIRE_RUINS)
+					fireLevel = FIRE_MIN; // Fire stops
 			}
 		}
 	}
@@ -429,6 +508,13 @@ public abstract class Build extends TickableEntity
 	protected void renderSmoke(Graphics gfx)
 	{
 		// TODO renderSmoke
+		
+		// Placeholder : the build will blink to red
+		if(getTicks() % 2 == 0)
+		{
+			gfx.setColor(new Color(255, 0, 0, 32));
+			gfx.fillRect(0, 0, Game.tilesSize * getWidth(), Game.tilesSize * getHeight());
+		}
 	}
 	
 	protected void renderFire(Graphics gfx)

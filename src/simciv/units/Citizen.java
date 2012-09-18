@@ -92,7 +92,9 @@ public abstract class Citizen extends Unit
 	@Override
 	public void onDestruction()
 	{
-		getWorkplace().removeDisposedUnit(this);
+		Workplace w = getWorkplace();
+		if(w != null)
+			getWorkplace().removeDisposedUnit(this);
 	}
 	
 	public abstract byte getJobID();

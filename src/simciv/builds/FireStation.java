@@ -6,6 +6,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Map;
 import simciv.content.Content;
+import simciv.units.Jobs;
 
 public class FireStation extends PassiveWorkplace
 {
@@ -27,17 +28,21 @@ public class FireStation extends PassiveWorkplace
 	}
 
 	@Override
+	protected float getFireRisk()
+	{
+		return 0.05f;
+	}
+	
+	@Override
 	protected void onActivityStart()
 	{
-		// TODO Auto-generated method stub
-
+		addAndSpawnUnitsAround(Jobs.FIREMAN, 2);
 	}
 
 	@Override
 	protected void onActivityStop()
 	{
-		// TODO Auto-generated method stub
-
+		removeAllUnits();
 	}
 
 	@Override

@@ -22,6 +22,7 @@
 	<image id="buildDebris" src="debris.png"/>
 	
 	<!-- Units -->
+	<spritesheet id="unitThinking" tw="5" th="5" src="think.png"/>
 	<spritesheet id="unitEmployer" tw="16" th="16" src="citizen.png"/>
 	<spritesheet id="unitConveyer" tw="16" th="16" src="transporter_only.png"/>
 	<spritesheet id="unitNomad" tw="16" th="16" src="nomad.png"/>
@@ -29,7 +30,7 @@
 	<spritesheet id="unitDuck" tw="16" th="16" src="duck.png"/>
 	<spritesheet id="unitMarketDelivery" tw="16" th="16" src="delivery_man.png"/>
 	<spritesheet id="unitArchitect" tw="16" th="16" src="architect.png"/>
-	<spritesheet id="unitThinking" tw="5" th="5" src="think.png"/>
+	<spritesheet id="unitFireman" tw="16" th="16" src="fireman.png"/>
 	
 	<!-- Resources -->
 	<spritesheet id="resourceEmptyCarriage" tw="16" th="16" src="carriage.png"/>

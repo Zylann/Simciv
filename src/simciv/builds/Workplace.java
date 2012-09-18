@@ -12,7 +12,7 @@ import simciv.maptargets.IMapTarget;
 import simciv.maptargets.RoadMapTarget;
 import simciv.units.Citizen;
 import simciv.units.Employer;
-import simciv.units.Job;
+import simciv.units.Jobs;
 import simciv.units.Unit;
 
 /**
@@ -117,7 +117,7 @@ public abstract class Workplace extends Build
 		{
 			for(Vector2i pos : availablePositions)
 			{
-				addUnit(Job.createUnitFromJobID(jobID, mapRef, this), pos.x, pos.y);
+				addUnit(Jobs.createUnitFromJobID(jobID, mapRef, this), pos.x, pos.y);
 				unitsToProduce--;
 				if(unitsToProduce == 0)
 					break;

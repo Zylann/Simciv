@@ -40,7 +40,8 @@ public class FarmLand extends Workplace
 		properties
 			.setUnitsCapacity(5).setSize(3, 3, 0).setCost(10)
 			.setCategory(BuildCategory.FOOD)
-			.setRepeatable(true);
+			.setRepeatable(true)
+			.setFlamable(false);
 	}
 	
 	public FarmLand(Map m)

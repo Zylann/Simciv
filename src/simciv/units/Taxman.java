@@ -43,7 +43,7 @@ public class Taxman extends Citizen
 	@Override
 	public byte getJobID()
 	{
-		return Job.TAXMAN;
+		return Jobs.TAXMAN;
 	}
 
 	@Override

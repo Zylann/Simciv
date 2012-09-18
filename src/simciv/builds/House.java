@@ -83,6 +83,15 @@ public class House extends Build
 		return true;
 	}
 	
+	@Override
+	protected float getFireRisk()
+	{
+		if(nbInhabitants == 0)
+			return 0;
+		else
+			return super.getFireRisk();
+	}
+
 	public boolean isBeenTaxed()
 	{
 		return beenTaxed;
@@ -169,7 +178,7 @@ public class House extends Build
 				{
 					if(feedLevel == FEED_MIN)
 					{
-						if(Math.random() < 0.1f)
+						if(Math.random() < 0.02f)
 							removeInhabitant();
 					}
 				}
@@ -431,12 +440,6 @@ public class House extends Build
 	{
 		removeAllInhabitants();
 		nbCitizensToProduce = 0;
-	}
-
-	@Override
-	public int getTickTime()
-	{
-		return 1000;
 	}
 
 	public int getNbInhabitants()

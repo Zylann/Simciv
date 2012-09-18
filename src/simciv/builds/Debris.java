@@ -35,7 +35,7 @@ public class Debris extends Build
 		infoString = "Ruins";
 		
 		if(burning)
-			fireRisk = Build.FIRE_BURN;
+			fireLevel = Build.FIRE_BURN;
 	}
 	
 	public void setPropertiesFromBuild(Build b)
