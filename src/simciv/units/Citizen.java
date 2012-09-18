@@ -5,6 +5,7 @@ import org.newdawn.slick.SpriteSheet;
 
 import simciv.Game;
 import simciv.Map;
+import simciv.builds.Build;
 import simciv.builds.Workplace;
 import simciv.effects.RisingIcon;
 import simciv.content.Content;
@@ -18,13 +19,21 @@ public abstract class Citizen extends Unit
 {
 	private static final long serialVersionUID = 1L;
 	
+	// Tick time constants
 	public static final int TICK_TIME_BASIC = 400;
 	private static final float TICK_TIME_VARIATION = 100;
 	private static final int TICK_TIME_MIN = 200;
 	
-	private int tickTimeRandom; // Tick time variation constant in milliseconds
-	private int tickTime; // Tick time interval in milliseconds (modified value)
+	/** Tick time variation in milliseconds (constant specific to each unit) **/
+	private int tickTimeRandom;
+	
+	/** Tick time interval in milliseconds (modified value) **/
+	private int tickTime;
+	
+	/** ID of the place where the citizne works **/
 	private int workplaceID;
+	
+	/** Workplace reference based on workplaceID (computed) **/
 	private transient Workplace workplace;
 
 	public Citizen(Map m, Workplace w)
@@ -44,7 +53,11 @@ public abstract class Citizen extends Unit
 	protected Workplace getWorkplace()
 	{
 		if(workplace == null)
-			workplace = (Workplace)mapRef.getBuild(workplaceID);
+		{
+			Build b = mapRef.getBuild(workplaceID);
+			if(b != null)
+				workplace = (Workplace)b;
+		}
 		return workplace;
 	}
 
