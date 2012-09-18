@@ -77,6 +77,10 @@ public class Map
 		view.setMapSize(width, height);
 	}
 	
+	/**
+	 * Sets the notifications listener that will be used to send notifications
+	 * @param notifListener
+	 */
 	public void setNotificationListener(INotificationListener notifListener)
 	{
 		this.notifListener = notifListener;
@@ -347,6 +351,13 @@ public class Map
 	 */
 	public ArrayList<Build> getBuildsAround(int x, int y)
 	{
+		/*
+		 * Neighborhood :
+		 * - O -
+		 * O x O
+		 * - O -
+		 */
+		
 		Build b;
 		ArrayList<Build> list = new ArrayList<Build>();
 		
@@ -367,7 +378,7 @@ public class Map
 	}
 	
 	/**
-	 * Get a list of buildings around the given rect
+	 * Get a list of buildings around the given rect.
 	 * @param x0
 	 * @param y0
 	 * @param w
@@ -376,6 +387,15 @@ public class Map
 	 */
 	public ArrayList<Build> getBuildsAround(int x0, int y0, int w, int h)
 	{
+		/*
+		 * Neighborhood :
+		 * O O O O O
+		 * O x x x O
+		 * O x x x O
+		 * O x x x O
+		 * O O O O O
+		 */
+		
 		Build b;
 		ArrayList<Build> list = new ArrayList<Build>();
 		int x, y;
@@ -385,31 +405,31 @@ public class Map
 			// Top
 			y = y0 - 1;
 			b = getBuild(x, y);
-			if(b != null)
+			if(b != null && !list.contains(b))
 				list.add(b);
 			
 			// Bottom
 			y = y0 + h;
 			b = getBuild(x, y);
-			if(b != null)
+			if(b != null && !list.contains(b))
 				list.add(b);
 		}
 
-		for(y = y0; y < y0 + h; y++)
+		for(y = y0; y <= y0 + h; y++)
 		{
 			// Left
 			x = x0 - 1;
 			b = getBuild(x, y);
-			if(b != null)
+			if(b != null && !list.contains(b))
 				list.add(b);
 
 			// Right
 			x = x0 + w;
 			b = getBuild(x, y);
-			if(b != null)
+			if(b != null && !list.contains(b))
 				list.add(b);
 		}
-		
+				
 		return list;
 	}
 	
