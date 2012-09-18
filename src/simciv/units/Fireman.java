@@ -65,7 +65,6 @@ public class Fireman extends Citizen
 		else // I have water
 		{
 			// TODO fight fires with a specific animation
-			// FIXME firemen don't move after charging water
 			
 			// Prevent fires
 			List<Build> builds = mapRef.getBuildsAround(getX(), getY());
