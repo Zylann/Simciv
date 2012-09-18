@@ -5,6 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.Log;
 
 import simciv.Game;
 import simciv.content.Content;
@@ -41,12 +42,12 @@ public class ContentLoadingScreen extends BasicGameState
 	public void update(GameContainer gc, StateBasedGame game, int delta)
 			throws SlickException
 	{
-		System.out.println("Loading game content...");
+		Log.info("Loading game content...");
 		
 		Content.loadFromContentFile("data/content.xml");
 		Content.indexAll();
 		
-		System.out.println("Game content loaded");
+		Log.info("Game content loaded");
 		
 		game.enterState(Game.STATE_MAIN_MENU);
 	}

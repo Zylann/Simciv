@@ -1,5 +1,7 @@
 package simciv;
 
+import org.newdawn.slick.util.Log;
+
 import backend.GameComponent;
 import backend.GameComponentMap;
 
@@ -18,7 +20,7 @@ public class EntityMap extends GameComponentMap
 		if(Entity.class.isInstance(e))
 			super.stageComponent(e);
 		else
-			System.out.println("ERROR: cannot add a non-entity to an EntityMap !");
+			Log.info("cannot add a non-entity to an EntityMap !");
 	}
 
 	/**

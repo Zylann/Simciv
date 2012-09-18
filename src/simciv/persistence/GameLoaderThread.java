@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.newdawn.slick.util.Log;
+
 import simciv.Map;
 
 public class GameLoaderThread extends GameSaveIOThread
@@ -35,6 +37,7 @@ public class GameLoaderThread extends GameSaveIOThread
 			data.map.readFromSave(dis);
 			
 			success = true;
+			Log.info("Game loaded.");
 			
 		} catch (FileNotFoundException e)
 		{

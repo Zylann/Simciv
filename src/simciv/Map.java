@@ -13,6 +13,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.Log;
 
 import backend.GameComponent;
 import backend.GameComponentMap;
@@ -443,27 +444,27 @@ public class Map
 		ObjectOutputStream oos = new ObjectOutputStream(dos);
 		
 		// Save grid
-		System.out.println("Saving terrain...");
+		Log.info("Saving terrain...");
 		oos.writeObject(grid);
 		
 		// Save view
-		System.out.println("Saving view info...");
+		Log.info("Saving view info...");
 		oos.writeObject(view);
 		
 		// Save builds
-		System.out.println("Saving builds...");
+		Log.info("Saving builds...");
 		oos.writeObject(builds);
 		
 		// Save units
-		System.out.println("Saving units...");
+		Log.info("Saving units...");
 		oos.writeObject(units);
 		
 		// Save city
-		System.out.println("Saving city info...");
+		Log.info("Saving city info...");
 		oos.writeObject(playerCity);
 		
 		// Save world time
-		System.out.println("Saving time info...");
+		Log.info("Saving time info...");
 		oos.writeObject(time);
 		
 		oos.flush();
@@ -480,30 +481,30 @@ public class Map
 		ObjectInputStream ois = new ObjectInputStream(dis);
 		
 		// Load grid
-		System.out.println("Loading terrain...");
+		Log.info("Loading terrain...");
 		grid = (MapGrid)ois.readObject();
 		
 		// Load view
-		System.out.println("Loading view info...");
+		Log.info("Loading view info...");
 		view = (ScrollView)ois.readObject();
 
 		// Load builds
-		System.out.println("Loading builds...");
+		Log.info("Loading builds...");
 		builds = (EntityMap)ois.readObject();
 		
 		// Load units
-		System.out.println("Loading units...");
+		Log.info("Loading units...");
 		units = (EntityMap)ois.readObject();
 		
 		// Load city
-		System.out.println("Loading city info...");
+		Log.info("Loading city info...");
 		playerCity = (PlayerCity)ois.readObject();
 		
 		// Load world time
-		System.out.println("Loading time info...");
+		Log.info("Loading time info...");
 		time = (WorldTime)ois.readObject();
 		
-		System.out.println("Recomputing data...");		
+		Log.info("Recomputing data...");		
 		recomputeData();
 	}
 	

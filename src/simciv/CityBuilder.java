@@ -6,6 +6,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
+import org.newdawn.slick.util.Log;
 
 import backend.IntRange2D;
 import backend.Vector2i;
@@ -120,7 +121,7 @@ public class CityBuilder
 			buildString = bstr;
 		} catch (SlickException e)
 		{
-			System.out.println("ERROR: Unrecognized build string '" + bstr + "'");
+			Log.error("Unrecognized build string '" + bstr + "'");
 			e.printStackTrace();
 		}
 		return this;

@@ -4,6 +4,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.Log;
 
 import simciv.Game;
 import simciv.persistence.GameLoaderThread;
@@ -80,6 +81,7 @@ public class GameLoadingScreen extends GameInitScreen
 			}
 			else if(!errorBox.isVisible() && !backOnError)
 			{
+				Log.error("Couldn't load saved game.\n The save file is corrupted or\n not compatible.");
 				errorBox.setText("Couldn't load saved game.\n The save file is corrupted or\n not compatible.");
 				errorBox.setVisible(true);
 			}

@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.newdawn.slick.util.Log;
+
 public class GameSaverThread extends GameSaveIOThread
 {
 	public GameSaverThread(GameSaveData data)
@@ -31,6 +33,7 @@ public class GameSaverThread extends GameSaveIOThread
 			data.map.writeToSave(dos);
 			
 			success = true;
+			Log.info("Game saved.");
 			
 		} catch (FileNotFoundException e)
 		{

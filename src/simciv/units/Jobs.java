@@ -1,5 +1,7 @@
 package simciv.units;
 
+import org.newdawn.slick.util.Log;
+
 import simciv.Map;
 import simciv.builds.Workplace;
 
@@ -29,7 +31,7 @@ public abstract class Jobs
 		case FIREMAN :			return new Fireman(m, w);
 		
 		default :
-			System.out.println("ERROR: unknown job ID: " + jobID);
+			Log.error("unknown job ID: " + jobID);
 			return null;
 		}
 	}

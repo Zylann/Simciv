@@ -8,6 +8,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.util.Log;
 
 
 /**
@@ -46,7 +47,7 @@ public class Content
 	
 	public static void loadMinimalContent() throws SlickException
 	{
-		System.out.println("Loading minimal content...");
+		Log.info("Loading minimal content...");
 		Image fontImage = new Image(settings.contentDir + "arial8px_0.png");
 		fontImage.setFilter(Content.settings.defaultImageFilter);
 		globalFont = new AngelCodeFont(Content.settings.contentDir + "arial8px.fnt", fontImage);

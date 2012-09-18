@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.Log;
 
 /**
  * GameComponent container, providing easier methods for handling a group of components.
@@ -66,7 +67,7 @@ public class GameComponentMap implements Externalizable
 	{
 		if(e == null)
 		{
-			System.out.println("ERROR: null entity added to an entity map !");
+			Log.error("ERROR: null entity added to an entity map !");
 			return;
 		}
 		stagedComponents.put(e.getID(), e);

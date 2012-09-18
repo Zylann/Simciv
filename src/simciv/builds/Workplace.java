@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.util.Log;
 
 import backend.Vector2i;
 import simciv.Game;
@@ -241,7 +242,7 @@ public abstract class Workplace extends Build
 		if(employees.remove((Object)(oldHouse.getID())))
 			employees.add(newHouse.getID());
 		else
-			System.out.println("ERROR: Workplace.changeEmployeeHouse");
+			Log.error("Workplace.changeEmployeeHouse");
 	}
 	
 	/**

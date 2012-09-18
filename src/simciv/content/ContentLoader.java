@@ -17,6 +17,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.util.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -197,7 +198,7 @@ public class ContentLoader
 			}
 		}
 		
-		System.out.println(getTotalCount() + " content files read");
+		Log.info(getTotalCount() + " content files read");
 	}
 
 	private void loadStringFromXML(Element stringElement) throws SlickException

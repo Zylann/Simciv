@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.util.Log;
 
 import backend.Direction2D;
 import backend.Vector2i;
@@ -189,7 +190,7 @@ public class PathFinder implements Serializable
 			Byte fromDir = visited.get(pos);
 			if(fromDir == null)
 			{
-				System.out.println("WARN: unable to retrieve the path");
+				Log.error("unable to retrieve the path");
 				return null;
 			}
 			Vector2i dirVec = Direction2D.vectors[fromDir];
