@@ -9,7 +9,7 @@ import org.newdawn.slick.Sound;
 import org.newdawn.slick.util.Log;
 
 import backend.IntRange2D;
-import backend.Vector2i;
+import backend.geom.Vector2i;
 
 import simciv.builds.Build;
 import simciv.builds.BuildFactory;

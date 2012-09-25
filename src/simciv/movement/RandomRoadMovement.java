@@ -1,12 +1,13 @@
-package simciv.movements;
+package simciv.movement;
 
 import simciv.Road;
-import simciv.maptargets.IMapTarget;
 import simciv.units.Unit;
 
 public class RandomRoadMovement implements IMovement
 {
 	private static final long serialVersionUID = 1L;
+	
+	private boolean blocked;
 
 	public RandomRoadMovement()
 	{
@@ -15,26 +16,19 @@ public class RandomRoadMovement implements IMovement
 	@Override
 	public void tick(Unit u)
 	{
-		// TODO memorize intersections to not always take same directions ?
-		u.move(Road.getAvailableDirections(u.getMap().grid, u.getX(), u.getY()));
+		blocked = !u.move(Road.getAvailableDirections(u.getMap().grid, u.getX(), u.getY()));
 	}
 
 	@Override
 	public boolean isBlocked()
 	{
-		return false;
+		return blocked;
 	}
 
 	@Override
 	public boolean isFinished()
 	{
 		return false;
-	}
-
-	@Override
-	public IMapTarget getTarget()
-	{
-		return null;
 	}
 
 }

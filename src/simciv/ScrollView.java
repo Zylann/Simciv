@@ -6,8 +6,8 @@ import org.newdawn.slick.geom.Vector2f;
 
 import backend.IntRange2D;
 import backend.MathHelper;
-import backend.Vector2i;
 import backend.View;
+import backend.geom.Vector2i;
 
 /**
  * Determines what region of the map is currently seen by the player.

@@ -1,8 +1,7 @@
-package simciv.movements;
+package simciv.movement;
 
 import backend.Direction2D;
 import backend.MathHelper;
-import simciv.maptargets.IMapTarget;
 import simciv.units.Unit;
 
 public class RandomMovement implements IMovement
@@ -50,12 +49,6 @@ public class RandomMovement implements IMovement
 	public boolean isFinished()
 	{
 		return false;
-	}
-
-	@Override
-	public IMapTarget getTarget()
-	{
-		return null;
 	}
 
 }

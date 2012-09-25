@@ -11,8 +11,9 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
 import backend.MathHelper;
-import backend.Vector2i;
+import backend.geom.Vector2i;
 
+import simciv.Cheats;
 import simciv.Game;
 import simciv.MapGrid;
 import simciv.ResourceSlot;
@@ -89,9 +90,12 @@ public abstract class Build extends TickableEntity
 		{
 			for(int x = getX(); x < getX() + getWidth(); x++)
 			{
-				Debris d = new Debris(mapRef, burning);
+				Ruins d = new Ruins(mapRef, burning);
 				d.setPropertiesFromBuild(this);
 				mapRef.placeBuild(d, x, y);
+				
+				if(burning)
+					mapRef.playerCity.fireAlerts.registerFire(x, y);
 				
 				mapRef.addGraphicalEffect(
 						new SmokeExplosion(x, y, 8, 1.5f, Game.tilesSize/2));
@@ -454,13 +458,14 @@ public abstract class Build extends TickableEntity
 	public void extinguishFire()
 	{
 		fireLevel = FIRE_MIN;
+		mapRef.playerCity.fireAlerts.unregisterFire(getX(), getY());
 	}
-	
+		
 	protected float getFireRisk()
 	{
 		return 0.1f;
 	}
-	
+
 	private void tickFireLevel()
 	{		
 		if(fireLevel < FIRE_BURN) // The build is not burning
@@ -500,7 +505,10 @@ public abstract class Build extends TickableEntity
 			{
 				fireLevel++;
 				if(fireLevel == FIRE_RUINS)
+				{
 					fireLevel = FIRE_MIN; // Fire stops
+					mapRef.playerCity.fireAlerts.unregisterFire(getX(), getY());
+				}
 			}
 		}
 	}
@@ -520,6 +528,18 @@ public abstract class Build extends TickableEntity
 	protected void renderFire(Graphics gfx)
 	{
 		gfx.drawAnimation(Content.sprites.effectFire, 0, -4);
+	}
+	
+	public boolean canBeErasedByPlayer()
+	{
+		if(Cheats.isSuperEraser())
+			return true;
+		return !isFireBurning();
+	}
+	
+	public boolean isWalkable()
+	{
+		return false;
 	}
 	
 }

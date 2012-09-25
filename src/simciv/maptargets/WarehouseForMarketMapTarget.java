@@ -11,7 +11,7 @@ import simciv.builds.Warehouse;
  * @author Marc
  *
  */
-public class WarehouseForMarketMapTarget implements IMapTarget
+public class WarehouseForMarketMapTarget implements IExplicitMapTarget
 {
 	private static final long serialVersionUID = 1L;
 

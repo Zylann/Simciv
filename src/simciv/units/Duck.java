@@ -4,7 +4,7 @@ import org.newdawn.slick.Graphics;
 
 import simciv.Map;
 import simciv.content.Content;
-import simciv.movements.RandomMovement;
+import simciv.movement.RandomMovement;
 
 public class Duck extends Unit
 {

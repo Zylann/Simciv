@@ -6,10 +6,10 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.util.Log;
 
-import backend.Vector2i;
+import backend.geom.Vector2i;
 import simciv.Game;
 import simciv.Map;
-import simciv.maptargets.IMapTarget;
+import simciv.maptargets.IExplicitMapTarget;
 import simciv.maptargets.RoadMapTarget;
 import simciv.units.Citizen;
 import simciv.units.Employer;
@@ -110,7 +110,7 @@ public abstract class Workplace extends Build
 		if(unitsToProduce + units.size() > getNbEmployees())
 			unitsToProduce = getNbEmployees() - units.size();
 		
-		IMapTarget roads = new RoadMapTarget();
+		IExplicitMapTarget roads = new RoadMapTarget();
 		List<Vector2i> availablePositions = 
 			mapRef.grid.getAvailablePositionsAround(this, roads, mapRef);
 		
@@ -136,7 +136,7 @@ public abstract class Workplace extends Build
 		if(list.length == 0)
 			return;
 		
-		IMapTarget roads = new RoadMapTarget();
+		IExplicitMapTarget roads = new RoadMapTarget();
 		List<Vector2i> availablePositions = 
 			mapRef.grid.getAvailablePositionsAround(this, roads, mapRef);
 		
@@ -354,7 +354,7 @@ public abstract class Workplace extends Build
 		if(employer != null)
 			return;
 		
-		IMapTarget roads = new RoadMapTarget();
+		IExplicitMapTarget roads = new RoadMapTarget();
 		ArrayList<Vector2i> availablePos = mapRef.grid.getAvailablePositionsAround(this, roads, mapRef);
 		
 		if(!availablePos.isEmpty())

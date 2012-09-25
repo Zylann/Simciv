@@ -10,7 +10,7 @@ import simciv.builds.House;
 import simciv.builds.Workplace;
 import simciv.content.Content;
 import simciv.effects.RisingIcon;
-import simciv.movements.RandomRoadMovement;
+import simciv.movement.RandomRoadMovement;
 
 /**
  * An employer will search for inactive persons in the city,
@@ -26,12 +26,6 @@ public class Employer extends Citizen
 	{
 		super(m, w);
 		setMovement(new RandomRoadMovement());
-	}
-
-	@Override
-	public byte getJobID()
-	{
-		return Jobs.EMPLOYER;
 	}
 
 	@Override

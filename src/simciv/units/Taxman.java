@@ -8,7 +8,7 @@ import simciv.builds.Build;
 import simciv.builds.House;
 import simciv.builds.Workplace;
 import simciv.content.Content;
-import simciv.movements.RandomRoadMovement;
+import simciv.movement.RandomRoadMovement;
 
 public class Taxman extends Citizen
 {
@@ -38,12 +38,6 @@ public class Taxman extends Citizen
 			}
 		}
 		mapRef.playerCity.gainMoney((int) totalMoneyCollected);
-	}
-
-	@Override
-	public byte getJobID()
-	{
-		return Jobs.TAXMAN;
 	}
 
 	@Override

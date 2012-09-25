@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -18,6 +19,7 @@ import org.newdawn.slick.util.Log;
 import backend.GameComponent;
 import backend.GameComponentMap;
 import backend.IntRange2D;
+import backend.pathfinding.MultiSeedPathFinder;
 
 import simciv.builds.Build;
 import simciv.builds.Warehouse;
@@ -61,6 +63,9 @@ public class Map
 	/** Notifications **/
 	private transient INotificationListener notifListener;
 	
+	/** Multi-seed best-path finder **/
+	public transient MultiSeedPathFinder multiPathFinder;
+	
 	/**
 	 * Constructs an empty map from given size
 	 * @param width : map size X in cells
@@ -76,6 +81,7 @@ public class Map
 		graphicalEffects = new GameComponentMap();
 		view = new ScrollView(0, 0, 2);
 		view.setMapSize(width, height);
+		multiPathFinder = new MultiSeedPathFinder(grid.getWidth(), grid.getHeight());
 	}
 	
 	/**
@@ -116,7 +122,7 @@ public class Map
 	{
 		fastForward = e;
 	}
-
+	
 	/**
 	 * Updates the world, and calls the tick() method on buildings
 	 * and units at each time interval (tickTime).
@@ -124,13 +130,18 @@ public class Map
 	 */
 	public void update(GameContainer gc, StateBasedGame game, int delta)
 	{
+		// Update view (not affected by fast forward)
 		view.update(gc, delta / 1000.f);
 		
 		if(fastForward)
 			delta *= 4;
 		
+		// Update world time
 		time.update(delta, this);
 		
+		// Update city global management
+		playerCity.update(this, delta);
+
 		// Update units
 		units.updateAll(gc, game, delta);
 		
@@ -138,7 +149,7 @@ public class Map
 		builds.updateAll(gc, game, delta);
 		
 		// Update effects
-		graphicalEffects.updateAll(gc, game, delta);
+		graphicalEffects.updateAll(gc, game, delta);		
 	}
 
 	/**
@@ -222,6 +233,8 @@ public class Map
 	 */
 	public Unit getUnit(int ID)
 	{
+		if(ID <= 0)
+			return null;
 		return (Unit)(units.get(ID));
 	}
 	
@@ -232,6 +245,8 @@ public class Map
 	 */
 	public Build getBuild(int ID)
 	{
+		if(ID <= 0)
+			return null;
 		return (Build)(builds.get(ID));
 	}
 	
@@ -328,6 +343,16 @@ public class Map
 //		long time = System.currentTimeMillis() - timeBefore; // for debug
 //		if(gc.getInput().isKeyDown(Input.KEY_T))
 //			System.out.println(time);
+		
+		if(gc.getInput().isKeyDown(Input.KEY_NUMPAD1))
+		{
+			gfx.pushTransform();
+			gfx.scale(Game.tilesSize, Game.tilesSize);
+			gfx.setColor(new Color(0, 0, 0, 128));
+			gfx.setLineWidth(3.f);
+			multiPathFinder.renderMatrix(gfx);
+			gfx.popTransform();
+		}
 	}
 
 	public Warehouse getFreeWarehouse(int x, int y)
@@ -432,6 +457,26 @@ public class Map
 		}
 				
 		return list;
+	}
+	
+	public boolean isFire(int x, int y)
+	{
+		Build b = getBuild(x, y);
+		if(b != null)
+			return b.isFireBurning();
+		return false;
+	}
+	
+	public boolean isWalkable(int x, int y)
+	{
+		if(!grid.isWalkable(x, y))
+		{
+			Build b = getBuild(x, y);
+			if(b != null)
+				return b.isWalkable();
+			return false;
+		}
+		return true;
 	}
 	
 	// Saving

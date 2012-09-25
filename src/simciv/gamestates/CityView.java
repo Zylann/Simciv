@@ -9,13 +9,14 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import backend.PerformanceGraph;
 import backend.SoundEngine;
-import backend.Vector2i;
+import backend.geom.Vector2i;
 
 import simciv.CityBuilder;
 import simciv.Game;
 import simciv.MinimapUpdater;
 import simciv.Terrain;
 import simciv.Map;
+import simciv.builds.Build;
 import simciv.content.Content;
 import simciv.persistence.GameSaveData;
 import simciv.persistence.GameSaverThread;
@@ -26,7 +27,6 @@ import simciv.ui.Minimap;
 import simciv.ui.IndicatorsBar;
 import simciv.ui.TimeBar;
 import simciv.ui.base.IActionListener;
-import simciv.ui.base.Notification;
 import simciv.ui.base.NotificationArea;
 import simciv.ui.base.PushButton;
 import simciv.ui.base.RootPane;
@@ -418,24 +418,12 @@ public class CityView extends UIBasicGameState
 		if(key == Input.KEY_SPACE)
 			map.setFastForward(!map.isFastForward());
 		
-		// Test
-		if(key == Input.KEY_NUMPAD1)
+		// Debug : sets the pointed build on fire
+		if(key == Input.KEY_F)
 		{
-			notificationArea.add(
-				new Notification(notificationArea,
-						Notification.TYPE_CHECK, "Check test"));
-		}
-		if(key == Input.KEY_NUMPAD2)
-		{
-			notificationArea.add(
-				new Notification(notificationArea,
-						Notification.TYPE_INFO, "Info test"));
-		}
-		if(key == Input.KEY_NUMPAD3)
-		{
-			notificationArea.add(
-				new Notification(notificationArea,
-						Notification.TYPE_WARNING, "Warning test"));
+			Build b = map.getBuild(pointedCell.x, pointedCell.y);
+			if(b != null)
+				b.destroy(true);
 		}
 	}
 	

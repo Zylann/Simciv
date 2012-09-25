@@ -9,18 +9,15 @@ import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
 import backend.Direction2D;
-import backend.Vector2i;
-
+import backend.geom.Vector2i;
+import backend.pathfinding.IMapSpec;
+import backend.pathfinding.IMapTarget;
 import simciv.Game;
 import simciv.MapCell;
-import simciv.PathFinder;
 import simciv.TickableEntity;
 import simciv.Map;
-import simciv.builds.Build;
-import simciv.maptargets.BuildMapTarget;
-import simciv.maptargets.IMapTarget;
-import simciv.movements.IMovement;
-import simciv.movements.PathMovement;
+import simciv.movement.IMovement;
+import simciv.movement.PathMovement;
 
 /**
  * An unit can move, and is seen as a "living" thing.
@@ -35,12 +32,11 @@ public abstract class Unit extends TickableEntity
 
 	// States
 	public static final byte NORMAL = 1;
-	public static final byte THINKING = 2;
+//	public static final byte THINKING = 2; // Unusued
 	
 	private boolean isAlive;
 	private boolean isMoving;
 	private IMovement movement;
-	private PathFinder pathFinder;
 	
 	public Unit(Map m)
 	{
@@ -53,17 +49,12 @@ public abstract class Unit extends TickableEntity
 	public void setMap(Map m)
 	{
 		super.setMap(m);
-		pathFinder.setMap(m);
 	}
 
 	@Override
 	protected final void tickEntity()
 	{		
 		tick(); // Main behavior
-		
-		// PathFinding
-		if(pathFinder != null)
-			tickPathFinding();
 		
 		// Movement
 		if(movement != null)
@@ -73,6 +64,8 @@ public abstract class Unit extends TickableEntity
 			movement.tick(this);
 			isMoving = getX() != lastPosX || getY() != lastPosY;
 		}
+		else
+			isMoving = false;
 	}
 	
 	@Override
@@ -90,66 +83,69 @@ public abstract class Unit extends TickableEntity
 	}
 	
 	/**
-	 * Starts pathfinding and go to the specified target when a path is found.
-	 * The unit will be on the state THINKING while pathfinding.
+	 * Finds a path from the current position to the given target and makes the unit follow it.
+	 * The computed path will pass on cells that complies with the given MapSpec.
+	 * This method will have no effect if no path is found.
+	 * If the last point of the computed path is not walkable, it will be removed
+	 * (but the path will still valid as it will lead nearby the target).
+	 * @param mapSpec : cells where we can pass
 	 * @param target
+	 * @param distance : max length of the path
+	 * @return true if success, false if no path found.
 	 */
-	public void findAndGoTo(IMapTarget target)
+	public boolean findAndGoTo(IMapSpec mapSpec, IMapTarget target, int maxDistance)
 	{
-		if(target == null)
-			return;
+		// Configure pathfinding
+		mapRef.multiPathFinder.setFindBlockedTargets(true);
 		
-		pathFinder = new PathFinder(mapRef, getX(), getY(), target);
+		// Do pathfinding
+		LinkedList<Vector2i> path =
+			mapRef.multiPathFinder.findPath(getX(), getY(), mapSpec, target);
 		
-		setState(Unit.THINKING);
-		setDirection(Direction2D.NONE);
-		setMovement(null);
-	}
-	
-	public void findAndGoTo(Build b)
-	{
-		findAndGoTo(new BuildMapTarget(b.getID()));
-	}
-	
-	private void tickPathFinding()
-	{
-		pathFinder.step(8);
-		if(pathFinder.isFinished())
-		{
-			if(pathFinder.getState() == PathFinder.FOUND)
-			{
-				// I found a path !
-				LinkedList<Vector2i> path = pathFinder.retrievePath();
-				
-				// Remove first pos if we already are on 
-				if(path != null && !path.isEmpty())
-				{
-					if(path.getFirst().equals(getX(), getY()))
-						path.pop();
-				}
-				
-				// Start following the path
-				setState(Unit.NORMAL);
-				setMovement(new PathMovement(path, pathFinder.getTarget()));
-				pathFinder = null;
-			}
-			else
-				findAndGoTo(pathFinder.getTarget());
+		if(path != null)
+		{			
+			followPath(path);
+			return true; // Path found
 		}
+		else
+			return false; // Path not found
 	}
 	
+	public boolean findAndGoTo(IMapTarget target, int maxDistance)
+	{
+		return findAndGoTo(new DefaultPass(), target, maxDistance);
+	}
+	
+	/**
+	 * Makes the unit follow a path.
+	 * @param path
+	 */
+	protected void followPath(LinkedList<Vector2i> path)
+	{
+		// Remove first pos (if we already are on)
+		Vector2i firstPos = path.getFirst();
+		if(firstPos.equals(getX(), getY()))
+			path.removeFirst();
+		
+		// If the final pos is not walkable, remove it
+		Vector2i lastPos = path.getLast();
+		if(!mapRef.grid.isWalkable(lastPos.x, lastPos.y))
+			path.removeLast();
+
+		// Follow the path
+		setMovement(new PathMovement(path));
+	}
+	
+	/**
+	 * Sets the movement behavior of the unit.
+	 * Note : if you want set a path driven movement, use followPath() instead.
+	 * @param mvt
+	 */
 	protected void setMovement(IMovement mvt)
 	{
 		movement = mvt;
 	}
-	
-	public IMapTarget getMovementTarget()
-	{
-		if(movement == null)
-			return null;
-		return movement.getTarget();
-	}
-	
+		
 	public boolean isMovement()
 	{
 		return movement != null;
@@ -183,6 +179,7 @@ public abstract class Unit extends TickableEntity
 	
 	/**
 	 * Moves the entity using its current direction, if possible.
+	 * If the direction is not walkable, will do nothing.
 	 * @return true if the unit moved, false if not
 	 */
 	public final boolean moveIfPossible()
@@ -192,8 +189,7 @@ public abstract class Unit extends TickableEntity
 			int nextPosX = getX() + Direction2D.vectors[direction].x;
 			int nextPosY = getY() + Direction2D.vectors[direction].y;
 			
-			if(mapRef.grid.isCrossable(nextPosX, nextPosY) && 
-					mapRef.grid.isRoad(nextPosX, nextPosY))
+			if(mapRef.isWalkable(nextPosX, nextPosY))
 			{
 				move();
 				return true;
@@ -205,22 +201,24 @@ public abstract class Unit extends TickableEntity
 	/**
 	 * Makes the unit move to its current direction (anyways, no collision test !)
 	 */
-	protected final void move()
+	protected final boolean move()
 	{
 		if(direction != Direction2D.NONE)
 		{
 			setPosition(
 					getX() + Direction2D.vectors[direction].x,
 					getY() + Direction2D.vectors[direction].y);
+			return true;
 		}
+		return false;
 	}
 	
 	/**
-	 * Moves the unit according to given available directions
+	 * Moves the unit at random according to given available directions
 	 * @param dirs : available directions
 	 */
-	public final void move(List<Byte> dirs)
-	{		
+	public final boolean move(List<Byte> dirs)
+	{
 		if(!dirs.isEmpty())
 		{
 			if(dirs.size() == 1) // only one direction
@@ -235,7 +233,7 @@ public abstract class Unit extends TickableEntity
 				// use the remaining direction
 				direction = dirs.get(0);
 			}
-			else
+			else // N>0 directions
 			{
 				// remove U-turn
 				if(direction != Direction2D.NONE)
@@ -244,11 +242,11 @@ public abstract class Unit extends TickableEntity
 				chooseNewDirection(dirs);
 			}
 		}
-		else
+		else // No direction
 			direction = Direction2D.NONE;
 		
 		// Apply movement
-		move();
+		return move();
 	}
 	
 	/**
@@ -288,8 +286,9 @@ public abstract class Unit extends TickableEntity
 	{
 		gfx.pushTransform();
 		
-		if(Game.settings.renderFancyUnitMovements)
+		if(Game.settings.isRenderFancyUnitMovements())
 		{
+			// Interpolate last pos with next pos using tick time progress
 			if(getDirection() != Direction2D.NONE && isMoving())
 			{
 				float k = -Game.tilesSize * getK();
@@ -299,15 +298,12 @@ public abstract class Unit extends TickableEntity
 		}
 		
 		gfx.translate(
-				getX() * Game.tilesSize,
-				getY() * Game.tilesSize - Game.tilesSize / 3);
+			getX() * Game.tilesSize,
+			getY() * Game.tilesSize - Game.tilesSize / 3);
 
 		renderUnit(gfx);
 		
 		gfx.popTransform();
-		
-//		if(pathFinder != null) // debug
-//			pathFinder.render(gfx);
 	}
 
 	/**
@@ -340,6 +336,20 @@ public abstract class Unit extends TickableEntity
 	public final void defaultRender(Graphics gfx, SpriteSheet sprites)
 	{
 		renderDefault(gfx, sprites, 0);
+	}
+	
+	/**
+	 * Default map pass predicate for units.
+	 * Defines where a unit can move.
+	 * @author Marc
+	 *
+	 */
+	private class DefaultPass implements IMapSpec
+	{
+		@Override
+		public boolean canPass(int x, int y) {
+			return mapRef.grid.isWalkable(x, y);
+		}	
 	}
 		
 }

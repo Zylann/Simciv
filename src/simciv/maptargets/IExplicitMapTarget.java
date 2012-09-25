@@ -10,7 +10,7 @@ import simciv.Map;
  * @author Marc
  *
  */
-public interface IMapTarget extends Serializable
+public interface IExplicitMapTarget extends Serializable
 {
 	public boolean evaluate(Map m, int x, int y);
 }

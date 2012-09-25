@@ -1,8 +1,7 @@
-package simciv.movements;
+package simciv.movement;
 
 import java.io.Serializable;
 
-import simciv.maptargets.IMapTarget;
 import simciv.units.Unit;
 
 /**
@@ -29,12 +28,6 @@ public interface IMovement extends Serializable
 	 * @return
 	 */
 	public boolean isFinished();
-	
-	/**
-	 * Returns the target of the movement, if it have one
-	 * @return target, or null
-	 */
-	public IMapTarget getTarget();
 	
 }
 

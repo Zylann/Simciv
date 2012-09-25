@@ -2,7 +2,7 @@ package simciv.maptargets;
 
 import simciv.Map;
 
-public class RoadMapTarget implements IMapTarget
+public class RoadMapTarget implements IExplicitMapTarget
 {
 	private static final long serialVersionUID = 1L;
 

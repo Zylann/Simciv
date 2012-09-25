@@ -87,6 +87,7 @@ public class Sprites
 	public Image effectDeath;
 	public SpriteSheet effectSmoke;
 	public Animation effectFire;
+	public SpriteSheet effectSplash;
 	
 	// Test
 	public Image test;

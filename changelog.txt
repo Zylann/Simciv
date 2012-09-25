@@ -4,7 +4,7 @@ Simciv indev release 3 (work in progress) :
 + Added main menu
 + Builds can burn (display fire risks with key [5])
 + Added water sources
-+ Added fire stations and firemen (currnetly without fire fights)
++ Added fire stations and firemen
 + Added time bar showing the current date (not realistic)
 + Added UI notification system
 + Added crash window and log system

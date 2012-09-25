@@ -1,6 +1,8 @@
 package backend;
 
+import backend.geom.Vector2i;
 
+// TODO replace by geom.Rectangle
 /**
  * Represents a rectangular integer selection of the world,
  * defined by 2 points, min and max.

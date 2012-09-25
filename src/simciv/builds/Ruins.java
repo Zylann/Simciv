@@ -12,7 +12,7 @@ import simciv.content.Content;
  * @author Marc
  *
  */
-public class Debris extends Build
+public class Ruins extends Build
 {
 	private static final long serialVersionUID = 1L;
 
@@ -29,7 +29,12 @@ public class Debris extends Build
 			.setFlamable(false);
 	}
 	
-	public Debris(Map m, boolean burning)
+	/**
+	 * Constructs anonymous ruins.
+	 * @param m : parent map
+	 * @param burning : if true, the ruins will be in flames.
+	 */
+	public Ruins(Map m, boolean burning)
 	{
 		super(m);
 		infoString = "Ruins";
@@ -38,6 +43,10 @@ public class Debris extends Build
 			fireLevel = Build.FIRE_BURN;
 	}
 	
+	/**
+	 * Sets informations about the build that collapsed
+	 * @param b : the build that created the ruins
+	 */
 	public void setPropertiesFromBuild(Build b)
 	{
 		infoString = "Ruins of " + b.getProperties().name.toLowerCase();
@@ -83,6 +92,11 @@ public class Debris extends Build
 	{
 	}
 
+	public boolean isWalkable()
+	{
+		return !isFireBurning();
+	}
+	
 }
 
 

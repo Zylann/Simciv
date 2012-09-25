@@ -30,6 +30,7 @@ import simciv.gamestates.CityView;
 import simciv.gamestates.ContentLoadingScreen;
 import simciv.gamestates.GameLoadingScreen;
 import simciv.gamestates.MainMenu;
+import simciv.gamestates.Test;
 import simciv.ui.base.CrashWindow;
 import simciv.ui.base.UIStateBasedGame;
 
@@ -99,9 +100,9 @@ public class Game extends UIStateBasedGame
 			
 			// Configure game container
 			GameContainer gc = canvas.getGameContainer();
-			gc.setTargetFrameRate(settings.framerate);
-			gc.setVSync(settings.useVSync);
-			gc.setSmoothDeltas(settings.smoothDeltasEnabled);
+			gc.setTargetFrameRate(settings.getTargetFramerate());
+			gc.setVSync(settings.isUseVSync());
+			gc.setSmoothDeltas(settings.isSmoothDeltasEnabled());
 			gc.setUpdateOnlyWhenVisible(true);
 
 			// Create main window
@@ -196,7 +197,8 @@ public class Game extends UIStateBasedGame
 		addState(new GameLoadingScreen(STATE_GAME_LOADING));
 		addState(new MainMenu(STATE_MAIN_MENU));
 		cityView = new CityView(STATE_CITY_VIEW);
-		addState(cityView);
+		addState(cityView);		
+		addState(new Test());
 	}
 
 	@Override
@@ -217,6 +219,7 @@ public class Game extends UIStateBasedGame
 
 		// Enter first state
 		enterState(STATE_CONTENT_LOADING);
+//		enterState(Test.STATE_ID);
 	}
 	
 	// Main window listeners

@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import backend.GameComponent;
 
+import simciv.builds.Build;
 import simciv.builds.House;
 import simciv.builds.Warehouse;
 
@@ -35,18 +36,27 @@ public class PlayerCity extends City implements Serializable
 	/** List of all warehouses in the city (computed) **/
 	protected transient HashMap<Integer, Warehouse> warehouses;
 	
+	/** Fire alerts manager **/
+	public transient FireAlerts fireAlerts;
+	
 	/**
 	 * Constructs global informations about a city controlled by a player
 	 */
 	public PlayerCity()
 	{
 		super();
+		name = "My city";
 		money = 3000;
 		incomeTaxRatio = 0.09f; // 9 %
 		warehouses = new HashMap<Integer, Warehouse>();
-		name = "My city";
+		fireAlerts = new FireAlerts();
 	}
 	
+	public void update(Map m, int delta)
+	{
+		fireAlerts.update(m, delta);
+	}
+		
 	public float getMoney()
 	{
 		return money;
@@ -121,11 +131,17 @@ public class PlayerCity extends City implements Serializable
 	public void recomputeData(Collection<GameComponent> builds)
 	{
 		warehouses = new HashMap<Integer, Warehouse>();
+		fireAlerts = new FireAlerts();
 		population = 0;
 		workingPopulation = 0;
 		
-		for(GameComponent b : builds)
+		for(GameComponent cmp : builds)
 		{
+			Build b = (Build)cmp;
+			
+			if(b.isFireBurning())
+				fireAlerts.registerFire(b.getX(), b.getY());
+						
 			if(Warehouse.class.isInstance(b))
 			{
 				Warehouse w = (Warehouse)b;
@@ -137,7 +153,7 @@ public class PlayerCity extends City implements Serializable
 				population += h.getNbInhabitants();
 				workingPopulation += h.getNbWorkers();
 			}
-		}
+		}		
 	}
 
 }

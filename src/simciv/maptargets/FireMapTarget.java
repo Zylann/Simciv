@@ -5,7 +5,7 @@ import java.util.List;
 import simciv.Map;
 import simciv.builds.Build;
 
-public class FireMapTarget implements IMapTarget
+public class FireMapTarget implements IExplicitMapTarget
 {
 	private static final long serialVersionUID = 1L;
 

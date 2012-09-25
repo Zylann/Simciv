@@ -83,6 +83,7 @@
 	<image id="effectDeath" src="death.png"/>
 	<spritesheet id="effectSmoke" tw="8" th="8" src="smoke.png"/>
 	<animationsheet id="effectFire" tw="16" th="16" src="fire.png" frametime="100"/>
+	<spritesheet id="effectSplash" tw="16" th="16" src="splash.png"/>
 	
 	<image id="test" src="test.png"/>
 	

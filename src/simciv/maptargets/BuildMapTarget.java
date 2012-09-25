@@ -7,7 +7,7 @@ import simciv.Map;
  * @author Marc
  *
  */
-public class BuildMapTarget implements IMapTarget
+public class BuildMapTarget implements IExplicitMapTarget
 {
 	private static final long serialVersionUID = 1L;
 	

@@ -1,5 +1,9 @@
 package backend;
 
+import org.newdawn.slick.Graphics;
+
+import backend.geom.Vector2i;
+
 /**
  * Utility class for handling 2D directions
  * @author Marc
@@ -14,8 +18,7 @@ public class Direction2D
 	public static final byte SOUTH = 3;
 			
 	public static final Vector2i vectors[];
-//	public static final byte bits[] = {1, 2, 4, 8};
-	public static final byte opposite[] = {1, 0, 3, 2};
+	public static final byte opposite[] = {EAST, WEST, SOUTH, NORTH};
 	
 	static
 	{
@@ -64,25 +67,45 @@ public class Direction2D
 		return (byte) (4 * Math.random());
 	}
 	
-	// Unusued
-//	/**
-//	 * Converts a series of points into a series of directionnal constants
-//	 * (uses toDirection())
-//	 * @param points
-//	 * @return
-//	 */
-//	public static LinkedList<Byte> toDirectionsPath(List<Vector2i> points)
-//	{
-//		LinkedList<Byte> path = new LinkedList<Byte>();
-//		Vector2i lastPos = null;
-//		for(Vector2i pos : points)
-//		{
-//			if(lastPos != null)
-//				path.add(toDirection(lastPos, pos));
-//			lastPos = pos;
-//		}
-//		return path;
-//	}
+	/**
+	 * Draws a simple arrow as using an 1:1 scale.
+	 * The current transformation matrix will not be altered.
+	 * @param gfx
+	 * @param x : origin X of the bounding square
+	 * @param y : origin Y of the bounding square
+	 * @param d : direction of the arrow
+	 */
+	public static void drawArrow(Graphics gfx, float x, float y, byte d)
+	{
+		switch(d)
+		{
+		case Direction2D.WEST :
+			// Left arrow
+			gfx.drawLine(x, y + 0.5f, x + 1, y + 0.5f);
+			gfx.drawLine(x, y + 0.5f, x + 0.25f, y + 0.25f);
+			gfx.drawLine(x, y + 0.5f, x + 0.25f, y + 0.75f);
+			break;
+		case Direction2D.EAST :
+			// Right arrow
+			gfx.drawLine(x, y + 0.5f, x + 1, y + 0.5f);
+			gfx.drawLine(x + 1, y + 0.5f, x + 0.75f, y + 0.25f);
+			gfx.drawLine(x + 1, y + 0.5f, x + 0.75f, y + 0.75f);
+			break;
+		case Direction2D.NORTH :
+			// Up arrow
+			gfx.drawLine(x + 0.5f, y, x + 0.5f, y + 1);
+			gfx.drawLine(x + 0.5f, y, x + 0.25f, y + 0.25f);
+			gfx.drawLine(x + 0.5f, y, x + 0.75f, y + 0.25f);
+			break;
+		case Direction2D.SOUTH :
+			// Down arrow
+			gfx.drawLine(x + 0.5f, y, x + 0.5f, y + 1);
+			gfx.drawLine(x + 0.5f, y + 1, x + 0.25f, y + 0.75f);
+			gfx.drawLine(x + 0.5f, y + 1, x + 0.75f, y + 0.75f);
+			break;
+		default : break;
+		}
+	}
 	
 }
 

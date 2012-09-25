@@ -3,6 +3,9 @@ package simciv.units;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 
+import backend.pathfinding.IMapSpec;
+import backend.pathfinding.IMapTarget;
+
 import simciv.Game;
 import simciv.Map;
 import simciv.builds.Build;
@@ -109,9 +112,27 @@ public abstract class Citizen extends Unit
 		if(w != null)
 			getWorkplace().removeDisposedUnit(this);
 	}
+		
+	@Override
+	public boolean findAndGoTo(IMapTarget target, int maxDistance)
+	{
+		return findAndGoTo(new DefaultPass(), target, maxDistance);
+	}
 	
-	public abstract byte getJobID();
-	
+	/**
+	 * Default map pass for citizen.
+	 * Defines where a citizen can move.
+	 * @author Marc
+	 *
+	 */
+	private class DefaultPass implements IMapSpec
+	{
+		@Override
+		public boolean canPass(int x, int y) {
+			return mapRef.grid.isRoad(x, y);
+		}
+	}
+
 }
 
 

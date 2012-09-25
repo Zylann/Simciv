@@ -1,11 +1,9 @@
-package simciv.movements;
+package simciv.movement;
 
 import java.util.LinkedList;
 
 import backend.Direction2D;
-import backend.Vector2i;
-
-import simciv.maptargets.IMapTarget;
+import backend.geom.Vector2i;
 import simciv.units.Unit;
 
 /**
@@ -19,12 +17,10 @@ public class PathMovement implements IMovement
 	
 	private LinkedList<Vector2i> path; // TODO create a Path class storing directions (lighter)
 	private boolean blocked;
-	public IMapTarget target; // Target that was used to build the path
 	
-	public PathMovement(LinkedList<Vector2i> path, IMapTarget target)
+	public PathMovement(LinkedList<Vector2i> path)
 	{
 		this.path = path;
-		this.target = target;
 		blocked = false;
 	}
 	
@@ -40,8 +36,9 @@ public class PathMovement implements IMovement
 		u.setDirection(Direction2D.toDirection(pos, nextPos));
 		if(!u.moveIfPossible())
 		{
+			System.out.println("Can't move from " + pos + "to " + nextPos);
 			blocked = true;
-		}				
+		}
 	}
 
 	@Override
@@ -54,12 +51,6 @@ public class PathMovement implements IMovement
 	public boolean isFinished()
 	{
 		return path.isEmpty() || path == null;
-	}
-
-	@Override
-	public IMapTarget getTarget()
-	{
-		return target;
 	}
 
 }

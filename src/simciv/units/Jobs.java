@@ -7,6 +7,7 @@ import simciv.builds.Workplace;
 
 /**
  * List of all jobs associated with citizen units.
+ * Allows creation of citizen from an integer ID.
  * @author Marc
  *
  */

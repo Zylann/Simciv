@@ -6,7 +6,7 @@ import simciv.Map;
 import simciv.builds.Build;
 import simciv.builds.WaterSource;
 
-public class WaterSourceMapTarget implements IMapTarget
+public class WaterSourceMapTarget implements IExplicitMapTarget
 {
 	private static final long serialVersionUID = 1L;
 

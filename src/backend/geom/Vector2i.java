@@ -1,6 +1,8 @@
-package backend;
+package backend.geom;
 
 import java.io.Serializable;
+
+import backend.Direction2D;
 
 /**
  * A simple class for handling 2D integer coordinates
@@ -25,6 +27,12 @@ public class Vector2i implements Serializable
 		this.x = x;
 		this.y = y;
 	}
+	
+	public Vector2i(Vector2i other)
+	{
+		this.x = other.x;
+		this.y = other.y;
+	}
 
 	public void set(int x, int y)
 	{
@@ -44,7 +52,13 @@ public class Vector2i implements Serializable
 		this.y *= s;
 	}
 	
-    @Override
+	public void divide(int d)
+	{
+		this.x /= d;
+		this.y /= d;
+	}
+
+	@Override
     public boolean equals(Object obj)
     {
         if(!(obj instanceof Vector2i))
@@ -62,6 +76,21 @@ public class Vector2i implements Serializable
     {
     	return Math.abs(x - other.x) + Math.abs(y - other.y);
     }
+        
+    public static float length(int x, int y)
+    {
+    	return (float) Math.sqrt(x * x + y * y);
+    }
+    
+    public float length()
+    {
+    	return length(x, y);
+    }
+
+    public float distanceFrom(Vector2i b)
+	{
+		return length(x - b.x, y - b.y);
+	}
     
     @Override
     public int hashCode()
@@ -84,5 +113,18 @@ public class Vector2i implements Serializable
 	{
 		return this.x == x && this.y == y;
 	}
+
+	public void addDirection(byte d)
+	{
+		switch(d)
+		{
+		case Direction2D.WEST : x--; break;
+		case Direction2D.EAST : x++; break;
+		case Direction2D.NORTH : y--; break;
+		case Direction2D.SOUTH : y++; break;
+		default : break;
+		}
+	}
+
 }
 

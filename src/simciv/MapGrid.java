@@ -10,10 +10,10 @@ import org.newdawn.slick.Graphics;
 
 import backend.Direction2D;
 import backend.IntRange2D;
-import backend.Vector2i;
+import backend.geom.Vector2i;
 
 import simciv.builds.Build;
-import simciv.maptargets.IMapTarget;
+import simciv.maptargets.IExplicitMapTarget;
 import simciv.rendering.RenderNatureElements;
 import simciv.rendering.SortedRender;
 
@@ -470,7 +470,7 @@ public class MapGrid implements Serializable
 		return true;
 	}
 	
-	public boolean isCrossable(int x, int y)
+	public boolean isWalkable(int x, int y)
 	{
 		if(!contains(x, y))
 			return false;
@@ -479,7 +479,7 @@ public class MapGrid implements Serializable
 	}
 	
 	/**
-	 * Returns available directions complying with the default test
+	 * Returns available directions complying with the default test (walkable)
 	 * @param x
 	 * @param y
 	 * @return
@@ -488,13 +488,13 @@ public class MapGrid implements Serializable
 	{
 		ArrayList<Byte> res = new ArrayList<Byte>();
 		
-		if(isCrossable(x-1, y))
+		if(isWalkable(x-1, y))
 			res.add(Direction2D.WEST);
-		if(isCrossable(x+1, y))
+		if(isWalkable(x+1, y))
 			res.add(Direction2D.EAST);
-		if(isCrossable(x, y-1))
+		if(isWalkable(x, y-1))
 			res.add(Direction2D.NORTH);
-		if(isCrossable(x, y+1))
+		if(isWalkable(x, y+1))
 			res.add(Direction2D.SOUTH);
 		
 		return res;
@@ -511,7 +511,7 @@ public class MapGrid implements Serializable
 	 * @return list of positions
 	 */
 	public ArrayList<Vector2i> getAvailablePositionsAround(
-			int x0, int y0, int w, int h, IMapTarget target, Map world)
+			int x0, int y0, int w, int h, IExplicitMapTarget target, Map world)
 	{
 		ArrayList<Vector2i> p = new ArrayList<Vector2i>();
 		int x, y;
@@ -548,7 +548,7 @@ public class MapGrid implements Serializable
 		return p;
 	}
 	
-	public ArrayList<Vector2i> getAvailablePositionsAround(Build b, IMapTarget target, Map world)
+	public ArrayList<Vector2i> getAvailablePositionsAround(Build b, IExplicitMapTarget target, Map world)
 	{
 		return getAvailablePositionsAround(b.getX(), b.getY(), b.getWidth(), b.getHeight(), target, world);
 	}

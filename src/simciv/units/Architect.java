@@ -8,7 +8,7 @@ import simciv.PlayerCity;
 import simciv.builds.Build;
 import simciv.builds.Workplace;
 import simciv.content.Content;
-import simciv.movements.RandomRoadMovement;
+import simciv.movement.RandomRoadMovement;
 
 /**
  * Architects walks randomly through the city, and repair builds.
@@ -42,12 +42,6 @@ public class Architect extends Citizen
 				city.buy(cost);
 			}
 		}
-	}
-
-	@Override
-	public byte getJobID()
-	{
-		return Jobs.ARCHITECT;
 	}
 
 	@Override

@@ -30,7 +30,7 @@ public class BuildFactory
 		addMapping(TaxmenOffice.class, "TaxmenOffice");
 		addMapping(Market.class, "Market");
 		addMapping(ArchitectOffice.class, "ArchitectOffice");
-		addMapping(Debris.class, "Debris");
+		addMapping(Ruins.class, "Ruins");
 		addMapping(WaterSource.class, "WaterSource");
 		addMapping(FireStation.class, "FireStation");
 	}
