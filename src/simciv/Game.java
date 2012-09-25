@@ -46,7 +46,7 @@ public class Game extends UIStateBasedGame
 	/* Static vars */ 
 	
 	// Game constants
-	public static final String title = "Simciv indev 3.0";
+	public static final String title = "Simciv indev R3";
 	public static final int tilesSize = 16;
 	public static final int defaultScreenWidth = 800;
 	public static final int defaultScreenHeight = 600;
