@@ -37,7 +37,8 @@ public class MarketDelivery extends Citizen
 	{
 		super(m, workplace);
 		//setMovement(new RandomRoadMovement());
-		carriedResource = new ResourceSlot();		
+		carriedResource = new ResourceSlot();
+		state = FIND_RESOURCES;
 	}
 	
 	public void addResourceCarriage(ResourceSlot r)
