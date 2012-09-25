@@ -18,7 +18,7 @@ public class Nomad extends Unit
 	@Override
 	public void renderUnit(Graphics gfx)
 	{
-		defaultRender(gfx, Content.sprites.unitNomad);
+		renderDefault(gfx, Content.sprites.unitNomad);
 	}
 
 	@Override

@@ -47,7 +47,7 @@ public class Architect extends Citizen
 	@Override
 	public void renderUnit(Graphics gfx)
 	{
-		defaultRender(gfx, Content.sprites.unitArchitect);
+		renderDefault(gfx, Content.sprites.unitArchitect);
 	}
 
 }

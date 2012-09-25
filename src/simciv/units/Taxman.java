@@ -43,7 +43,7 @@ public class Taxman extends Citizen
 	@Override
 	public void renderUnit(Graphics gfx)
 	{
-		defaultRender(gfx, Content.sprites.unitTaxman);
+		renderDefault(gfx, Content.sprites.unitTaxman);
 	}
 
 }

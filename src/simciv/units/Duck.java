@@ -19,7 +19,7 @@ public class Duck extends Unit
 	@Override
 	protected void renderUnit(Graphics gfx)
 	{
-		defaultRender(gfx, Content.sprites.unitDuck);
+		renderDefault(gfx, Content.sprites.unitDuck);
 	}
 
 	@Override

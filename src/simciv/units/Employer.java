@@ -31,7 +31,7 @@ public class Employer extends Citizen
 	@Override
 	protected void renderUnit(Graphics gfx)
 	{
-		defaultRender(gfx, Content.sprites.unitEmployer);
+		renderDefault(gfx, Content.sprites.unitEmployer);
 	}
 
 	@Override

@@ -151,11 +151,11 @@ public class Conveyer extends Citizen
 		if(getDirection() == Direction2D.NORTH)
 		{
 			carriedResource.renderCarriage(gfx, 0, 0, getDirection());
-			defaultRender(gfx, Content.sprites.unitConveyer);
+			renderDefault(gfx, Content.sprites.unitConveyer);
 		}
 		else
 		{
-			defaultRender(gfx, Content.sprites.unitConveyer);
+			renderDefault(gfx, Content.sprites.unitConveyer);
 			carriedResource.renderCarriage(gfx, 0, 0, getDirection());
 		}
 	}

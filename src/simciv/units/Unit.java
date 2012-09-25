@@ -113,7 +113,7 @@ public abstract class Unit extends TickableEntity
 	
 	/**
 	 * Makes the unit follow a path.
-	 * @param path
+	 * @param path : path to follow
 	 */
 	protected void followPath(LinkedList<Vector2i> path)
 	{
@@ -328,7 +328,7 @@ public abstract class Unit extends TickableEntity
 			gfx.drawImage(sprites.getSprite(0, direction + tyShift), 0, 0);		
 	}
 	
-	public final void defaultRender(Graphics gfx, SpriteSheet sprites)
+	public final void renderDefault(Graphics gfx, SpriteSheet sprites)
 	{
 		renderDefault(gfx, sprites, 0);
 	}

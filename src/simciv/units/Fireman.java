@@ -239,7 +239,7 @@ public class Fireman extends Citizen
 	@Override
 	protected void renderUnit(Graphics gfx)
 	{
-		defaultRender(gfx, Content.sprites.unitFireman);
+		renderDefault(gfx, Content.sprites.unitFireman);
 	}
 
 	public boolean hasWater()

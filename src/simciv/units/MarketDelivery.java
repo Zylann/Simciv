@@ -16,7 +16,7 @@ import simciv.content.Content;
 import simciv.movement.RandomRoadMovement;
 
 /**
- * Deliver resources to citizen houses
+ * Delivers resources to citizen houses.
  * @author Marc
  *
  */
@@ -181,7 +181,7 @@ public class MarketDelivery extends Citizen
 		if(carriedResource.isEmpty())
 			renderDefault(gfx, Content.sprites.unitMarketDelivery, 4); // render without bag
 		else
-			defaultRender(gfx, Content.sprites.unitMarketDelivery); // render with a bag
+			renderDefault(gfx, Content.sprites.unitMarketDelivery); // render with a bag
 	}
 	
 	private class WarehouseForMarketTarget implements IMapTarget
