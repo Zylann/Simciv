@@ -29,11 +29,7 @@ import simciv.movement.PathMovement;
 public abstract class Unit extends TickableEntity
 {
 	private static final long serialVersionUID = 1L;
-
-	// States
-	public static final byte NORMAL = 1;
-//	public static final byte THINKING = 2; // Unusued
-	
+		
 	private boolean isAlive;
 	private boolean isMoving;
 	private IMovement movement;
@@ -43,7 +39,6 @@ public abstract class Unit extends TickableEntity
 		super(m);
 		direction = Direction2D.random();
 		isAlive = true;
-		state = NORMAL;
 	}
 	
 	public void setMap(Map m)
