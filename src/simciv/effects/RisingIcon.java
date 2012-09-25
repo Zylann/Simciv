@@ -38,7 +38,6 @@ public class RisingIcon extends VisualEffect
 	@Override
 	public void getRenderBounds(IntRange2D range)
 	{
-		
 	}
 
 	@Override

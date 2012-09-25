@@ -1,6 +1,5 @@
 package backend;
 
-
 /**
  * A class for generating different kinds of noise (random numbers)
  * depending on a seed and various parameters.

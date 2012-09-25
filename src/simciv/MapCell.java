@@ -14,6 +14,9 @@ public class MapCell implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
+	private static int BUILD_INFO_ID_MASK = 0x3fffffff; // 30 bits to 1, 2 higher bits to 0
+	private static int BUILD_INFO_ORIGIN_MASK = 0x80000000; // 2 higher bits = 10
+
 	/** Ground information **/
 	public byte terrainID;
 	
@@ -25,7 +28,7 @@ public class MapCell implements Serializable
 	
 	/** Random bits for fancy renderings **/
 	public byte noise;
-	
+		
 	/**
 	 * 4 bytes of information about the building occupying the cell (value 0 for none) :
 	 * oiiiiiii iiiiiiii iiiiiiii iiiiiiii 
@@ -36,10 +39,7 @@ public class MapCell implements Serializable
 	
 	/** ID of the last unit being on the cell (set by tracking), 0 if none **/
 	private int unitInfo;
-	
-	private static int BUILD_INFO_ID_MASK = 0x3fffffff; // 30 bits to 1, 2 higher bits to 0
-	private static int BUILD_INFO_ORIGIN_MASK = 0x80000000; // 2 higher bits = 10
-	
+		
 	public MapCell()
 	{
 		terrainID = Terrain.GRASS;

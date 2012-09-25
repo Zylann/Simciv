@@ -25,7 +25,7 @@ public class MainMenu extends UIBasicGameState
 	private boolean closeRequested;
 	private Color bgColor = new Color(32, 32, 32);
 	private PushButton loadGameBtn;
-	
+		
 	public MainMenu(int stateID)
 	{
 		this.stateID = stateID;

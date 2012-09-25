@@ -15,7 +15,7 @@ import org.newdawn.slick.util.Log;
 
 /**
  * A game container that displays the game on an AWT Canvas.
- * (slightly modified by Marc Gilleron)
+ * (slightly modified by Marc Gilleron to support a new Exception handler)
  * 
  * @author kevin
  */
@@ -214,7 +214,7 @@ public class CanvasGameContainer2 extends Canvas {
 		@Override
 		protected void gameLoop() throws SlickException {
 			
-			// Note : this almost is the same code as AppGameContainer
+			// Note : this is almost the same code as AppGameContainer
 			
 			// The game will be updated only if it is running
 			if(running) // Added by Marc Gilleron
