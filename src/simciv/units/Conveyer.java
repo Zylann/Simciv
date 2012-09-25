@@ -9,6 +9,7 @@ import backend.pathfinding.IMapTarget;
 import simciv.Map;
 import simciv.ResourceSlot;
 import simciv.builds.Build;
+import simciv.builds.Warehouse;
 import simciv.builds.Workplace;
 import simciv.content.Content;
 
@@ -22,12 +23,21 @@ public class Conveyer extends Citizen
 	private static final long serialVersionUID = 1L;
 	private static final int PATHFINDING_DISTANCE = 128;
 	
+	private static final byte FIND_STORAGE = 0;
+	private static final byte STORE_RESOURCES = 1;
+	private static final byte BACK_TO_WORKPLACE = 2;
+	private static final byte FIND_ROAD = 3;
+	
+	/** Resources carried by the conveyer **/
 	private ResourceSlot carriedResource;
+	
+	private byte lastState;
 	
 	public Conveyer(Map m, Workplace w)
 	{
 		super(m, w);
 		carriedResource = new ResourceSlot();
+		state = FIND_STORAGE;
 	}
 	
 	public void addResourceCarriage(ResourceSlot r)
@@ -35,14 +45,6 @@ public class Conveyer extends Citizen
 		carriedResource.addAllFrom(r);
 	}
 	
-	private IMapTarget getCurrentTarget()
-	{
-		if(carriedResource.isEmpty())
-			return new WorkplaceTarget(); // I wanna go back to my workplace
-		else
-			return new FreeWarehouseTarget(); // I wanna distribute my carriage
-	}
-
 	@Override
 	public void tick()
 	{
@@ -53,18 +55,84 @@ public class Conveyer extends Citizen
 		 * When he distributed all his resources, he goes back to its workplace.
 		 */
 		
-		if(!isMovement() || isMovementBlocked())
-			findAndGoTo(getCurrentTarget(), PATHFINDING_DISTANCE);
+		byte lastStateTemp = state;
+		
+		switch(state)
+		{
+		case FIND_STORAGE : tickFindStorage(); break;
+		case STORE_RESOURCES : tickStoreResources(); break;
+		case BACK_TO_WORKPLACE : tickBackToWorkplace(); break;
+		case FIND_ROAD : tickFindRoad(); break;
+		}
+		
+		lastState = lastStateTemp;		
+	}
+	
+	private void tickFindStorage()
+	{
+		if(state != lastState || isMovementBlocked())
+		{
+			setMovement(null);
+			if(!isOnRoad())
+				state = FIND_ROAD;
+		}
+		
+		if(!isMovement())
+			findAndGoTo(new FreeWarehouseTarget(), PATHFINDING_DISTANCE);
+		
+		if(isMovementFinished())
+			state = STORE_RESOURCES;
+	}
+
+	private void tickStoreResources()
+	{
+		if(state != lastState)
+			distributeResources();
+		
+		if(carriedResource.isEmpty())
+			state = BACK_TO_WORKPLACE;
+		else
+			state = FIND_STORAGE;
+	}
+
+	private void tickBackToWorkplace()
+	{
+		if(state != lastState || isMovementBlocked())
+		{
+			setMovement(null);
+			if(!isOnRoad())
+				state = FIND_ROAD;
+		}
+				
+		if(isMovement())
+		{
+			if(isMovementFinished())
+				dispose();
+		}
+		else
+			findAndGoTo(new WorkplaceTarget(), PATHFINDING_DISTANCE);
+	}
+	
+	private void tickFindRoad()
+	{
+		if(state != lastState || isMovementBlocked())
+			setMovement(null);
+		
+		if(!isMovement())
+			goBackToRoad(32);
 		
 		if(isMovementFinished())
 		{
-			if(!carriedResource.isEmpty())
-				distributeResources(); // distribute resources
+			if(carriedResource.isEmpty())
+				state = BACK_TO_WORKPLACE;
 			else
-				dispose();
+				state = FIND_STORAGE;
 		}
 	}
-		
+
+	/**
+	 * Distributes resources to neighboring builds if possible
+	 */
 	private void distributeResources()
 	{
 		if(carriedResource.isEmpty())
@@ -96,7 +164,13 @@ public class Conveyer extends Citizen
 	{
 		@Override
 		public boolean isTarget(int x, int y) {
-			return mapRef.getFreeWarehouse(x, y) != null;
+			Build b = mapRef.getBuild(x, y);
+			if(b != null && Warehouse.class.isInstance(b))
+			{
+				if(b.isAcceptResources())
+					return true;
+			}
+			return false;
 		}
 	}
 	

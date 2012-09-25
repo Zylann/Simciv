@@ -17,6 +17,7 @@ import simciv.movement.RandomRoadMovement;
 
 /**
  * Firemen fight fires and prevent them to happen.
+ * They need water to do their job.
  * @author Marc
  *
  */
@@ -33,25 +34,19 @@ public class Fireman extends Citizen
 	private static final byte FIND_ROAD = 4;
 	
 	private byte waterCharge;
-	private byte firemanState;
-	private byte lastFiremanState;
+	private byte lastState;
 	
 	public Fireman(Map m, Workplace w)
 	{
 		super(m, w);
-		firemanState = PATROL;
+		state = PATROL;
 	}
 	
-	/**
-	 * Sets the onMission flag.
-	 * If true, the fireman will increase its tick speed.
-	 * If false, the fireman will reset its tick speed and movement.
-	 * @param m
-	 */
-	private void setFiremanState(byte state)
+	@Override
+	public void setState(byte state)
 	{
-		firemanState = state;
-		if(firemanState == FIND_FIRE || firemanState == FIGHT_FIRE)
+		super.setState(state);
+		if(state == FIND_FIRE || state == FIGHT_FIRE)
 			setTickTimeWithRandom(3 * getTickTime() / 5);
 		else
 			setTickTimeWithRandom(Citizen.TICK_TIME_BASIC);
@@ -72,9 +67,9 @@ public class Fireman extends Citizen
 		if(waterCharge != 0)
 			preventFires();
 		
-		byte lastState = firemanState;
+		byte stateTemp = state;
 
-		switch(firemanState)
+		switch(state)
 		{
 		case PATROL : tickPatrol(); break;
 		case FIND_WATER : tickFindWater(); break;
@@ -83,68 +78,68 @@ public class Fireman extends Citizen
 		case FIND_ROAD : tickFindRoad(); break;
 		}
 		
-		lastFiremanState = lastState;
+		lastState = stateTemp;
 	}
 	
 	public void onFireAlert(LinkedList<Vector2i> pathToFire)
 	{
 		if(isReadyForMission())
 		{
-			setFiremanState(FIND_FIRE);
+			setState(FIND_FIRE);
 			followPath(pathToFire);
 		}
 	}
 	
 	private void tickPatrol()
 	{
-		if(lastFiremanState != firemanState)
+		if(lastState != state)
 			setMovement(new RandomRoadMovement());
 				
 		if(waterCharge == 0)
-			setFiremanState(FIND_WATER);
+			setState(FIND_WATER);
 
 		if(isMovementBlocked() && !isOnRoad())
-			setFiremanState(FIND_ROAD);
+			setState(FIND_ROAD);
 	}
 
 	private void tickFindWater()
 	{
 		// On enter or movement end
-		if(lastFiremanState != firemanState || isMovementFinished())
+		if(lastState != state || isMovementFinished())
 		{
 			if(tryRechargeWater())
-				setFiremanState(PATROL);
+				setState(PATROL);
 			else
 				findAndGoTo(new WaterSourceTarget(), PATHFINDING_DISTANCE);
 		}
 		
 		if(isMovementBlocked() && !isOnRoad())
-			setFiremanState(FIND_ROAD);
+			setState(FIND_ROAD);
 	}
 
 	private void tickFindFire()
 	{
 		if(isMovementFinished())
-			setFiremanState(FIGHT_FIRE);
+			setState(FIGHT_FIRE);
 		
 		if(isMovementBlocked() && !isOnRoad())
-			setFiremanState(FIND_ROAD);
+			setState(FIND_ROAD);
 	}
 
 	private void tickFightFire()
 	{
 		if(waterCharge == 0 || !fightFire())
-			setFiremanState(FIND_ROAD);
+			setState(FIND_ROAD);
 	}
 
 	private void tickFindRoad()
 	{
 		// On enter
-		if(lastFiremanState != firemanState || isMovementBlocked())
+		if(lastState != state || isMovementBlocked())
 			goBackToRoad(PATHFINDING_DISTANCE);
-				
+		
 		if(isMovementFinished())
-			setFiremanState(PATROL);
+			setState(PATROL);
 	}
 
 	private boolean tryRechargeWater()
@@ -209,7 +204,6 @@ public class Fireman extends Citizen
 				if(b.isFireBurning())
 				{
 					setMovement(null);
-					setFiremanState(FIGHT_FIRE);					
 					setDirection(d); // Look at the flames
 					
 					// Make a splash
@@ -234,12 +228,12 @@ public class Fireman extends Citizen
 	
 	public boolean isReadyForMission()
 	{
-		return hasWater() && (firemanState == PATROL || firemanState == FIND_ROAD);
+		return hasWater() && (state == PATROL || state == FIND_ROAD);
 	}
 	
 	public boolean isFightingFire()
 	{
-		return firemanState == FIGHT_FIRE;
+		return state == FIGHT_FIRE;
 	}
 
 	@Override

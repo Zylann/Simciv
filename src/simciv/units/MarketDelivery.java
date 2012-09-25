@@ -25,7 +25,13 @@ public class MarketDelivery extends Citizen
 	private static final long serialVersionUID = 1L;
 	private static final int PATHFINDING_DISTANCE = 128;
 	
+	private static final byte FIND_RESOURCES = 0;
+	private static final byte GET_RESOURCES = 1;
+	private static final byte PATROL = 2;
+	private static final byte FIND_ROAD = 3;
+
 	private ResourceSlot carriedResource;
+	private byte lastState;
 	
 	public MarketDelivery(Map m, Workplace workplace)
 	{
@@ -52,6 +58,18 @@ public class MarketDelivery extends Citizen
 		 * go to 2).
 		 */
 		
+		byte stateTemp = state;
+		
+		switch(state)
+		{
+		case FIND_RESOURCES : tickFindResources(); break;
+		case GET_RESOURCES : tickGetResources(); break;
+		case PATROL : tickPatrol(); break;
+		case FIND_ROAD : tickFindRoad(); break;
+		}
+		
+		lastState = stateTemp;
+		
 		if(carriedResource.isEmpty())
 		{
 			if(!isMovement())
@@ -67,6 +85,66 @@ public class MarketDelivery extends Citizen
 		}
 	}
 	
+	private void tickFindResources()
+	{
+		if(state != lastState || isMovementBlocked())
+		{
+			setMovement(null);
+			if(!isOnRoad())
+				state = FIND_ROAD;
+		}
+		
+		if(!isMovement())
+			findAndGoTo(new WarehouseForMarketTarget(), PATHFINDING_DISTANCE);
+		
+		if(isMovementFinished())
+			state = GET_RESOURCES;
+	}
+
+	private void tickGetResources()
+	{
+		if(state != lastState)
+		{
+			setMovement(null);
+			retrieveResourcesIfPossible();
+		}
+		if(carriedResource.isEmpty())
+			state = FIND_RESOURCES;
+		else
+			state = PATROL;
+	}
+
+	private void tickPatrol()
+	{
+		if(state != lastState)
+			setMovement(new RandomRoadMovement());
+		
+		distributeResources();
+		
+		if(carriedResource.isEmpty())
+			state = FIND_RESOURCES;
+		
+		if(!isOnRoad())
+			state = FIND_ROAD;
+	}
+
+	private void tickFindRoad()
+	{
+		if(state != lastState || isMovementBlocked())
+			setMovement(null);
+		
+		if(!isMovement())
+			goBackToRoad(32);
+		
+		if(isMovementFinished())
+		{
+			if(carriedResource.isEmpty())
+				state = FIND_RESOURCES;
+			else
+				state = PATROL;
+		}
+	}
+
 	/**
 	 * Distributes resources to each house nearby
 	 */
