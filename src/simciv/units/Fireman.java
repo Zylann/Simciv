@@ -258,7 +258,7 @@ public class Fireman extends Citizen
 		@Override
 		public boolean isTarget(int x, int y) {
 			Build b = mapRef.getBuild(x, y);
-			if(WaterSource.class.isInstance(b))
+			if(b != null && WaterSource.class.isInstance(b))
 			{
 				if(((WaterSource)b).getState() == Build.STATE_ACTIVE)
 					return true;
