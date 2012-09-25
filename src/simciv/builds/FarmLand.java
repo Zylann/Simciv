@@ -96,6 +96,9 @@ public class FarmLand extends Workplace
 		if(cropsLevel != MAX_LEVEL)
 			return;
 		
+		if(!units.isEmpty()) // The conveyer is already working
+			return;
+		
 		int harvestResult = (int) (50 + 25.f * Math.random());
 
 		Conveyer conveyers[] = new Conveyer[1];
