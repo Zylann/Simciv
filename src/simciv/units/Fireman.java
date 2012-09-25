@@ -6,7 +6,6 @@ import java.util.List;
 import org.newdawn.slick.Graphics;
 
 import backend.geom.Vector2i;
-import backend.pathfinding.IMapSpec;
 import backend.pathfinding.IMapTarget;
 import simciv.Map;
 import simciv.builds.Build;
@@ -58,23 +57,6 @@ public class Fireman extends Citizen
 			setTickTimeWithRandom(Citizen.TICK_TIME_BASIC);
 	}
 	
-	private void goBackToRoad()
-	{
-		// Find the nearest road if I am not on it
-		if(!isOnRoad())
-		{
-			findAndGoTo(
-				new WalkableFloor(),
-				new RoadTarget(),
-				PATHFINDING_DISTANCE);
-		}
-	}
-	
-	private boolean isOnRoad()
-	{
-		return mapRef.grid.isRoad(getX(), getY());
-	}
-
 	@Override
 	public void tick()
 	{
@@ -159,7 +141,7 @@ public class Fireman extends Citizen
 	{
 		// On enter
 		if(lastFiremanState != firemanState || isMovementBlocked())
-			goBackToRoad();
+			goBackToRoad(PATHFINDING_DISTANCE);
 				
 		if(isMovementFinished())
 			setFiremanState(PATROL);
@@ -269,22 +251,6 @@ public class Fireman extends Citizen
 	public boolean hasWater()
 	{
 		return waterCharge != 0;
-	}
-	
-	private class RoadTarget implements IMapTarget
-	{
-		@Override
-		public boolean isTarget(int x, int y) {
-			return mapRef.grid.isRoad(x, y);
-		}
-	}
-	
-	private class WalkableFloor implements IMapSpec
-	{
-		@Override
-		public boolean canPass(int x, int y) {
-			return mapRef.isWalkable(x, y);
-		}
 	}
 	
 	private class WaterSourceTarget implements IMapTarget

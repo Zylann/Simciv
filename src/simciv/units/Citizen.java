@@ -119,6 +119,23 @@ public abstract class Citizen extends Unit
 		return findAndGoTo(new DefaultPass(), target, maxDistance);
 	}
 	
+	public boolean isOnRoad()
+	{
+		return mapRef.grid.isRoad(getX(), getY());
+	}
+	
+	protected void goBackToRoad(int pathfindingDistance)
+	{
+		// Find the nearest road if I am not on it
+		if(!isOnRoad())
+		{
+			findAndGoTo(
+				new WalkableFloor(),
+				new RoadTarget(),
+				pathfindingDistance);
+		}
+	}
+	
 	/**
 	 * Default map pass for citizen.
 	 * Defines where a citizen can move.
@@ -130,6 +147,22 @@ public abstract class Citizen extends Unit
 		@Override
 		public boolean canPass(int x, int y) {
 			return mapRef.grid.isRoad(x, y);
+		}
+	}
+	
+	private class RoadTarget implements IMapTarget
+	{
+		@Override
+		public boolean isTarget(int x, int y) {
+			return mapRef.grid.isRoad(x, y);
+		}
+	}
+	
+	private class WalkableFloor implements IMapSpec
+	{
+		@Override
+		public boolean canPass(int x, int y) {
+			return mapRef.isWalkable(x, y);
 		}
 	}
 
