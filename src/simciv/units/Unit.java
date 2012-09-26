@@ -346,7 +346,7 @@ public abstract class Unit extends TickableEntity
 	{
 		return 500;
 	}
-	
+				
 	/**
 	 * Renders the unit using a commonly used sprite scheme
 	 * @param gfx
@@ -365,6 +365,11 @@ public abstract class Unit extends TickableEntity
 	public final void renderDefault(Graphics gfx, SpriteSheet sprites)
 	{
 		renderDefault(gfx, sprites, 0);
+	}
+	
+	public String getInfoLine()
+	{
+		return "{" + getDisplayableName() + "}";
 	}
 	
 	/**

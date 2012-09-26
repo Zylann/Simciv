@@ -334,7 +334,7 @@ public class CityView extends UIBasicGameState
 			renderDebugInfo(gc, gfx);
 		
 		infoBar.setPosition(0, ui.getHeight() - infoBar.getHeight());
-		infoBar.setText(builder.getInfoText());
+		infoBar.setText(builder.getInfoLine());
 		
 		// debug
 		renderTime = gc.getTime() - beginRenderTime;

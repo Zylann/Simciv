@@ -16,6 +16,7 @@ import simciv.builds.BuildFactory;
 import simciv.content.Content;
 import simciv.ui.base.INotificationListener;
 import simciv.ui.base.Notification;
+import simciv.units.Unit;
 
 /**
  * City build interface (do not contains GUI)
@@ -56,7 +57,7 @@ public class CityBuilder
 	private Build build; // building to place
 	private Build pointedBuild;
 	private String buildString = "";
-	private String infoText = "Testing 1234";
+	private String infoLine = "---";
 	private boolean cursorPress = false;
 	private int cursorButton;
 	
@@ -83,9 +84,9 @@ public class CityBuilder
 		eraseSound = Content.sounds.uiErase;
 	}
 	
-	public String getInfoText()
+	public String getInfoLine()
 	{
-		return infoText;
+		return infoLine;
 	}
 	
 	/**
@@ -139,7 +140,7 @@ public class CityBuilder
 			if(cursorButton == Input.MOUSE_LEFT_BUTTON)
 				placeRoad();
 		}
-		this.updateInfoText();
+		this.updateInfoLine();
 	}
 	
 	public void render(Graphics gfx)
@@ -293,7 +294,7 @@ public class CityBuilder
 	private void onPointedCellChanged()
 	{
 		pointedBuild = mapRef.getBuild(pos.x, pos.y);
-		updateInfoText();
+		updateInfoLine();
 	}
 	
 	private void updateBuildZone()
@@ -323,12 +324,18 @@ public class CityBuilder
 		buildZone.set(startPos.x, startPos.y, endX, endY);		
 	}
 	
-	protected void updateInfoText()
+	protected void updateInfoLine()
 	{
 		if(pointedBuild == null)
-			infoText = "";
+		{
+			Unit u = mapRef.getUnit(pos.x, pos.y);
+			if(u != null)
+				infoLine = u.getInfoLine();
+			else
+				infoLine = "";
+		}
 		else
-			infoText = pointedBuild.getInfoLine();
+			infoLine = pointedBuild.getInfoLine();
 	}
 
 	public void cursorReleased() throws SlickException
