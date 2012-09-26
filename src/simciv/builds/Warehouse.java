@@ -234,9 +234,9 @@ public class Warehouse extends PassiveWorkplace
 	}
 	
 	@Override
-	public String getInfoString()
+	public String getInfoLine()
 	{
-		return super.getInfoString() + ", load : " + getLoad() + "%";
+		return super.getInfoLine() + ", load : " + getLoad() + "%";
 	}
 
 	@Override

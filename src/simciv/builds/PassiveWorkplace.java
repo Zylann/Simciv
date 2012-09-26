@@ -35,7 +35,7 @@ public abstract class PassiveWorkplace extends Workplace
 	}
 	
 	@Override
-	public String getInfoString()
+	public String getInfoLine()
 	{
 		return "[" + getProperties().name + "] employees : " + getNbEmployees() + "/" + getMaxEmployees();
 	}

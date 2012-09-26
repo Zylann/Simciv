@@ -461,7 +461,7 @@ public class House extends Build
 	}
 
 	@Override
-	public String getInfoString()
+	public String getInfoLine()
 	{
 		String str = "[" + getProperties().name + "] inhabitants : " + getNbInhabitants();
 		if(getNbInhabitants() > 0)

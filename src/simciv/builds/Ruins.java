@@ -71,7 +71,7 @@ public class Ruins extends Build
 	}
 
 	@Override
-	public String getInfoString()
+	public String getInfoLine()
 	{
 		return infoString;
 	}

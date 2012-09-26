@@ -328,7 +328,7 @@ public class CityBuilder
 		if(pointedBuild == null)
 			infoText = "";
 		else
-			infoText = pointedBuild.getInfoString();
+			infoText = pointedBuild.getInfoLine();
 	}
 
 	public void cursorReleased() throws SlickException

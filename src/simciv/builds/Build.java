@@ -263,10 +263,10 @@ public abstract class Build extends TickableEntity
 	}
 	
 	/**
-	 * Returns a brief information about the building
+	 * Returns a brief information about the building, in one line.
 	 * @return
 	 */
-	public abstract String getInfoString();
+	public abstract String getInfoLine();
 
 	/**
 	 * Return true if the building can store resources

@@ -305,7 +305,7 @@ public abstract class Workplace extends Build
 	}
 
 	@Override
-	public String getInfoString()
+	public String getInfoLine()
 	{
 		String info = "[" + getProperties().name + "] employees : " + getNbEmployees() + "/" + getMaxEmployees();
 		if(state == STATE_ACTIVE)
