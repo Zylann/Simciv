@@ -77,6 +77,12 @@ public class Employer extends Citizen
 		}
 	}
 
+	@Override
+	public String getDisplayableName()
+	{
+		return "Employer";
+	}
+
 }
 
 

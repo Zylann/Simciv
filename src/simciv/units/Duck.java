@@ -32,6 +32,12 @@ public class Duck extends Unit
 	{
 	}
 
+	@Override
+	public String getDisplayableName()
+	{
+		return "Duck";
+	}
+
 }
 
 

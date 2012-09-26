@@ -50,6 +50,12 @@ public class Architect extends Citizen
 		renderDefault(gfx, Content.sprites.unitArchitect);
 	}
 
+	@Override
+	public String getDisplayableName()
+	{
+		return "Architect";
+	}
+
 }
 
 

@@ -262,6 +262,12 @@ public class Fireman extends Citizen
 			return false;
 		}
 	}
+
+	@Override
+	public String getDisplayableName()
+	{
+		return "Fireman";
+	}
 	
 }
 

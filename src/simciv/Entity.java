@@ -82,6 +82,8 @@ public abstract class Entity extends GameComponent
 		return healthPoints;
 	}
 	
+	public abstract String getDisplayableName();
+	
 	/**
 	 * Set the entity's position.
 	 * For buildings, it is used as the origin position.

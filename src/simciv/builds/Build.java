@@ -73,6 +73,12 @@ public abstract class Build extends TickableEntity
 		return BuildCategory.get(getProperties().category).getColor();
 	}
 	
+	@Override
+	public String getDisplayableName()
+	{
+		return getProperties().name;
+	}
+	
 	/**
 	 * Destroys the building (as gameplay meaning, for example with a bomb) with destruction effects.
 	 * Note : to erase a building without "destroying" it, use dispose().

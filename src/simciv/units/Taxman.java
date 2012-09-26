@@ -46,6 +46,12 @@ public class Taxman extends Citizen
 		renderDefault(gfx, Content.sprites.unitTaxman);
 	}
 
+	@Override
+	public String getDisplayableName()
+	{
+		return "Taxman";
+	}
+
 }
 
 

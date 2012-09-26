@@ -182,6 +182,12 @@ public class Conveyer extends Citizen
 		}
 	}
 
+	@Override
+	public String getDisplayableName()
+	{
+		return "Conveyer";
+	}
+
 }
 
 

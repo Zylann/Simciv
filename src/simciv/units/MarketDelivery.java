@@ -202,6 +202,12 @@ public class MarketDelivery extends Citizen
 		}
 	}
 
+	@Override
+	public String getDisplayableName()
+	{
+		return "Market delivery";
+	}
+
 }
 
 

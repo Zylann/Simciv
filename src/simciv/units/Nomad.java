@@ -42,6 +42,12 @@ public class Nomad extends Unit
 	{
 		return 700;
 	}
+
+	@Override
+	public String getDisplayableName()
+	{
+		return "Nomad";
+	}
 	
 }
 
