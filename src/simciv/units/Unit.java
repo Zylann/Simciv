@@ -7,6 +7,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.Log;
 
 import backend.Direction2D;
 import backend.geom.Vector2i;
@@ -113,19 +114,39 @@ public abstract class Unit extends TickableEntity
 	
 	/**
 	 * Makes the unit follow a path.
+	 * If the path is invalid, the old movement will be cleared (the unit will not move).
 	 * @param path : path to follow
 	 */
 	protected void followPath(LinkedList<Vector2i> path)
 	{
+		if(path == null || path.isEmpty()) {
+			Log.error(this + " Can't follow path. Path is null or empty.");
+			return;
+		}
+		
+		setMovement(null);
+		
 		// Remove first pos (if we already are on)
 		Vector2i firstPos = path.getFirst();
 		if(firstPos.equals(getX(), getY()))
-			path.removeFirst();
+		{
+			path.removeFirst();		
+			if(path.isEmpty()) {
+				Log.debug(this + " Can't follow path (1) : already on target position.");
+				return;
+			}
+		}
 		
 		// If the final pos is not walkable, remove it
 		Vector2i lastPos = path.getLast();
 		if(!mapRef.grid.isWalkable(lastPos.x, lastPos.y))
+		{
 			path.removeLast();
+			if(path.isEmpty()) {
+				Log.debug(this + " Can't follow path (2) : already on target position.");
+				return;
+			}
+		}
 
 		// Follow the path
 		setMovement(new PathMovement(path));
@@ -140,12 +161,20 @@ public abstract class Unit extends TickableEntity
 	{
 		movement = mvt;
 	}
-		
+	
+	/**
+	 * Returns true if the unit has a defined movement.
+	 * @return
+	 */
 	public boolean isMovement()
 	{
 		return movement != null;
 	}
 	
+	/**
+	 * Returns true if unit's movement is finished or not defined.
+	 * @return
+	 */
 	public boolean isMovementFinished()
 	{
 		if(movement == null)
@@ -153,6 +182,11 @@ public abstract class Unit extends TickableEntity
 		return movement.isFinished();
 	}
 	
+	/**
+	 * Returns true if the unit is blocked using its current movement definition.
+	 * Returns false if the unit is not blocked of if it has no defined movement.
+	 * @return
+	 */
 	public boolean isMovementBlocked()
 	{
 		if(movement == null)
