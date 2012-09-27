@@ -33,6 +33,13 @@ public class Label extends BasicWidget
 		setText(text);
 	}
 	
+	public Label(Widget parent, int x, int y, int w, int h, String text)
+	{
+		super(parent, x, y, w, h);
+		setText(text);
+		setTextWrap(true);
+	}
+	
 	public Text getText()
 	{
 		return text;
@@ -65,9 +72,20 @@ public class Label extends BasicWidget
 	public void setTextWrap(boolean enable)
 	{
 		if(text != null)
+		{
 			text.setWrapEnabled(enable);
+			text.setMaxLineWidth(getWidth());
+		}
 	}
-			
+		
+	@Override
+	public void setSize(int x, int y)
+	{
+		super.setSize(x, y);
+		if(text != null)
+			text.setMaxLineWidth(getWidth());
+	}
+
 	public Image getImage()
 	{
 		return image;
