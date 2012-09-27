@@ -17,9 +17,11 @@ import simciv.MinimapUpdater;
 import simciv.Terrain;
 import simciv.Map;
 import simciv.builds.Build;
+import simciv.builds.House;
 import simciv.content.Content;
 import simciv.persistence.GameSaveData;
 import simciv.persistence.GameSaverThread;
+import simciv.ui.BuildInfoWindow;
 import simciv.ui.BuildMenu;
 import simciv.ui.BuildMenuBar;
 import simciv.ui.InfoBar;
@@ -56,6 +58,7 @@ public class CityView extends UIBasicGameState
 	private IndicatorsBar indicatorsBar;
 	private TimeBar timeBar;
 	private NotificationArea notificationArea;
+	private BuildInfoWindow buildInfoWindow;
 	private GameSaverThread gameSaver;
 	private PerformanceGraph renderTimeGraph;
 	private boolean quitGameRequested;
@@ -187,6 +190,14 @@ public class CityView extends UIBasicGameState
 		menuBar.addCategory(Content.sprites.uiCategHealth, "Health", healthMenu);
 		
 		ui.add(menuBar);
+		
+		// Build info window
+		
+		buildInfoWindow = new BuildInfoWindow(ui, "Build info");
+		buildInfoWindow.addOnOpenAction(new SetPauseAction(true));
+		buildInfoWindow.addOnCloseAction(new SetPauseAction(false));
+		buildInfoWindow.setVisible(false);
+		ui.add(buildInfoWindow);
 		
 		// Indicators bar
 		
@@ -370,8 +381,22 @@ public class CityView extends UIBasicGameState
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
+			
 			if(button == Input.MOUSE_MIDDLE_BUTTON && !minimapWindow.isVisible())
 				toggleShowMinimap();
+			
+			if(button == Input.MOUSE_RIGHT_BUTTON)
+			{
+				Build b = map.getBuild(pointedCell.x, pointedCell.y);
+				if(b != null)
+				{
+					if(House.class.isInstance(b))
+					{
+						buildInfoWindow.open();
+						buildInfoWindow.setInfoText(b.getInfoLine());
+					}
+				}
+			}
 		}
 	}
 	
@@ -413,7 +438,7 @@ public class CityView extends UIBasicGameState
 			else
 				ui.setY(0);
 		}
-		if(key == Input.KEY_TAB)
+		if(key == Input.KEY_TAB && !paused)
 			toggleShowMinimap();
 		if(key == Input.KEY_SPACE)
 			map.setFastForward(!map.isFastForward());
@@ -429,8 +454,13 @@ public class CityView extends UIBasicGameState
 	
 	public void togglePause()
 	{
-		paused = !paused;
+		setPause(!paused);
 		pauseWindow.setVisible(paused);
+	}
+	
+	private void setPause(boolean p)
+	{
+		paused = p;
 	}
 	
 	public void toggleShowMinimap()
@@ -446,6 +476,18 @@ public class CityView extends UIBasicGameState
 		@Override
 		public void actionPerformed(Widget sender) {
 			togglePause();
+		}	
+	}
+	
+	class SetPauseAction implements IActionListener
+	{
+		boolean pause;
+		public SetPauseAction(boolean p) {
+			pause = p;
+		}
+		@Override
+		public void actionPerformed(Widget sender) {
+			setPause(pause);
 		}	
 	}
 	
