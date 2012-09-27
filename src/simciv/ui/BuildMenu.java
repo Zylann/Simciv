@@ -48,7 +48,7 @@ public class BuildMenu extends Menu
 		if(parentBuildMenuBar.cityBuilderRef != null)
 		{
 			try {
-				updateInfos(parentBuildMenuBar.cityBuilderRef.getWorld());
+				updateInfos(parentBuildMenuBar.cityBuilderRef.getMap());
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}

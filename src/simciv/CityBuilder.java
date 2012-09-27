@@ -68,7 +68,7 @@ public class CityBuilder
 		setBuildString("House");
 	}
 	
-	public Map getWorld()
+	public Map getMap()
 	{
 		return mapRef;
 	}
