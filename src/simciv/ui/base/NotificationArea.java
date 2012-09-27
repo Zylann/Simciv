@@ -1,6 +1,6 @@
 package simciv.ui.base;
 
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.util.Log;
 
 /**
  * Notifications container
@@ -23,10 +23,10 @@ public class NotificationArea extends WidgetContainer implements INotificationLi
 	 * Better use add(notification) to prevent mistakes
 	 */
 	@Override @Deprecated
-	public void add(Widget child) throws SlickException
+	public void add(Widget child)
 	{
 		if(!Notification.class.isInstance(child))
-			throw new SlickException("Cannot add a non-Notification widget to a NotificationArea");
+			Log.error("Cannot add a non-Notification widget to a NotificationArea");
 		add((Notification)child);
 	}
 	
@@ -57,14 +57,8 @@ public class NotificationArea extends WidgetContainer implements INotificationLi
 		// Positionning
 		n.setPosition(0, i * Notification.HEIGHT);
 		n.layout();
-				
-		try
-		{
-			super.add(n);
-		} catch (SlickException e)
-		{
-			e.printStackTrace();
-		}
+
+		super.add(n);
 	}
 		
 	/**

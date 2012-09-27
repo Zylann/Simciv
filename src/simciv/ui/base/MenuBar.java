@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.util.Log;
 
 public class MenuBar extends WidgetContainer
 {
@@ -15,12 +16,6 @@ public class MenuBar extends WidgetContainer
 		buttons = new ArrayList<MenuBarButton>();
 	}
 	
-	@Override
-	public void add(Widget child) throws SlickException
-	{
-		throw new SlickException("UI: only MenuBarButton objects can be added to a MenuBar.");
-	}
-
 	@Override
 	public boolean mousePressed(int button, int x, int y)
 	{
@@ -45,6 +40,12 @@ public class MenuBar extends WidgetContainer
 			if(b != except)
 				b.press(false);
 		}
+	}
+
+	@Override @Deprecated
+	public void add(Widget child)
+	{
+		Log.error("UI: only MenuBarButton objects can be added to a MenuBar.");
 	}
 
 	public void add(MenuBarButton b, Menu m) throws SlickException

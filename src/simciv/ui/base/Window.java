@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
 
 /**
  * A widget container with a frame, a title bar and a close button.
@@ -28,13 +27,9 @@ public class Window extends WidgetContainer
 		closeActionListeners = new ArrayList<IActionListener>();
 		openActionListeners = new ArrayList<IActionListener>();
 		
-		try {
-			super.add(winCloseButton);
-			super.add(titleBar);
-			super.add(content);
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
+		super.add(winCloseButton);
+		super.add(titleBar);
+		super.add(content);
 	}
 	
 	@Override
@@ -81,9 +76,9 @@ public class Window extends WidgetContainer
 	{
 		return true;
 	}
-		
+	
 	@Override
-	public void add(Widget child) throws SlickException
+	public void add(Widget child)
 	{
 		child.setY(child.getY() + titleBar.getHeight());
 		content.add(child);

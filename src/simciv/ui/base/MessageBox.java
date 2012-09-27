@@ -1,7 +1,6 @@
 package simciv.ui.base;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.SlickException;
 
 public class MessageBox extends Window
 {
@@ -22,14 +21,8 @@ public class MessageBox extends Window
 		message.setSize(width, height - closeButton.getHeight());
 		message.setTextWrap(true);
 		
-		try
-		{
-			add(closeButton);
-			add(message);
-		} catch (SlickException e)
-		{
-			e.printStackTrace();
-		}
+		add(closeButton);
+		add(message);
 	}
 	
 	public void setText(String text)

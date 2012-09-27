@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.util.Log;
 
 /**
@@ -23,13 +22,16 @@ public class WidgetContainer extends Widget
 		children = new ArrayList<Widget>();
 	}
 	
-	// TODO don't throw exceptions, use messages
-	public void add(Widget child) throws SlickException
+	public void add(Widget child)
 	{
-		if(child == null)
-			throw new SlickException("Cannot add a null child widget");
-		if(children.contains(child))
-			throw new SlickException("A child has been added twice");
+		if(child == null) {
+			Log.error("Cannot add a null child widget");
+			return;
+		}
+		if(children.contains(child)) {
+			Log.error("A child has been added twice (" + child + ")");
+			return;
+		}
 		children.add(child);
 	}
 	

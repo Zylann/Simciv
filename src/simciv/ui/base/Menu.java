@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.util.Log;
 
 /**
  * Vertical list of clickable buttons.
@@ -26,10 +27,11 @@ public class Menu extends WidgetContainer
 	 * @param child: widget of class MenuItem
 	 */
 	@Override @Deprecated
-	public void add(Widget child) throws SlickException
+	public void add(Widget child)
 	{
-		if(!MenuItem.class.isInstance(child))
-			throw new SlickException("Menu : Cannot add a child which is not a MenuItem.");
+		if(!MenuItem.class.isInstance(child)) {
+			Log.error("Menu : Cannot add a child which is not a MenuItem.");
+		}
 		add((MenuItem)child, null);
 	}
 
@@ -40,7 +42,7 @@ public class Menu extends WidgetContainer
 	 * @return Menu object for chaining.
 	 * @throws SlickException
 	 */
-	public Menu add(MenuItem item, IActionListener actionListener) throws SlickException
+	public Menu add(MenuItem item, IActionListener actionListener)
 	{
 		if(actionListener != null)
 			item.addActionListener(actionListener);

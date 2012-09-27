@@ -2,8 +2,6 @@ package simciv.ui;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
-
 import simciv.ui.base.Label;
 import simciv.ui.base.WidgetContainer;
 import simciv.ui.base.Window;
@@ -17,14 +15,10 @@ public class BuildInfoWindow extends Window
 		super(parent, 0, 0, 250, 200, title);
 		alignToCenter();
 		
-		try {
-			infoText = new Label(this, 4, 4, getWidth() - 8, getHeight() - 8, "[Build info]");
-			infoText.setTextWrap(true);
-			infoText.setTextColor(Color.black);
-			this.add(infoText);
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
+		infoText = new Label(this, 4, 4, getWidth() - 8, getHeight() - 8, "[Build info]");
+		infoText.setTextWrap(true);
+		infoText.setTextColor(Color.black);
+		this.add(infoText);
 	}
 	
 	public void setInfoText(String text)
@@ -44,3 +38,5 @@ public class BuildInfoWindow extends Window
 	}
 	
 }
+
+
