@@ -1,5 +1,7 @@
 package simciv.ui.base;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -14,6 +16,8 @@ public class Window extends WidgetContainer
 	private WidgetContainer content;
 	private WindowTitleBar titleBar; 
 	private WindowCloseButton winCloseButton;
+	private ArrayList<IActionListener> closeActionListeners;
+	private ArrayList<IActionListener> openActionListeners;
 	
 	public Window(WidgetContainer parent, int x, int y, int width, int height, String title)
 	{
@@ -21,13 +25,14 @@ public class Window extends WidgetContainer
 		titleBar = new WindowTitleBar(this, title);
 		winCloseButton = new WindowCloseButton(this);
 		content = new WidgetContainer(this, 0, titleBar.getHeight(), width, height - titleBar.getHeight());
-		try
-		{
+		closeActionListeners = new ArrayList<IActionListener>();
+		openActionListeners = new ArrayList<IActionListener>();
+		
+		try {
 			super.add(winCloseButton);
 			super.add(titleBar);
 			super.add(content);
-		} catch (SlickException e)
-		{
+		} catch (SlickException e) {
 			e.printStackTrace();
 		}
 	}
@@ -42,11 +47,30 @@ public class Window extends WidgetContainer
 		winCloseButton.posX = width - winCloseButton.getWidth();
 	}
 	
-	public void addOnCloseAction(IActionListener action)
+	public void open()
 	{
-		winCloseButton.addActionListener(action);
+		setVisible(true);
+		for(IActionListener l : openActionListeners)
+			l.actionPerformed(this);
 	}
 	
+	public void close()
+	{
+		setVisible(false);
+		for(IActionListener l : closeActionListeners)
+			l.actionPerformed(this);
+	}
+	
+	public void addOnCloseAction(IActionListener action)
+	{
+		closeActionListeners.add(action);
+	}
+	
+	public void addOnOpenAction(IActionListener action)
+	{
+		openActionListeners.add(action);
+	}
+
 	public void setDraggable(boolean enabled)
 	{
 		titleBar.setDraggable(enabled);

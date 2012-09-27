@@ -11,7 +11,7 @@ public class WindowCloseButton extends Button
 	public WindowCloseButton(Window parent)
 	{
 		super(parent, parent.width - width, 0, width, height);
-		addActionListener(new CloseAction());
+		addActionListener(new CloseWindowAction());
 	}
 
 	@Override
@@ -31,11 +31,11 @@ public class WindowCloseButton extends Button
 		UIRenderer.instance().renderWindowCloseButton(gfx, this);
 	}
 	
-	class CloseAction implements IActionListener
+	class CloseWindowAction implements IActionListener
 	{
 		@Override
 		public void actionPerformed(Widget sender) {
-			parent.setVisible(false);
+			((Window)parent).close();
 		}		
 	}
 
