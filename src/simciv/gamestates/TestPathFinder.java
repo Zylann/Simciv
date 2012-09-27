@@ -27,10 +27,9 @@ import backend.pathfinding.MultiSeedPathFinder;
  * @author Marc
  *
  */
-public class Test extends BasicGameState
+public class TestPathFinder extends BasicGameState
 {
-	public static final int STATE_ID = 42;
-	
+	private int stateID;
 	private ByteArray2D map;
 	private Vector2i mousePos;
 	private int mapScale;
@@ -38,6 +37,11 @@ public class Test extends BasicGameState
 	private List<LinkedList<Vector2i>> paths;
 	private MultiSeedPathFinder pathFinder;
 	private boolean autoPathFinding;
+	
+	public TestPathFinder(int stateID)
+	{
+		this.stateID = stateID;
+	}
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
@@ -260,7 +264,7 @@ public class Test extends BasicGameState
 	@Override
 	public int getID()
 	{
-		return STATE_ID;
+		return stateID;
 	}
 		
 	class MapSpec implements IMapSpec, IMapTarget

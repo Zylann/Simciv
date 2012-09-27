@@ -85,6 +85,7 @@ public class MainMenu extends UIBasicGameState
 		
 		// Main title
 		Label title = new Label(ui, 0, 50, Game.title);
+		title.updateSize();
 		title.setAlignX(Widget.ALIGN_CENTER);
 		title.setTextColor(Color.white);
 		ui.add(title);

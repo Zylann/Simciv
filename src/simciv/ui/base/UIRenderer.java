@@ -75,7 +75,11 @@ public class UIRenderer
 		gfx.popTransform();
 	}
 	
-	public void renderImagePart(Graphics gfx, Image img, int posX, int posY, int srcX, int srcY, int srcW, int srcH)
+	public void renderImagePart(
+			Graphics gfx, Image img,
+			int posX, int posY,
+			int srcX, int srcY,
+			int srcW, int srcH)
 	{
 		gfx.drawImage(img,
 				posX, posY,
@@ -84,7 +88,9 @@ public class UIRenderer
 				srcX + srcW, srcY + srcH);
 	}
 	
-	public void renderImageRepeatXY(Graphics gfx, Image img, int posX, int posY, int w, int h)
+	public void renderImageRepeatXY(
+			Graphics gfx, Image img,
+			int posX, int posY, int w, int h)
 	{
 		int lastW = w % img.getWidth();
 		int lastH = h % img.getHeight();
@@ -137,7 +143,8 @@ public class UIRenderer
 	 * @param w
 	 * @param h
 	 */
-	public void renderFrame(Graphics gfx, SpriteSheet sheet, int posX, int posY, int w, int h, int b)
+	public void renderFrame(Graphics gfx, SpriteSheet sheet,
+			int posX, int posY, int w, int h, int b)
 	{		
 		Image top = sheet.getSprite(1, 0);
 		Image left = sheet.getSprite(0, 1);
@@ -159,7 +166,8 @@ public class UIRenderer
 		renderImageRepeatXY(gfx, center, posX + b, posY + b, w - 2 * b, h - 2 * b);
 	}
 	
-	public void renderBar(Graphics gfx, SpriteSheet sheet, int posX, int posY, int w, int h, int b, int s)
+	public void renderBar(Graphics gfx, SpriteSheet sheet,
+			int posX, int posY, int w, int h, int b, int s)
 	{
 		// Corners
 		gfx.drawImage(sheet.getSprite(0, s), posX, posY);
@@ -321,7 +329,8 @@ public class UIRenderer
 		if(label.getText() != null)
 		{
 			gfx.setColor(label.getTextColor());
-			gfx.drawString(label.getText(), x, y);
+			gfx.setFont(this.font);
+			label.getText().render(gfx, x, y);
 		}
 	}
 

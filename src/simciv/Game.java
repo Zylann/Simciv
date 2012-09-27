@@ -30,7 +30,8 @@ import simciv.gamestates.CityView;
 import simciv.gamestates.ContentLoadingScreen;
 import simciv.gamestates.GameLoadingScreen;
 import simciv.gamestates.MainMenu;
-import simciv.gamestates.Test;
+import simciv.gamestates.TestPathFinder;
+import simciv.gamestates.TestText;
 import simciv.ui.base.CrashWindow;
 import simciv.ui.base.UIStateBasedGame;
 
@@ -58,6 +59,9 @@ public class Game extends UIStateBasedGame
 	public static final int STATE_GAME_CREATING = 3;
 	public static final int STATE_GAME_LOADING = 4;
 	public static final int STATE_CITY_VIEW = 5;
+	// Test state constants
+	public static final int STATE_TEST_PATHFINDER = 42;
+	public static final int STATE_TEST_TEXT = 43;
 
 	public static Settings settings;
 	
@@ -198,7 +202,8 @@ public class Game extends UIStateBasedGame
 		addState(new MainMenu(STATE_MAIN_MENU));
 		cityView = new CityView(STATE_CITY_VIEW);
 		addState(cityView);		
-		addState(new Test());
+		addState(new TestPathFinder(STATE_TEST_PATHFINDER));
+		addState(new TestText(STATE_TEST_TEXT));
 	}
 
 	@Override
@@ -219,7 +224,6 @@ public class Game extends UIStateBasedGame
 
 		// Enter first state
 		enterState(STATE_CONTENT_LOADING);
-//		enterState(Test.STATE_ID);
 	}
 	
 	// Main window listeners

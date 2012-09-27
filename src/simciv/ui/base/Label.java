@@ -7,6 +7,8 @@ import org.newdawn.slick.Image;
 
 import simciv.content.Content;
 
+import backend.ui.Text;
+
 /**
  * Simple text/image display widget
  * @author Marc
@@ -15,7 +17,7 @@ import simciv.content.Content;
 public class Label extends BasicWidget
 {
 	private Image image;
-	private String text;
+	private Text text;
 	private Color textColor;
 	
 	public Label(Widget parent, int x, int y, Image image)
@@ -29,6 +31,11 @@ public class Label extends BasicWidget
 	{
 		super(parent, x, y, 0, 0);
 		setText(text);
+	}
+	
+	public Text getText()
+	{
+		return text;
 	}
 	
 	public void setTextColor(Color clr)
@@ -47,17 +54,20 @@ public class Label extends BasicWidget
 		updateSize();
 	}
 	
-	public void setText(String text)
+	public void setText(String str)
 	{
-		this.text = text;
-		updateSize();
+		if(text == null)
+			text = new Text(str);
+		else
+			text.setFromString(str);
 	}
 	
-	public String getText()
+	public void setTextWrap(boolean enable)
 	{
-		return text;
+		if(text != null)
+			text.setWrapEnabled(enable);
 	}
-	
+			
 	public Image getImage()
 	{
 		return image;
@@ -71,13 +81,14 @@ public class Label extends BasicWidget
 		int w = width;
 		int h = height;
 		
-		if(text != null)
+		if(text != null && !text.isWrapEnabled())
 		{
-			int tw = Content.globalFont.getWidth(text);
-			int th = Content.globalFont.getHeight(text);
-			if(tw > w)
+			String str = text.getSourceText();
+			int tw = Content.globalFont.getWidth(str);
+			int th = Content.globalFont.getHeight(str);
+			if (tw > w)
 				w = tw;
-			if(th > h)
+			if (th > h)
 				h = th;
 		}
 		

@@ -20,6 +20,7 @@ public class MessageBox extends Window
 		message = new Label(this, 4, 2, "---");
 		message.setTextColor(Color.black);
 		message.setSize(width, height - closeButton.getHeight());
+		message.setTextWrap(true);
 		
 		try
 		{
