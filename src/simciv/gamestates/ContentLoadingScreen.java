@@ -10,6 +10,7 @@ import org.newdawn.slick.util.Log;
 import simciv.Game;
 import simciv.content.Content;
 
+// TODO replace this state by a Swing splash screen
 public class ContentLoadingScreen extends BasicGameState
 {
 	private int stateID = -1;

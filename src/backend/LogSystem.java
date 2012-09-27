@@ -3,7 +3,7 @@ package backend;
 import java.util.Date;
 
 /**
- * Default Slick-based log system that supports console echo
+ * Slick-based log system that supports console echo
  * @author Marc
  *
  */

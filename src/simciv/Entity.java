@@ -7,6 +7,7 @@ import backend.Direction2D;
 import backend.GameComponent;
 import backend.IntRange2D;
 
+// TODO write a generic Entity class in backend (for easy re-use) supporting both float and int positions
 /**
  * An entity is a located game element that can update and draw itself.
  * In this game, entity coordinates are integers (map grid position)
