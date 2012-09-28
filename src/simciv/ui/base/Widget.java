@@ -242,7 +242,7 @@ public abstract class Widget
 		case ALIGN_CENTER : posY = (parent.getHeight() - getHeight()) / 2; break;
 		case ALIGN_BOTTOM : posY = parent.getHeight() - getHeight() - marginY; break;
 		default : break;
-		}
+		}		
 	}
 	
 	public void setAlign(byte alignX, byte alignY)

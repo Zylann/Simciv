@@ -151,7 +151,7 @@ public class Map
 		// Update effects
 		graphicalEffects.updateAll(gc, game, delta);		
 	}
-
+	
 	/**
 	 * Adds a graphical effect.
 	 * Note : do not call this method from a VisualEffect's method

@@ -15,6 +15,8 @@ import simciv.content.Content;
  */
 public class UIRenderer
 {
+	// TODO make fully generic for putting ui.base in backend (easier re-use)
+	
 	// Unique instance
 	protected static UIRenderer instance;
 	// Constants
