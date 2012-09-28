@@ -27,7 +27,7 @@ public class Window extends WidgetContainer
 	 * @param height : windtw's height
 	 * @param title : window's title
 	 */
-	public Window(WidgetContainer parent, int x, int y, int width, int height, String title)
+	public Window(Widget parent, int x, int y, int width, int height, String title)
 	{
 		super(parent, x, y, width, height + WindowTitleBar.height);
 		titleBar = new WindowTitleBar(this, title);
@@ -41,6 +41,11 @@ public class Window extends WidgetContainer
 		super.add(content);
 	}
 	
+	public Window(Widget parent, int w, int h, String title)
+	{
+		this(parent, 0, 0, w, h, title);
+	}
+	
 	/**
 	 * Sets text displayed on the title bar
 	 * @param title
@@ -51,9 +56,9 @@ public class Window extends WidgetContainer
 	}
 	
 	@Override
-	public void adaptSize()
+	public void adaptSizeFromChildren()
 	{
-		content.adaptSize();
+		content.adaptSizeFromChildren();
 		width = content.width;
 		height = content.height;
 		titleBar.width = width;

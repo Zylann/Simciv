@@ -15,7 +15,7 @@ public class MenuBarButton extends Button
 	public MenuBarButton(MenuBar parent, int w, int h, Image icon)
 	{
 		super(parent, 0, 0, w, h);
-		label = new Label(this, 0, 0, icon);
+		label = new Label(this, icon);
 		label.alignToCenter();
 		parentMenuBar = parent;
 	}
@@ -23,7 +23,7 @@ public class MenuBarButton extends Button
 	public MenuBarButton(MenuBar parent, int w, int h, String text)
 	{
 		super(parent, 0, 0, w, h);
-		label = new Label(this, 0, 0, text);
+		label = new Label(this, text);
 		label.alignToCenter();
 		parentMenuBar = parent;
 	}

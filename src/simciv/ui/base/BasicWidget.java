@@ -11,6 +11,11 @@ public abstract class BasicWidget extends Widget
 	{
 		super(parent, x, y, width, height);
 	}
+	
+	public BasicWidget(Widget parent, int width, int height)
+	{
+		this(parent, 0, 0, width, height);
+	}
 
 	@Override
 	public boolean mouseMoved(int oldX, int oldY, int newX, int newY)

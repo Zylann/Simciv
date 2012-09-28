@@ -17,11 +17,14 @@ public abstract class Widget
 	public static final byte ALIGN_BOTTOM = 4;
 	public static final byte ALIGN_CENTER = 5;
 	
-	// Relative position towards its parent
+	/** Relative position X towards its parent **/
 	protected int posX;
+	/** Relative position Y towards its parent **/	
 	protected int posY;
-	// Size (all widgets are rectangular)
+	
+	/** Width (all widgets are rectangular) **/
 	protected int width;
+	/** Height (all widgets are rectangular) **/
 	protected int height;
 	
 	protected boolean visible;
@@ -35,12 +38,15 @@ public abstract class Widget
 	{
 		this.parent = parent;
 		visible = true;
-		alignX = ALIGN_NONE;
-		alignY = ALIGN_NONE;
 		posX = x;
 		posY = y;
 		width = w > 0 ? w : 0;
 		height = h > 0 ? h : 0;
+	}
+	
+	public Widget(Widget parent, int w, int h)
+	{
+		this(parent, 0, 0, w, h);
 	}
 	
 	/**
@@ -89,7 +95,23 @@ public abstract class Widget
 		setSize(width, height);
 	}
 	
+	/**
+	 * Sets the new size of the widget, and recomputes its layout
+	 * @param x
+	 * @param y
+	 */
 	public void setSize(int x, int y)
+	{
+		setSizeNoLayout(x, y);
+		
+		WidgetContainer p = getParentContainer();
+		if(p != null && p.getLayout() != null)
+			p.layout();
+		else
+			layout();
+	}
+	
+	public void setSizeNoLayout(int x, int y)
 	{
 		width = x > 0 ? x : 0;
 		height = y > 0 ? y : 0;
@@ -175,11 +197,22 @@ public abstract class Widget
 	}
 
 	/**
-	 * @return widget's parent. Can be null.
+	 * @return widget's parent. Can be null if the widget is a root.
 	 */
 	public Widget getParent()
 	{
 		return parent;
+	}
+	
+	/**
+	 * @return widget's parent container.
+	 * Can be null if the widget is a root, or if its parent is not a container.
+	 */
+	public WidgetContainer getParentContainer()
+	{
+		if(WidgetContainer.class.isInstance(parent))
+			return (WidgetContainer)parent;
+		return null;
 	}
 	
 	/**
@@ -212,22 +245,89 @@ public abstract class Widget
 			y < selfY + this.height ;
 	}
 	
-	public void setMargins(int mx, int my)
+	public void setAlignX(byte alignX)
 	{
-		marginX = mx;
-		marginY = my;
-		layout();
+		setAlignX(alignX, 0);
+	}
+	
+	public void setAlignY(byte alignY)
+	{
+		setAlignX(alignY, 0);
+	}
+	
+	public void setAlignX(byte alignX, int marginX)
+	{
+		setAlign(alignX, ALIGN_NONE, marginX, 0);
+	}
+	
+	public void setAlignY(byte alignY, int marginY)
+	{
+		setAlign(ALIGN_NONE, alignY, 0, marginY);
+	}
+	
+	public void alignToCenter()
+	{
+		setAlign(ALIGN_CENTER, ALIGN_CENTER, 0, 0);
+	}
+	
+	public byte getAlignX()
+	{
+		return alignX;
+	}
+	
+	public byte getAlignY()
+	{
+		return alignY;
+	}
+	
+	public int getMarginX()
+	{
+		return marginX;
+	}
+	
+	public int getMarginY()
+	{
+		return marginY;
+	}
+	
+	public void setMargins(int marginX, int marginY)
+	{
+		this.marginX = marginX;
+		this.marginY = marginY;
+		updateAlign();
+	}
+	
+	public void setAlign(byte alignX, byte alignY, int marginX, int marginY)
+	{
+		this.alignX = alignX;
+		this.alignY = alignY;
+		this.marginX = marginX;
+		this.marginY = marginY;
+		updateAlign();
 	}
 	
 	/**
-	 * Updates widget's positionning towards its parent.
-	 * Called when the parent widget is resized.
+	 * Keeps the widget inside its parent.
+	 * Margins are supported.
 	 */
-	public void layout()
+	public void keepInsideParent()
 	{
 		if(parent == null)
 			return;
 		
+		if(posX - marginX < 0)
+			posX = marginX;
+		if(posX + width + marginX >= parent.getWidth())
+			posX = parent.getWidth() - width - marginX;
+		
+		if(posY - marginY < 0)
+			posY = marginY;
+		if(posY + width + marginY >= parent.getHeight())
+			posY = parent.getHeight() - height - marginY;
+	}
+	
+	public void updateAlignX()
+	{
 		switch(alignX)
 		{
 		case ALIGN_LEFT :	posX = marginX;	break;
@@ -235,45 +335,46 @@ public abstract class Widget
 		case ALIGN_RIGHT :  posX = parent.getWidth() - getWidth() - marginX; break;
 		default : break;
 		}
-		
+	}
+	
+	public void updateAlignY()
+	{
 		switch(alignY)
 		{
 		case ALIGN_TOP :	posY = marginY; break;
 		case ALIGN_CENTER : posY = (parent.getHeight() - getHeight()) / 2; break;
 		case ALIGN_BOTTOM : posY = parent.getHeight() - getHeight() - marginY; break;
 		default : break;
-		}		
+		}
 	}
 	
-	public void setAlign(byte alignX, byte alignY)
+	private void updateAlign()
 	{
-		this.alignX = alignX;
-		this.alignY = alignY;
-		layout();
+		if(parent == null)
+			return;
+		
+		WidgetContainer p = getParentContainer();
+		if(p != null && p.getLayout() != null)
+			return;
+		
+		updateAlignX();
+		updateAlignY();
 	}
-	
-	public void setAlignX(byte alignX)
+		
+	/**
+	 * Updates widget's positionning towards its parent.
+	 * Called when the parent widget is resized.
+	 */
+	public void layout()
 	{
-		this.alignX = alignX;
-		layout();
-	}
-	
-	public void setAlignY(byte alignY)
-	{
-		this.alignY = alignY;
-		layout();
-	}
-	
-	public void alignToCenter()
-	{
-		setAlign(Widget.ALIGN_CENTER, Widget.ALIGN_CENTER);
+		updateAlign();
 	}
 	
 	/**
 	 * If true, the widget will intercept events if the mouse cursor is contained in.
-	 * Example : if there is two containers and one receives an event, the second one will not
+	 * Example : if there is two superposed containers and one receives an event, the second one will not
 	 * be notified of this event. In another case, a window hidden over another will not receive mouse clicks.
-	 * (this is useful mainly for containers, despite been present in Widgets)
+	 * (this is useful mainly for containers)
 	 * @return
 	 */
 	public boolean isOpaqueContainer()
@@ -287,15 +388,18 @@ public abstract class Widget
 	 */
 	public void popup()
 	{
-		if(WidgetContainer.class.isInstance(parent))
-			((WidgetContainer)parent).popupChild(this);
+		WidgetContainer p = getParentContainer();
+		if(p != null)
+			p.popupChild(this);
 	}
-		
-	// Each of these methods below return a boolean.
-	// If true, the event will be consumed by the GUI.
-	// If false, it will be forwarded to the game.
-	// Each coordinate is screen-relative.
 	
+	/*
+	 * Each of these methods below return a boolean.
+	 * If true, the event will be consumed by the GUI.
+	 * If false, it will be forwarded to the game.
+	 * Each coordinate is screen-relative.
+	 */
+		
 	public abstract boolean mouseMoved(int oldX, int oldY, int newX, int newY);
 	public abstract boolean mouseDragged(int oldX, int oldY, int newX, int newY);
 	public abstract boolean mousePressed(int button, int x, int y);

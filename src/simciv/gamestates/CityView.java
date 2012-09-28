@@ -147,7 +147,7 @@ public class CityView extends UIBasicGameState
 		minimap.setViz(minimapUpdater.getViz());
 		minimap.setVisible(true);
 		minimapWindow.add(minimap);
-		minimapWindow.adaptSize();
+		minimapWindow.adaptSizeFromChildren();
 		minimapWindow.alignToCenter();
 		minimapWindow.setVisible(false);
 		ui.add(minimapWindow);
@@ -222,7 +222,6 @@ public class CityView extends UIBasicGameState
 		
 		notificationArea = new NotificationArea(ui, 0, timeBar.getY() + timeBar.getHeight(), 200);
 		notificationArea.setAlignX(Widget.ALIGN_RIGHT);
-		notificationArea.setMargins(10, 0);
 		ui.add(notificationArea);
 		builder.setNotificationListener(notificationArea);
 		map.setNotificationListener(notificationArea);

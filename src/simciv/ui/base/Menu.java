@@ -15,7 +15,7 @@ public class Menu extends WidgetContainer
 {
 	private List<IActionListener> actionListeners;
 	
-	public Menu(Widget parent, int x, int y, int width)
+	public Menu(WidgetContainer parent, int x, int y, int width)
 	{
 		super(parent, x, y, width, 0);
 		actionListeners = new ArrayList<IActionListener>();

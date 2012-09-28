@@ -16,6 +16,11 @@ public class MenuBar extends WidgetContainer
 		buttons = new ArrayList<MenuBarButton>();
 	}
 	
+	public MenuBar(Widget parent)
+	{
+		this(parent, 0, 0);
+	}
+	
 	@Override
 	public boolean mousePressed(int button, int x, int y)
 	{

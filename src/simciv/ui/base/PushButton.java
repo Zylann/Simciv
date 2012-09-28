@@ -16,11 +16,16 @@ public class PushButton extends Button
 
 	private String text;
 
-	public PushButton(WidgetContainer parent, int x, int y, String text)
+	public PushButton(Widget parent, int x, int y, String text)
 	{
 		// TODO allow various button widths
 		super(parent, x, y, 128, HEIGHT);
 		this.text = text;
+	}
+	
+	public PushButton(Widget parent, String text)
+	{
+		this(parent, 0, 0, text);
 	}
 	
 	public String getText()

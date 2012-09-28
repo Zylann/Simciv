@@ -26,6 +26,11 @@ public abstract class Button extends Widget
 		actionListeners = new ArrayList<IActionListener>();
 	}
 	
+	public Button(Widget parent, int w, int h)
+	{
+		this(parent, 0, 0, w, h);
+	}
+	
 	/**
 	 * Adds a listener which be notified when the button is activated
 	 * (defines the action associated to the button).

@@ -18,10 +18,15 @@ public class ToolButton extends Button
 	private ToolButtonGroup group;
 	public Image icon;
 	
-	public ToolButton(WidgetContainer parent, int x, int y, ToolButtonGroup group)
+	public ToolButton(Widget parent, int x, int y, ToolButtonGroup group)
 	{
 		super(parent, x, y, SIZE, SIZE);
 		this.group = group;
+	}
+	
+	public ToolButton(Widget parent, ToolButtonGroup group)
+	{
+		this(parent, 0, 0, group);
 	}
 		
 	public void select(boolean s)

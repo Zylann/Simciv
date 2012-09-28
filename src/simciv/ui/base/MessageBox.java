@@ -7,22 +7,26 @@ public class MessageBox extends Window
 	protected PushButton closeButton;
 	protected Label message;
 
-	public MessageBox(WidgetContainer parent, int x, int y, int width, int height, String title)
+	public MessageBox(Widget parent, int x, int y, int width, int height, String title)
 	{
 		super(parent, x, y, width, height, title);
 		
 		closeButton = new PushButton(this, 0, 0, "OK");
-		closeButton.setMargins(0, 8);
-		closeButton.setAlign(ALIGN_CENTER, ALIGN_BOTTOM);
+		closeButton.setAlign(ALIGN_CENTER, ALIGN_BOTTOM, 0, 8);
 		closeButton.addActionListener(new CloseAction());
 		
-		message = new Label(this, 4, 2, "---");
+		message = new Label(this, "---");
 		message.setTextColor(Color.black);
 		message.setSize(width, height - closeButton.getHeight());
 		message.setTextWrap(true);
 		
 		add(closeButton);
 		add(message);
+	}
+	
+	public MessageBox(Widget parent, int w, int h, String title)
+	{
+		this(parent, 0, 0, w, h, title);
 	}
 	
 	public void setText(String text)

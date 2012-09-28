@@ -20,16 +20,28 @@ public class Label extends BasicWidget
 	private Text text;
 	private Color textColor;
 	
+	public Label(Widget parent, String text)
+	{
+		super(parent, 0, 0, 0, 0);
+		setText(text);
+	}
+	
+	public Label(Widget parent, Image image)
+	{
+		super(parent, 0, 0, 0, 0);
+		setImage(image);
+	}
+
 	public Label(Widget parent, int x, int y, Image image)
 	{
 		super(parent, x, y, 0, 0);
 		setImage(image);
-		textColor = Color.black;
 	}
-	
+
 	public Label(Widget parent, int x, int y, String text)
 	{
 		super(parent, x, y, 0, 0);
+		textColor = Color.black;
 		setText(text);
 	}
 	
@@ -67,6 +79,7 @@ public class Label extends BasicWidget
 			text = new Text(str);
 		else
 			text.setFromString(str);
+		updateSize();
 	}
 	
 	public void setTextWrap(boolean enable)
@@ -96,8 +109,8 @@ public class Label extends BasicWidget
 	 */
 	public void updateSize()
 	{
-		int w = width;
-		int h = height;
+		int w = 0;
+		int h = 0;
 		
 		if(text != null && !text.isWrapEnabled())
 		{

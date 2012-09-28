@@ -64,7 +64,7 @@ public class MainMenu extends UIBasicGameState
 		int gs = UIRenderer.instance().getGlobalScale();
 		ui = new RootPane(container.getWidth() / gs, container.getHeight() / gs);
 		
-		Panel panel = new Panel(ui, 0, 0, 150, 85);
+		Panel panel = new Panel(ui, 150, 85);
 		panel.alignToCenter();
 		ui.add(panel);
 		
@@ -84,8 +84,8 @@ public class MainMenu extends UIBasicGameState
 		panel.add(exitBtn);
 		
 		// Main title
-		Label title = new Label(ui, 0, 50, Game.title);
-		title.updateSize();
+		Label title = new Label(ui, Game.title);
+		title.setPosition(0, 50);
 		title.setAlignX(Widget.ALIGN_CENTER);
 		title.setTextColor(Color.white);
 		ui.add(title);

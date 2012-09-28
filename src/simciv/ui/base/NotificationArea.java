@@ -13,7 +13,7 @@ public class NotificationArea extends WidgetContainer implements INotificationLi
 	
 	private Notification notifications[];
 	
-	public NotificationArea(Widget parent, int x, int y, int width)
+	public NotificationArea(WidgetContainer parent, int x, int y, int width)
 	{
 		super(parent, x, y, width, MAX_NOTIFICATIONS * Notification.HEIGHT);
 		notifications = new Notification[MAX_NOTIFICATIONS];

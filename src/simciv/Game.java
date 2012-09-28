@@ -23,6 +23,7 @@ import org.newdawn.slick.util.Log;
 import backend.CanvasGameContainer2;
 import backend.ITopExceptionListener;
 import backend.LogSystem;
+import backend.ui.CrashWindow;
 
 import simciv.content.Content;
 import simciv.gamestates.GameCreatingScreen;
@@ -32,7 +33,6 @@ import simciv.gamestates.GameLoadingScreen;
 import simciv.gamestates.MainMenu;
 import simciv.gamestates.TestPathFinder;
 import simciv.gamestates.TestText;
-import simciv.ui.base.CrashWindow;
 import simciv.ui.base.UIStateBasedGame;
 
 /**

@@ -15,11 +15,28 @@ import org.newdawn.slick.util.Log;
 public class WidgetContainer extends Widget
 {
 	protected ArrayList<Widget> children; // ordered as event receiving
+	protected ILayout layout;
 
 	public WidgetContainer(Widget parent, int x, int y, int width, int height)
 	{
 		super(parent, x, y, width, height);
 		children = new ArrayList<Widget>();
+	}
+	
+	public WidgetContainer(Widget parent, int w, int h)
+	{
+		this(parent, 0, 0, w, h);
+	}
+	
+	public void setLayout(ILayout l)
+	{
+		layout = l;
+		layout();
+	}
+	
+	public ILayout getLayout()
+	{
+		return layout;
 	}
 	
 	public void add(Widget child)
@@ -33,6 +50,9 @@ public class WidgetContainer extends Widget
 			return;
 		}
 		children.add(child);
+		
+		if(layout != null)
+			layout.doLayout(children, this);
 	}
 	
 	public void remove(Widget child)
@@ -43,7 +63,7 @@ public class WidgetContainer extends Widget
 	/**
 	 * Adapts the size of the container to its children
 	 */
-	public void adaptSize()
+	public void adaptSizeFromChildren()
 	{
 		int newWidth = 0;
 		int newHeight = 0;
@@ -62,18 +82,22 @@ public class WidgetContainer extends Widget
 	}
 	
 	@Override
-	public void setSize(int x, int y)
-	{
-		super.setSize(x, y);
-		layout();
-	}
-	
-	@Override
 	public void layout()
 	{
-		super.layout(); // Widget.layout
-		for(Widget w : children)
-			w.layout();
+		// If my parent has no layout manager, apply the default one
+		WidgetContainer p = getParentContainer();
+		if(p != null && p.getLayout() == null)
+			super.layout();
+		
+		// If I have a layout manager for my children
+		if(layout != null)
+			layout.doLayout(children, this); // use it
+		else
+		{
+			// of simply call their own layout method
+			for(Widget w : children)
+				w.layout();
+		}
 	}
 	
 	/**

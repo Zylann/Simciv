@@ -9,10 +9,15 @@ public class ProgressBar extends BasicWidget
 
 	private float progress; // between 0 and 1
 	
-	public ProgressBar(WidgetContainer parent, int x, int y, int width)
+	public ProgressBar(Widget parent, int x, int y, int width)
 	{
 		super(parent, x, y, width, height);
 		progress = 0;
+	}
+	
+	public ProgressBar(Widget parent, int width)
+	{
+		this(parent, 0, 0, width);
 	}
 	
 	/**
