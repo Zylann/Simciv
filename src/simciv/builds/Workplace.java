@@ -394,6 +394,18 @@ public abstract class Workplace extends Build
 	{
 		return 12;
 	}
+	
+	@Override
+	public ProblemsReport getProblemsReport()
+	{
+		ProblemsReport problems = super.getProblemsReport();
+		
+		if(needEmployees())
+			problems.add(ProblemsReport.MINOR,
+				"We need " + getNbNeededEmployees() + " more employees.");
+		
+		return problems;
+	}
 
 }
 

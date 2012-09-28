@@ -249,6 +249,16 @@ public class Warehouse extends PassiveWorkplace
 	{
 	}
 
+	@Override
+	public ProblemsReport getProblemsReport()
+	{
+		ProblemsReport problems = super.getProblemsReport();
+		
+		if(isFull())
+			problems.add(ProblemsReport.MINOR, "This warehouse is full.");
+
+		return problems;
+	}
 }
 
 

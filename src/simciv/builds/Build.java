@@ -273,6 +273,38 @@ public abstract class Build extends TickableEntity
 	 * @return
 	 */
 	public abstract String getInfoLine();
+	
+	/**
+	 * Returns a list of problem messages concerning this building.
+	 * If no problems, returns an empty report.
+	 * @return
+	 */
+	public ProblemsReport getProblemsReport()
+	{
+		ProblemsReport problems = new ProblemsReport();
+		byte severe = ProblemsReport.SEVERE;
+		byte minor = ProblemsReport.MINOR;
+		
+		if(getSolidnessRatio() < 0.2f)
+			problems.add(severe, "This build may collapse soon ! We need architects !");
+		else if(getSolidnessRatio() < 0.5f)
+			problems.add(minor, "This build is creaky. We need architects.");
+		
+		if(!isFireBurning())
+		{
+			float r = getFireLevelRatio();
+			
+			if(r > 0.8f)
+				problems.add(severe, "This build may take fire soon ! We need firemen !");
+			else if(r > 0.5f)
+				problems.add(minor, "The risk of fire is increasing...");
+		}
+		
+		if(isFireBurning())
+			problems.add(severe, "It's burning ! We need firemen to save the neighborhood !");
+		
+		return problems;
+	}
 
 	/**
 	 * Return true if the building can store resources
@@ -389,8 +421,8 @@ public abstract class Build extends TickableEntity
 	}
 	
 	/**
-	 * This is an indicator used for display.
-	 * Gets the fire risk ratio. If 1, the build takes fire.
+	 * Gets the fire risk ratio in [0, 1] (If 1, the build takes fire).
+	 * This is a computed value used for display.
 	 * If the build is on fire, the ratio will decrease until the fire extinguishes itself.
 	 * @return ratio in [0, 1]
 	 */

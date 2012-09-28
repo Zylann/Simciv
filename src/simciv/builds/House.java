@@ -519,6 +519,30 @@ public class House extends Build
 		repair();
 		return true;
 	}
+	
+	@Override
+	public ProblemsReport getProblemsReport()
+	{
+		ProblemsReport problems = super.getProblemsReport();
+		
+		if(isAbandonned())
+			problems.add(ProblemsReport.MINOR, "This house is abandonned.");
+		else
+		{
+			if(!resources.containsFood())
+				problems.add(ProblemsReport.SEVERE, "We need some food !");
+			
+			if(getWorkersRatio() < 0.5f)
+				problems.add(ProblemsReport.MINOR, "Many of us have no jobs :( ");
+		}
+		
+		return problems;
+	}
+
+	private float getWorkersRatio()
+	{
+		return (float)getNbWorkers() / (float)getNbInhabitants();
+	}
 
 }
 
