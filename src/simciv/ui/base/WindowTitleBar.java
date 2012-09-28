@@ -24,6 +24,10 @@ public class WindowTitleBar extends Widget
 		return text;
 	}
 	
+	/**
+	 * Sets the text displayed on the bar
+	 * @param text
+	 */
 	public void setText(String text)
 	{
 		this.text = text;

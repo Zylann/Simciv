@@ -18,6 +18,15 @@ public class Window extends WidgetContainer
 	private ArrayList<IActionListener> closeActionListeners;
 	private ArrayList<IActionListener> openActionListeners;
 	
+	/**
+	 * Constructs a located, sized and empty window with a title.
+	 * @param parent : window's container (parent, usually the root pane)
+	 * @param x : parent-relative X coordinate
+	 * @param y : parent-relative Y coordinate
+	 * @param width : window's width
+	 * @param height : windtw's height
+	 * @param title : window's title
+	 */
 	public Window(WidgetContainer parent, int x, int y, int width, int height, String title)
 	{
 		super(parent, x, y, width, height + WindowTitleBar.height);
@@ -32,6 +41,15 @@ public class Window extends WidgetContainer
 		super.add(content);
 	}
 	
+	/**
+	 * Sets text displayed on the title bar
+	 * @param title
+	 */
+	public void setTitle(String title)
+	{
+		titleBar.setText(title);
+	}
+	
 	@Override
 	public void adaptSize()
 	{
@@ -42,6 +60,9 @@ public class Window extends WidgetContainer
 		winCloseButton.posX = width - winCloseButton.getWidth();
 	}
 	
+	/**
+	 * Shows the window and notifies open action listeners
+	 */
 	public void open()
 	{
 		setVisible(true);
@@ -49,6 +70,9 @@ public class Window extends WidgetContainer
 			l.actionPerformed(this);
 	}
 	
+	/**
+	 * Hides the window and notifies close action listeners
+	 */
 	public void close()
 	{
 		setVisible(false);
@@ -56,16 +80,28 @@ public class Window extends WidgetContainer
 			l.actionPerformed(this);
 	}
 	
+	/**
+	 * Adds an action that will be performed on window's closing
+	 * @param action
+	 */
 	public void addOnCloseAction(IActionListener action)
 	{
 		closeActionListeners.add(action);
 	}
 	
+	/**
+	 * Adds an actionthat will be performed on window's opening
+	 * @param action
+	 */
 	public void addOnOpenAction(IActionListener action)
 	{
 		openActionListeners.add(action);
 	}
 
+	/**
+	 * Set if we can drag the window using its title bar
+	 * @param enabled
+	 */
 	public void setDraggable(boolean enabled)
 	{
 		titleBar.setDraggable(enabled);
@@ -80,6 +116,8 @@ public class Window extends WidgetContainer
 	@Override
 	public void add(Widget child)
 	{
+		// TODO use a content pane
+
 		child.setY(child.getY() + titleBar.getHeight());
 		content.add(child);
 	}

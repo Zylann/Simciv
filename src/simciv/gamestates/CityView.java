@@ -413,6 +413,7 @@ public class CityView extends UIBasicGameState
 							text += "[!] " + msg + '\n';
 					}
 					
+					buildInfoWindow.setTitle(b.getDisplayableName());
 					buildInfoWindow.setInfoText(text);
 					buildInfoWindow.open();
 				}
