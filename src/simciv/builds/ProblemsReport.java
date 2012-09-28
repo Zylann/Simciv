@@ -16,9 +16,7 @@ public class ProblemsReport
 	{
 		problems = new ArrayList[COUNT];
 		for(int i = 0; i < problems.length; i++)
-		{
-			problems[0] = new ArrayList<String>();
-		}
+			problems[i] = new ArrayList<String>();
 	}
 	
 	public void add(byte severity, String message)
@@ -29,6 +27,16 @@ public class ProblemsReport
 	public ArrayList<String> getList(byte severity)
 	{
 		return problems[severity];
+	}
+
+	public boolean isEmpty()
+	{
+		for(int i = 0; i < problems.length; i++)
+		{
+			if(!problems[i].isEmpty())
+				return false;
+		}
+		return false;
 	}
 	
 }
