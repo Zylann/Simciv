@@ -1,5 +1,7 @@
 package simciv.gamestates;
 
+import java.util.List;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -17,7 +19,7 @@ import simciv.MinimapUpdater;
 import simciv.Terrain;
 import simciv.Map;
 import simciv.builds.Build;
-import simciv.builds.House;
+import simciv.builds.ProblemsReport;
 import simciv.content.Content;
 import simciv.persistence.GameSaveData;
 import simciv.persistence.GameSaverThread;
@@ -290,7 +292,12 @@ public class CityView extends UIBasicGameState
 				game.enterState(Game.STATE_MAIN_MENU);
 		}
 		
-		if(!paused)
+		if(paused)
+		{
+			// The scroll view stills updated even if on pause (convenience)
+			map.view.update(gc, delta / 1000.f);
+		}
+		else
 		{
 			// Pointed cell
 			pointedCell = map.view.convertCoordsToMap(input.getMouseX(), input.getMouseY());
@@ -309,7 +316,7 @@ public class CityView extends UIBasicGameState
 					map.time.getMonthProgressRatio());
 			
 			timeBar.update(map.time.toString());
-		}		
+		}
 		
 		SoundEngine.instance().update(delta);
 		
@@ -390,11 +397,24 @@ public class CityView extends UIBasicGameState
 				Build b = map.getBuild(pointedCell.x, pointedCell.y);
 				if(b != null)
 				{
-					if(House.class.isInstance(b))
+					String text = b.getInfoLine() + '\n';
+					ProblemsReport problems = b.getProblemsReport();
+					
+					if(problems.isEmpty())
+						text += "Everything is fine !";
+					else
 					{
-						buildInfoWindow.open();
-						buildInfoWindow.setInfoText(b.getInfoLine());
+						List<String> minorProblems = problems.getList(ProblemsReport.MINOR);
+						for(String msg : minorProblems)
+							text += "- " + msg + '\n';
+						
+						List<String> majorProblems = problems.getList(ProblemsReport.SEVERE);
+						for(String msg : majorProblems)
+							text += "[!] " + msg + '\n';
 					}
+					
+					buildInfoWindow.setInfoText(text);
+					buildInfoWindow.open();
 				}
 			}
 		}
