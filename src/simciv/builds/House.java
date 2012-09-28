@@ -525,6 +525,9 @@ public class House extends Build
 	{
 		ProblemsReport problems = super.getProblemsReport();
 		
+		if(getState() == Build.STATE_CONSTRUCTION)
+			return problems;
+		
 		if(isAbandonned())
 			problems.add(ProblemsReport.MINOR, "This house is abandonned.");
 		else
