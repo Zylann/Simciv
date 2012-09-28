@@ -224,6 +224,7 @@ public class Game extends UIStateBasedGame
 
 		// Enter first state
 		enterState(STATE_CONTENT_LOADING);
+//		enterState(STATE_TEST_TEXT);
 	}
 	
 	// Main window listeners

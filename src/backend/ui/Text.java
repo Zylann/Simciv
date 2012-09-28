@@ -6,7 +6,7 @@ import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
 
 /**
- * Utility class displaying a long text, and providing simple line wrap
+ * Utility class displaying a long text, and providing simple line wrap.
  * @author Marc
  *
  */
@@ -30,6 +30,11 @@ public class Text
 		setFromString(str);
 	}
 	
+	/**
+	 * Gets the number of computed lines.
+	 * Will return zero if the text is empty OR if word wrap is not enabled.
+	 * @return
+	 */
 	public int getNbLines()
 	{
 		return lines.size();
@@ -60,9 +65,15 @@ public class Text
 	
 	public boolean isEmpty()
 	{
-		return lines.isEmpty();
+		return src.isEmpty();
 	}
 	
+	/**
+	 * Sets the max line width for word wrapping.
+	 * If the new and old width differ, word wrap will be
+	 * recomputed on next rendering if enabled.
+	 * @param newMaxWidth
+	 */
 	public void setMaxLineWidth(int newMaxWidth)
 	{
 		if(maxLineWidth != newMaxWidth)
@@ -75,28 +86,76 @@ public class Text
 		return maxLineWidth;
 	}
 	
+	/**
+	 * Computes lines using word wrapping.
+	 * Each line may have a limited width (maxLineWidth).
+	 * @param font : font that will be used for text rendering
+	 */
 	public void wrap(Font font)
 	{
-		// TODO end-of-line support
+		wrap(font, this.maxLineWidth);
+	}
+	
+	/**
+	 * Sets the max line width and computes lines using word wrapping.
+	 * Each line may have a limited width.
+	 * @param font : font that will be used for text rendering
+	 */
+	public void wrap(Font font, int lineWidth)
+	{
+		setMaxLineWidth(lineWidth);
 		
-		if(lines.isEmpty()) {
+		lines.clear();
+		
+		if(src.isEmpty()) {
 			wrapped = true;
 			return;
 		}
 		
-		lines.clear();
+		src += ' ';
 		
-		// Split words (see java.util.regex.Pattern)
-		String[] words = src.split("\\s"); // any character but spaces
+		String word = "";
 		String line = "";
 		
-		for(int i = 0; i < words.length; i++)
+		for(int i = 0; i < src.length(); i++)
 		{
-			if(font.getWidth(line) + font.getWidth(words[i]) < maxLineWidth)
-				line += words[i] + " ";
-			else {
-				lines.add(line);
-				line = words[i] + " ";
+			char currentChar = src.charAt(i);
+			boolean newline = (currentChar == '\n');
+			boolean endOfWord = (currentChar == ' ') | newline;
+
+			if(!endOfWord)
+			{
+				word += currentChar;
+			}
+			else // End of word
+			{
+				boolean overflow = (font.getWidth(line) + font.getWidth(word) >= maxLineWidth);
+				
+				if(!word.isEmpty())
+					word += " ";
+				
+				if(overflow && newline)
+				{
+					lines.add(line);
+					lines.add(word);
+					line = new String();
+				}
+				else if(overflow)
+				{
+					lines.add(line);
+					line = new String(word);
+				}
+				else if(newline)
+				{
+					lines.add(line + word);
+					line = new String();
+				}
+				else
+				{
+					line += word;
+				}
+				
+				word = "";
 			}
 		}
 		
@@ -106,14 +165,26 @@ public class Text
 		wrapped = true;
 	}
 	
+	/**
+	 * Sets the text from a string.
+	 * Word wrap will be recomputed on next rendering if needed.
+	 * @param str
+	 */
 	public void setFromString(String str)
 	{
 		clear();
 		src = str;
-		lines.add(src == null ? "" : src);
 		wrapped = false;
 	}
 	
+	/**
+	 * Renders the text on the screen at the given position.
+	 * If word wrap is enabled and not computed yet,
+	 * it is recomputed once using the current font.
+	 * @param gfx
+	 * @param x
+	 * @param y
+	 */
 	public void render(Graphics gfx, int x, int y)
 	{
 		if(src == null || src.isEmpty())

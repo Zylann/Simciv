@@ -63,7 +63,7 @@ public class TestText extends BasicGameState
 	{
 		String str = 
 			"Hello my name is Zylann and I am testing my brand" +
-			" new text system that provides line wrapping. I'd" +
+			" new text system that provides line wrapping.\n\n I'd" +
 			" like it to work soon so that I will add it to my game !";
 		text.setFromString(str);
 	}
