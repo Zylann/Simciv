@@ -2,6 +2,8 @@ package simciv.persistence;
 
 import java.io.File;
 
+import org.newdawn.slick.util.Log;
+
 import simciv.Map;
 
 /**
@@ -32,6 +34,13 @@ public class GameSaveData
 		boolean isFiles = false;
 		
 		File dir = new File(SAVES_DIR);
+		
+		if(!dir.exists())
+		{
+			Log.error("Saves directory not found ! " +
+					"Expected directory named \"" + SAVES_DIR + "\"");
+			return false;
+		}
 		
 		String files[] = dir.list();
 		
