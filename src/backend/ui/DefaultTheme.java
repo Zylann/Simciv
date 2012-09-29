@@ -164,8 +164,17 @@ public class DefaultTheme implements ITheme
 	@Override
 	public void renderLabel(Graphics gfx, Label label)
 	{
-		// TODO Auto-generated method stub
-
+		int x = label.getAbsoluteX();
+		int y = label.getAbsoluteY();
+		
+		if(label.getImage() != null)
+			gfx.drawImage(label.getImage(), x, y);
+		
+		if(label.getText() != null)
+		{
+			gfx.setColor(label.getTextColor());
+			label.getText().render(gfx, x, y);
+		}
 	}
 
 	@Override
@@ -182,3 +191,5 @@ public class DefaultTheme implements ITheme
 	}
 
 }
+
+
