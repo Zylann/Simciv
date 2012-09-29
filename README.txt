@@ -9,11 +9,12 @@ Description :
 Releases :
 
 	Last :
-	SimCiv indev release 2.01 : http://www.mediafire.com/?388tj634yvyu5gw
+	SimCiv indev R3.00 : http://www.mediafire.com/?k4y2z37gdze6kba
 	
 	Older :
-	SimCiv indev release 2.00 : http://www.mediafire.com/download.php?1u4jbfy32d2cs2k
-	SimCiv indev release 1.00 : http://www.mediafire.com/?i5bgd97wlom8a67
+	SimCiv indev R2.01 : http://www.mediafire.com/?388tj634yvyu5gw
+	SimCiv indev R2.00 : http://www.mediafire.com/download.php?1u4jbfy32d2cs2k
+	SimCiv indev R1.00 : http://www.mediafire.com/?i5bgd97wlom8a67
 
 Current features (for development version) :
 

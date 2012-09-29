@@ -1,4 +1,8 @@
-Simciv indev release 3 (work in progress) :
+Simciv indev R4.0 (work in progress) :
+
+---
+
+Simciv indev R3.0 (2012-09-29) :
 
 + The game can be saved and loaded (only 1 save file yet)
 + Builds can burn (display fire risks with key [5])
@@ -14,12 +18,12 @@ Simciv indev release 3 (work in progress) :
 * Only houses and farmland can be repeated (by cursor drag)
 * New pathfinding system
 
-Simciv indev release 2.01 (2012-08-25) :
+Simciv indev R2.01 (2012-08-25) :
 
 + Fixed early starves
 + Fixed resource distribution lags
 
-Simciv indev release 2 (2012-08-23) :
+Simciv indev R2.0 (2012-08-23) :
 
 + Added money counter (and building costs)
 + Added taxmen offices and taxmen
@@ -37,6 +41,6 @@ Simciv indev release 2 (2012-08-23) :
 - Fixed too loud sounds (played at the same time as for houses)
 - Fixed too large default window
 
-Simciv indev release 1 (2012-07-28) :
+Simciv indev R1.0 (2012-07-28) :
 Initial release
 
