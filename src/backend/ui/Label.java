@@ -47,8 +47,7 @@ public class Label extends BasicWidget
 	public Label(Widget parent, int x, int y, int w, int h, String text)
 	{
 		super(parent, x, y, w, h);
-		setText(text);
-		setTextWrap(true);
+		setText(text, true);
 	}
 	
 	public Text getText()
@@ -75,9 +74,18 @@ public class Label extends BasicWidget
 	public void setText(String str)
 	{
 		if(text == null)
+			setText(str, false);
+		else
+			setText(str, text.isWrapEnabled());
+	}
+	
+	public void setText(String str, boolean wrap)
+	{
+		if(text == null)
 			text = new Text(str);
 		else
 			text.setFromString(str);
+		setTextWrap(wrap);
 		updateSize();
 	}
 	
@@ -85,8 +93,8 @@ public class Label extends BasicWidget
 	{
 		if(text != null)
 		{
-			text.setWrapEnabled(enable);
 			text.setMaxLineWidth(getWidth());
+			text.setWrapEnabled(enable);
 		}
 	}
 		
@@ -129,6 +137,11 @@ public class Label extends BasicWidget
 			if(image.getHeight() > h)
 				h = image.getHeight();
 		}
+		
+		if(w == 0)
+			w = getWidth();
+		if(h == 0)
+			h = getHeight();
 		
 		setSize(w, h);		
 	}
