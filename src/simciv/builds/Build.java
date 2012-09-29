@@ -375,6 +375,7 @@ public abstract class Build extends TickableEntity
 	 */
 	private void renderFireRiskRatio(Graphics gfx)
 	{
+		// FIXME fire bar not being rendered properly in rare cases
 		renderBar(gfx, getFireLevelRatio(), Color.darkGray, Color.orange);
 	}
 
