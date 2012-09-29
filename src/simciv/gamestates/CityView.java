@@ -392,31 +392,35 @@ public class CityView extends UIBasicGameState
 				toggleShowMinimap();
 			
 			if(button == Input.MOUSE_RIGHT_BUTTON)
+				openBuildInfoWindow();
+		}
+	}
+	
+	private void openBuildInfoWindow()
+	{
+		Build b = map.getBuild(pointedCell.x, pointedCell.y);
+		if(b != null)
+		{
+			String text = b.getInfoLine() + '\n'
+				+ "----------------------------------------------------------------\n";
+			ProblemsReport problems = b.getProblemsReport();
+			
+			if(problems.isEmpty())
+				text += "Everything is fine !";
+			else
 			{
-				Build b = map.getBuild(pointedCell.x, pointedCell.y);
-				if(b != null)
-				{
-					String text = b.getInfoLine() + '\n';
-					ProblemsReport problems = b.getProblemsReport();
-					
-					if(problems.isEmpty())
-						text += "Everything is fine !";
-					else
-					{
-						List<String> minorProblems = problems.getList(ProblemsReport.MINOR);
-						for(String msg : minorProblems)
-							text += "- " + msg + '\n';
-						
-						List<String> majorProblems = problems.getList(ProblemsReport.SEVERE);
-						for(String msg : majorProblems)
-							text += "[!] " + msg + '\n';
-					}
-					
-					buildInfoWindow.setTitle(b.getDisplayableName());
-					buildInfoWindow.setInfoText(text);
-					buildInfoWindow.open();
-				}
+				List<String> majorProblems = problems.getList(ProblemsReport.SEVERE);
+				for(String msg : majorProblems)
+					text += "[!] " + msg + '\n';
+
+				List<String> minorProblems = problems.getList(ProblemsReport.MINOR);
+				for(String msg : minorProblems)
+					text += "- " + msg + '\n';
 			}
+			
+			buildInfoWindow.setTitle(b.getDisplayableName());
+			buildInfoWindow.setInfoText(text);
+			buildInfoWindow.open();
 		}
 	}
 	
