@@ -129,13 +129,7 @@ public abstract class Citizen extends Unit
 	
 	public boolean isMyWorkplaceNearby()
 	{
-		List<Build> builds = mapRef.getBuildsAround(getX(), getY());
-		for(Build b : builds)
-		{
-			if(b.getID() == getWorkplaceID())
-				return true;
-		}
-		return false;
+		return mapRef.grid.isBuildAroundWithID(getWorkplaceID(), getX(), getY());
 	}
 	
 	protected void goBackToRoad(int pathfindingDistance)
