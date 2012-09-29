@@ -189,14 +189,11 @@ public class MarketDelivery extends Citizen
 	{
 		@Override
 		public boolean isTarget(int x, int y) {
-			List<Build> list = mapRef.getBuildsAround(x, y);
-			for(Build b : list)
+			Build b = mapRef.getBuild(x, y);
+			if(Warehouse.class.isInstance(b))
 			{
-				if(Warehouse.class.isInstance(b))
-				{
-					if(((Warehouse) b).containsResourcesForMarkets())
-						return true;
-				}
+				if(((Warehouse) b).containsResourcesForMarkets())
+					return true;
 			}
 			return false;
 		}
