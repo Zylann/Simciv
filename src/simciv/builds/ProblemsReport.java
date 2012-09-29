@@ -36,7 +36,7 @@ public class ProblemsReport
 			if(!problems[i].isEmpty())
 				return false;
 		}
-		return false;
+		return true;
 	}
 	
 }
