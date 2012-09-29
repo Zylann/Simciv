@@ -204,42 +204,6 @@ public class Map
 		}
 		return false;
 	}
-	
-	/**
-	 * Erases the building assumed to occupy the cell at (x,y).
-	 * @param x
-	 * @param y
-	 * @param burn : if true, destroys the build into flames instead.
-	 * @return : true if the building has been erased.
-	 */
-	public boolean eraseBuild(int x, int y, boolean burn)
-	{
-		int ID = grid.getBuildID(x, y);
-		if(ID >= 0)
-		{
-			Build b = getBuild(ID);
-			if(b != null)
-			{
-				if(burn)
-					b.destroy(true);
-				else
-					b.dispose();
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Erases the building assumed to occupy the cell at (x,y).
-	 * @param x
-	 * @param y
-	 * @return : true if the building has been erased.
-	 */
-	public boolean eraseBuild(int x, int y)
-	{
-		return eraseBuild(x, y, false);
-	}
 
 	/**
 	 * Finds and returns the unit having the given ID.

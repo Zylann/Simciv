@@ -385,8 +385,21 @@ public class CityBuilder
 		boolean res = false;
 		if(mapRef.grid.eraseRoad(x, y))
 			res = true;
-		else if(mapRef.eraseBuild(x, y, Cheats.isBurnOnErase()))
-			res = true;
+		else
+		{
+			Build b = mapRef.getBuild(pos.x, pos.y);
+			if(b != null)
+			{
+				if(b.canBeErasedByPlayer() || Cheats.isSuperEraser())
+				{
+					if(Cheats.isBurnOnErase())
+						b.destroy(true);
+					else
+						b.dispose();
+					res = true;
+				}
+			}			
+		}
 		
 		if(res)
 		{
