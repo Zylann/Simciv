@@ -1,16 +1,18 @@
 Simciv indev release 3 (work in progress) :
 
 + The game can be saved and loaded (only 1 save file yet)
-+ Added main menu
 + Builds can burn (display fire risks with key [5])
++ Added main menu
 + Added water sources
 + Added fire stations and firemen
 + Added time bar showing the current date (not realistic)
-+ Added UI notification system
++ Added notification system on right side of the screen
++ Added report window when right-clicking on a building
 + Added crash window and log system
 * New population and job systems
 * Citizen can re-grow if there is room and food in houses
 * Only houses and farmland can be repeated (by cursor drag)
+* New pathfinding system
 
 Simciv indev release 2.01 (2012-08-25) :
 

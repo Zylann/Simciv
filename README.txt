@@ -21,9 +21,9 @@ Current features (for development version) :
 	- Place builds and roads
 	- Job system
 	- Economy (taxes, markets...)
-	- Builds maintenance
+	- Builds maintenance and fire risk
 	- Farmlands with growing crops
-	- Ability to save/load a game (only 1 save yet)
+	- Ability to save/load a game (only 1 file yet)
 	- Draggable/hideable minimap
 	See more in the changelog file !
 
