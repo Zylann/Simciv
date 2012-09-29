@@ -25,7 +25,7 @@ public class Fireman extends Citizen
 {
 	private static final long serialVersionUID = 1L;
 	public static final byte WATER_CHARGE_MAX = 4;
-	private static final int PATHFINDING_DISTANCE = 128;
+	private static final int PATHFINDING_DISTANCE = 256;
 	
 	private static final byte PATROL = 0;
 	private static final byte FIND_WATER = 1;

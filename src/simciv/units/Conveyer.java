@@ -21,7 +21,7 @@ import simciv.content.Content;
 public class Conveyer extends Citizen
 {
 	private static final long serialVersionUID = 1L;
-	private static final int PATHFINDING_DISTANCE = 128;
+	private static final int PATHFINDING_DISTANCE = 256;
 	
 	private static final byte FIND_STORAGE = 0;
 	private static final byte STORE_RESOURCES = 1;
