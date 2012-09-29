@@ -23,6 +23,9 @@ public class Cheats
 	/** Allows erasing un-eraseable builds (like fires) **/
 	private static boolean superEraser = true;
 	
+	/** The erase tool will also set builds on fire **/
+	private static boolean burnOnErase = false;
+	
 	/**
 	 * Method called when cheats are requested from the ingame command prompt
 	 * (Not implemented yet).
@@ -42,6 +45,8 @@ public class Cheats
 				infiniteMoney = !infiniteMoney;
 			else if(cmd == "bulldozer")
 				superEraser = !superEraser;
+			else if(cmd == "charmander")
+				burnOnErase = !burnOnErase;
 		}
 		else if(cmd == "icheat")
 		{
@@ -67,6 +72,10 @@ public class Cheats
 	
 	public static boolean isSuperEraser() {
 		return enabled && superEraser;
+	}
+	
+	public static boolean isBurnOnErase() {
+		return enabled && burnOnErase;
 	}
 
 }

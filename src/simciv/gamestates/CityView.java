@@ -466,14 +466,6 @@ public class CityView extends UIBasicGameState
 			toggleShowMinimap();
 		if(key == Input.KEY_SPACE)
 			map.setFastForward(!map.isFastForward());
-		
-		// Debug : sets the pointed build on fire
-		if(key == Input.KEY_F)
-		{
-			Build b = map.getBuild(pointedCell.x, pointedCell.y);
-			if(b != null)
-				b.destroy(true);
-		}
 	}
 	
 	public void togglePause()

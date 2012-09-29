@@ -385,8 +385,9 @@ public class CityBuilder
 		boolean res = false;
 		if(mapRef.grid.eraseRoad(x, y))
 			res = true;
-		else if(mapRef.eraseBuild(x, y))
+		else if(mapRef.eraseBuild(x, y, Cheats.isBurnOnErase()))
 			res = true;
+		
 		if(res)
 		{
 			mapRef.playerCity.buy(erasingCost);
