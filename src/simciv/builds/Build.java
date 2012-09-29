@@ -285,7 +285,7 @@ public abstract class Build extends TickableEntity
 		byte severe = ProblemsReport.SEVERE;
 		byte minor = ProblemsReport.MINOR;
 		
-		if(!isRoadNearby())
+		if(!isRoadNearby() && !Ruins.class.isInstance(this))
 			problems.add(severe, "This build is not connected to a road !");
 		
 		if(getSolidnessRatio() < 0.2f)
