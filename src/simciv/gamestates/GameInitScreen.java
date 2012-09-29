@@ -4,15 +4,16 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import backend.ui.ProgressBar;
+import backend.ui.RootPane;
+import backend.ui.UIBasicGameState;
+import backend.ui.UIRenderer;
+
 import simciv.CityBuilder;
 import simciv.Resource;
 import simciv.Road;
 import simciv.Terrain;
 import simciv.builds.BuildCategory;
-import simciv.ui.base.ProgressBar;
-import simciv.ui.base.RootPane;
-import simciv.ui.base.UIBasicGameState;
-import simciv.ui.base.UIRenderer;
 
 public abstract class GameInitScreen extends UIBasicGameState
 {
@@ -34,8 +35,8 @@ public abstract class GameInitScreen extends UIBasicGameState
 	protected void createUI(GameContainer container, StateBasedGame game)
 			throws SlickException
 	{
-		UIRenderer.instance().setGlobalScale(2);
-		int gs = UIRenderer.instance().getGlobalScale();
+		UIRenderer.setGlobalScale(2);
+		int gs = UIRenderer.getGlobalScale();
 		ui = new RootPane(container.getWidth() / gs, container.getHeight() / gs);
 
 		progressBar = new ProgressBar(ui, 0, 0, 300);

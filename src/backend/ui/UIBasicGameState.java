@@ -1,4 +1,4 @@
-package simciv.ui.base;
+package backend.ui;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;

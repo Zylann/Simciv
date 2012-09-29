@@ -1,4 +1,4 @@
-package simciv.ui.base;
+package backend.ui;
 
 import java.util.ArrayList;
 
@@ -95,7 +95,7 @@ public class Notification extends BasicWidget
 	@Override
 	public void render(GameContainer gc, Graphics gfx)
 	{
-		UIRenderer.instance().renderNotification(gfx, this);
+		UIRenderer.getTheme().renderNotification(gfx, this);
 	}
 
 	public boolean isTimeVisibleEnded()

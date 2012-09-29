@@ -1,4 +1,4 @@
-package simciv.ui.base;
+package backend.ui;
 
 import java.util.Collection;
 

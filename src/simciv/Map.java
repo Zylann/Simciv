@@ -20,12 +20,12 @@ import backend.GameComponent;
 import backend.GameComponentMap;
 import backend.IntRange2D;
 import backend.pathfinding.MultiSeedPathFinder;
+import backend.ui.INotificationListener;
 
 import simciv.builds.Build;
 import simciv.builds.Warehouse;
 import simciv.effects.VisualEffect;
 import simciv.rendering.SortedRender;
-import simciv.ui.base.INotificationListener;
 import simciv.units.Unit;
 
 /**

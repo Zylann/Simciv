@@ -1,4 +1,4 @@
-package simciv.ui.base;
+package backend.ui;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -50,7 +50,7 @@ public class PushButton extends Button
 	@Override
 	public void render(GameContainer gc, Graphics gfx)
 	{
-		UIRenderer.instance().renderPushButton(gfx, this);
+		UIRenderer.getTheme().renderPushButton(gfx, this);
 	}
 
 }

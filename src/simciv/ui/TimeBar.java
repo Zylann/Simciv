@@ -4,10 +4,11 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
+import backend.ui.BasicWidget;
+import backend.ui.UIRenderer;
+import backend.ui.WidgetContainer;
+
 import simciv.content.Content;
-import simciv.ui.base.BasicWidget;
-import simciv.ui.base.UIRenderer;
-import simciv.ui.base.WidgetContainer;
 
 public class TimeBar extends BasicWidget
 {
@@ -41,7 +42,7 @@ public class TimeBar extends BasicWidget
 	
 		// Background
 		int b = height;
-		UIRenderer.instance().renderBar(gfx, Content.sprites.uiTimeBar, 0, 0, width, height, b, 0);
+		UIRenderer.renderBar(gfx, Content.sprites.uiTimeBar, 0, 0, width, height, b, 0);
 		
 		gfx.setColor(Color.black);
 		gfx.drawString(timeText, 4, 2);

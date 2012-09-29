@@ -4,17 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.util.Log;
+
+import backend.ui.Menu;
+import backend.ui.MenuItem;
+import backend.ui.UIRenderer;
 
 import simciv.CityBuilder;
 import simciv.Map;
 import simciv.builds.Build;
 import simciv.builds.BuildFactory;
-import simciv.ui.base.Menu;
-import simciv.ui.base.MenuItem;
-import simciv.ui.base.UIRenderer;
 
 /**
  * List of builds.
@@ -102,7 +105,12 @@ public class BuildMenu extends Menu
 			else
 				costColor = Color.black;
 			costString = "" + cost;
-			costStringWidth = UIRenderer.instance().getFont().getWidth(costString);
+			
+			Font font = UIRenderer.getFont();
+			if(font != null)
+				costStringWidth = UIRenderer.getFont().getWidth(costString);
+			else
+				Log.error("BuildMenu:updateInfos(): no font defined");
 		}
 
 		@Override

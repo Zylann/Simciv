@@ -1,4 +1,4 @@
-package simciv.ui.base;
+package backend.ui;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -39,7 +39,7 @@ public abstract class UIStateBasedGame extends StateBasedGame
 	{
 		if(ui != null)
 		{
-			int gs = UIRenderer.instance().getGlobalScale();
+			int gs = UIRenderer.getGlobalScale();
 			ui.onScreenResize(width / gs, height / gs);
 		}
 	}
@@ -50,9 +50,9 @@ public abstract class UIStateBasedGame extends StateBasedGame
 	{
 		if (ui != null)
 		{
-			UIRenderer.instance().beginRender(gfx);
+			UIRenderer.beginRender(gfx);
 			ui.render(container, gfx);
-			UIRenderer.instance().endRender(gfx);
+			UIRenderer.endRender(gfx);
 		}
 	}
 	

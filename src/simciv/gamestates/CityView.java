@@ -12,6 +12,14 @@ import org.newdawn.slick.state.StateBasedGame;
 import backend.PerformanceGraph;
 import backend.SoundEngine;
 import backend.geom.Vector2i;
+import backend.ui.IActionListener;
+import backend.ui.NotificationArea;
+import backend.ui.PushButton;
+import backend.ui.RootPane;
+import backend.ui.UIBasicGameState;
+import backend.ui.UIRenderer;
+import backend.ui.Widget;
+import backend.ui.Window;
 
 import simciv.CityBuilder;
 import simciv.Game;
@@ -30,14 +38,6 @@ import simciv.ui.InfoBar;
 import simciv.ui.Minimap;
 import simciv.ui.IndicatorsBar;
 import simciv.ui.TimeBar;
-import simciv.ui.base.IActionListener;
-import simciv.ui.base.NotificationArea;
-import simciv.ui.base.PushButton;
-import simciv.ui.base.RootPane;
-import simciv.ui.base.UIBasicGameState;
-import simciv.ui.base.UIRenderer;
-import simciv.ui.base.Widget;
-import simciv.ui.base.Window;
 
 /**
  * Main state of the game (city management)
@@ -107,8 +107,8 @@ public class CityView extends UIBasicGameState
 	@Override
 	protected void createUI(GameContainer container, final StateBasedGame game) throws SlickException
 	{
-		UIRenderer.instance().setGlobalScale(2);
-		int gs = UIRenderer.instance().getGlobalScale();
+		UIRenderer.setGlobalScale(2);
+		int gs = UIRenderer.getGlobalScale();
 		ui = new RootPane(container.getWidth() / gs, container.getHeight() / gs);
 		
 		// Pause window
@@ -454,7 +454,7 @@ public class CityView extends UIBasicGameState
 		{
 			debugInfoVisible = !debugInfoVisible;
 			if(debugInfoVisible)
-				ui.setY(100 / UIRenderer.instance().getGlobalScale());
+				ui.setY(100 / UIRenderer.getGlobalScale());
 			else
 				ui.setY(0);
 		}

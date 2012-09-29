@@ -10,12 +10,12 @@ import org.newdawn.slick.util.Log;
 
 import backend.IntRange2D;
 import backend.geom.Vector2i;
+import backend.ui.INotificationListener;
+import backend.ui.Notification;
 
 import simciv.builds.Build;
 import simciv.builds.BuildFactory;
 import simciv.content.Content;
-import simciv.ui.base.INotificationListener;
-import simciv.ui.base.Notification;
 import simciv.units.Unit;
 
 /**

@@ -3,11 +3,12 @@ package simciv.ui;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import backend.ui.IActionListener;
+import backend.ui.MenuBar;
+import backend.ui.MenuBarButton;
+import backend.ui.Widget;
+
 import simciv.CityBuilder;
-import simciv.ui.base.IActionListener;
-import simciv.ui.base.MenuBar;
-import simciv.ui.base.MenuBarButton;
-import simciv.ui.base.Widget;
 
 /**
  * The game BuildMenuBar can hold mode setters, builds setters or categories with more builds in it.

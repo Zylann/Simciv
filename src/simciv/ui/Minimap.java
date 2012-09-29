@@ -5,10 +5,11 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
+import backend.ui.Widget;
+import backend.ui.WidgetContainer;
+
 import simciv.Game;
 import simciv.ScrollView;
-import simciv.ui.base.Widget;
-import simciv.ui.base.WidgetContainer;
 
 public class Minimap extends Widget
 {

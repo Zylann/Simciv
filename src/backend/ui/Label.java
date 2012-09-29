@@ -1,4 +1,4 @@
-package simciv.ui.base;
+package backend.ui;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -7,7 +7,6 @@ import org.newdawn.slick.Image;
 
 import simciv.content.Content;
 
-import backend.ui.Text;
 
 /**
  * Simple text/image display widget
@@ -137,7 +136,7 @@ public class Label extends BasicWidget
 	@Override
 	public void render(GameContainer gc, Graphics gfx)
 	{
-		UIRenderer.instance().renderLabel(gfx, this);
+		UIRenderer.getTheme().renderLabel(gfx, this);
 	}
 
 }

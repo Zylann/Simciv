@@ -1,4 +1,4 @@
-package simciv.ui.base;
+package backend.ui;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -51,7 +51,7 @@ public class MenuItem extends Button
 	@Override
 	public void render(GameContainer gc, Graphics gfx)
 	{
-		UIRenderer.instance().renderMenuItem(gfx, this);
+		UIRenderer.getTheme().renderMenuItem(gfx, this);
 	}
 
 }

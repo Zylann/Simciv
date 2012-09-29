@@ -1,9 +1,8 @@
-package simciv.ui.base;
+package backend.ui;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
-// TODO put as internal Window class
 public class WindowTitleBar extends Widget
 {
 	public static final int height = 16;
@@ -101,7 +100,7 @@ public class WindowTitleBar extends Widget
 	@Override
 	public void render(GameContainer gc, Graphics gfx)
 	{
-		UIRenderer.instance().renderWindowTitleBar(gfx, this);
+		UIRenderer.getTheme().renderWindowTitleBar(gfx, this);
 	}
 
 }

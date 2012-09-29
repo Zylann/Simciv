@@ -1,4 +1,4 @@
-package simciv.ui.base;
+package backend.ui;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -31,7 +31,7 @@ public class Panel extends WidgetContainer
 	public void render(GameContainer gc, Graphics gfx)
 	{
 		if(!parent.isOpaqueContainer())
-			UIRenderer.instance().renderPanel(gfx, this);
+			UIRenderer.getTheme().renderPanel(gfx, this);
 		super.render(gc, gfx);
 	}
 	

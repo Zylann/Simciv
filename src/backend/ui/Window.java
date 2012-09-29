@@ -1,4 +1,4 @@
-package simciv.ui.base;
+package backend.ui;
 
 import java.util.ArrayList;
 
@@ -130,8 +130,8 @@ public class Window extends WidgetContainer
 	@Override
 	public void render(GameContainer gc, Graphics gfx)
 	{
-		UIRenderer.instance().renderWindow(gfx, this);
+		UIRenderer.getTheme().renderWindow(gfx, this);
 		super.render(gc, gfx);
 	}
-
+	
 }

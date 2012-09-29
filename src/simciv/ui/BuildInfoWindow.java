@@ -2,12 +2,13 @@ package simciv.ui;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Input;
-import simciv.ui.base.IActionListener;
-import simciv.ui.base.Label;
-import simciv.ui.base.PushButton;
-import simciv.ui.base.Widget;
-import simciv.ui.base.WidgetContainer;
-import simciv.ui.base.Window;
+
+import backend.ui.IActionListener;
+import backend.ui.Label;
+import backend.ui.PushButton;
+import backend.ui.Widget;
+import backend.ui.WidgetContainer;
+import backend.ui.Window;
 
 public class BuildInfoWindow extends Window
 {

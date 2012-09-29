@@ -1,4 +1,4 @@
-package simciv.ui.base;
+package backend.ui;
 
 import org.newdawn.slick.Input;
 import org.newdawn.slick.util.InputAdapter;
@@ -29,9 +29,9 @@ public class UIInputForwarder extends InputAdapter
 		this.ui = ui;
 	}
 	
-	private int getGScale()
+	private int getGlobalScale()
 	{
-		return UIRenderer.instance().getGlobalScale();
+		return UIRenderer.getGlobalScale();
 	}
 
 	@Override
@@ -49,8 +49,8 @@ public class UIInputForwarder extends InputAdapter
 		if(ui == null)
 			return;
 		if(ui.mousePressed(button,
-				x / getGScale(),
-				y / getGScale()))
+				x / getGlobalScale(),
+				y / getGlobalScale()))
 			input.consumeEvent();
 	}
 
@@ -60,8 +60,8 @@ public class UIInputForwarder extends InputAdapter
 		if(ui == null)
 			return;
 		if(ui.mouseReleased(button,
-				x / getGScale(),
-				y / getGScale()))
+				x / getGlobalScale(),
+				y / getGlobalScale()))
 			input.consumeEvent();
 	}
 
@@ -71,10 +71,10 @@ public class UIInputForwarder extends InputAdapter
 		if(ui == null)
 			return;
 		if(ui.mouseMoved(
-				oldX / getGScale(),
-				oldY / getGScale(),
-				newX / getGScale(),
-				newY / getGScale()))
+				oldX / getGlobalScale(),
+				oldY / getGlobalScale(),
+				newX / getGlobalScale(),
+				newY / getGlobalScale()))
 			input.consumeEvent();
 	}
 
@@ -84,10 +84,10 @@ public class UIInputForwarder extends InputAdapter
 		if(ui == null)
 			return;
 		if(ui.mouseDragged(
-				oldX / getGScale(),
-				oldY / getGScale(),
-				newX / getGScale(),
-				newY / getGScale()))
+				oldX / getGlobalScale(),
+				oldY / getGlobalScale(),
+				newX / getGlobalScale(),
+				newY / getGlobalScale()))
 			input.consumeEvent();
 	}
 

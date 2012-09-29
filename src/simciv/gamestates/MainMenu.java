@@ -6,16 +6,17 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import backend.ui.IActionListener;
+import backend.ui.Label;
+import backend.ui.Panel;
+import backend.ui.PushButton;
+import backend.ui.RootPane;
+import backend.ui.UIBasicGameState;
+import backend.ui.UIRenderer;
+import backend.ui.Widget;
+
 import simciv.Game;
 import simciv.persistence.GameSaveData;
-import simciv.ui.base.IActionListener;
-import simciv.ui.base.Label;
-import simciv.ui.base.Panel;
-import simciv.ui.base.PushButton;
-import simciv.ui.base.RootPane;
-import simciv.ui.base.UIBasicGameState;
-import simciv.ui.base.UIRenderer;
-import simciv.ui.base.Widget;
 
 public class MainMenu extends UIBasicGameState
 {
@@ -60,8 +61,8 @@ public class MainMenu extends UIBasicGameState
 	protected void createUI(GameContainer container, StateBasedGame game)
 			throws SlickException
 	{
-		UIRenderer.instance().setGlobalScale(2);
-		int gs = UIRenderer.instance().getGlobalScale();
+		UIRenderer.setGlobalScale(2);
+		int gs = UIRenderer.getGlobalScale();
 		ui = new RootPane(container.getWidth() / gs, container.getHeight() / gs);
 		
 		Panel panel = new Panel(ui, 150, 85);

@@ -1,4 +1,4 @@
-package simciv.ui.base;
+package backend.ui;
 
 /**
  * Widget class with event methods already defined by default

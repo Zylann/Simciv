@@ -12,6 +12,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import backend.MathHelper;
 import backend.geom.Vector2i;
+import backend.ui.Notification;
 
 import simciv.Cheats;
 import simciv.Game;
@@ -22,7 +23,6 @@ import simciv.TickableEntity;
 import simciv.content.Content;
 import simciv.effects.SmokeExplosion;
 import simciv.maptargets.RoadMapTarget;
-import simciv.ui.base.Notification;
 
 // FIXME sometimes, the map is left unconstructible. Bug origin is unknown...
 

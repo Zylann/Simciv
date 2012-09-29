@@ -1,9 +1,8 @@
-package simciv.ui.base;
+package backend.ui;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
-//TODO put as internal Window class
 public class WindowCloseButton extends Button
 {
 	public static final int width = 24;
@@ -29,7 +28,7 @@ public class WindowCloseButton extends Button
 	@Override
 	public void render(GameContainer gc, Graphics gfx)
 	{
-		UIRenderer.instance().renderWindowCloseButton(gfx, this);
+		UIRenderer.getTheme().renderWindowCloseButton(gfx, this);
 	}
 	
 	class CloseWindowAction implements IActionListener

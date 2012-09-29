@@ -6,12 +6,13 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
+import backend.ui.IActionListener;
+import backend.ui.MessageBox;
+import backend.ui.Widget;
+
 import simciv.Game;
 import simciv.persistence.GameLoaderThread;
 import simciv.persistence.GameSaveData;
-import simciv.ui.base.IActionListener;
-import simciv.ui.base.MessageBox;
-import simciv.ui.base.Widget;
 
 public class GameLoadingScreen extends GameInitScreen
 {

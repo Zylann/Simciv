@@ -2,7 +2,8 @@ package simciv;
 
 import java.io.Serializable;
 
-import simciv.ui.base.Notification;
+import backend.ui.Notification;
+
 
 /**
  * Maintains a virtual world time from real game time.
