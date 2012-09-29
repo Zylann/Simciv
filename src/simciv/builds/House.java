@@ -533,7 +533,12 @@ public class House extends Build
 		else
 		{
 			if(!resources.containsFood())
-				problems.add(ProblemsReport.SEVERE, "We need some food !");
+			{
+				String msg = "We need some food !";
+				if(getNbWorkers() == 0)
+					msg += " But we can't even buy it...";
+				problems.add(ProblemsReport.SEVERE, msg);
+			}
 			
 			if(getWorkersRatio() < 0.5f)
 				problems.add(ProblemsReport.MINOR, "Many of us have no jobs :( ");
