@@ -532,7 +532,7 @@ public class House extends Build
 			problems.add(ProblemsReport.MINOR, "This house is abandonned.");
 		else
 		{
-			if(!resources.containsFood())
+			if(!resources.containsFood() && getNbInhabitants() != 0)
 			{
 				String msg = "We need some food !";
 				if(getNbWorkers() == 0)
