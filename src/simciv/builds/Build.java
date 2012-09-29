@@ -121,6 +121,14 @@ public abstract class Build extends TickableEntity
 	}
 	
 	@Override
+	protected void onDispose()
+	{
+		super.onDispose();
+		if(isFireBurning())
+			mapRef.playerCity.fireAlerts.unregisterFire(getX(), getY());
+	}
+
+	@Override
 	protected final void track()
 	{
 		mapRef.grid.markBuilding(this, true);
