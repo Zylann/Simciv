@@ -110,7 +110,12 @@ public class Conveyer extends Citizen
 				dispose();
 		}
 		else
-			findAndGoTo(new WorkplaceTarget(), PATHFINDING_DISTANCE);
+		{
+			if(isMyWorkplaceNearby())
+				dispose();
+			else
+				findAndGoTo(new WorkplaceTarget(), PATHFINDING_DISTANCE);
+		}
 	}
 	
 	private void tickFindRoad()

@@ -1,5 +1,8 @@
 package simciv.units;
 
+import java.util.List;
+
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 
@@ -124,6 +127,17 @@ public abstract class Citizen extends Unit
 		return mapRef.grid.isRoad(getX(), getY());
 	}
 	
+	public boolean isMyWorkplaceNearby()
+	{
+		List<Build> builds = mapRef.getBuildsAround(getX(), getY());
+		for(Build b : builds)
+		{
+			if(b.getID() == getWorkplaceID())
+				return true;
+		}
+		return false;
+	}
+	
 	protected void goBackToRoad(int pathfindingDistance)
 	{
 		// Find the nearest road if I am not on it
@@ -135,7 +149,23 @@ public abstract class Citizen extends Unit
 				pathfindingDistance);
 		}
 	}
-	
+
+	/**
+	 * Debug : draws a line between the citizen and its workplace
+	 */
+	protected void renderLineToWorkplace(Graphics gfx)
+	{		
+		Workplace w = getWorkplace();
+		
+		// Get relative pos
+		int rx = w.getX() - getX();
+		int ry = w.getY() - getY();
+		
+		gfx.setLineWidth(2);
+		gfx.setColor(Color.white);
+		gfx.drawLine(0, 0, Game.tilesSize * rx, Game.tilesSize * ry);
+	}
+
 	/**
 	 * Default map pass for citizen.
 	 * Defines where a citizen can move.
