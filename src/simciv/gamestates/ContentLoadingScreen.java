@@ -7,8 +7,11 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
+import backend.ui.UIRenderer;
+
 import simciv.Game;
 import simciv.content.Content;
+import simciv.ui.UITheme;
 
 // TODO replace this state by a Swing splash screen
 public class ContentLoadingScreen extends BasicGameState
@@ -48,7 +51,12 @@ public class ContentLoadingScreen extends BasicGameState
 		Content.loadFromContentFile("data/content.xml");
 		Content.indexAll();
 		
+		UITheme customTheme = new UITheme();
+		customTheme.loadContent();
+		UIRenderer.setTheme(customTheme);
+
 		Log.info("Game content loaded");
+		
 		
 		game.enterState(Game.STATE_MAIN_MENU);
 	}

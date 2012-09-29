@@ -20,6 +20,7 @@ public class BuildInfoWindow extends Window
 		super(parent, 0, 0, 250, 150, title);
 		alignToCenter();
 		
+		// FIXME the text is displayed as one word per line
 		infoText = new Label(this, 4, 4, getWidth() - 8, getHeight() - 8, "[Build info]");
 		infoText.setTextWrap(true);
 		infoText.setTextColor(Color.black);
