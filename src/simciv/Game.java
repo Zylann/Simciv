@@ -113,7 +113,6 @@ public class Game extends UIStateBasedGame
 			gameFrame = new JFrame();
 			gameFrame.setTitle(title);
 			gameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			gameFrame.setLocationRelativeTo(null);
 			gameFrame.addWindowListener(new MainFrameListener());
 			gameFrame.setVisible(true);
 			// Note : frame borders are not available before the frame is shown
@@ -121,6 +120,7 @@ public class Game extends UIStateBasedGame
 			gameFrame.setSize(
 					defaultScreenWidth + gameFrame.getInsets().left + gameFrame.getInsets().right,
 					defaultScreenHeight + gameFrame.getInsets().top + gameFrame.getInsets().bottom);
+			gameFrame.setLocationRelativeTo(null);
 			
 			// Add canvas to the content pane
 			contentPane = gameFrame.getContentPane();
