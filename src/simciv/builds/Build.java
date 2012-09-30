@@ -24,7 +24,7 @@ import simciv.content.Content;
 import simciv.effects.SmokeExplosion;
 import simciv.maptargets.RoadMapTarget;
 
-// FIXME sometimes, the map is left unconstructible. Bug origin is unknown...
+// FIXME (rare) sometimes, the map is left unconstructible. Bug origin is unknown...
 
 /**
  * Each object that can be constructed by the player.
@@ -383,7 +383,7 @@ public abstract class Build extends TickableEntity
 	 */
 	private void renderFireRiskRatio(Graphics gfx)
 	{
-		// FIXME fire bar not being rendered properly in rare cases
+		// FIXME (rare) fire bar not being rendered properly in rare cases
 		renderBar(gfx, getFireLevelRatio(), Color.darkGray, Color.orange);
 	}
 

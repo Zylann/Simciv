@@ -364,11 +364,13 @@ public class House extends Build
 	
 	private void removeAllWorkers()
 	{
+		Log.debug(this + "removing all its workers :");
 		for(Integer wID : workers)
 		{
 			Build b = mapRef.getBuild(wID);
+			Log.debug("--- " + b);
 			if(!Workplace.class.isInstance(b))
-				Log.error("not a workplace (" + b.getInfoLine() + ")");
+				Log.error("--- not a workplace (" + b.getInfoLine() + ")");
 			// FIXME Ruins cannot be casted to Workplace (after loading a game where builds are burning/collapsing)
 			((Workplace)b).removeEmployee(this, false); // false : do not propagate to the house (circular)
 		}
@@ -382,6 +384,7 @@ public class House extends Build
 	 */
 	public void removeWorker(Workplace w, boolean notify)
 	{
+		Log.debug(this + " removing one employee working at " + w);
 		workers.remove((Object)(w.getID()));
 		if(notify)
 			w.removeEmployee(this, false);

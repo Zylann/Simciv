@@ -217,14 +217,21 @@ public abstract class Workplace extends Build
 	 */
 	public void removeEmployee(House empHouse, boolean notify)
 	{
+		Log.debug(this + " removing employee living at " + empHouse);
+
 		if(employees.isEmpty())
+		{
+			Log.debug("--- but the workplace has no employees");
 			return;
+		}
 		
 		if(!employees.remove((Object)(empHouse.getID())))
+		{
+			Log.debug("--- but the given house is not referenced");
 			return;
+		}
 		
-		mapRef.playerCity.workingPopulation--;
-		
+		mapRef.playerCity.workingPopulation--;		
 		removeNextUnit();
 		
 		if(notify)
@@ -253,6 +260,7 @@ public abstract class Workplace extends Build
 	{
 		removeAllUnits();
 		
+		Log.debug(this + " removing all employees");
 		for(Integer hID : employees)
 		{
 			House h = (House)(mapRef.getBuild(hID));
