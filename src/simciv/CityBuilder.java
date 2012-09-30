@@ -377,17 +377,17 @@ public class CityBuilder
 	 * This is the main erase method. All things erasing may use it.
 	 * @param x
 	 * @param y
-	 * @param notify : if we erased something, play a sound
+	 * @param playSound : if we erased something, play a sound
 	 * @return true if something has been erased
 	 */
-	private boolean erase(int x, int y, boolean notify)
+	private boolean erase(int x, int y, boolean playSound)
 	{
 		boolean res = false;
 		if(mapRef.grid.eraseRoad(x, y))
 			res = true;
 		else
 		{
-			Build b = mapRef.getBuild(pos.x, pos.y);
+			Build b = mapRef.getBuild(x, y);
 			if(b != null)
 			{
 				if(b.canBeErasedByPlayer() || Cheats.isSuperEraser())
@@ -404,7 +404,7 @@ public class CityBuilder
 		if(res)
 		{
 			mapRef.playerCity.buy(erasingCost);
-			if(notify)
+			if(playSound)
 				eraseSound.play();
 		}
 		return res;
