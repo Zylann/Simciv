@@ -22,6 +22,11 @@ public class RisingIcon extends VisualEffect
 	private int duration;
 	private int time;
 
+	/**
+	 * Creates a rising icon.
+	 * @param x : x position in cells
+	 * @param y : y position in cells
+	 */
 	public RisingIcon(int x, int y, Image sprite)
 	{
 		super(x, y);

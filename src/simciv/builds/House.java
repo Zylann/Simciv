@@ -7,6 +7,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.Log;
 
 import simciv.Cheats;
 import simciv.Game;
@@ -179,7 +180,14 @@ public class House extends Build
 					if(feedLevel == FEED_MIN)
 					{
 						if(Math.random() < 0.02f)
+						{
+							// Citizen death
 							removeInhabitant();
+							mapRef.addGraphicalEffect(
+								new RisingIcon(
+									getX(), getY(),
+									Content.sprites.effectDeath));
+						}
 					}
 				}
 			}
@@ -312,8 +320,8 @@ public class House extends Build
 	 * The workplace will be notified.
 	 * The population total will be decreased.
 	 * @param workplace : the place where the inhabitant works.
-	 * 		If null, this method will only remove an inhabitant.
-	 * 		If null and there is only workers, one of them will be removed too.
+	 * 		If null, this method will only remove an inhabitant, but :
+	 * 		if null and there is only workers, one of them will be removed.
 	 */
 	public void removeInhabitantWorkingAt(Workplace workplace)
 	{
@@ -358,8 +366,11 @@ public class House extends Build
 	{
 		for(Integer wID : workers)
 		{
-			Workplace w = (Workplace)mapRef.getBuild(wID);
-			w.removeEmployee(this, false); // false : do not propagate to the house (circular)
+			Build b = mapRef.getBuild(wID);
+			if(!Workplace.class.isInstance(b))
+				Log.error("not a workplace (" + b.getInfoLine() + ")");
+			// FIXME Ruins cannot be casted to Workplace (after loading a game where builds are burning/collapsing)
+			((Workplace)b).removeEmployee(this, false); // false : do not propagate to the house (circular)
 		}
 		workers.clear();
 	}
@@ -438,6 +449,14 @@ public class House extends Build
 	@Override
 	public void onDestruction()
 	{
+//		removeAllInhabitants();
+//		nbCitizensToProduce = 0;
+	}
+	
+	@Override
+	public void onDispose()
+	{
+		super.onDispose();
 		removeAllInhabitants();
 		nbCitizensToProduce = 0;
 	}
