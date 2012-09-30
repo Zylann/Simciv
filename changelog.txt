@@ -2,6 +2,12 @@ Simciv indev R4.0 (work in progress) :
 
 ---
 
+Simciv indev R3.1 (2012-09-30) :
+
++ Re-added death icon when houses inhabitants die
+- Fixed game window positionning
+- Fixed zone erasing not working
+
 Simciv indev R3.0 (2012-09-29) :
 
 + The game can be saved and loaded (only 1 save file yet)
