@@ -31,7 +31,6 @@ public class FarmLand extends Workplace
 	private static byte ROTTEN_LEVEL = 8;
 	
 	private byte cropsLevel;
-	private transient int ticksPerLevel; // how many ticks are needed to increase crops level?
 	private int ticksBeforeNextLevel; // how many ticks remains before the next level?
 	
 	static
@@ -47,10 +46,18 @@ public class FarmLand extends Workplace
 	public FarmLand(Map m)
 	{
 		super(m);
-		ticksPerLevel = secondsToTicks(60);
-		ticksBeforeNextLevel = ticksPerLevel;
+		ticksBeforeNextLevel = getTicksPerCropsLevel();
 		cropsLevel = MIN_LEVEL;
 		state = Build.STATE_NORMAL;		
+	}
+	
+	/**
+	 * Returns how many ticks are needed to increase crops level
+	 * @return
+	 */
+	public int getTicksPerCropsLevel()
+	{
+		return secondsToTicks(60);
 	}
 	
 	@Override
@@ -66,7 +73,7 @@ public class FarmLand extends Workplace
 		if(ticksBeforeNextLevel <= 0)
 		{
 			onLevelUp();
-			ticksBeforeNextLevel = ticksPerLevel;
+			ticksBeforeNextLevel = getTicksPerCropsLevel();
 		}
 	}
 	
@@ -154,7 +161,9 @@ public class FarmLand extends Workplace
 	{
 		if(cropsLevel == ROTTEN_LEVEL)
 			return 0;
-		return (int) (100.f * ((cropsLevel + 1.f - (float)ticksBeforeNextLevel / ticksPerLevel) / (MAX_LEVEL+1)));
+		return (int)
+			(100.f * ((cropsLevel + 1.f - (float)ticksBeforeNextLevel
+				/ getTicksPerCropsLevel()) / (MAX_LEVEL+1)));
 	}
 
 	@Override
