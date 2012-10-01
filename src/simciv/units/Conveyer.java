@@ -21,8 +21,9 @@ import simciv.content.Content;
 public class Conveyer extends Citizen
 {
 	private static final long serialVersionUID = 1L;
-	private static final int PATHFINDING_DISTANCE = 256;
+	private static final int PATHFINDING_DISTANCE = 4092;
 	
+	// States
 	private static final byte FIND_STORAGE = 0;
 	private static final byte STORE_RESOURCES = 1;
 	private static final byte BACK_TO_WORKPLACE = 2;
@@ -31,6 +32,7 @@ public class Conveyer extends Citizen
 	/** Resources carried by the conveyer **/
 	private ResourceSlot carriedResource;
 	
+	/** Last state of the conveyer **/
 	private byte lastState;
 	
 	public Conveyer(Map m, Workplace w)
@@ -55,6 +57,8 @@ public class Conveyer extends Citizen
 		 * When he distributed all his resources, he goes back to its workplace.
 		 */
 		
+		// FIXME Blocked conveyers when loading a saved game
+		
 		byte lastStateTemp = state;
 		
 		switch(state)
@@ -65,7 +69,7 @@ public class Conveyer extends Citizen
 		case FIND_ROAD : tickFindRoad(); break;
 		}
 		
-		lastState = lastStateTemp;		
+		lastState = lastStateTemp;
 	}
 	
 	private void tickFindStorage()

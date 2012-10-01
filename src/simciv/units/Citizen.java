@@ -34,7 +34,7 @@ public abstract class Citizen extends Unit
 	/** Tick time interval in milliseconds (modified value) **/
 	private int tickTime;
 	
-	/** ID of the place where the citizne works **/
+	/** ID of the place where the citizen works **/
 	private int workplaceID;
 	
 	/** Workplace reference based on workplaceID (computed) **/

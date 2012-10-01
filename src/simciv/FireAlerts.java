@@ -20,7 +20,7 @@ import backend.pathfinding.IMapTarget;
 public class FireAlerts
 {
 	private static final int TIME_PER_ENV_ALERT = 500;
-	private static final int ALERT_RANGE = 24;
+	private static final int ALERT_RANGE = 32;
 	
 	/** All of the referenced fires on the map **/
 	private HashSet<Vector2i> fires;

@@ -30,6 +30,7 @@ import simciv.movement.PathMovement;
 public abstract class Unit extends TickableEntity
 {
 	private static final long serialVersionUID = 1L;
+	private static final int DEFAULT_MAX_PATHFINDING_DISTANCE = 4096; // Big distance
 		
 	private boolean isAlive;
 	private boolean isMoving;
@@ -112,6 +113,11 @@ public abstract class Unit extends TickableEntity
 		return findAndGoTo(new DefaultPass(), target, maxDistance);
 	}
 	
+	public boolean findAndGoTo(IMapTarget target)
+	{
+		return findAndGoTo(new DefaultPass(), target, DEFAULT_MAX_PATHFINDING_DISTANCE);
+	}
+		
 	/**
 	 * Makes the unit follow a path.
 	 * If the path is invalid, the old movement will be cleared (the unit will not move).
