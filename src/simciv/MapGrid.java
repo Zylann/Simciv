@@ -7,6 +7,7 @@ import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 
 import backend.Direction2D;
 import backend.IntRange2D;
@@ -345,6 +346,7 @@ public class MapGrid implements Serializable
 	{
 		gfx.setColor(Color.white);
 		int x, y;
+		boolean renderDataEnabled = gc.getInput().isKeyDown(Input.KEY_NUMPAD2);
 		
 		for(y = range.minY(); y <= range.maxY(); y++)
 		{
@@ -353,7 +355,8 @@ public class MapGrid implements Serializable
 				if(contains(x, y))
 				{
 					getCellExisting(x, y).renderGround(x, y, gfx);
-//					getCellExisting(x, y).renderData(gfx, x, y); // debug
+					if(renderDataEnabled)
+						getCellExisting(x, y).renderData(gfx, x, y); // debug
 				}
 			}
 		}
