@@ -68,7 +68,9 @@ public abstract class Unit extends TickableEntity
 	@Override
 	protected final void track()
 	{
-		mapRef.grid.getCellExisting(getX(), getY()).setUnitInfo(getID());
+		MapCell nextCell = mapRef.grid.getCellExisting(getX(), getY());
+		if(!nextCell.isUnit())
+			mapRef.grid.getCellExisting(getX(), getY()).setUnitInfo(getID());
 	}
 
 	@Override

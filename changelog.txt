@@ -2,6 +2,13 @@ Simciv indev R4.0 (work in progress) :
 
 ---
 
+Simciv indev R3.2 (work in progress) :
+
++ Added state information on conveyers info line
+- Fixed farmlands growing too fast after loading a saved game
+- Fixed ID collisions leading to corrupted map when loading a saved game
+- Fixed units loosing their map grid tracks when another unit passes at the same place
+
 Simciv indev R3.1 (2012-09-30) :
 
 + Re-added death icon when houses inhabitants die

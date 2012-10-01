@@ -6,6 +6,7 @@ import org.newdawn.slick.Graphics;
 
 import backend.Direction2D;
 import backend.pathfinding.IMapTarget;
+import simciv.Entity;
 import simciv.Map;
 import simciv.ResourceSlot;
 import simciv.builds.Build;
@@ -138,6 +139,29 @@ public class Conveyer extends Citizen
 				state = FIND_STORAGE;
 		}
 	}
+	
+	@Override
+	public String getInfoLine()
+	{
+		String stateName = "";
+		
+		switch(getState())
+		{
+		case Entity.DEFAULT_STATE : stateName = "default state"; break;
+		case BACK_TO_WORKPLACE : stateName = "back to workplace"; break;
+		case FIND_ROAD : stateName = "finding a road"; break;
+		case FIND_STORAGE : stateName = "Finding storage"; break;
+		case STORE_RESOURCES : stateName = "Storing resources"; break;
+		}
+		
+		return super.getInfoLine() + " " + stateName;
+	}
+
+	@Override
+	public String getDisplayableName()
+	{
+		return "Conveyer";
+	}
 
 	/**
 	 * Distributes resources to neighboring builds if possible
@@ -189,12 +213,6 @@ public class Conveyer extends Citizen
 		public boolean isTarget(int x, int y) {
 			return mapRef.grid.getBuildID(x, y) == getWorkplaceID();
 		}
-	}
-
-	@Override
-	public String getDisplayableName()
-	{
-		return "Conveyer";
 	}
 
 }

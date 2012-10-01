@@ -18,7 +18,7 @@ public abstract class Entity extends GameComponent
 {
 	private static final long serialVersionUID = 1L;
 	
-	private static final byte DEFAULT_STATE = -1;
+	public static final byte DEFAULT_STATE = -1;
 	
 	/** Position X of the entity in map cells **/
 	private int posX;	
