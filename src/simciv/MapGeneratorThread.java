@@ -2,6 +2,11 @@ package simciv;
 
 import backend.Noise;
 
+/**
+ * Map generation method wrapped in a thread
+ * @author Marc
+ *
+ */
 public class MapGeneratorThread extends Thread
 {
 	private int seed;

@@ -17,9 +17,16 @@ public class MinimapUpdater implements IMapGridListener
 	private static final int MASK_BASE = 16; // in pixels
 	private static final int VIZ_UPDATE_TIME = 1000; // in ms
 	
+	/** Pixels of the minimap **/
 	private ImageBuffer pixels;
+	
+	/** Image used to draw minimap pixels **/
 	private Image viz;
+	
+	/** Next update of minimap pixels **/
 	private int nextVizUpdateTime; // in ms
+	
+	/** Map access to get minimap colors **/
 	private Map worldRef;
 	
 	public MinimapUpdater(Map w) throws SlickException

@@ -46,30 +46,82 @@ import simciv.ui.TimeBar;
  */
 public class CityView extends UIBasicGameState
 {
+	/** Identifier of the game state **/
 	private int stateID = -1;
+	
+	/** Map where the player build his city **/
 	private Map map;
+	
+	/** City builder tool **/
 	private CityBuilder builder;
+	
+	/** Info bar displaying informations about what the player is pointing **/
 	private InfoBar infoBar;
-	private String debugText = "";
+		
+	/** Pointed map cell position (computed from mouse position) **/
 	private Vector2i pointedCell = new Vector2i();
+	
+	/** Smaller representation of the map allowing to scroll the view **/
 	private Minimap minimap;
+	
+	/** Window containing the minimap **/
 	private Window minimapWindow;
+	
+	/** Pause window allowing to resume, save or quit the game **/
 	private Window pauseWindow;
+	
+	/** Minimap updater **/
 	private MinimapUpdater minimapUpdater;
+	
+	/** Build menus controlling cityBuilder's state **/
 	private BuildMenuBar menuBar;
+	
+	/** Info bar displaying city population and money **/
 	private IndicatorsBar indicatorsBar;
+
+	/** Info bar displaying the current world time **/
 	private TimeBar timeBar;
+	
+	/** Area where we can read quick messages from the city **/
 	private NotificationArea notificationArea;
+	
+	/** Window containing informations about the build we right-clicked on **/
 	private BuildInfoWindow buildInfoWindow;
+	
+	/** Game saving thread started when the player wants to save the game **/
 	private GameSaverThread gameSaver;
-	private PerformanceGraph renderTimeGraph;
+		
+	/** Is the player wants to quit the game? **/
 	private boolean quitGameRequested;
+	
+	/** Is the game paused ? **/
 	private boolean paused;
-	private boolean debugInfoVisible;
+	
+	/** Is the game starts when we enter this state? 
+	 * (can be false if we come from the AdminView or the WorldView,
+	 * other future gamestates)
+	 */
 	private boolean isGameBeginning;
+	
+	/** Is the debug panel visible? **/
+	private boolean debugInfoVisible;
+
+	/** Debug graph showing the render time evolution **/
+	private PerformanceGraph renderTimeGraph;
+
+	/** Debug text (on the debug panel) **/
+	private String debugText = "";
+
+	/** Time taken by the last render. Used for debug. **/
 	private long renderTime;
+	
+	/** Time taken by the last game logic update. Used for debug. **/
 	private long updateTime;
 	
+	/**
+	 * Constructs the CityView state identified by the given ID.
+	 * @param stateID
+	 */
 	public CityView(int stateID)
 	{
 		this.stateID = stateID;

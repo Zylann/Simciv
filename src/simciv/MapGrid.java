@@ -62,6 +62,11 @@ public class MapGrid implements Serializable
 		listeners = new ArrayList<IMapGridListener>();
 	}
 	
+	/**
+	 * Adds a listener to the map grid that will be notified 
+	 * every time a grid method modifies a cell.
+	 * @param l
+	 */
 	public void addListener(IMapGridListener l)
 	{
 		if(listeners == null)
@@ -182,6 +187,9 @@ public class MapGrid implements Serializable
 	
 	// Roads
 	
+	/**
+	 * Tests if there is a road at the given position
+	 */
 	public boolean isRoad(int x, int y)
 	{
 		if(contains(x, y))
@@ -365,6 +373,11 @@ public class MapGrid implements Serializable
 			renderGrid(range, gc, gfx);
 	}
 	
+	/**
+	 * Registers natural elements on the ground for a sorted rendering
+	 * @param range : map zone to register
+	 * @param mgr
+	 */
 	public void registerElementsForSortedRender(IntRange2D range, SortedRender mgr)
 	{
 		for(int y = range.minY(); y <= range.maxY(); y++)
