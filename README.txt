@@ -40,6 +40,7 @@ Some planned features and ideas :
 	- Citizen social levels
 	- Tutorial mode, compaigns...
 	- Multiplayer mode (inter-city only)
+	- Game update when a new version is available
 
 Dependencies :
 
