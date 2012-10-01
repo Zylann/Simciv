@@ -136,7 +136,7 @@ public class MapCell implements Serializable
 		return true;
 	}
 	
-	public boolean isCrossable()
+	public boolean isWalkable()
 	{
 		return terrainID != Terrain.WATER && !isBuild() && nature != Nature.TREE;
 	}

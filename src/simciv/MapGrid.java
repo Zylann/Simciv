@@ -473,12 +473,20 @@ public class MapGrid implements Serializable
 		return true;
 	}
 	
+	/**
+	 * Tests if the given cell position is walkable.
+	 * Note : be aware that this method doesn't check special walkable buildings.
+	 * Use the isWalkable(x,y) method in Map for this.
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public boolean isWalkable(int x, int y)
 	{
 		if(!contains(x, y))
 			return false;
 		else
-			return getCellExisting(x, y).isCrossable();
+			return getCellExisting(x, y).isWalkable();
 	}
 	
 	/**
