@@ -3,7 +3,6 @@ package simciv.units;
 import java.util.List;
 
 import org.newdawn.slick.Graphics;
-
 import backend.Direction2D;
 import backend.pathfinding.IMapTarget;
 import simciv.Entity;
@@ -57,8 +56,6 @@ public class Conveyer extends Citizen
 		 * He moves at random, distributing resources.
 		 * When he distributed all his resources, he goes back to its workplace.
 		 */
-		
-		// FIXME Blocked conveyers when loading a saved game
 		
 		byte lastStateTemp = state;
 		

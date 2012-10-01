@@ -556,6 +556,8 @@ public class Map
 			((Entity)e).setMap(this);
 		
 		playerCity.recomputeData(builds.asCollection());
+		
+		multiPathFinder = new MultiSeedPathFinder(grid.getWidth(), grid.getHeight());
 	}
 	
 	/**

@@ -94,8 +94,12 @@ public abstract class Unit extends TickableEntity
 	 */
 	public boolean findAndGoTo(IMapSpec mapSpec, IMapTarget target, int maxDistance)
 	{
+		if(maxDistance <= 0)
+			Log.error(this + "No paths will be found with maxDistance=" + maxDistance);
+		
 		// Configure pathfinding
 		mapRef.multiPathFinder.setFindBlockedTargets(true);
+		mapRef.multiPathFinder.setMaxDistance(maxDistance);
 		
 		// Do pathfinding
 		LinkedList<Vector2i> path =
@@ -107,7 +111,10 @@ public abstract class Unit extends TickableEntity
 			return true; // Path found
 		}
 		else
+		{
+			Log.debug(this + " path not found (maxDistance=" + maxDistance + ")");
 			return false; // Path not found
+		}
 	}
 	
 	public boolean findAndGoTo(IMapTarget target, int maxDistance)

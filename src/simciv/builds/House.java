@@ -368,10 +368,6 @@ public class House extends Build
 		for(Integer wID : workers)
 		{
 			Build b = mapRef.getBuild(wID);
-			Log.debug("--- " + b);
-			if(!Workplace.class.isInstance(b))
-				Log.error("--- not a workplace (" + b.getInfoLine() + ")");
-			// FIXME Ruins cannot be casted to Workplace (after loading a game where builds are burning/collapsing)
 			((Workplace)b).removeEmployee(this, false); // false : do not propagate to the house (circular)
 		}
 		workers.clear();
