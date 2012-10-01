@@ -22,9 +22,11 @@ import backend.GameComponentMap;
 import backend.IntRange2D;
 import backend.pathfinding.MultiSeedPathFinder;
 import backend.ui.INotificationListener;
+import backend.ui.Notification;
 
 import simciv.builds.Build;
 import simciv.builds.Warehouse;
+import simciv.content.Content;
 import simciv.effects.VisualEffect;
 import simciv.rendering.SortedRender;
 import simciv.units.Unit;
@@ -97,13 +99,29 @@ public class Map
 	public void sendNotification(byte type, String message)
 	{
 		if(notifListener != null)
+		{
 			notifListener.notify(type, message);
+			playNotificationSound(type);
+		}
 	}
 	
 	public void sendNotification(byte type, String message, int timeVisible)
 	{
 		if(notifListener != null)
+		{
 			notifListener.notify(type, message, timeVisible);
+			playNotificationSound(type);
+		}
+	}
+	
+	private void playNotificationSound(byte type)
+	{
+		switch(type)
+		{
+		case Notification.TYPE_INFO : Content.sounds.uiNotificationInfo.play(); break;
+		case Notification.TYPE_WARNING : Content.sounds.uiNotificationWarning.play(); break;
+		default : break;
+		}
 	}
 
 	/**

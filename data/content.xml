@@ -102,6 +102,9 @@
 	<sound id="uiReverseClick" src="click_reverse.ogg"/>
 	<sound id="uiErase" src="erase.ogg"/>
 	<sound id="uiPlace" src="place.ogg"/>
+	<sound id="uiPlaceDenied" src="doorclose.ogg"/>
+	<sound id="uiNotificationInfo" src="notifications_info.ogg"/>
+	<sound id="uiNotificationWarning" src="notifications_warning.ogg"/>
 	
 	<sound id="test" src="test.ogg"/>
 

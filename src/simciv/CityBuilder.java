@@ -457,6 +457,8 @@ public class CityBuilder
 				}
 				return true;
 			}
+			else if(notify)
+				Content.sounds.uiPlaceDenied.play(1, 0.3f);
 		}
 		return false;
 	}

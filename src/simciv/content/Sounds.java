@@ -16,7 +16,10 @@ public class Sounds
 	public Sound uiReverseClick;
 	public Sound uiErase;
 	public Sound uiPlace;
+	public Sound uiPlaceDenied;
 	public Sound uiButtonPress;
+	public Sound uiNotificationInfo;
+	public Sound uiNotificationWarning;
 	
 	// Test
 	public Sound test;
