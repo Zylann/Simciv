@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.util.Log;
 
 import simciv.Map;
@@ -46,6 +47,9 @@ public class GameLoaderThread extends GameSaveIOThread
 		{
 			e.printStackTrace();
 		} catch (ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		} catch (SlickException e)
 		{
 			e.printStackTrace();
 		}

@@ -1,8 +1,8 @@
 package backend;
 
 import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import org.newdawn.slick.GameContainer;
@@ -59,32 +59,28 @@ public abstract class GameComponent implements IRenderable, Serializable
 	}
 	
 	/**
+	 * Writes the component into an object output (custom Serializable method)
+	 * @param oo
+	 * @throws IOException
+	 */
+	private void writeObject(ObjectOutputStream oos) throws IOException
+	{
+		oos.defaultWriteObject();
+	}
+	
+	/**
 	 * Reads the component from an object input (custom Serializable method)
 	 * @param oi
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public void readObject(ObjectInput oi) throws IOException, ClassNotFoundException
+	private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException
 	{
-		ID = oi.readInt();
-		initialized = oi.readBoolean();
-		disposed = oi.readBoolean();
+		ois.defaultReadObject();
 		
 		// Prevents generation of double IDs
 		if(nextID <= ID)
 			nextID = ID + 1;
-	}
-
-	/**
-	 * Writes the component into an object output (custom Serializable method)
-	 * @param oo
-	 * @throws IOException
-	 */
-	public void writeObject(ObjectOutput oo) throws IOException
-	{
-		oo.writeInt(ID);
-		oo.writeBoolean(initialized);
-		oo.writeBoolean(disposed);
 	}
 
 	/**

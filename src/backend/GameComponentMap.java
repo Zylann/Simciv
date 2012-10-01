@@ -58,6 +58,11 @@ public class GameComponentMap implements Externalizable
 		oo.writeObject(components);
 	}
 	
+	public int size()
+	{
+		return components.size();
+	}
+	
 	/**
 	 * Stages a new component that will be added on next update
 	 * @param cmp

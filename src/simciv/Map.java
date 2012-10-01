@@ -13,6 +13,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
@@ -331,7 +332,7 @@ public class Map
 			gfx.setLineWidth(3.f);
 			multiPathFinder.renderMatrix(gfx);
 			gfx.popTransform();
-		}
+		}		
 	}
 
 	public Warehouse getFreeWarehouse(int x, int y)
@@ -499,8 +500,10 @@ public class Map
 	 * @param dis
 	 * @throws IOException
 	 * @throws ClassNotFoundException
+	 * @throws SlickException 
 	 */
-	public void readFromSave(DataInputStream dis) throws IOException, ClassNotFoundException
+	public void readFromSave(DataInputStream dis) 
+			throws IOException, ClassNotFoundException, SlickException
 	{
 		ObjectInputStream ois = new ObjectInputStream(dis);
 		
@@ -530,6 +533,9 @@ public class Map
 		
 		Log.info("Recomputing data...");		
 		recomputeData();
+		
+		if(!checkIntegrity())
+			throw new SlickException("Map is corrupted !");
 	}
 	
 	/**
@@ -552,6 +558,70 @@ public class Map
 		playerCity.recomputeData(builds.asCollection());
 	}
 	
+	/**
+	 * Test method checking if all game components contained in the map have an unique ID.
+	 * @return
+	 */
+	public boolean checkIntegrity()
+	{
+		Log.debug("Checking Map integrity...");
+		
+		Collection<GameComponent> unitsCollection = this.units.asCollection();
+		Collection<GameComponent> buildsCollection = this.builds.asCollection();
+		
+		ArrayList<Integer> ids = new ArrayList<Integer>();
+		boolean res = true;
+		int maxID = 0, minID = Integer.MAX_VALUE;
+		
+		for(GameComponent cmp : unitsCollection) {
+			if(cmp.getID() > maxID)
+				maxID = cmp.getID();
+			if(cmp.getID() < minID)
+				minID = cmp.getID();
+			if(!ids.contains(cmp.getID()))
+				ids.add(cmp.getID());
+			else {
+				res = false;
+				break;
+			}
+		}
+		
+		for(GameComponent cmp : buildsCollection) {
+			if(cmp.getID() > maxID)
+				maxID = cmp.getID();
+			if(cmp.getID() < minID)
+				minID = cmp.getID();
+			if(!ids.contains(cmp.getID()))
+				ids.add(cmp.getID());
+			else {
+				res = false;
+				break;
+			}
+		}
+		
+		int nextID = GameComponent.makeUniqueID();
+		String idGenInfo =
+			"cmpCount=" + (builds.size() + units.size()) + ", " +
+			"minID=" + minID + ", " +
+			"maxID=" + maxID + ", " +
+			"nextID=" + nextID;
+		
+		if(res) {
+			if(nextID <= maxID) {
+				Log.error("Map corrupted, ID generation will collide existing IDs ! " + idGenInfo);
+				return false;
+			}
+			else {
+				Log.debug("Done. No double IDs. " + idGenInfo);
+				return true;
+			}
+		}
+		else {
+			Log.error("Map corrupted, contains double IDs ! " + idGenInfo);
+			return false;
+		}
+	}
+
 }
 
 
