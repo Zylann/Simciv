@@ -7,7 +7,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -25,7 +24,6 @@ import backend.ui.INotificationListener;
 import backend.ui.Notification;
 
 import simciv.builds.Build;
-import simciv.builds.Warehouse;
 import simciv.content.Content;
 import simciv.effects.VisualEffect;
 import simciv.rendering.SortedRender;
@@ -39,6 +37,9 @@ import simciv.units.Unit;
  */
 public class Map
 {
+	/** Factor used when the time speed-up option is enabled **/ 
+	private static final int FAST_FORWARD_SPEED_FACTOR = 4;
+	
 	/** Terrain of the map **/
 	public MapGrid grid;
 	
@@ -88,7 +89,8 @@ public class Map
 	}
 	
 	/**
-	 * Sets the notifications listener that will be used to send notifications
+	 * Sets the notifications listener that will be used
+	 * to send notifications to the player
 	 * @param notifListener
 	 */
 	public void setNotificationListener(INotificationListener notifListener)
@@ -96,6 +98,11 @@ public class Map
 		this.notifListener = notifListener;
 	}
 	
+	/**
+	 * Sends a notification message to the player using the notifications listener
+	 * @param type : Notification type
+	 * @param message : readable message
+	 */
 	public void sendNotification(byte type, String message)
 	{
 		if(notifListener != null)
@@ -105,6 +112,12 @@ public class Map
 		}
 	}
 	
+	/**
+	 * Sends a notification message to the player using the notifications listener
+	 * @param type : Notification type
+	 * @param message : readable message
+	 * @param timeVisible : visibility duration in milliseconds
+	 */
 	public void sendNotification(byte type, String message, int timeVisible)
 	{
 		if(notifListener != null)
@@ -114,6 +127,10 @@ public class Map
 		}
 	}
 	
+	/**
+	 * Plays a sound corresponding to one type of notification send by the map.
+	 * @param type : Notification type
+	 */
 	private void playNotificationSound(byte type)
 	{
 		switch(type)
@@ -143,9 +160,8 @@ public class Map
 	}
 	
 	/**
-	 * Updates the world, and calls the tick() method on buildings
-	 * and units at each time interval (tickTime).
-	 * @param delta
+	 * Updates the whole map for the given time duration
+	 * @param delta : update time in milliseconds.
 	 */
 	public void update(GameContainer gc, StateBasedGame game, int delta)
 	{
@@ -153,7 +169,7 @@ public class Map
 		view.update(gc, delta / 1000.f);
 		
 		if(fastForward)
-			delta *= 4;
+			delta *= FAST_FORWARD_SPEED_FACTOR;
 		
 		// Update world time
 		time.update(delta, this);
@@ -344,6 +360,7 @@ public class Map
 		
 		if(gc.getInput().isKeyDown(Input.KEY_NUMPAD1))
 		{
+			// Draws the state of the path finder
 			gfx.pushTransform();
 			gfx.scale(Game.tilesSize, Game.tilesSize);
 			gfx.setColor(new Color(0, 0, 0, 128));
@@ -351,20 +368,6 @@ public class Map
 			multiPathFinder.renderMatrix(gfx);
 			gfx.popTransform();
 		}		
-	}
-
-	public Warehouse getFreeWarehouse(int x, int y)
-	{
-		List<Build> list = getBuildsAround(x, y);
-		for(Build b : list)
-		{
-			if(Warehouse.class.isInstance(b))
-			{
-				if(b.isAcceptResources())
-					return (Warehouse) b;
-			}
-		}
-		return null;
 	}
 	
 	/**
@@ -457,6 +460,13 @@ public class Map
 		return list;
 	}
 	
+	/**
+	 * Returns true if there is a fire burning at the
+	 * specified cell position.
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public boolean isFire(int x, int y)
 	{
 		Build b = getBuild(x, y);
@@ -465,6 +475,12 @@ public class Map
 		return false;
 	}
 	
+	/**
+	 * Returns true if the given cell position is walkable.
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public boolean isWalkable(int x, int y)
 	{
 		if(!grid.isWalkable(x, y))
@@ -514,11 +530,12 @@ public class Map
 	}
 	
 	/**
-	 * Loads map's content by reading an input stream
-	 * @param dis
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 * @throws SlickException 
+	 * Loads map's content by reading an input stream,
+	 * recomputes transient data and performs an integrity check.
+	 * @param dis : data input stream
+	 * @throws IOException if the stream is not readable
+	 * @throws ClassNotFoundException if the stream is corrupted
+	 * @throws SlickException if the map is corrupted
 	 */
 	public void readFromSave(DataInputStream dis) 
 			throws IOException, ClassNotFoundException, SlickException
@@ -560,7 +577,7 @@ public class Map
 	 * Recomputes computed transient data.
 	 * Must be called after deserialisation.
 	 */
-	public void recomputeData()
+	private void recomputeData()
 	{
 		view.setMapSize(grid.getWidth(), grid.getHeight());
 		
