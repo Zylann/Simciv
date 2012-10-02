@@ -13,6 +13,7 @@ public class Sprites
 {
 	// Builds
 	public Image buildConstructing1x1;
+	public Image buildDebris;
 	public SpriteSheet buildFarmland;
 	public SpriteSheet buildFarmlandCrops;
 	public Image buildFarmlandRottenCrops;
@@ -24,7 +25,7 @@ public class Sprites
 	public SpriteSheet buildArchitectOffice;
 	public SpriteSheet buildWaterSource;
 	public SpriteSheet buildFireStation;
-	public Image buildDebris;
+	public SpriteSheet buildPoliceStation;
 	
 	// Units
 	public SpriteSheet unitEmployer;

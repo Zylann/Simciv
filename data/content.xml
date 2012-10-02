@@ -8,6 +8,7 @@
 	
 	<!-- Builds -->
 	<image id="buildConstructing1x1" src="buildplace.png"/>
+	<image id="buildDebris" src="debris.png"/>
 	<spritesheet id="buildFarmland" tw="48" th="48" src="farmland.png"/>
 	<spritesheet id="buildFarmlandCrops" tw="16" th="16" src="crops.png"/>
 	<image id="buildFarmlandRottenCrops" src="rotten_crops.png"/>
@@ -19,7 +20,7 @@
 	<spritesheet id="buildArchitectOffice" tw="32" th="48" src="architects.png"/>
 	<spritesheet id="buildWaterSource" tw="16" th="16" src="water_source.png"/>
 	<spritesheet id="buildFireStation" tw="32" th="48" src="fire_station.png"/>
-	<image id="buildDebris" src="debris.png"/>
+	<spritesheet id="buildPoliceStation" tw="32" th="48" src="police_station.png"/>
 	
 	<!-- Units -->
 	<spritesheet id="unitThinking" tw="5" th="5" src="think.png"/>

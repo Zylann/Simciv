@@ -231,6 +231,7 @@ public class CityView extends UIBasicGameState
 		adminMenu.addBuild("TaxmenOffice");
 		adminMenu.addBuild("ArchitectOffice");
 		adminMenu.addBuild("FireStation");
+		adminMenu.addBuild("PoliceStation");
 		menuBar.addCategory(Content.sprites.uiCategAdmin, "Administration", adminMenu);
 
 		// Marketing
