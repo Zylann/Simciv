@@ -23,7 +23,6 @@ public class TaxmenOffice extends PassiveWorkplace
 	public TaxmenOffice(Map m)
 	{
 		super(m);
-		state = Build.STATE_NORMAL;
 	}
 	
 	@Override

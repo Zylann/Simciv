@@ -18,7 +18,7 @@ public class WaterSourceMapTarget implements IExplicitMapTarget
 		{
 			if(WaterSource.class.isInstance(b))
 			{
-				if(((WaterSource)b).getState() == Build.STATE_ACTIVE)
+				if(((WaterSource)b).isActive())
 					return true;
 			}
 		}

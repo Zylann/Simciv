@@ -35,11 +35,6 @@ import simciv.maptargets.RoadMapTarget;
 public abstract class Build extends TickableEntity
 {
 	private static final long serialVersionUID = 1L;
-
-	// Common states
-	public static final byte STATE_CONSTRUCTION = 0;
-	public static final byte STATE_NORMAL = 1;
-	public static final byte STATE_ACTIVE = 2;
 	
 	// Fire levels
 	public static final byte FIRE_MIN = 0;
@@ -62,7 +57,6 @@ public abstract class Build extends TickableEntity
 	public Build(Map m)
 	{
 		super(m);
-		state = STATE_NORMAL;
 		solidness = getSolidnessMax();
 	}
 	

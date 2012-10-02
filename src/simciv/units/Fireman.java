@@ -256,7 +256,7 @@ public class Fireman extends Citizen
 			Build b = mapRef.getBuild(x, y);
 			if(b != null && WaterSource.class.isInstance(b))
 			{
-				if(((WaterSource)b).getState() == Build.STATE_ACTIVE)
+				if(((WaterSource)b).isActive())
 					return true;
 			}
 			return false;

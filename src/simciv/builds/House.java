@@ -10,6 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
 import simciv.Cheats;
+import simciv.Entity;
 import simciv.Game;
 import simciv.Resource;
 import simciv.ResourceBag;
@@ -35,6 +36,9 @@ public class House extends Build
 
 	private static BuildProperties properties[];
 	private static byte MAX_LEVEL = 1; // Note : in code, the first level is 0.
+	
+	// States
+	public static final byte CONSTRUCTING = 0;
 	
 	// Feed levels (in house ticks)
 	public static final int FEED_MAX = 200;
@@ -73,7 +77,7 @@ public class House extends Build
 		direction = (byte) (4 * Math.random());
 		level = 0;
 		nbCitizensToProduce = 1;
-		state = Build.STATE_CONSTRUCTION;
+		state = CONSTRUCTING;
 		workers = new ArrayList<Integer>();
 		resources = new ResourceBag();
 	}
@@ -123,12 +127,12 @@ public class House extends Build
 	@Override
 	public void tick()
 	{
-		if(state == Build.STATE_CONSTRUCTION)
+		if(getState() == CONSTRUCTING)
 		{
 			if((getTicks() > 15 || Cheats.isFastCitizenProduction()))
-				state = Build.STATE_NORMAL;
+				setState(Entity.DEFAULT_STATE);
 		}
-		else if(state == Build.STATE_NORMAL)
+		else if(getState() == Entity.DEFAULT_STATE)
 		{
 			if(getTicks() % 20 == 0)
 			{				
@@ -237,7 +241,7 @@ public class House extends Build
 				if(b[i] == null ||
 					!b[i].isHouse() ||
 					!b[i].is1x1() ||
-					b[i].getState() != Build.STATE_NORMAL)
+					b[i].getState() != Entity.DEFAULT_STATE)
 				{
 					return false;
 				}
@@ -397,7 +401,7 @@ public class House extends Build
 	@Override
 	public void renderBuild(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
-		if(state == STATE_CONSTRUCTION)
+		if(getState() == CONSTRUCTING)
 			renderAsConstructing(gfx);
 		else
 		{
@@ -543,7 +547,7 @@ public class House extends Build
 	{
 		ProblemsReport problems = super.getProblemsReport();
 		
-		if(getState() == Build.STATE_CONSTRUCTION)
+		if(getState() == CONSTRUCTING)
 			return problems;
 		
 		if(isAbandonned())

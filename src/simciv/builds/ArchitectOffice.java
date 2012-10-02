@@ -49,7 +49,7 @@ public class ArchitectOffice extends PassiveWorkplace
 	@Override
 	protected void renderBuild(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
-		if(state == Build.STATE_ACTIVE)
+		if(isActive())
 			gfx.drawImage(Content.sprites.buildArchitectOffice.getSprite(1, 0), 0, -Game.tilesSize);
 		else
 			gfx.drawImage(Content.sprites.buildArchitectOffice.getSprite(0, 0), 0, -Game.tilesSize);

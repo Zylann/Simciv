@@ -33,6 +33,7 @@ public abstract class Workplace extends Build
 	private ArrayList<Integer> employees; // House ID of each employee
 	protected ArrayList<Integer> units; // ID of citizens
 	private Employer employer;
+	private boolean active;
 	
 	public Workplace(Map m)
 	{
@@ -290,6 +291,11 @@ public abstract class Workplace extends Build
 	{
 		return true;
 	}
+	
+	public final boolean isActive()
+	{
+		return active;
+	}
 
 	@Override
 	public void onDestruction()
@@ -303,7 +309,7 @@ public abstract class Workplace extends Build
 	 */
 	public void renderDefault(Graphics gfx, SpriteSheet sprites)
 	{
-		if(state == Build.STATE_ACTIVE)
+		if(isActive())
 			gfx.drawImage(sprites.getSprite(1, 0), 0, -getZHeight() * Game.tilesSize);
 		else
 			gfx.drawImage(sprites.getSprite(0, 0), 0, -getZHeight() * Game.tilesSize);
@@ -316,7 +322,7 @@ public abstract class Workplace extends Build
 	public String getInfoLine()
 	{
 		String info = "[" + getProperties().name + "] employees : " + getNbEmployees() + "/" + getMaxEmployees();
-		if(state == STATE_ACTIVE)
+		if(isActive())
 			info += ", production : " + getProductionProgress() + "%";
 		return info;
 	}
@@ -335,19 +341,19 @@ public abstract class Workplace extends Build
 				employer = null;
 		}
 			
-		if(state == Build.STATE_NORMAL)
+		if(!active)
 		{
 			if(!needEmployees())
 			{
-				state = Build.STATE_ACTIVE;
+				active = true;
 				onActivityStart();
 			}
 		}
-		else if(state == Build.STATE_ACTIVE)
+		else if(active)
 		{
 			if(needEmployees())
 			{
-				state = Build.STATE_NORMAL;
+				active = false;
 				onActivityStop();
 			}
 		}

@@ -37,7 +37,6 @@ public class Warehouse extends PassiveWorkplace
 	public Warehouse(Map m)
 	{
 		super(m);
-		state = Build.STATE_NORMAL;
 		resourceSlots = new ResourceSlot[NB_SLOTS];
 		full = false;
 		empty = true;
@@ -174,7 +173,7 @@ public class Warehouse extends PassiveWorkplace
 	public void renderBuild(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
 		// Floor
-		if(state == Build.STATE_ACTIVE)
+		if(isActive())
 			gfx.drawImage(Content.sprites.buildWarehouse.getSprite(1, 0), 0, -Game.tilesSize);
 		else
 			gfx.drawImage(Content.sprites.buildWarehouse.getSprite(0, 0), 0, -Game.tilesSize);

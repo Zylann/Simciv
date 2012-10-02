@@ -28,7 +28,6 @@ public class Market extends PassiveWorkplace
 	public Market(Map m)
 	{
 		super(m);
-		state = Build.STATE_NORMAL;
 	}
 
 	@Override
