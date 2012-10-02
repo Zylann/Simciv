@@ -1,9 +1,13 @@
 package simciv;
 
+import org.newdawn.slick.util.Log;
+
 import backend.Noise;
 
 /**
- * Map generation method wrapped in a thread
+ * Map generation method wrapped in a thread.
+ * Be aware that the map will not be synchronized,
+ * because it's not actually needed.
  * @author Marc
  *
  */
@@ -36,8 +40,24 @@ public class MapGeneratorThread extends Thread
     @Override
 	public void run() // Note : to execute the thread, use start().
 	{
+    	Log.info("Map generation begin");
+    	
+    	Log.info("Generating terrain...");
     	generateTerrain(mapRef.grid);
+    	
+    	Log.info("Generating fauna...");
+    	generateFauna(mapRef);
+    	
+    	Log.info("Map generation done.");
 	}
+    
+    // Generation methods
+    
+    public void generateFauna(Map map)
+    {
+    	FaunaGenerator faunaGenerator = new FaunaGenerator(8, 0.075f);
+    	faunaGenerator.generateFauna(map, seed);
+    }
 
 	public void generateTerrain(MapGrid grid)
     {
