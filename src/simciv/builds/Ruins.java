@@ -96,6 +96,16 @@ public class Ruins extends Build
 	{
 		return !isFireBurning();
 	}
+
+	@Override
+	public ProblemsReport getProblemsReport()
+	{
+		ProblemsReport r = super.getProblemsReport();
+		
+		r.add(ProblemsReport.MINOR, "These ruins have to be cleared.");
+		
+		return r;
+	}
 	
 }
 
