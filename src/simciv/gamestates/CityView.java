@@ -219,6 +219,7 @@ public class CityView extends UIBasicGameState
 		// Food
 		BuildMenu foodMenu = new BuildMenu(menuBar, 0, menuBar.getHeight(), 128);
 		foodMenu.addBuild("FarmLand");
+		foodMenu.addBuild("Hunters");
 		menuBar.addCategory(Content.sprites.uiCategFood, "Food", foodMenu);
 
 		// Industry

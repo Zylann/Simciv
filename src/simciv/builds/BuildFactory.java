@@ -34,6 +34,7 @@ public class BuildFactory
 		addMapping(WaterSource.class, "WaterSource");
 		addMapping(FireStation.class, "FireStation");
 		addMapping(PoliceStation.class, "PoliceStation");
+		addMapping(Hunters.class, "Hunters");
 	}
 
 	@SuppressWarnings("rawtypes")

@@ -21,6 +21,7 @@
 	<spritesheet id="buildWaterSource" tw="16" th="16" src="water_source.png"/>
 	<spritesheet id="buildFireStation" tw="32" th="48" src="fire_station.png"/>
 	<spritesheet id="buildPoliceStation" tw="32" th="48" src="police_station.png"/>
+	<spritesheet id="buildHunters" tw="32" th="48" src="hunters.png"/>
 	
 	<!-- Units -->
 	<spritesheet id="unitThinking" tw="5" th="5" src="think.png"/>
