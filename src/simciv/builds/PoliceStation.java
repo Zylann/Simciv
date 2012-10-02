@@ -6,6 +6,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Map;
 import simciv.content.Content;
+import simciv.units.Jobs;
 
 public class PoliceStation extends PassiveWorkplace
 {
@@ -29,15 +30,13 @@ public class PoliceStation extends PassiveWorkplace
 	@Override
 	protected void onActivityStart()
 	{
-		// TODO Auto-generated method stub
-		
+		addAndSpawnUnitsAround(Jobs.POLICEMAN, 2);
 	}
 
 	@Override
 	protected void onActivityStop()
 	{
-		// TODO Auto-generated method stub
-		
+		removeAllUnits();
 	}
 
 	@Override

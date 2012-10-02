@@ -37,6 +37,7 @@ public class Sprites
 	public SpriteSheet unitMarketDelivery;
 	public SpriteSheet unitArchitect;
 	public SpriteSheet unitFireman;
+	public SpriteSheet unitPoliceman;
 	
 	// Resources
 	public SpriteSheet resourceEmptyCarriage;

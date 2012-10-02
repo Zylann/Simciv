@@ -32,6 +32,7 @@
 	<spritesheet id="unitMarketDelivery" tw="16" th="16" src="delivery_man.png"/>
 	<spritesheet id="unitArchitect" tw="16" th="16" src="architect.png"/>
 	<spritesheet id="unitFireman" tw="16" th="16" src="fireman.png"/>
+	<spritesheet id="unitPoliceman" tw="16" th="16" src="policeman.png"/>
 	
 	<!-- Resources -->
 	<spritesheet id="resourceEmptyCarriage" tw="16" th="16" src="carriage.png"/>
