@@ -30,6 +30,7 @@ public class FaunaGenerator
 	public FaunaGenerator(int sectorSize, float spawnFrequency)
 	{
 		this.sectorSize = sectorSize;
+		this.spawnFrequency = spawnFrequency;
 	}
 	
 	/**
@@ -40,7 +41,7 @@ public class FaunaGenerator
 	public void generateFauna(Map map, int seed)
 	{
 		ArrayList<Vector2i> sectors = findCompliantSectors(map);
-		
+
 		if(sectors.isEmpty())
 			return;
 		
