@@ -21,6 +21,7 @@ public abstract class Jobs
 	public static final byte ARCHITECT = 4;
 	public static final byte FIREMAN = 5;
 	public static final byte POLICEMAN = 6;
+	public static final byte HUNTER = 7;
 	
 	public static Citizen createUnitFromJobID(byte jobID, Map m, Workplace w)
 	{
@@ -32,6 +33,7 @@ public abstract class Jobs
 		case ARCHITECT : 		return new Architect(m, w);
 		case FIREMAN :			return new Fireman(m, w);
 		case POLICEMAN :		return new Policeman(m, w);
+		case HUNTER :			return new Hunter(m, w);
 		
 		default :
 			Log.error("unknown job ID: " + jobID);

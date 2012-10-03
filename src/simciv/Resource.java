@@ -19,13 +19,12 @@ public class Resource
 	public static final byte NONE = -1;
 	public static final byte WOOD = 0;
 	public static final byte WHEAT = 1;
-	public static final byte STRAW = 2;
-	public static final byte CLAY = 3;
-	public static final byte COUNT = 4;
+	public static final byte MEAT = 2;
+	public static final byte COUNT = 3;
 	
 	// list
 	private static Resource list[];
-		
+	
 	// Attributes
 	private byte ID;
 	private String name;
@@ -39,11 +38,19 @@ public class Resource
 		list = new Resource[COUNT];
 		
 		set(new Resource(WOOD, "Wood", 100));
+		
 		set(new Resource(WHEAT, "Wheat", 100))
-			.setSprites(Content.sprites.resourceWheatCarriage, Content.sprites.resourceWheat)
+			.setSprites(
+					Content.sprites.resourceWheatCarriage,
+					Content.sprites.resourceWheat)
 			.setIsFood(true);
-		set(new Resource(STRAW, "Straw", 100));
-		set(new Resource(CLAY, "Clay", 100));
+		
+		set(new Resource(MEAT, "Meat", 100))
+			.setSprites(
+					Content.sprites.resourceMeatCarriage,
+					Content.sprites.resourceMeat)
+			.setIsFood(true);
+		
 		//...
 	}
 	

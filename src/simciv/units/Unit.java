@@ -319,6 +319,8 @@ public abstract class Unit extends TickableEntity
 		dispose();
 	}
 	
+	// TODO add death sounds
+	
 	@Override
 	public boolean isVisible()
 	{

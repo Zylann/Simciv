@@ -34,11 +34,14 @@
 	<spritesheet id="unitArchitect" tw="16" th="16" src="architect.png"/>
 	<spritesheet id="unitFireman" tw="16" th="16" src="fireman.png"/>
 	<spritesheet id="unitPoliceman" tw="16" th="16" src="policeman.png"/>
+	<spritesheet id="unitHunter" tw="16" th="16" src="hunter.png"/>
 	
 	<!-- Resources -->
 	<spritesheet id="resourceEmptyCarriage" tw="16" th="16" src="carriage.png"/>
 	<spritesheet id="resourceWheat" tw="16" th="16" src="res_wheat.png"/>
 	<spritesheet id="resourceWheatCarriage" tw="16" th="16" src="carriage_wheat.png"/>
+	<spritesheet id="resourceMeat" tw="16" th="16" src="fowl_meat.png"/>
+	<spritesheet id="resourceMeatCarriage" tw="16" th="16" src="fowl_meat_carriage.png"/>
 	
 	<!-- Terrain -->
 	<image id="terrainRoad" src="road.png"/>

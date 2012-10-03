@@ -39,11 +39,14 @@ public class Sprites
 	public SpriteSheet unitArchitect;
 	public SpriteSheet unitFireman;
 	public SpriteSheet unitPoliceman;
+	public SpriteSheet unitHunter;
 	
 	// Resources
 	public SpriteSheet resourceEmptyCarriage;
 	public SpriteSheet resourceWheat;
 	public SpriteSheet resourceWheatCarriage;
+	public SpriteSheet resourceMeat;
+	public SpriteSheet resourceMeatCarriage;
 	
 	// Terrain
 	public Image terrainRoad;

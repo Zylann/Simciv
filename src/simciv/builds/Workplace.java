@@ -356,7 +356,9 @@ public abstract class Workplace extends Build
 				active = false;
 				onActivityStop();
 			}
-		}
+			else
+				tickActivity();
+		}		
 	}
 	
 	/**
