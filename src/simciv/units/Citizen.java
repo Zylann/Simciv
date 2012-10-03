@@ -49,6 +49,12 @@ public abstract class Citizen extends Unit
 		setTickTimeWithRandom(TICK_TIME_BASIC);		
 	}
 	
+	@Override
+	public boolean isAnimal()
+	{
+		return false;
+	}
+	
 	protected int getWorkplaceID()
 	{
 		return workplaceID;
@@ -157,7 +163,7 @@ public abstract class Citizen extends Unit
 		gfx.setColor(Color.white);
 		gfx.drawLine(0, 0, Game.tilesSize * rx, Game.tilesSize * ry);
 	}
-
+	
 	/**
 	 * Default map pass for citizen.
 	 * Defines where a citizen can move.

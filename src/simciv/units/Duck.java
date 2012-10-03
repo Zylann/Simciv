@@ -17,6 +17,12 @@ public class Duck extends Unit
 	}
 
 	@Override
+	public boolean isAnimal()
+	{
+		return true;
+	}
+
+	@Override
 	protected void renderUnit(Graphics gfx)
 	{
 		renderDefault(gfx, Content.sprites.unitDuck);
@@ -37,6 +43,8 @@ public class Duck extends Unit
 	{
 		return "Duck";
 	}
+	
+	// TODO add auto-breeding
 
 }
 

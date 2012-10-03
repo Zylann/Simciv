@@ -327,6 +327,24 @@ public abstract class Unit extends TickableEntity
 		return true;
 	}
 	
+	public abstract boolean isAnimal();
+	
+	@Override
+	public void onInit()
+	{
+		super.onInit();
+		if(isAnimal())
+			mapRef.increaseFaunaCount();
+	}
+	
+	@Override
+	public void onDispose()
+	{
+		super.onDispose();
+		if(isAnimal())
+			mapRef.decreaseFaunaCount();
+	}
+	
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
@@ -363,16 +381,21 @@ public abstract class Unit extends TickableEntity
 	{
 		return 500;
 	}
-				
+	
 	/**
-	 * Renders the unit using a commonly used sprite scheme
+	 * Renders the unit using a commonly used sprite scheme :<br/>
+	 * 4 directions from top to bottom, and continue the same way vertically
+	 * if there is more different states to render.<br/>
+	 * Tiles from left to right will be used for animation in the future.<br/>
+	 * We get the current tile from the sheet like this :<br/>
+	 * tx = animation frame<br/>
+	 * ty = unit direction + 4 * state
 	 * @param gfx
-	 * @param sprites
+	 * @param sprites : sprites sheet
 	 * @param tyShift : tile Y coord of the sprites to use on the sheet
 	 */
 	public final void renderDefault(Graphics gfx, SpriteSheet sprites, int tyShift)
 	{
-		// TODO sprite scheme description		
 		if(direction == Direction2D.NONE)
 			gfx.drawImage(sprites.getSprite(0, Direction2D.SOUTH + tyShift), 0, 0);
 		else

@@ -48,6 +48,12 @@ public class Nomad extends Unit
 	{
 		return "Nomad";
 	}
+
+	@Override
+	public boolean isAnimal()
+	{
+		return false;
+	}
 	
 }
 
