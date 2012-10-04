@@ -8,6 +8,7 @@ public class Sounds
 	public Sound unitNewCitizen;
 	public Sound unitPay;
 	public Sound unitDuckDeath;
+	public Sound unitHunterCatch;
 	
 	// Builds
 	public Sound buildCollapse;

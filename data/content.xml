@@ -102,6 +102,7 @@
 	<sound id="unitNewCitizen" src="door_open.ogg"/>
 	<sound id="unitPay" src="coinBounce.ogg"/>
 	<sound id="unitDuckDeath" src="killduck.ogg"/>
+	<sound id="unitHunterCatch" src="miniwoosh.ogg"/>
 	
 	<!-- UI -->
 	<sound id="uiButtonPress" src="click2.ogg"/>

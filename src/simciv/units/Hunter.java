@@ -1,6 +1,8 @@
 package simciv.units;
 
 import org.newdawn.slick.Graphics;
+
+import backend.MathHelper;
 import backend.pathfinding.IMapSpec;
 import backend.pathfinding.IMapTarget;
 
@@ -99,6 +101,8 @@ public class Hunter extends Citizen
 	
 	private boolean hunt()
 	{
+		Content.sounds.unitHunterCatch.play(1.f + MathHelper.randS(0.1f), 0.5f);
+		
 		Unit u = mapRef.getUnit(getX(), getY());
 		if(Duck.class.isInstance(u))
 		{
