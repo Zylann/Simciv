@@ -197,8 +197,8 @@ public class Conveyer extends Citizen
 			Build b = mapRef.getBuild(x, y);
 			if(b != null && Warehouse.class.isInstance(b))
 			{
-				if(b.isAcceptResources())
-					return true;
+				Warehouse w = (Warehouse)b;
+				return w.canStore(carriedResource.getType());
 			}
 			return false;
 		}

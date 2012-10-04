@@ -15,8 +15,6 @@ import simciv.content.Content;
  * @author Marc
  *
  */
-// TODO "existing" predicates for speed-up pathfinding
-// ex : Warehouse.isAtLeastOneHaveFood()
 public class Warehouse extends PassiveWorkplace
 {
 	private static final long serialVersionUID = 1L;
@@ -254,10 +252,36 @@ public class Warehouse extends PassiveWorkplace
 		ProblemsReport problems = super.getProblemsReport();
 		
 		if(isFull())
-			problems.add(ProblemsReport.MINOR, "This warehouse is full.");
+			problems.add(ProblemsReport.MINOR, "This warehouse is completely full.");
+		else if(getNbOccupiedSlots() == getNbSlots())
+			problems.add(ProblemsReport.MINOR, "All slots of this warehouse are occupied.");
 
 		return problems;
 	}
+	
+	public int getNbSlots()
+	{
+		return resourceSlots.length;
+	}
+	
+	public int getNbOccupiedSlots()
+	{
+		int n = 0;
+		for(int i = 0; i < resourceSlots.length; i++)
+		{
+			if(!resourceSlots[i].isEmpty())
+				n++;
+		}
+		return n;
+	}
+
+	public boolean canStore(byte resType)
+	{
+		if(isFull())
+			return false;
+		return getFreeSpaceForResource(resType) > 0;
+	}
+
 }
 
 
