@@ -249,7 +249,7 @@ public class House extends Build
 			
 			// Check if the future 2x2 house will have roads nearby
 			RoadMapTarget roads = new RoadMapTarget();
-			if(mapRef.grid.getAvailablePositionsAround(getX(), getY(), 2, 2, roads, mapRef).isEmpty())
+			if(mapRef.grid.getPositionsAround(getX(), getY(), 2, 2, roads, mapRef).isEmpty())
 				return false;
 			
 			// Merge houses			

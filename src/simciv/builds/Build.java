@@ -12,6 +12,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import backend.MathHelper;
 import backend.geom.Vector2i;
+import backend.pathfinding.IMapSpec;
 import backend.ui.Notification;
 
 import simciv.Cheats;
@@ -197,7 +198,7 @@ public abstract class Build extends TickableEntity
 	{
 		RoadMapTarget roads = new RoadMapTarget();
 		ArrayList<Vector2i> availablePositions = 
-			mapRef.grid.getAvailablePositionsAround(this, roads, mapRef);		
+			mapRef.grid.getPositionsAround(this, roads, mapRef);		
 		return !availablePositions.isEmpty();
 	}
 	
@@ -584,6 +585,12 @@ public abstract class Build extends TickableEntity
 	public boolean isWalkable()
 	{
 		return false;
+	}
+	
+	public ArrayList<Vector2i> getPositionsAround(IMapSpec criteria)
+	{
+		return mapRef.grid.getPositionsAround(
+				getX(), getY(), getWidth(), getHeight(), criteria);
 	}
 	
 }

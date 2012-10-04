@@ -45,6 +45,7 @@ public class Duck extends Unit
 	}
 	
 	// TODO add auto-breeding
+	// TODO dispose ducks spawned on restricted areas (even unacessible)
 
 }
 

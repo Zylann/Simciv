@@ -1,11 +1,19 @@
 package simciv.builds;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
+import backend.geom.Vector2i;
+import backend.pathfinding.IMapSpec;
+import backend.pathfinding.IMapTarget;
+
+import simciv.Entity;
 import simciv.Game;
 import simciv.Map;
 import simciv.Resource;
@@ -18,8 +26,15 @@ import simciv.units.Unit;
 public class Hunters extends Workplace
 {
 	private static final long serialVersionUID = 1L;
+	
 	private static BuildProperties properties;
 	private static int TICKS_PER_FOOD_PRODUCTION = 8;
+	private static final int PATHFINDING_DISTANCE = 1024;
+	
+	// States (when active)
+	private static final byte SEARCH_ANIMALS = 0;
+	private static final byte WAIT_FOR_HUNTER = 1;
+	private static final byte PRODUCE = 2;
 	
 	static
 	{
@@ -30,7 +45,6 @@ public class Hunters extends Workplace
 			.setUnitsCapacity(4);
 	}
 	
-	private boolean producing;
 	private int ticksBeforeFoodExport;
 
 	public Hunters(Map m)
@@ -41,7 +55,7 @@ public class Hunters extends Workplace
 	@Override
 	public int getProductionProgress()
 	{
-		if(producing)
+		if(getState() == PRODUCE)
 		{
 			return (int) (100.f * (1.f - 
 					(float)ticksBeforeFoodExport 
@@ -50,37 +64,81 @@ public class Hunters extends Workplace
 		return 0;
 	}
 	
-	private void sendHunters()
+	private void sendHunterAndWait()
 	{
 		addAndSpawnUnitsAround(Jobs.HUNTER, 1);
+		setState(WAIT_FOR_HUNTER);
 	}
 
 	@Override
 	protected void onActivityStart()
 	{
-		sendHunters();
+		if(checkMapForAnimals())
+			sendHunterAndWait();
+		else
+			setState(SEARCH_ANIMALS);
 	}
 	
 	@Override
 	protected void onActivityStop()
 	{
 		removeAllUnits();
-		producing = false;
+		setState(Entity.DEFAULT_STATE);
 		ticksBeforeFoodExport = 0;
 	}
 
 	@Override
 	protected void tickActivity()
 	{
-		if(producing)
+		switch(getState())
 		{
-			ticksBeforeFoodExport--;
-			if(ticksBeforeFoodExport <= 0)
-			{
-				exportFood();
-				sendHunters();
-			}
+		case SEARCH_ANIMALS : tickSearchAnimals(); break;
+		case WAIT_FOR_HUNTER : break;
+		case PRODUCE : tickProduce(); break;
 		}
+	}
+	
+	private void tickSearchAnimals()
+	{
+		if(mapRef.getFaunaCount() > 0 && getTicks() % 4 == 0)
+		{
+			if(checkMapForAnimals())
+				sendHunterAndWait();
+		}
+	}
+
+	private void tickProduce()
+	{
+		ticksBeforeFoodExport--;
+		if(ticksBeforeFoodExport <= 0)
+		{
+			exportFood();
+			ticksBeforeFoodExport = 0;
+			
+			if(checkMapForAnimals())
+				sendHunterAndWait();
+			else
+				setState(SEARCH_ANIMALS);
+		}
+	}
+	
+	private boolean checkMapForAnimals()
+	{
+		// TODO set a fauna count limit to let animals breeding?
+		if(mapRef.getFaunaCount() == 0)
+			return false;
+		
+		IMapSpec walkableFloor = new WalkableFloor();
+		ArrayList<Vector2i> positionsAround = getPositionsAround(walkableFloor);
+		if(positionsAround.isEmpty())
+			return false;
+		
+		mapRef.multiPathFinder.setMaxDistance(PATHFINDING_DISTANCE);
+		Vector2i pos = positionsAround.get(0);
+		List<Vector2i> path = mapRef.multiPathFinder.findPath(
+				pos.x, pos.y, walkableFloor, new PreyTarget());
+		
+		return path != null;
 	}
 	
 	private boolean exportFood()
@@ -94,15 +152,10 @@ public class Hunters extends Workplace
 			}
 		}
 		
-		Conveyer conveyers[] = new Conveyer[1];
-		conveyers[0] = new Conveyer(mapRef, this);
-		conveyers[0].addResourceCarriage(new ResourceSlot(Resource.MEAT, 50));
+		Conveyer conveyer = new Conveyer(mapRef, this);
+		conveyer.addResourceCarriage(new ResourceSlot(Resource.MEAT, 50));
+		addAndSpawnUnitAround(conveyer);
 		
-		addAndSpawnUnitsAround(conveyers);
-		
-		ticksBeforeFoodExport = 0;
-		producing = false;
-
 		return true;
 	}
 
@@ -118,7 +171,7 @@ public class Hunters extends Workplace
 		SpriteSheet sprites = Content.sprites.buildHunters;
 		if(isActive())
 		{
-			if(producing)
+			if(getState() == PRODUCE)
 				gfx.drawImage(sprites.getSprite(2, 0), 0, -Game.tilesSize);
 			else
 				gfx.drawImage(sprites.getSprite(1, 0), 0, -Game.tilesSize);
@@ -127,12 +180,48 @@ public class Hunters extends Workplace
 			gfx.drawImage(sprites.getSprite(0, 0), 0, -Game.tilesSize);
 	}
 
-	public void onHunterBackWithPrey()
+	public void onHunterBack(boolean withPrey)
 	{
-		producing = true;
-		ticksBeforeFoodExport = TICKS_PER_FOOD_PRODUCTION;
+		if(withPrey)
+		{
+			setState(PRODUCE);
+			ticksBeforeFoodExport = TICKS_PER_FOOD_PRODUCTION;
+		}
+		else
+			setState(SEARCH_ANIMALS);
 	}
 
+	@Override
+	public ProblemsReport getProblemsReport()
+	{
+		// TODO change ProblemReport for a simple Report, to include more informations
+		ProblemsReport report = super.getProblemsReport();
+		
+		if(getState() == SEARCH_ANIMALS)
+			report.add(ProblemsReport.MINOR, "There is no animals to hunt around here.");
+		
+		return report;
+	}
+
+	private class PreyTarget implements IMapTarget
+	{
+		@Override
+		public boolean isTarget(int x, int y) {
+			Unit u = mapRef.getUnit(x, y);
+			if(u != null)
+				return u.isAnimal();
+			return false;
+		}
+	}
+
+	private class WalkableFloor implements IMapSpec
+	{
+		@Override
+		public boolean canPass(int x, int y) {
+			return mapRef.isWalkable(x, y);
+		}	
+	}
+	
 }
 
 

@@ -12,6 +12,7 @@ import org.newdawn.slick.Input;
 import backend.Direction2D;
 import backend.IntRange2D;
 import backend.geom.Vector2i;
+import backend.pathfinding.IMapSpec;
 
 import simciv.builds.Build;
 import simciv.maptargets.IExplicitMapTarget;
@@ -534,7 +535,7 @@ public class MapGrid implements Serializable
 	 * @param world : world reference if needed by the target (Set to null if not)
 	 * @return list of positions
 	 */
-	public ArrayList<Vector2i> getAvailablePositionsAround(
+	public ArrayList<Vector2i> getPositionsAround(
 			int x0, int y0, int w, int h, IExplicitMapTarget target, Map world)
 	{
 		ArrayList<Vector2i> p = new ArrayList<Vector2i>();
@@ -572,9 +573,50 @@ public class MapGrid implements Serializable
 		return p;
 	}
 	
-	public ArrayList<Vector2i> getAvailablePositionsAround(Build b, IExplicitMapTarget target, Map world)
+	public ArrayList<Vector2i> getPositionsAround(
+			Build b, IExplicitMapTarget target, Map world)
 	{
-		return getAvailablePositionsAround(b.getX(), b.getY(), b.getWidth(), b.getHeight(), target, world);
+		return getPositionsAround(
+				b.getX(), b.getY(), b.getWidth(), b.getHeight(), target, world);
+	}
+	
+	public ArrayList<Vector2i> getPositionsAround(
+			int x0, int y0, int w, int h, IMapSpec criteria)
+	{
+		ArrayList<Vector2i> p = new ArrayList<Vector2i>();
+		
+		//	  X X X  
+		//	Y       Y
+		//	Y       Y
+		//	  X X X 
+		
+		int x, y;
+		
+		for(x = x0; x < x0 + w; x++) // X
+		{
+			// Top
+			y = y0 - 1;
+			if(contains(x, y) && criteria.canPass(x, y))
+				p.add(new Vector2i(x, y));			
+			// Bottom
+			y = y0 + h;
+			if(contains(x, y) && criteria.canPass(x, y))
+				p.add(new Vector2i(x, y));
+		}
+
+		for(y = y0; y < y0 + h; y++) // Y
+		{
+			// Left
+			x = x0 - 1;
+			if(contains(x, y) && criteria.canPass(x, y))
+				p.add(new Vector2i(x, y));
+			// Right
+			x = x0 + w;
+			if(contains(x, y) && criteria.canPass(x, y))
+				p.add(new Vector2i(x, y));
+		}
+		
+		return p;
 	}
 	
 	/**

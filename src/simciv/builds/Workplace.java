@@ -113,7 +113,7 @@ public abstract class Workplace extends Build
 		
 		IExplicitMapTarget roads = new RoadMapTarget();
 		List<Vector2i> availablePositions = 
-			mapRef.grid.getAvailablePositionsAround(this, roads, mapRef);
+			mapRef.grid.getPositionsAround(this, roads, mapRef);
 		
 		do
 		{
@@ -128,6 +128,12 @@ public abstract class Workplace extends Build
 		}while(unitsToProduce > 0);
 	}
 	
+	protected void addAndSpawnUnitAround(Citizen u)
+	{
+		Citizen list[] = {u};
+		addAndSpawnUnitsAround(list);
+	}
+	
 	/**
 	 * Adds and spawns citizen units around the workplace on available cells.
 	 * @param list : list of units
@@ -139,7 +145,7 @@ public abstract class Workplace extends Build
 		
 		IExplicitMapTarget roads = new RoadMapTarget();
 		List<Vector2i> availablePositions = 
-			mapRef.grid.getAvailablePositionsAround(this, roads, mapRef);
+			mapRef.grid.getPositionsAround(this, roads, mapRef);
 		
 		int i = 0;
 		
@@ -371,7 +377,7 @@ public abstract class Workplace extends Build
 			return;
 		
 		IExplicitMapTarget roads = new RoadMapTarget();
-		ArrayList<Vector2i> availablePos = mapRef.grid.getAvailablePositionsAround(this, roads, mapRef);
+		ArrayList<Vector2i> availablePos = mapRef.grid.getPositionsAround(this, roads, mapRef);
 		
 		if(!availablePos.isEmpty())
 		{

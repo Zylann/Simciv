@@ -70,6 +70,9 @@ public class Map
 	/** Multi-seed best-path finder **/
 	public transient MultiSeedPathFinder multiPathFinder;
 	
+	/** Wild animals counter **/
+	private transient int faunaCounter;
+	
 	/**
 	 * Constructs an empty map from given size
 	 * @param width : map size X in cells
@@ -86,6 +89,23 @@ public class Map
 		view = new ScrollView(0, 0, 2);
 		view.setMapSize(width, height);
 		multiPathFinder = new MultiSeedPathFinder(grid.getWidth(), grid.getHeight());
+	}
+	
+	public void increaseFaunaCount()
+	{
+		faunaCounter++;
+		Log.debug("Fauna count ++ : " + faunaCounter);
+	}
+	
+	public void decreaseFaunaCount()
+	{
+		faunaCounter--;
+		Log.debug("Fauna count -- : " + faunaCounter);
+	}
+	
+	public int getFaunaCount()
+	{
+		return faunaCounter;
 	}
 	
 	/**
@@ -371,20 +391,17 @@ public class Map
 	}
 	
 	/**
-	 * Get a list of buildings around the given position
+	 * Get a list of buildings around the given position.<br/>
+	 * Neighborhood :<br/><code>
+	 * - O -<br/>
+	 * O x O<br/>
+	 * - O -</code>
 	 * @param x
 	 * @param y
 	 * @return list of buildings
 	 */
 	public ArrayList<Build> getBuildsAround(int x, int y)
 	{
-		/*
-		 * Neighborhood :
-		 * - O -
-		 * O x O
-		 * - O -
-		 */
-		
 		Build b;
 		ArrayList<Build> list = new ArrayList<Build>();
 		
@@ -405,7 +422,14 @@ public class Map
 	}
 	
 	/**
-	 * Get a list of buildings around the given rect.
+	 * Get a list of buildings around the given rect.<br/>
+	 * Neighborhood :<br/>
+	 * <code>
+	 * O O O O O<br/>
+	 * O x x x O<br/>
+	 * O x x x O<br/>
+	 * O x x x O<br/>
+	 * O O O O O</code>
 	 * @param x0
 	 * @param y0
 	 * @param w
@@ -414,15 +438,6 @@ public class Map
 	 */
 	public ArrayList<Build> getBuildsAround(int x0, int y0, int w, int h)
 	{
-		/*
-		 * Neighborhood :
-		 * O O O O O
-		 * O x x x O
-		 * O x x x O
-		 * O x x x O
-		 * O O O O O
-		 */
-		
 		Build b;
 		ArrayList<Build> list = new ArrayList<Build>();
 		int x, y;
@@ -581,10 +596,17 @@ public class Map
 	{
 		view.setMapSize(grid.getWidth(), grid.getHeight());
 		
+		faunaCounter = 0;
+		
 		// Set map for units
 		Collection<GameComponent> entities = units.asCollection();
 		for(GameComponent e : entities)
-			((Entity)e).setMap(this);
+		{
+			Unit u = (Unit)e;
+			u.setMap(this);
+			if(u.isAnimal())
+				faunaCounter++;
+		}
 
 		entities = builds.asCollection();
 		for(GameComponent e : entities)
@@ -658,6 +680,8 @@ public class Map
 			return false;
 		}
 	}
+	
+	// TODO put map targets public internal classes here?
 
 }
 
