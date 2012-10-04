@@ -28,7 +28,7 @@ public class Hunters extends Workplace
 	private static final long serialVersionUID = 1L;
 	
 	private static BuildProperties properties;
-	private static int TICKS_PER_FOOD_PRODUCTION = 8;
+	private static int TICKS_PER_FOOD_PRODUCTION = 16;
 	private static final int PATHFINDING_DISTANCE = 1024;
 	
 	// States (when active)
@@ -196,8 +196,18 @@ public class Hunters extends Workplace
 	{
 		BuildReport report = super.getReport();
 		
-		if(getState() == SEARCH_ANIMALS)
-			report.add(BuildReport.PROBLEM_MINOR, "There is no animals to hunt around here.");
+		if(isActive())
+		{
+			if(getState() == SEARCH_ANIMALS)
+				report.add(BuildReport.PROBLEM_MINOR, 
+						"There is no animals to hunt around here.");
+			else if(getState() == PRODUCE)
+				report.add(BuildReport.INFO, 
+						"We are preparing meat from catched animals.");
+			else if(getState() == WAIT_FOR_HUNTER)
+				report.add(BuildReport.INFO, 
+						"We are waiting for the hunter to comme back with a catch (we hope so !)");
+		}
 		
 		return report;
 	}

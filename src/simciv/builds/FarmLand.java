@@ -199,6 +199,18 @@ public class FarmLand extends Workplace
 		
 		if(cropsLevel == ROTTEN_LEVEL)
 			report.add(BuildReport.PROBLEM_MINOR, "We have lost our crops...");
+		
+		if(isActive())
+		{
+			if(cropsLevel == 0)
+				report.add(BuildReport.INFO, "We just planted new seeds.");
+			else
+			{
+				int progress = getProductionProgress();
+				if(progress > 80)
+					report.add(BuildReport.INFO, "We will harvest soon !");
+			}
+		}
 
 		return report;
 	}

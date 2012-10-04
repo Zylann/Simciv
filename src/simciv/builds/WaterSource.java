@@ -56,4 +56,15 @@ public class WaterSource extends PassiveWorkplace
 		return super.canBePlaced(map, x, y) && map.isArable(x, y);
 	}
 
+	@Override
+	public BuildReport getReport()
+	{
+		BuildReport report = super.getReport();
+		
+		if(isActive())
+			report.add(BuildReport.INFO, "We provide water for the city.");
+		
+		return report;
+	}
+
 }
