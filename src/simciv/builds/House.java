@@ -543,15 +543,15 @@ public class House extends Build
 	}
 	
 	@Override
-	public ProblemsReport getProblemsReport()
+	public BuildReport getReport()
 	{
-		ProblemsReport problems = super.getProblemsReport();
+		BuildReport report = super.getReport();
 		
 		if(getState() == CONSTRUCTING)
-			return problems;
+			return report;
 		
 		if(isAbandonned())
-			problems.add(ProblemsReport.MINOR, "This house is abandonned.");
+			report.add(BuildReport.PROBLEM_MINOR, "This house is abandonned.");
 		else
 		{
 			if(!resources.containsFood() && getNbInhabitants() != 0)
@@ -559,14 +559,14 @@ public class House extends Build
 				String msg = "We need some food !";
 				if(getNbWorkers() == 0)
 					msg += " But we can't even buy it...";
-				problems.add(ProblemsReport.SEVERE, msg);
+				report.add(BuildReport.PROBLEM_MAJOR, msg);
 			}
 			
 			if(getWorkersRatio() < 0.5f)
-				problems.add(ProblemsReport.MINOR, "Many of us have no jobs :( ");
+				report.add(BuildReport.PROBLEM_MINOR, "Many of us have no jobs :( ");
 		}
 		
-		return problems;
+		return report;
 	}
 
 	private float getWorkersRatio()

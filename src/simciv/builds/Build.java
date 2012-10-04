@@ -278,38 +278,42 @@ public abstract class Build extends TickableEntity
 	public abstract String getInfoLine();
 	
 	/**
-	 * Returns a list of problem messages concerning this building.
-	 * If no problems, returns an empty report.
+	 * Returns a list of messages concerning this building.
+	 * Can return an empty report if there is nothing to indicate.
 	 * @return
 	 */
-	public ProblemsReport getProblemsReport()
+	public BuildReport getReport()
 	{
-		ProblemsReport problems = new ProblemsReport();
-		byte severe = ProblemsReport.SEVERE;
-		byte minor = ProblemsReport.MINOR;
+		BuildReport report = new BuildReport();
 		
 		if(!isRoadNearby() && !Ruins.class.isInstance(this))
-			problems.add(severe, "This build is not connected to a road !");
+			report.add(BuildReport.PROBLEM_MAJOR, 
+					"This build is not connected to a road !");
 		
 		if(getSolidnessRatio() < 0.2f)
-			problems.add(severe, "This build may collapse soon ! We need architects !");
+			report.add(BuildReport.PROBLEM_MAJOR, 
+					"This build may collapse soon ! We need architects !");
 		else if(getSolidnessRatio() < 0.5f)
-			problems.add(minor, "This build is creaky. We need architects.");
+			report.add(BuildReport.PROBLEM_MINOR, 
+					"This build is creaky. We need architects.");
 		
 		if(!isFireBurning())
 		{
 			float r = getFireLevelRatio();
 			
 			if(r > 0.8f)
-				problems.add(severe, "This build may take fire soon ! We need firemen !");
+				report.add(BuildReport.PROBLEM_MAJOR, 
+						"This build may take fire soon ! We need firemen !");
 			else if(r > 0.5f)
-				problems.add(minor, "The risk of fire is increasing...");
+				report.add(BuildReport.PROBLEM_MINOR, 
+						"The risk of fire is increasing...");
 		}
 		
 		if(isFireBurning())
-			problems.add(severe, "It's burning ! We need firemen to save the neighborhood !");
+			report.add(BuildReport.PROBLEM_MAJOR, 
+					"It's burning ! We need firemen to save the neighborhood !");
 		
-		return problems;
+		return report;
 	}
 
 	/**

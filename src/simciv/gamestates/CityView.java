@@ -27,7 +27,7 @@ import simciv.MinimapUpdater;
 import simciv.Terrain;
 import simciv.Map;
 import simciv.builds.Build;
-import simciv.builds.ProblemsReport;
+import simciv.builds.BuildReport;
 import simciv.content.Content;
 import simciv.persistence.GameSaveData;
 import simciv.persistence.GameSaverThread;
@@ -457,19 +457,23 @@ public class CityView extends UIBasicGameState
 		{
 			String text = b.getInfoLine() + '\n'
 				+ "----------------------------------------------------------------\n";
-			ProblemsReport problems = b.getProblemsReport();
+			BuildReport problems = b.getReport();
 			
 			if(problems.isEmpty())
-				text += "Everything is fine !";
+				text += "Everything is fine here :)";
 			else
 			{
-				List<String> majorProblems = problems.getList(ProblemsReport.SEVERE);
-				for(String msg : majorProblems)
+				List<String> messages = problems.getList(BuildReport.PROBLEM_MAJOR);
+				for(String msg : messages)
 					text += "[!] " + msg + '\n';
 
-				List<String> minorProblems = problems.getList(ProblemsReport.MINOR);
-				for(String msg : minorProblems)
+				messages = problems.getList(BuildReport.PROBLEM_MINOR);
+				for(String msg : messages)
 					text += "- " + msg + '\n';
+				
+				messages = problems.getList(BuildReport.INFO);
+				for(String msg : messages)
+					text += msg + '\n';
 			}
 			
 			buildInfoWindow.setTitle(b.getDisplayableName());

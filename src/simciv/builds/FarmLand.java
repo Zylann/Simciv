@@ -193,14 +193,14 @@ public class FarmLand extends Workplace
 	}
 	
 	@Override
-	public ProblemsReport getProblemsReport()
+	public BuildReport getReport()
 	{
-		ProblemsReport problems = super.getProblemsReport();
+		BuildReport report = super.getReport();
 		
 		if(cropsLevel == ROTTEN_LEVEL)
-			problems.add(ProblemsReport.MINOR, "We have lost our crops...");
+			report.add(BuildReport.PROBLEM_MINOR, "We have lost our crops...");
 
-		return problems;
+		return report;
 	}
 	
 }

@@ -192,13 +192,12 @@ public class Hunters extends Workplace
 	}
 
 	@Override
-	public ProblemsReport getProblemsReport()
+	public BuildReport getReport()
 	{
-		// TODO change ProblemReport for a simple Report, to include more informations
-		ProblemsReport report = super.getProblemsReport();
+		BuildReport report = super.getReport();
 		
 		if(getState() == SEARCH_ANIMALS)
-			report.add(ProblemsReport.MINOR, "There is no animals to hunt around here.");
+			report.add(BuildReport.PROBLEM_MINOR, "There is no animals to hunt around here.");
 		
 		return report;
 	}

@@ -247,16 +247,16 @@ public class Warehouse extends PassiveWorkplace
 	}
 
 	@Override
-	public ProblemsReport getProblemsReport()
+	public BuildReport getReport()
 	{
-		ProblemsReport problems = super.getProblemsReport();
+		BuildReport report = super.getReport();
 		
 		if(isFull())
-			problems.add(ProblemsReport.MINOR, "This warehouse is completely full.");
+			report.add(BuildReport.PROBLEM_MINOR, "This warehouse is completely full.");
 		else if(getNbOccupiedSlots() == getNbSlots())
-			problems.add(ProblemsReport.MINOR, "All slots of this warehouse are occupied.");
+			report.add(BuildReport.PROBLEM_MINOR, "All slots of this warehouse are occupied.");
 
-		return problems;
+		return report;
 	}
 	
 	public int getNbSlots()

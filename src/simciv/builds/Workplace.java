@@ -30,9 +30,16 @@ public abstract class Workplace extends Build
 {
 	private static final long serialVersionUID = 1L;
 	
-	private ArrayList<Integer> employees; // House ID of each employee
-	protected ArrayList<Integer> units; // ID of citizens
+	/** House ID of each employee **/
+	private ArrayList<Integer> employees;
+	
+	/** ID of each units that belongs to this workplace **/
+	protected ArrayList<Integer> units;
+	
+	/** Employees recruiter **/
 	private Employer employer;
+	
+	/** Is the workplace active? **/
 	private boolean active;
 	
 	public Workplace(Map m)
@@ -327,7 +334,8 @@ public abstract class Workplace extends Build
 	@Override
 	public String getInfoLine()
 	{
-		String info = "[" + getProperties().name + "] employees : " + getNbEmployees() + "/" + getMaxEmployees();
+		String info = "[" + getProperties().name + "] employees : " 
+				+ getNbEmployees() + "/" + getMaxEmployees();
 		if(isActive())
 			info += ", production : " + getProductionProgress() + "%";
 		return info;
@@ -377,7 +385,8 @@ public abstract class Workplace extends Build
 			return;
 		
 		IExplicitMapTarget roads = new RoadMapTarget();
-		ArrayList<Vector2i> availablePos = mapRef.grid.getPositionsAround(this, roads, mapRef);
+		ArrayList<Vector2i> availablePos = 
+			mapRef.grid.getPositionsAround(this, roads, mapRef);
 		
 		if(!availablePos.isEmpty())
 		{
@@ -418,15 +427,15 @@ public abstract class Workplace extends Build
 	}
 	
 	@Override
-	public ProblemsReport getProblemsReport()
+	public BuildReport getReport()
 	{
-		ProblemsReport problems = super.getProblemsReport();
+		BuildReport report = super.getReport();
 		
 		if(needEmployees())
-			problems.add(ProblemsReport.MINOR,
+			report.add(BuildReport.PROBLEM_MINOR,
 				"We need " + getNbNeededEmployees() + " more employees.");
 		
-		return problems;
+		return report;
 	}
 
 }

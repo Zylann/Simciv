@@ -2,26 +2,27 @@ package simciv.builds;
 
 import java.util.ArrayList;
 
-public class ProblemsReport
+public class BuildReport
 {
-	// Problem severity
-	public static final byte MINOR = 0;
-	public static final byte SEVERE = 1;
-	private static final byte COUNT = 2;
+	// Message type
+	public static final byte INFO = 0;
+	public static final byte PROBLEM_MINOR = 1;
+	public static final byte PROBLEM_MAJOR = 2;
+	private static final byte TCOUNT = 3;
 	
 	private ArrayList<String> problems[];
 	
 	@SuppressWarnings("unchecked")
-	public ProblemsReport()
+	public BuildReport()
 	{
-		problems = new ArrayList[COUNT];
+		problems = new ArrayList[TCOUNT];
 		for(int i = 0; i < problems.length; i++)
 			problems[i] = new ArrayList<String>();
 	}
 	
-	public void add(byte severity, String message)
+	public void add(byte type, String message)
 	{
-		problems[severity].add(message);
+		problems[type].add(message);
 	}
 	
 	public ArrayList<String> getList(byte severity)

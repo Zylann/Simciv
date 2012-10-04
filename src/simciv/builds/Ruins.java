@@ -98,11 +98,11 @@ public class Ruins extends Build
 	}
 
 	@Override
-	public ProblemsReport getProblemsReport()
+	public BuildReport getReport()
 	{
-		ProblemsReport r = super.getProblemsReport();
+		BuildReport r = super.getReport();
 		
-		r.add(ProblemsReport.MINOR, "These ruins have to be cleared.");
+		r.add(BuildReport.PROBLEM_MINOR, "These ruins have to be cleared.");
 		
 		return r;
 	}
