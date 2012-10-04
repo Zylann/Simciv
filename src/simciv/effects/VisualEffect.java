@@ -41,7 +41,6 @@ public abstract class VisualEffect extends GameComponent
 //	@Override
 //	public void update(GameContainer gc, StateBasedGame game, int delta)
 //	{
-//		// TODO Auto-generated method stub
 //	}
 
 	protected abstract void renderEffect(Graphics gfx);

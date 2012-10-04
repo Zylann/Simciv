@@ -62,6 +62,9 @@ public class MultiSeedPathFinder
 	 * Only works if the target is connected to an available cell.
 	 **/
 	private boolean findBlockedTargets;
+	
+	/** Crossed distance on last execution **/
+	private int distanceCrossed;
 		
 	/**
 	 * Constructs the path finder.
@@ -135,6 +138,11 @@ public class MultiSeedPathFinder
 		return a.manhattanDistanceFrom(b);
 	}
 	
+	public int getCrossedDistance()
+	{
+		return distanceCrossed;
+	}
+	
 	/**
 	 * Finds the best path from one given position to the closest compliant cell
 	 * @param srcX : start pos X
@@ -179,16 +187,15 @@ public class MultiSeedPathFinder
 			ArrayList<Vector2i> seeds,
 			IMapSpec mapSpec, IMapTarget target,
 			boolean reversePaths)
-	{
+	{		
 		if(seeds.isEmpty())
 			return null;
 		
+		// Init
 		this.mapSpec = mapSpec;
 		this.mapTarget = target;
-		
-		// Init
+		this.distanceCrossed = 0;		
 		ArrayList<Vector2i> nextSeeds = new ArrayList<Vector2i>();
-		int distanceCrossed = 0;
 		visited.fill(Direction2D.NONE);
 		ArrayList<LinkedList<Vector2i>> paths = new ArrayList<LinkedList<Vector2i>>();
 		

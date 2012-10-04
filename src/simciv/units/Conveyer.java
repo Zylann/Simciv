@@ -15,6 +15,7 @@ import simciv.content.Content;
 
 /**
  * A conveyer can carry resources from a place to another.
+ * It can be employed in different workplaces.
  * @author Marc
  *
  */

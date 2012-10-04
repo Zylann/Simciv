@@ -10,7 +10,6 @@ import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.util.Log;
 
-
 /**
  * Content subclasses may only have public attributes of the same type.
  * @author Marc

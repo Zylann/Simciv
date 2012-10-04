@@ -249,6 +249,12 @@ public class Fireman extends Citizen
 		return waterCharge != 0;
 	}
 	
+	@Override
+	public String getDisplayableName()
+	{
+		return "Fireman";
+	}
+
 	private class WaterSourceTarget implements IMapTarget
 	{
 		@Override
@@ -261,12 +267,6 @@ public class Fireman extends Citizen
 			}
 			return false;
 		}
-	}
-
-	@Override
-	public String getDisplayableName()
-	{
-		return "Fireman";
 	}
 	
 }
