@@ -1,6 +1,9 @@
 Simciv indev R4.0 (work in progress) :
 
----
++ Added wild ducks
++ Added hunters
++ Added new sounds
+...
 
 Simciv indev R3.2 (2012-10-01) :
 

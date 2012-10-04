@@ -26,6 +26,7 @@ Current features (for development version) :
 	- Economy (taxes, markets...)
 	- Builds maintenance and fire risk
 	- Farmlands with growing crops
+	- Hunting
 	- Ability to save/load a game (only 1 file yet)
 	- Draggable/hideable minimap
 	See more in the changelog file !
