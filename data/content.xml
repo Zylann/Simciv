@@ -7,114 +7,116 @@
 	<!-- Textures -->
 	
 	<!-- Builds -->
-	<image id="buildConstructing1x1" src="buildplace.png"/>
-	<image id="buildDebris" src="debris.png"/>
-	<spritesheet id="buildFarmland" tw="48" th="48" src="farmland.png"/>
-	<spritesheet id="buildFarmlandCrops" tw="16" th="16" src="crops.png"/>
-	<image id="buildFarmlandRottenCrops" src="rotten_crops.png"/>
-	<spritesheet id="buildHouseLv1" tw="16" th="32" src="house1.png"/>
-	<spritesheet id="buildHouseLv2" tw="32" th="48" src="house2_2x2.png"/>
-	<spritesheet id="buildWarehouse" tw="48" th="64" src="warehouse.png"/>
-	<spritesheet id="buildTaxmenOffice" tw="32" th="48" src="taxmen_office.png"/>
-	<spritesheet id="buildMarket" tw="32" th="48" src="market.png"/>
-	<spritesheet id="buildArchitectOffice" tw="32" th="48" src="architects.png"/>
-	<spritesheet id="buildWaterSource" tw="16" th="16" src="water_source.png"/>
-	<spritesheet id="buildFireStation" tw="32" th="48" src="fire_station.png"/>
-	<spritesheet id="buildPoliceStation" tw="32" th="48" src="police_station.png"/>
-	<spritesheet id="buildHunters" tw="32" th="48" src="hunters.png"/>
+	<image id="buildConstructing1x1" src="gfx/builds/buildplace.png"/>
+	<image id="buildDebris" src="gfx/builds/debris.png"/>
+	<spritesheet id="buildFarmland" tw="48" th="48" src="gfx/builds/farmland.png"/>
+	<spritesheet id="buildFarmlandCrops" tw="16" th="16" src="gfx/builds/crops.png"/>
+	<image id="buildFarmlandRottenCrops" src="gfx/builds/rotten_crops.png"/>
+	<spritesheet id="buildHouseLv1" tw="16" th="32" src="gfx/builds/house1.png"/>
+	<spritesheet id="buildHouseLv2" tw="32" th="48" src="gfx/builds/house2_2x2.png"/>
+	<spritesheet id="buildWarehouse" tw="48" th="64" src="gfx/builds/warehouse.png"/>
+	<spritesheet id="buildTaxmenOffice" tw="32" th="48" src="gfx/builds/taxmen_office.png"/>
+	<spritesheet id="buildMarket" tw="32" th="48" src="gfx/builds/market.png"/>
+	<spritesheet id="buildArchitectOffice" tw="32" th="48" src="gfx/builds/architects.png"/>
+	<spritesheet id="buildWaterSource" tw="16" th="16" src="gfx/builds/water_source.png"/>
+	<spritesheet id="buildFireStation" tw="32" th="48" src="gfx/builds/fire_station.png"/>
+	<spritesheet id="buildPoliceStation" tw="32" th="48" src="gfx/builds/police_station.png"/>
+	<spritesheet id="buildHunters" tw="32" th="48" src="gfx/builds/hunters.png"/>
 	
 	<!-- Units -->
-	<spritesheet id="unitThinking" tw="5" th="5" src="think.png"/>
-	<spritesheet id="unitEmployer" tw="16" th="16" src="citizen.png"/>
-	<spritesheet id="unitConveyer" tw="16" th="16" src="transporter_only.png"/>
-	<spritesheet id="unitNomad" tw="16" th="16" src="nomad.png"/>
-	<spritesheet id="unitTaxman" tw="16" th="16" src="taxman.png"/>
-	<spritesheet id="unitDuck" tw="16" th="16" src="duck.png"/>
-	<spritesheet id="unitMarketDelivery" tw="16" th="16" src="delivery_man.png"/>
-	<spritesheet id="unitArchitect" tw="16" th="16" src="architect.png"/>
-	<spritesheet id="unitFireman" tw="16" th="16" src="fireman.png"/>
-	<spritesheet id="unitPoliceman" tw="16" th="16" src="policeman.png"/>
-	<spritesheet id="unitHunter" tw="16" th="16" src="hunter.png"/>
+	<spritesheet id="unitThinking" tw="5" th="5" src="gfx/units/think.png"/>
+	<spritesheet id="unitEmployer" tw="16" th="16" src="gfx/units/citizen.png"/>
+	<spritesheet id="unitConveyer" tw="16" th="16" src="gfx/units/transporter_only.png"/>
+	<spritesheet id="unitNomad" tw="16" th="16" src="gfx/units/nomad.png"/>
+	<spritesheet id="unitTaxman" tw="16" th="16" src="gfx/units/taxman.png"/>
+	<spritesheet id="unitDuck" tw="16" th="16" src="gfx/units/duck.png"/>
+	<spritesheet id="unitMarketDelivery" tw="16" th="16" src="gfx/units/delivery_man.png"/>
+	<spritesheet id="unitArchitect" tw="16" th="16" src="gfx/units/architect.png"/>
+	<spritesheet id="unitFireman" tw="16" th="16" src="gfx/units/fireman.png"/>
+	<spritesheet id="unitPoliceman" tw="16" th="16" src="gfx/units/policeman.png"/>
+	<spritesheet id="unitHunter" tw="16" th="16" src="gfx/units/hunter.png"/>
 	
 	<!-- Resources -->
-	<spritesheet id="resourceEmptyCarriage" tw="16" th="16" src="carriage.png"/>
-	<spritesheet id="resourceWheat" tw="16" th="16" src="res_wheat.png"/>
-	<spritesheet id="resourceWheatCarriage" tw="16" th="16" src="carriage_wheat.png"/>
-	<spritesheet id="resourceMeat" tw="16" th="16" src="fowl_meat.png"/>
-	<spritesheet id="resourceMeatCarriage" tw="16" th="16" src="fowl_meat_carriage.png"/>
+	<spritesheet id="resourceEmptyCarriage" tw="16" th="16" src="gfx/res/carriage.png"/>
+	<spritesheet id="resourceWheat" tw="16" th="16" src="gfx/res/res_wheat.png"/>
+	<spritesheet id="resourceWheatCarriage" tw="16" th="16" src="gfx/res/carriage_wheat.png"/>
+	<spritesheet id="resourceMeat" tw="16" th="16" src="gfx/res/fowl_meat.png"/>
+	<spritesheet id="resourceMeatCarriage" tw="16" th="16" src="gfx/res/fowl_meat_carriage.png"/>
 	
 	<!-- Terrain -->
-	<image id="terrainRoad" src="road.png"/>
-	<image id="terrainGrass" src="grass.png"/>
-	<image id="terrainWater" src="water.png"/>
-	<image id="terrainDust" src="dust.png"/>
+	<image id="terrainRoad" src="gfx/terrain/road.png"/>
+	<image id="terrainGrass" src="gfx/terrain/grass.png"/>
+	<image id="terrainWater" src="gfx/terrain/water.png"/>
+	<image id="terrainDust" src="gfx/terrain/dust.png"/>
 	
 	<!-- Nature -->
-	<spritesheet id="natureTree" tw="16" th="32" src="trees.png"/>
-	<spritesheet id="natureBush" tw="16" th="16" src="bush.png"/>
+	<spritesheet id="natureTree" tw="16" th="32" src="gfx/nature/trees.png"/>
+	<spritesheet id="natureBush" tw="16" th="16" src="gfx/nature/bush.png"/>
 	
 	<!-- UI -->
-	<spritesheet id="uiToolButton" tw="24" th="24" src="ui_button_24x24.png"/>
-	<image id="uiCategHouse" src="ui_house.png"/>
-	<image id="uiCategRoad" src="ui_road.png"/>
-	<image id="uiCategErase" src="ui_erase.png"/>
-	<image id="uiCategFood" src="ui_bread.png"/>
-	<image id="uiCategIndustry" src="ui_factory.png"/>
-	<image id="uiCategCursor" src="ui_categMouse.png"/>
-	<image id="uiCategAdmin" src="ui_categAdmin.png"/>
-	<image id="uiCategMarketing" src="ui_categMarketing.png"/>
-	<image id="uiCategHealth" src="ui_categHealth.png"/>
-	<spritesheet id="uiMenuItem" tw="128" th="16" src="ui_menu_item.png"/>
-	<spritesheet id="uiFrame" tw="16" th="16" src="ui_frame.png"/>
-	<spritesheet id="uiWindowTitleBar" tw="16" th="16" src="ui_winbar.png"/>
-	<spritesheet id="uiWindowCloseButton" tw="16" th="16" src="ui_winclosebtn.png"/>
-	<spritesheet id="uiPushButton" tw="128" th="16" src="ui_push_button.png"/>
-	<spritesheet id="uiProgressBar" tw="8" th="8" src="ui_progressBar.png"/>
-	<spritesheet id="uiNotification" tw="16" th="16" src="ui_notification.png"/>
-	<image id="uiIconCheck" src="uiIconCheck.png"/>
-	<image id="uiIconInfo" src="uiIconInfo.png"/>
-	<image id="uiIconWarning" src="uiIconWarning.png"/>
-	<image id="uiIconError" src="uiIconError.png"/>
+	<spritesheet id="uiToolButton" tw="24" th="24" src="gfx/ui/ui_button_24x24.png"/>
+	<image id="uiCategHouse" src="gfx/ui/ui_house.png"/>
+	<image id="uiCategRoad" src="gfx/ui/ui_road.png"/>
+	<image id="uiCategErase" src="gfx/ui/ui_erase.png"/>
+	<image id="uiCategFood" src="gfx/ui/ui_bread.png"/>
+	<image id="uiCategIndustry" src="gfx/ui/ui_factory.png"/>
+	<image id="uiCategCursor" src="gfx/ui/ui_categMouse.png"/>
+	<image id="uiCategAdmin" src="gfx/ui/ui_categAdmin.png"/>
+	<image id="uiCategMarketing" src="gfx/ui/ui_categMarketing.png"/>
+	<image id="uiCategHealth" src="gfx/ui/ui_categHealth.png"/>
+	<spritesheet id="uiMenuItem" tw="128" th="16" src="gfx/ui/ui_menu_item.png"/>
+	<spritesheet id="uiFrame" tw="16" th="16" src="gfx/ui/ui_frame.png"/>
+	<spritesheet id="uiWindowTitleBar" tw="16" th="16" src="gfx/ui/ui_winbar.png"/>
+	<spritesheet id="uiWindowCloseButton" tw="16" th="16" src="gfx/ui/ui_winclosebtn.png"/>
+	<spritesheet id="uiPushButton" tw="128" th="16" src="gfx/ui/ui_push_button.png"/>
+	<spritesheet id="uiProgressBar" tw="8" th="8" src="gfx/ui/ui_progressBar.png"/>
+	<spritesheet id="uiNotification" tw="16" th="16" src="gfx/ui/ui_notification.png"/>
+	<image id="uiIconCheck" src="gfx/ui/uiIconCheck.png"/>
+	<image id="uiIconInfo" src="gfx/ui/uiIconInfo.png"/>
+	<image id="uiIconWarning" src="gfx/ui/uiIconWarning.png"/>
+	<image id="uiIconError" src="gfx/ui/uiIconError.png"/>
 	
-	<image id="uiRedCross" src="red_cross.png"/>
-	<image id="uiMinimapMask" src="minimap_mask.png"/>
-	<spritesheet id="uiResourceBar" tw="24" th="24" src="resource_bar.png"/>
-	<image id="uiIndicatorsPopulation" src="citizen_icon.png"/>
-	<image id="uiIndicatorsMoney" src="ui_money.png"/>
-	<spritesheet id="uiTimeBar" tw="16" th="16" src="time_bar.png"/>
+	<image id="uiRedCross" src="gfx/ui/red_cross.png"/>
+	<image id="uiMinimapMask" src="gfx/ui/minimap_mask.png"/>
+	<spritesheet id="uiResourceBar" tw="24" th="24" src="gfx/ui/resource_bar.png"/>
+	<image id="uiIndicatorsPopulation" src="gfx/ui/citizen_icon.png"/>
+	<image id="uiIndicatorsMoney" src="gfx/ui/ui_money.png"/>
+	<spritesheet id="uiTimeBar" tw="16" th="16" src="gfx/ui/time_bar.png"/>
 		
 	<!-- Effects -->
-	<image id="effectGreenStar" src="green_star.png"/>
-	<image id="effectGold" src="gold_fx.png"/>
-	<image id="effectDeath" src="death.png"/>
-	<spritesheet id="effectSmoke" tw="8" th="8" src="smoke.png"/>
-	<animationsheet id="effectFire" tw="16" th="16" src="fire.png" frametime="100"/>
-	<spritesheet id="effectSplash" tw="16" th="16" src="splash.png"/>
+	<image id="effectGreenStar" src="gfx/effects/green_star.png"/>
+	<image id="effectGold" src="gfx/effects/gold_fx.png"/>
+	<image id="effectDeath" src="gfx/effects/death.png"/>
+	<spritesheet id="effectSmoke" tw="8" th="8" src="gfx/effects/smoke.png"/>
+	<animationsheet id="effectFire" tw="16" th="16" src="gfx/effects/fire.png" frametime="100"/>
+	<spritesheet id="effectSplash" tw="16" th="16" src="gfx/effects/splash.png"/>
 	
-	<image id="test" src="test.png"/>
+	<image id="test" src="gfx/test.png"/>
 	
 	<!-- Sounds -->
 	
 	<!-- Builds -->
-	<sound id="buildCollapse" src="buildCollapse.ogg"/>
+	<sound id="buildCollapse" src="sfx/builds/buildCollapse.ogg"/>
+	<sound id="unitNewCitizen" src="sfx/builds/door_open.ogg"/>
+	<sound id="uiPlaceDenied" src="sfx/builds/doorclose.ogg"/>
 	
 	<!-- Units -->
-	<sound id="unitNewCitizen" src="door_open.ogg"/>
-	<sound id="unitPay" src="coinBounce.ogg"/>
-	<sound id="unitDuckDeath" src="killduck.ogg"/>
-	<sound id="unitHunterCatch" src="miniwoosh.ogg"/>
+	<sound id="unitDuckDeath" src="sfx/units/killduck.ogg"/>
+	<sound id="unitHunterCatch" src="sfx/units/miniwoosh.ogg"/>
 	
 	<!-- UI -->
-	<sound id="uiButtonPress" src="click2.ogg"/>
-	<sound id="uiClick" src="click.ogg"/>
-	<sound id="uiReverseClick" src="click_reverse.ogg"/>
-	<sound id="uiErase" src="erase.ogg"/>
-	<sound id="uiPlace" src="place.ogg"/>
-	<sound id="uiPlaceDenied" src="doorclose.ogg"/>
-	<sound id="uiNotificationInfo" src="notifications_info.ogg"/>
-	<sound id="uiNotificationWarning" src="notifications_warning.ogg"/>
+	<sound id="uiButtonPress" src="sfx/ui/click2.ogg"/>
+	<sound id="uiClick" src="sfx/ui/click.ogg"/>
+	<sound id="uiReverseClick" src="sfx/ui/click_reverse.ogg"/>
+	<sound id="uiErase" src="sfx/ui/erase.ogg"/>
+	<sound id="uiPlace" src="sfx/ui/place.ogg"/>
+	<sound id="uiNotificationInfo" src="sfx/ui/notifications_info.ogg"/>
+	<sound id="uiNotificationWarning" src="sfx/ui/notifications_warning.ogg"/>
 	
-	<sound id="test" src="test.ogg"/>
+	<!-- Misc -->
+	<sound id="unitPay" src="sfx/misc/coinBounce.ogg"/>
+	
+	<sound id="test" src="sfx/test.ogg"/>
 
 	<!-- Strings -->
 	
