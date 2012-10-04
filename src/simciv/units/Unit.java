@@ -315,11 +315,17 @@ public abstract class Unit extends TickableEntity
 	
 	public void kill()
 	{
-		isAlive = false;
+		if(isAlive)
+		{
+			isAlive = false;
+			playDeathSound();
+		}
 		dispose();
 	}
 	
-	// TODO add death sounds
+	protected void playDeathSound()
+	{
+	}
 	
 	@Override
 	public boolean isVisible()
@@ -411,7 +417,7 @@ public abstract class Unit extends TickableEntity
 	{
 		return "{" + getDisplayableName() + "}";
 	}
-	
+		
 	/**
 	 * Default map pass predicate for units.
 	 * Defines where a unit can move.

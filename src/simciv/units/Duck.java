@@ -2,6 +2,8 @@ package simciv.units;
 
 import org.newdawn.slick.Graphics;
 
+import backend.MathHelper;
+
 import simciv.Map;
 import simciv.content.Content;
 import simciv.movement.RandomMovement;
@@ -31,6 +33,12 @@ public class Duck extends Unit
 	@Override
 	public void tick()
 	{
+	}
+	
+	@Override
+	protected void playDeathSound()
+	{
+		Content.sounds.unitDuckDeath.play(1.f + MathHelper.randS(0.1f), 0.2f);
 	}
 
 	@Override
