@@ -104,7 +104,7 @@ public class Text
 	public void wrap(Font font, int lineWidth)
 	{
 		setMaxLineWidth(lineWidth);
-		
+
 		lines.clear();
 		
 		if(src.isEmpty()) {

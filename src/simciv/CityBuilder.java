@@ -38,6 +38,8 @@ public class CityBuilder
 	public static final int MODE_BUILDS = 3;
 	
 	public static final int erasingCost = 1;
+	
+	// TODO clean up superfluous code
 
  	// Map cursors
 	private Vector2i pos = new Vector2i(); // current pointed cell

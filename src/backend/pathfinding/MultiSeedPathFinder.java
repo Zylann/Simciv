@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import org.newdawn.slick.Graphics;
-
 import backend.ByteArray2D;
 import backend.Direction2D;
 import backend.geom.Vector2i;
@@ -229,7 +228,7 @@ public class MultiSeedPathFinder
 					// Get next pos from its direction
 					Vector2i dirVec = Direction2D.vectors[dir];
 					nextPos.set(s.x + dirVec.x, s.y + dirVec.y);
-					
+										
 					// If the direction is available and if we can pass here
 					if(visited.contains(nextPos.x, nextPos.y) &&
 						visited.get(nextPos.x, nextPos.y) == Direction2D.NONE)

@@ -25,7 +25,7 @@ public class FaunaGenerator
 	 * Constructs a fauna generator.
 	 * @param sectorSize : sector size, usually 8.
 	 * @param spawnFrequency : probability to spawn animals on a complying sector
-	 * (the pseudo-random is computed using the seed).
+	 * (the pseudo-random is computed using the seed). Usually 0.075.
 	 */
 	public FaunaGenerator(int sectorSize, float spawnFrequency)
 	{

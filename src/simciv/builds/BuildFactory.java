@@ -23,6 +23,7 @@ public class BuildFactory
 	static
 	{
 		// Important : string names must reflect building class names
+		// TODO replace by the same system as Citizen (with IDs)
 		
 		addMapping(House.class, "House");
 		addMapping(FarmLand.class, "FarmLand");

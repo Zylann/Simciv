@@ -72,21 +72,42 @@ public class Vector2i implements Serializable
         }
     }
     
+	/**
+	 * Computes the manhattan distance from this coordinates to others.
+	 * This distance is the one travelled if we move only vertically and horizontally.
+	 * @param other
+	 * @return
+	 */
     public int manhattanDistanceFrom(Vector2i other)
     {
     	return Math.abs(x - other.x) + Math.abs(y - other.y);
     }
-        
+    
+    /**
+     * Gets the floating length of the given vector coordinates.
+     * @param x
+     * @param y
+     * @return
+     */
     public static float length(int x, int y)
     {
     	return (float) Math.sqrt(x * x + y * y);
     }
     
+    /**
+     * Gets the floating length of the vector.
+     * @return
+     */
     public float length()
     {
     	return length(x, y);
     }
 
+    /**
+     * Gets the floating distance from this coordinates to others.
+     * @param b
+     * @return
+     */
     public float distanceFrom(Vector2i b)
 	{
 		return length(x - b.x, y - b.y);
@@ -114,6 +135,11 @@ public class Vector2i implements Serializable
 		return this.x == x && this.y == y;
 	}
 
+	/**
+	 * Adds or subtracts 1 to one of the coordinates
+	 * following the given 4-directionnal constant (see backend.Direction2D).
+	 * @param d
+	 */
 	public void addDirection(byte d)
 	{
 		switch(d)

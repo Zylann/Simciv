@@ -7,6 +7,7 @@ package simciv;
  */
 public class Settings
 {
+	// TODO serialize to XML
 	// Video settings
 	private int screenWidth;
 	private int screenHeight;
