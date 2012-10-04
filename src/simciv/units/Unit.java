@@ -417,6 +417,19 @@ public abstract class Unit extends TickableEntity
 	{
 		return "{" + getDisplayableName() + "}";
 	}
+	
+	/**
+	 * Evaluates the distance that can be crossed from current unit's position
+	 * until it gets blocked or reaches the given limit.
+	 * @param limit : distance in cells
+	 * @return
+	 */
+	public int evaluateWalkableDistance(int limit)
+	{
+		mapRef.multiPathFinder.setMaxDistance(limit);
+		mapRef.multiPathFinder.findPath(getX(), getY(), new DefaultPass(), new DummyTarget());
+		return mapRef.multiPathFinder.getCrossedDistance();
+	}
 		
 	/**
 	 * Default map pass predicate for units.
@@ -431,6 +444,14 @@ public abstract class Unit extends TickableEntity
 			return mapRef.grid.isWalkable(x, y);
 		}	
 	}
-		
+	
+	private class DummyTarget implements IMapTarget
+	{
+		@Override
+		public boolean isTarget(int x, int y) {
+			return false;
+		}
+	}
+
 }
 
