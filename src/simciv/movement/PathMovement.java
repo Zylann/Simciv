@@ -2,6 +2,8 @@ package simciv.movement;
 
 import java.util.LinkedList;
 
+import org.newdawn.slick.util.Log;
+
 import backend.Direction2D;
 import backend.geom.Vector2i;
 import simciv.units.Unit;
@@ -36,7 +38,7 @@ public class PathMovement implements IMovement
 		u.setDirection(Direction2D.toDirection(pos, nextPos));
 		if(!u.moveIfPossible())
 		{
-			System.out.println("Can't move from " + pos + "to " + nextPos);
+			Log.debug(u + "Can't move from " + pos + "to " + nextPos);
 			blocked = true;
 		}
 	}
