@@ -109,6 +109,9 @@ public class CityView extends UIBasicGameState
 	/** Debug graph showing the render time evolution **/
 	private PerformanceGraph renderTimeGraph;
 
+	/** Debug graph showing the update time evolution **/
+	private PerformanceGraph updateTimeGraph;
+
 	/** Debug text (on the debug panel) **/
 	private String debugText = "";
 
@@ -305,9 +308,11 @@ public class CityView extends UIBasicGameState
 		
 		if(renderTimeGraph == null)
 			renderTimeGraph = new PerformanceGraph(0, 10);
+		if(updateTimeGraph == null)
+			updateTimeGraph = new PerformanceGraph(0, 10); // TODO
 				
 		// Because we will always draw the map at first on the entire screen at each frame
-		gc.setClearEachFrame(false);
+		gc.setClearEachFrame(false); // No need to clear each frame
 		
 		super.enter(gc, game); // Note : the UI is created here, it depends on the code above
 	}
@@ -375,6 +380,7 @@ public class CityView extends UIBasicGameState
 		
 		// debug
 		updateTime = gc.getTime() - beginUpdateTime;
+		updateTimeGraph.pushNextValue(updateTime);
 		debugText = "x=" + pointedCell.x + ", y=" + pointedCell.y;
 		debugText += "  updateTime=" + updateTime;
 		debugText += "  renderTime=" + renderTime;
@@ -428,7 +434,15 @@ public class CityView extends UIBasicGameState
 				+ ") MB",
 				600, 10);
 		
-		renderTimeGraph.render(gfx, gc.getWidth() - PerformanceGraph.WIDTH - 10, 10, 50);
+		gfx.pushTransform();
+		
+		gfx.translate(gc.getWidth() - PerformanceGraph.WIDTH - 10, 10);		
+		renderTimeGraph.render(gfx, 0, 0, 50);
+		
+		gfx.translate(-PerformanceGraph.WIDTH - 2, 0);
+		updateTimeGraph.render(gfx, 0, 0, 50);
+		
+		gfx.popTransform();
 	}
 	
 	@Override
