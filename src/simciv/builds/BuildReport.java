@@ -2,6 +2,12 @@ package simciv.builds;
 
 import java.util.ArrayList;
 
+/**
+ * List of messages concerning a building.
+ * They are classed in several types (infos, minor and major problems).
+ * @author Marc
+ *
+ */
 public class BuildReport
 {
 	// Message type
