@@ -647,7 +647,7 @@ public class House extends Build
 				decreaseCrimeLevel(1);
 		}
 
-		float crimeChance = MathHelper.sq(0.02f * getCrimeRatio());
+		float crimeChance = MathHelper.sq(0.04f * getCrimeRatio());
 		
 		if(Math.random() < crimeChance)
 		{
