@@ -279,6 +279,8 @@ public class Warehouse extends PassiveWorkplace
 	{
 		if(isFull())
 			return false;
+		if(!isActive())
+			return false;
 		return getFreeSpaceForResource(resType) > 0;
 	}
 
