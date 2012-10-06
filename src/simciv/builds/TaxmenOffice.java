@@ -64,7 +64,10 @@ public class TaxmenOffice extends PassiveWorkplace
 		
 		mapRef.playerCity.buy(wantedMoney);
 		
-		mapRef.sendNotification(Notification.TYPE_WARNING, "The taxmen office has been robbed !");
+		mapRef.sendNotification(
+				Notification.TYPE_WARNING, 
+				"The taxmen office has been robbed !", 
+				getX(), getY());
 		
 		return wantedMoney;
 	}
