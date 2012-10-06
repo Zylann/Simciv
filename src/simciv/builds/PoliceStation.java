@@ -30,7 +30,7 @@ public class PoliceStation extends PassiveWorkplace
 	@Override
 	protected void onActivityStart()
 	{
-		addAndSpawnUnitsAround(Jobs.POLICEMAN, 3);
+		addAndSpawnUnitsAround(Jobs.POLICEMAN, 2);
 	}
 
 	@Override

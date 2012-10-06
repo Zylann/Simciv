@@ -36,7 +36,7 @@ public class FireStation extends PassiveWorkplace
 	@Override
 	protected void onActivityStart()
 	{
-		addAndSpawnUnitsAround(Jobs.FIREMAN, 2);
+		addAndSpawnUnitsAround(Jobs.FIREMAN, 3);
 	}
 
 	@Override
