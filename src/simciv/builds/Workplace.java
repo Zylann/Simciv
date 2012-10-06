@@ -30,6 +30,8 @@ public abstract class Workplace extends Build
 {
 	private static final long serialVersionUID = 1L;
 	
+	private static final int DEFAULT_SALARY = 12;
+	
 	/** House ID of each employee **/
 	private ArrayList<Integer> employees;
 	
@@ -423,7 +425,7 @@ public abstract class Workplace extends Build
 	 */
 	public float getSalary()
 	{
-		return 12;
+		return DEFAULT_SALARY;
 	}
 	
 	@Override

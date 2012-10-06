@@ -65,12 +65,12 @@ public class House extends Build
 		properties = new BuildProperties[MAX_LEVEL+1];
 		
 		properties[0] = new BuildProperties("House lv.1")
-			.setUnitsCapacity(1).setCost(10).setSize(1, 1, 1)
+			.setUnitsCapacity(2).setCost(10).setSize(1, 1, 1)
 			.setCategory(BuildCategory.HOUSES)
 			.setRepeatable(true);
 		
 		properties[1] = new BuildProperties("House lv.2")
-			.setUnitsCapacity(5).setCost(50).setSize(2, 2, 2)
+			.setUnitsCapacity(8).setCost(50).setSize(2, 2, 2)
 			.setCategory(BuildCategory.HOUSES);
 	}
 
@@ -84,7 +84,8 @@ public class House extends Build
 	private byte nbInhabitants;
 	
 	/**
-	 * IDs of workplaces where the inhabitants of the house work. Size is <= nbInhabitants. 
+	 * IDs of workplaces where the inhabitants of the house work.
+	 * Size must be <= nbInhabitants. 
 	 */
 	private ArrayList<Integer> workers;
 	
@@ -214,7 +215,7 @@ public class House extends Build
 				{
 					if(feedLevel == FEED_MIN)
 					{
-						if(Math.random() < 0.02f)
+						if(Math.random() < 0.01f)
 						{
 							// Citizen death
 							removeInhabitant();
@@ -569,6 +570,8 @@ public class House extends Build
 	@Override
 	public boolean onMaintenance()
 	{
+		if(isAbandonned())
+			return false;
 		if(!isInhabitantHaveJob())
 			return false;
 		repair();

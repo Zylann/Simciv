@@ -29,7 +29,7 @@ public class Warehouse extends PassiveWorkplace
 	static
 	{
 		properties = new BuildProperties("Warehouse");
-		properties.setUnitsCapacity(4).setSize(3, 3, 1).setCost(50).setCategory(BuildCategory.INDUSTRY);
+		properties.setUnitsCapacity(5).setSize(3, 3, 1).setCost(50).setCategory(BuildCategory.INDUSTRY);
 	}
 	
 	public Warehouse(Map m)

@@ -22,7 +22,7 @@ public class Market extends PassiveWorkplace
 	static
 	{
 		properties = new BuildProperties("Market");
-		properties.setCost(50).setSize(2, 2, 1).setUnitsCapacity(6).setCategory(BuildCategory.TRADE);
+		properties.setCost(50).setSize(2, 2, 1).setUnitsCapacity(8).setCategory(BuildCategory.TRADE);
 	}
 	
 	public Market(Map m)

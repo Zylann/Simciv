@@ -20,7 +20,7 @@ public class ArchitectOffice extends PassiveWorkplace
 	static
 	{
 		properties = new BuildProperties("Architects office");
-		properties.setCost(100).setSize(2, 2, 2).setUnitsCapacity(4).setCategory(BuildCategory.ADMINISTRATION);
+		properties.setCost(100).setSize(2, 2, 2).setUnitsCapacity(6).setCategory(BuildCategory.ADMINISTRATION);
 	}
 	
 	public ArchitectOffice(Map m)

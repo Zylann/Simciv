@@ -42,7 +42,7 @@ public class Hunters extends Workplace
 		properties.setCategory(BuildCategory.FOOD)
 			.setCost(100)
 			.setSize(2, 2, 1)
-			.setUnitsCapacity(4);
+			.setUnitsCapacity(6);
 	}
 	
 	private int ticksBeforeFoodExport;

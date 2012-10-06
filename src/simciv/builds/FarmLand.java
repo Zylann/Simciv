@@ -37,7 +37,7 @@ public class FarmLand extends Workplace
 	{
 		properties = new BuildProperties("Farmland");
 		properties
-			.setUnitsCapacity(5).setSize(3, 3, 0).setCost(10)
+			.setUnitsCapacity(3).setSize(3, 3, 0).setCost(10)
 			.setCategory(BuildCategory.FOOD)
 			.setRepeatable(true)
 			.setFlamable(false);
@@ -58,7 +58,7 @@ public class FarmLand extends Workplace
 	{
 		return secondsToTicks(60);
 	}
-	
+		
 	@Override
 	public void tick()
 	{

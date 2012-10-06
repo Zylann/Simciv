@@ -19,7 +19,7 @@ public class FireStation extends PassiveWorkplace
 		properties.setCategory(BuildCategory.ADMINISTRATION)
 			.setCost(100)
 			.setSize(2, 2, 1)
-			.setUnitsCapacity(6);
+			.setUnitsCapacity(8);
 	}
 	
 	public FireStation(Map m)

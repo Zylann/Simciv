@@ -19,7 +19,7 @@ public class PoliceStation extends PassiveWorkplace
 		properties.setCategory(BuildCategory.ADMINISTRATION)
 			.setCost(100)
 			.setSize(2, 2, 1)
-			.setUnitsCapacity(5);
+			.setUnitsCapacity(8);
 	}
 
 	public PoliceStation(Map m)
