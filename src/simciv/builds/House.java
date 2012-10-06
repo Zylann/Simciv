@@ -1,6 +1,8 @@
 package simciv.builds;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -8,6 +10,10 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
+
+import backend.MathHelper;
+import backend.geom.Vector2i;
+import backend.pathfinding.IMapSpec;
 
 import simciv.Cheats;
 import simciv.Entity;
@@ -19,6 +25,7 @@ import simciv.Map;
 import simciv.content.Content;
 import simciv.effects.RisingIcon;
 import simciv.maptargets.RoadMapTarget;
+import simciv.units.Robber;
 
 /**
  * Houses produce citizen. They can evoluate with some conditions.
@@ -48,6 +55,10 @@ public class House extends Build
 	
 	// Initial food units per inhabitant
 	private static final int INITIAL_FOOD_PER_INHABITANT = 7;
+	
+	// Criminality levels
+	public static final byte CRIME_MIN = 0;
+	public static final byte CRIME_MAX = 10;
 
 	static
 	{
@@ -63,12 +74,30 @@ public class House extends Build
 			.setCategory(BuildCategory.HOUSES);
 	}
 
+	/** Social level of the house **/
 	private byte level;
+	
+	/** How many citizen the house is about to produce **/
 	private byte nbCitizensToProduce;
+	
+	/** How many inhabitants live here **/
 	private byte nbInhabitants;
-	private ArrayList<Integer> workers; // workplaces IDs
+	
+	/**
+	 * IDs of workplaces where the inhabitants of the house work. Size is <= nbInhabitants. 
+	 */
+	private ArrayList<Integer> workers;
+	
+	/** Resources owned by the house (food...) **/
 	private ResourceBag resources;
+	
+	/** Feed level of the house. determines when food is consumed. **/
 	private int feedLevel;
+	
+	/** Criminality level. **/
+	private byte crimeLevel;
+	
+	/** Is the house been taxed this month? **/
 	private boolean beenTaxed;
 
 	public House(Map m)
@@ -80,6 +109,7 @@ public class House extends Build
 		state = CONSTRUCTING;
 		workers = new ArrayList<Integer>();
 		resources = new ResourceBag();
+		crimeLevel = CRIME_MIN;
 	}
 	
 	@Override
@@ -151,6 +181,7 @@ public class House extends Build
 				nbCitizensToProduce -= produceCitizens(nbCitizensToProduce);
 			
 			tickHunger();
+			tickCriminality();
 		}
 		
 		if(mapRef.time.isFirstDayOfMonth())
@@ -426,6 +457,8 @@ public class House extends Build
 			
 			if(gc.getInput().isKeyDown(Input.KEY_3))
 				renderHungerRatio(gfx, 0, 0);
+			else if(gc.getInput().isKeyDown(Input.KEY_6))
+				renderCrimeRatio(gfx);
 		}
 		
 		// debug
@@ -572,6 +605,77 @@ public class House extends Build
 	private float getWorkersRatio()
 	{
 		return (float)getNbWorkers() / (float)getNbInhabitants();
+	}
+	
+	public float getCrimeRatio()
+	{
+		return (float)crimeLevel / (float)CRIME_MAX;
+	}
+	
+	public void increaseCrimeLevel(int a)
+	{
+		if(a < 0)
+			return;
+		int c = crimeLevel + a;
+		if(c > CRIME_MAX)
+			c = CRIME_MAX;
+		crimeLevel = (byte) c;
+	}
+	
+	public void decreaseCrimeLevel(int d)
+	{
+		if(d < 0)
+			return;
+		int c = crimeLevel - d;
+		if(c < CRIME_MIN)
+			c = CRIME_MIN;
+		crimeLevel = (byte) c;
+	}
+	
+	private void tickCriminality()
+	{
+		if(getTicks() % 8 == 0)
+		{
+			float workRatio = getWorkersRatio();
+//			float foodRatio = this.getHungerRatio();
+			
+			float increaseChance = 1.f - (0.4f * workRatio + 0.4f);
+			
+			if(Math.random() < increaseChance)
+				increaseCrimeLevel(1);
+			else
+				decreaseCrimeLevel(1);
+		}
+
+		float crimeChance = MathHelper.sq(0.02f * getCrimeRatio());
+		
+		if(Math.random() < crimeChance)
+		{
+			List<Vector2i> posList = mapRef.grid.getPositionsAround(
+				getX(), getY(), getWidth(), getHeight(), new RoadsTarget());
+			
+			if(posList.isEmpty())
+				return;
+			
+			Vector2i pos = posList.get(0);
+			mapRef.spawnUnit(new Robber(mapRef), pos.x, pos.y);
+			Log.debug("Robber spawned at " + pos);
+			
+			decreaseCrimeLevel(2);
+		}		
+	}
+	
+	private void renderCrimeRatio(Graphics gfx)
+	{
+		renderBar(gfx, getCrimeRatio(), Color.blue, Color.red);
+	}
+	
+	private class RoadsTarget implements IMapSpec
+	{
+		@Override
+		public boolean canPass(int x, int y) {
+			return mapRef.grid.isRoad(x, y);
+		}		
 	}
 
 }

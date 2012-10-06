@@ -6,6 +6,7 @@ import org.newdawn.slick.Graphics;
 import simciv.Map;
 import simciv.builds.Build;
 import simciv.builds.House;
+import simciv.builds.TaxmenOffice;
 import simciv.builds.Workplace;
 import simciv.content.Content;
 import simciv.movement.RandomRoadMovement;
@@ -38,6 +39,9 @@ public class Taxman extends Citizen
 			}
 		}
 		mapRef.playerCity.gainMoney((int) totalMoneyCollected);
+		
+		TaxmenOffice w = (TaxmenOffice) getWorkplace();
+		w.onTaxmanReceivedMoney(totalMoneyCollected);
 	}
 
 	@Override

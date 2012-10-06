@@ -40,6 +40,7 @@ public class Sprites
 	public SpriteSheet unitFireman;
 	public SpriteSheet unitPoliceman;
 	public SpriteSheet unitHunter;
+	public SpriteSheet unitRobber;
 	
 	// Resources
 	public SpriteSheet resourceEmptyCarriage;

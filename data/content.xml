@@ -35,6 +35,7 @@
 	<spritesheet id="unitFireman" tw="16" th="16" src="gfx/units/fireman.png"/>
 	<spritesheet id="unitPoliceman" tw="16" th="16" src="gfx/units/policeman.png"/>
 	<spritesheet id="unitHunter" tw="16" th="16" src="gfx/units/hunter.png"/>
+	<spritesheet id="unitRobber" tw="16" th="16" src="gfx/units/robber.png"/>
 	
 	<!-- Resources -->
 	<spritesheet id="resourceEmptyCarriage" tw="16" th="16" src="gfx/res/carriage.png"/>

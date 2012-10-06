@@ -364,7 +364,7 @@ public abstract class Build extends TickableEntity
 	 * @param clr0 : back color
 	 * @param clr1 : fill color
 	 */
-	private void renderBar(Graphics gfx, float r, Color clr0, Color clr1)
+	protected void renderBar(Graphics gfx, float r, Color clr0, Color clr1)
 	{
 		float w = (float)(getWidth() * Game.tilesSize - 1);
 		float t = r * w;

@@ -21,12 +21,6 @@ public class Duck extends Animal
 	}
 
 	@Override
-	public boolean isAnimal()
-	{
-		return true;
-	}
-
-	@Override
 	protected void renderUnit(Graphics gfx)
 	{
 		renderDefault(gfx, Content.sprites.unitDuck);

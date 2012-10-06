@@ -117,16 +117,29 @@ public abstract class Unit extends TickableEntity
 		}
 	}
 	
+	/**
+	 * Finds a path and follows it using the default pass criteria.
+	 * See findAndGoTo(IMapSpec, IMapTarget, int) for more information.
+	 * @param target
+	 * @param maxDistance
+	 * @return is it worked?
+	 */
 	public boolean findAndGoTo(IMapTarget target, int maxDistance)
 	{
 		return findAndGoTo(new DefaultPass(), target, maxDistance);
 	}
 	
-	public boolean findAndGoTo(IMapTarget target)
+	/**
+	 * Finds a path and follows it using the default pass criteria.
+	 * See findAndGoTo(IMapSpec, IMapTarget, int) for more information.
+	 * @param target
+	 * @return is it worked?
+	 */
+	public final boolean findAndGoTo(IMapTarget target)
 	{
-		return findAndGoTo(new DefaultPass(), target, DEFAULT_MAX_PATHFINDING_DISTANCE);
+		return findAndGoTo(target, DEFAULT_MAX_PATHFINDING_DISTANCE);
 	}
-		
+	
 	/**
 	 * Makes the unit follow a path.
 	 * If the path is invalid, the old movement will be cleared (the unit will not move).
@@ -311,6 +324,11 @@ public abstract class Unit extends TickableEntity
 	public boolean isMoving()
 	{
 		return isMoving;
+	}
+	
+	public boolean isBad()
+	{
+		return false;
 	}
 	
 	public void kill()

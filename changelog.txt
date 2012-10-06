@@ -1,6 +1,6 @@
 Simciv indev R4.0 (work in progress) :
 
-+ Added wild ducks
++ Added wild ducks (they breed naturally)
 + Added hunters
 + Added new sounds
 ...

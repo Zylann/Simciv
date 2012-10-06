@@ -309,7 +309,7 @@ public class CityView extends UIBasicGameState
 		if(renderTimeGraph == null)
 			renderTimeGraph = new PerformanceGraph(0, 10);
 		if(updateTimeGraph == null)
-			updateTimeGraph = new PerformanceGraph(0, 10); // TODO
+			updateTimeGraph = new PerformanceGraph(0, 10);
 				
 		// Because we will always draw the map at first on the entire screen at each frame
 		gc.setClearEachFrame(false); // No need to clear each frame

@@ -11,6 +11,12 @@ public abstract class Animal extends Unit
 		super(m);
 	}
 	
+	@Override
+	public boolean isAnimal()
+	{
+		return true;
+	}
+	
 	/**
 	 * Creates new animal units from this one
 	 */

@@ -15,7 +15,6 @@ public class Hunter extends Citizen
 {
 	private static final long serialVersionUID = 1L;
 	
-	private static final int PATHFINDING_DISTANCE = 4096;
 	private static final int TICK_TIME = 300;
 	
 	// States
@@ -33,10 +32,10 @@ public class Hunter extends Citizen
 	}
 
 	@Override
-	public boolean findAndGoTo(IMapTarget target)
+	public boolean findAndGoTo(IMapTarget target, int d)
 	{
 		return super.findAndGoTo(
-				new WalkableFloor(), target, PATHFINDING_DISTANCE);
+				new WalkableFloor(), target, d);
 	}
 
 	@Override

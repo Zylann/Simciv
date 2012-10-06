@@ -134,6 +134,16 @@ public class MathHelper
 		return k * (float) (2.0 * Math.random() - 0.5);
 	}
 
+	/**
+	 * Returns the given number multiplied by itself.
+	 * @param x
+	 * @return x^2
+	 */
+	public static float sq(float x)
+	{
+		return x * x;
+	}
+
 }
 
 
