@@ -61,14 +61,14 @@ public class Hunter extends Citizen
 			setState(RETURN_TO_WORKPLACE);
 		
 		if(!isMovement())
-			findAndGoTo(new PreyTarget());
+			findAndGoTo(new PreyTarget(), -1);
 		else if(isMovementFinished())
 		{
 			setMovement(null);
 			if(hunt())
 				setState(RETURN_TO_WORKPLACE);
 			else
-				findAndGoTo(new PreyTarget());
+				findAndGoTo(new PreyTarget(), -1);
 		}
 
 		if(!isMovement())
@@ -85,7 +85,7 @@ public class Hunter extends Citizen
 			if(isMyWorkplaceNearby())
 				onBackToWorkplace();
 			else
-				findAndGoTo(new WorkplaceTarget());
+				findAndGoTo(new WorkplaceTarget(), -1);
 		}
 		else if(isMovementFinished())
 			onBackToWorkplace();

@@ -163,7 +163,7 @@ public abstract class Citizen extends Unit
 		gfx.setColor(Color.white);
 		gfx.drawLine(0, 0, Game.tilesSize * rx, Game.tilesSize * ry);
 	}
-	
+		
 	/**
 	 * Default map pass for citizen.
 	 * Defines where a citizen can move.

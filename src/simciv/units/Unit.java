@@ -95,7 +95,7 @@ public abstract class Unit extends TickableEntity
 	public boolean findAndGoTo(IMapSpec mapSpec, IMapTarget target, int maxDistance)
 	{
 		if(maxDistance <= 0)
-			Log.error(this + "No paths will be found with maxDistance=" + maxDistance);
+			maxDistance = DEFAULT_MAX_PATHFINDING_DISTANCE;
 		
 		// Configure pathfinding
 		mapRef.multiPathFinder.setFindBlockedTargets(true);
@@ -127,17 +127,6 @@ public abstract class Unit extends TickableEntity
 	public boolean findAndGoTo(IMapTarget target, int maxDistance)
 	{
 		return findAndGoTo(new DefaultPass(), target, maxDistance);
-	}
-	
-	/**
-	 * Finds a path and follows it using the default pass criteria.
-	 * See findAndGoTo(IMapSpec, IMapTarget, int) for more information.
-	 * @param target
-	 * @return is it worked?
-	 */
-	public final boolean findAndGoTo(IMapTarget target)
-	{
-		return findAndGoTo(target, DEFAULT_MAX_PATHFINDING_DISTANCE);
 	}
 	
 	/**

@@ -6,6 +6,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.util.Log;
 
 import backend.Direction2D;
+import backend.pathfinding.IMapSpec;
 import backend.pathfinding.IMapTarget;
 
 import simciv.Map;
@@ -86,7 +87,7 @@ public class Robber extends Unit
 	{
 		if(!isMovement())
 		{
-			if(!findAndGoTo(new MoneyTarget()))
+			if(!findAndGoTo(new RoadsPass(), new MoneyTarget(), -1))
 			{
 				if(Math.random() < 0.2f)
 					setState(WANDER);
@@ -183,6 +184,7 @@ public class Robber extends Unit
 		{
 			// I've seen him seeing me !
 			setMovement(null);
+			ticksBeforeHide = secondsToTicks(HIDE_TIME);
 			setState(RUN_AWAY);
 		}
 	}
@@ -195,6 +197,14 @@ public class Robber extends Unit
 	@Override
 	public void onDestruction()
 	{
+	}
+	
+	private class RoadsPass implements IMapSpec
+	{
+		@Override
+		public boolean canPass(int x, int y) {
+			return mapRef.grid.isRoad(x, y);
+		}
 	}
 	
 	private class MoneyTarget implements IMapTarget
