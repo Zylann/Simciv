@@ -13,7 +13,6 @@ import backend.PerformanceGraph;
 import backend.SoundEngine;
 import backend.geom.Vector2i;
 import backend.ui.IActionListener;
-import backend.ui.NotificationArea;
 import backend.ui.PushButton;
 import backend.ui.RootPane;
 import backend.ui.UIBasicGameState;
@@ -37,6 +36,7 @@ import simciv.ui.BuildMenuBar;
 import simciv.ui.InfoBar;
 import simciv.ui.Minimap;
 import simciv.ui.IndicatorsBar;
+import simciv.ui.MapNotificationArea;
 import simciv.ui.TimeBar;
 
 /**
@@ -83,7 +83,7 @@ public class CityView extends UIBasicGameState
 	private TimeBar timeBar;
 	
 	/** Area where we can read quick messages from the city **/
-	private NotificationArea notificationArea;
+	private MapNotificationArea notificationArea;
 	
 	/** Window containing informations about the build we right-clicked on **/
 	private BuildInfoWindow buildInfoWindow;
@@ -277,8 +277,9 @@ public class CityView extends UIBasicGameState
 		
 		// Notifications area
 		
-		notificationArea = new NotificationArea(ui, 0, timeBar.getY() + timeBar.getHeight(), 200);
+		notificationArea = new MapNotificationArea(ui, 0, timeBar.getY() + timeBar.getHeight(), 200);
 		notificationArea.setAlignX(Widget.ALIGN_RIGHT);
+		notificationArea.setMapView(map.view);
 		ui.add(notificationArea);
 		builder.setNotificationListener(notificationArea);
 		map.setNotificationListener(notificationArea);

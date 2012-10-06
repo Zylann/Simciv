@@ -20,13 +20,13 @@ import backend.GameComponent;
 import backend.GameComponentMap;
 import backend.IntRange2D;
 import backend.pathfinding.MultiSeedPathFinder;
-import backend.ui.INotificationListener;
 import backend.ui.Notification;
 
 import simciv.builds.Build;
 import simciv.content.Content;
 import simciv.effects.VisualEffect;
 import simciv.rendering.SortedRender;
+import simciv.ui.IMapNotificationListener;
 import simciv.units.Unit;
 
 /**
@@ -65,7 +65,7 @@ public class Map
 	private transient boolean fastForward;
 	
 	/** Notifications **/
-	private transient INotificationListener notifListener;
+	private transient IMapNotificationListener notifListener;
 	
 	/** Multi-seed best-path finder **/
 	public transient MultiSeedPathFinder multiPathFinder;
@@ -113,7 +113,7 @@ public class Map
 	 * to send notifications to the player
 	 * @param notifListener
 	 */
-	public void setNotificationListener(INotificationListener notifListener)
+	public void setNotificationListener(IMapNotificationListener notifListener)
 	{
 		this.notifListener = notifListener;
 	}
@@ -143,6 +143,21 @@ public class Map
 		if(notifListener != null)
 		{
 			notifListener.notify(type, message, timeVisible);
+			playNotificationSound(type);
+		}
+	}
+	
+	/**
+	 * Sends a notification message to the player using the notifications listener
+	 * @param type : Notification type
+	 * @param message : readable message
+	 * @param timeVisible : visibility duration in milliseconds
+	 */
+	public void sendNotification(byte type, String message, int x, int y)
+	{
+		if(notifListener != null)
+		{
+			notifListener.notify(type, message, x, y);
 			playNotificationSound(type);
 		}
 	}

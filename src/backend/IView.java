@@ -25,5 +25,17 @@ public interface IView
 	 * @param range
 	 */
 	public void getBounds(IntRange2D range);
+	
+	/**
+	 * Moves the view to have its origin at the given pos.
+	 */
+	public void setOrigin(float x, float y);
+
+	/**
+	 * Moves the view to have its center at the given pos.
+	 * @param x
+	 * @param y
+	 */
+	public void setCenter(float x, float y);
 
 }

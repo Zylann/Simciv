@@ -21,7 +21,7 @@ public class Notification extends BasicWidget
 	private int timeVisible;
 	private byte type;
 	private String text;
-	private ArrayList<IActionListener> listeners;
+	private ArrayList<IActionListener> clickListeners;
 	
 	public Notification(NotificationArea parent, byte type, String text)
 	{
@@ -29,7 +29,7 @@ public class Notification extends BasicWidget
 		timeVisible = DEFAULT_VISIBLE_TIME;
 		this.type = type;
 		this.text = text;
-		listeners = new ArrayList<IActionListener>();
+		clickListeners = new ArrayList<IActionListener>();
 	}
 		
 	public byte getType()
@@ -44,7 +44,7 @@ public class Notification extends BasicWidget
 	
 	public void addClickListener(IActionListener l)
 	{
-		listeners.add(l);
+		clickListeners.add(l);
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class Notification extends BasicWidget
 	{
 		if(contains(x, y))
 		{
-			for(IActionListener l : listeners)
+			for(IActionListener l : clickListeners)
 				l.actionPerformed(this);
 			return true;
 		}

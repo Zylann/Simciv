@@ -80,7 +80,7 @@ public abstract class Build extends TickableEntity
 	 */
 	public void destroy(boolean burning)
 	{
-		// Remove the building from the world
+		// Remove the building from the map
 		dispose();
 
 		// Make a sound
@@ -105,7 +105,8 @@ public abstract class Build extends TickableEntity
 		
 		mapRef.sendNotification(
 				Notification.TYPE_WARNING,
-				"A build " + (burning ? "burned" : "collapsed") + " !");
+				"A build " + (burning ? "burned" : "collapsed") + " !",
+				getX(), getY());
 	}
 		
 	@Override

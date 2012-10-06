@@ -107,15 +107,20 @@ public class ScrollView extends View
 		originX += velocity.x * delta;
 		originY += velocity.y * delta;
 		
+		keepInWorld();
+	}
+	
+	public void keepInWorld()
+	{
 		// Limit origin to world bounds
 		if(originX < 0)
 			originX = 0;
 		if(originY < 0)
 			originY = 0;
-		if(originX >= mapSize.x - gc.getWidth())
-			originX = mapSize.x - gc.getWidth();
-		if(originY >= mapSize.y - gc.getHeight())
-			originY = mapSize.y - gc.getHeight();
+		if(originX >= mapSize.x - containerWidth)
+			originX = mapSize.x - containerWidth;
+		if(originY >= mapSize.y - containerHeight)
+			originY = mapSize.y - containerHeight;
 	}
 
 	/**
@@ -142,5 +147,22 @@ public class ScrollView extends View
 		getBounds(range);
 		range.divide(Game.tilesSize);
 	}
+	
+	@Override
+	public void setCenter(float x, float y)
+	{
+		IntRange2D bounds = new IntRange2D();
+		getMapBounds(bounds);
+		setOrigin(
+				(x - bounds.getWidth() / 2),
+				(y - bounds.getHeight() / 2));
+	}
+
+	@Override
+	public void setOrigin(float x, float y)
+	{
+		super.setOrigin(x, y);
+		keepInWorld();
+	}	
 
 }

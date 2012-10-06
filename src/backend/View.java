@@ -73,16 +73,18 @@ public class View implements Serializable, IView
 	{
 		return scale;
 	}
-
-	public void setCenter(int mapX, int mapY)
+	
+	public void setCenter(float x, float y)
 	{
 		// TODO use real center
-		originX = scale * Game.tilesSize * (mapX - 16);
-		originY = scale * Game.tilesSize * (mapY - 16);
+		// TODO make generic
+		setOrigin(x - 16, y - 16);
 	}
 
+	@Override
 	public void setOrigin(float x, float y)
 	{
+		// TODO make generic
 		originX = scale * Game.tilesSize * x;
 		originY = scale * Game.tilesSize * y;
 	}
