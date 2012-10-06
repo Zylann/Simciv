@@ -31,7 +31,7 @@ public class GameCreatingScreen extends GameInitScreen
 	{
 		super.enter(container, game);
 		
-		map = new Map(256, 256);
+		map = new Map(128, 128);
 		mapGenerator = new MapGeneratorThread(131183, map);
 		mapGenerator.start();
 	}
