@@ -37,6 +37,7 @@
 	<spritesheet id="unitPoliceman" tw="16" th="16" src="gfx/units/policeman.png"/>
 	<spritesheet id="unitHunter" tw="16" th="16" src="gfx/units/hunter.png"/>
 	<spritesheet id="unitRobber" tw="16" th="16" src="gfx/units/robber.png"/>
+	<spritesheet id="unitLumberjack" tw="16" th="16" src="gfx/units/lumberjack.png"/>
 	
 	<!-- Resources -->
 	<spritesheet id="resourceEmptyCarriage" tw="16" th="16" src="gfx/res/carriage.png"/>
@@ -44,6 +45,8 @@
 	<spritesheet id="resourceWheatCarriage" tw="16" th="16" src="gfx/res/carriage_wheat.png"/>
 	<spritesheet id="resourceMeat" tw="16" th="16" src="gfx/res/fowl_meat.png"/>
 	<spritesheet id="resourceMeatCarriage" tw="16" th="16" src="gfx/res/fowl_meat_carriage.png"/>
+	<spritesheet id="resourceLogs" tw="16" th="16" src="gfx/res/logs.png"/>
+	<spritesheet id="resourceLogsCarriage" tw="16" th="16" src="gfx/res/logs_carriage.png"/>
 	
 	<!-- Terrain -->
 	<image id="terrainRoad" src="gfx/terrain/road.png"/>

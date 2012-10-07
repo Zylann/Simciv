@@ -618,7 +618,7 @@ public class MapGrid implements Serializable
 		
 		return p;
 	}
-	
+		
 	/**
 	 * Evaluates if an area is arable or not.
 	 * @param x0 : area origin X in cells

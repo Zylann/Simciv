@@ -42,6 +42,7 @@ public class Sprites
 	public SpriteSheet unitPoliceman;
 	public SpriteSheet unitHunter;
 	public SpriteSheet unitRobber;
+	public SpriteSheet unitLumberjack;
 	
 	// Resources
 	public SpriteSheet resourceEmptyCarriage;
@@ -49,6 +50,8 @@ public class Sprites
 	public SpriteSheet resourceWheatCarriage;
 	public SpriteSheet resourceMeat;
 	public SpriteSheet resourceMeatCarriage;
+	public SpriteSheet resourceLogs;
+	public SpriteSheet resourceLogsCarriage;
 	
 	// Terrain
 	public Image terrainRoad;

@@ -20,18 +20,11 @@ public class Resource
 	public static final byte WOOD = 0;
 	public static final byte WHEAT = 1;
 	public static final byte MEAT = 2;
-	public static final byte COUNT = 3;
+	public static final byte LOGS = 3;
+	public static final byte COUNT = 4;
 	
 	// list
 	private static Resource list[];
-	
-	// Attributes
-	private byte ID;
-	private String name;
-	private SpriteSheet carriageSprites;
-	private SpriteSheet storageSprites;
-	private short stackLimit;
-	private boolean isFood;
 	
 	public static void initialize()
 	{		
@@ -50,6 +43,11 @@ public class Resource
 					Content.sprites.resourceMeatCarriage,
 					Content.sprites.resourceMeat)
 			.setIsFood(true);
+		
+		set(new Resource(LOGS, "Logs", 100))
+			.setSprites(
+					Content.sprites.resourceLogsCarriage,
+					Content.sprites.resourceLogs);
 		
 		//...
 	}
@@ -72,6 +70,14 @@ public class Resource
 	}
 		
 	// Member part
+	
+	// Attributes
+	private byte ID;
+	private String name;
+	private SpriteSheet carriageSprites;
+	private SpriteSheet storageSprites;
+	private short stackLimit;
+	private boolean isFood;
 
 	private Resource(byte ID, String name, int stackLimit)
 	{

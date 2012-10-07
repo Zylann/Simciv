@@ -437,7 +437,26 @@ public abstract class Unit extends TickableEntity
 		mapRef.multiPathFinder.findPath(getX(), getY(), new DefaultPass(), new DummyTarget());
 		return mapRef.multiPathFinder.getCrossedDistance();
 	}
+	
+	/**
+	 * Gets the cell that is just in front of the unit.
+	 * Returns null if the unit has no direction (Direction.NONE).
+	 * @return
+	 */
+	public MapCell getFrontCell()
+	{
+		if(getDirection() == Direction2D.NONE)
+			return null;
 		
+		int x = getX() + Direction2D.vectors[getDirection()].x;
+		int y = getY() + Direction2D.vectors[getDirection()].y;
+		
+		if(mapRef.grid.contains(x, y))
+			return mapRef.grid.getCellExisting(x, y);
+		else
+			return null;
+	}
+	
 	/**
 	 * Default map pass predicate for units.
 	 * Defines where a unit can move.

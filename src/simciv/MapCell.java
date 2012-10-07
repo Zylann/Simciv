@@ -37,7 +37,11 @@ public class MapCell implements Serializable
 	 */
 	private int buildInfo;
 	
-	/** ID of the last unit being on the cell (set by tracking), 0 if none **/
+	/**
+	 *  ID of the last unit being on the cell (set by tracking), 0 if none. 
+	 *  If an ID is set and there is a tree on the cell, it means that it is
+	 *  currently chopped by a lumberjack.
+	 */
 	private int unitInfo;
 		
 	public MapCell()
