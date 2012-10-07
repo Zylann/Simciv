@@ -47,6 +47,7 @@ public class ContentLoadingScreen extends BasicGameState
 			throws SlickException
 	{
 		Log.info("Loading game content...");
+		long timeBefore = System.currentTimeMillis();
 		
 		Content.loadFromContentFile("data/content.xml");
 		Content.indexAll();
@@ -55,8 +56,8 @@ public class ContentLoadingScreen extends BasicGameState
 		customTheme.loadContent();
 		UIRenderer.setTheme(customTheme);
 
-		Log.info("Game content loaded");
-		
+		long contentLoadTime = System.currentTimeMillis() - timeBefore;
+		Log.info("Game content loaded in " + (float)contentLoadTime / 1000.f + "s");
 		
 		game.enterState(Game.STATE_MAIN_MENU);
 	}
