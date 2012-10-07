@@ -12,6 +12,7 @@ import simciv.Map;
 import simciv.maptargets.IExplicitMapTarget;
 import simciv.maptargets.RoadMapTarget;
 import simciv.units.Citizen;
+import simciv.units.Conveyer;
 import simciv.units.Employer;
 import simciv.units.Jobs;
 import simciv.units.Unit;
@@ -438,6 +439,10 @@ public abstract class Workplace extends Build
 				"We need " + getNbNeededEmployees() + " more employees.");
 		
 		return report;
+	}
+
+	public void onConveyerIsBack(Conveyer conveyer)
+	{
 	}
 
 }

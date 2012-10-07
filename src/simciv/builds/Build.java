@@ -18,7 +18,6 @@ import backend.ui.Notification;
 import simciv.Cheats;
 import simciv.Game;
 import simciv.MapGrid;
-import simciv.ResourceSlot;
 import simciv.Map;
 import simciv.TickableEntity;
 import simciv.content.Content;
@@ -315,24 +314,6 @@ public abstract class Build extends TickableEntity
 					"It's burning ! We need firemen to save the neighborhood !");
 		
 		return report;
-	}
-
-	/**
-	 * Return true if the building can store resources
-	 * @return
-	 */
-	public boolean isAcceptResources()
-	{
-		return false;
-	}
-
-	/**
-	 * Stores a resource in the building. Depending on if the building is accepting
-	 * resources, the given slot will or will not be modified.
-	 * @param r : resource to store
-	 */
-	public void storeResource(ResourceSlot r)
-	{
 	}
 	
 	@Override

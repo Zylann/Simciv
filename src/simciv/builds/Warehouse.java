@@ -15,7 +15,7 @@ import simciv.content.Content;
  * @author Marc
  *
  */
-public class Warehouse extends PassiveWorkplace
+public class Warehouse extends PassiveWorkplace implements IResourceHolder
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -72,101 +72,7 @@ public class Warehouse extends PassiveWorkplace
 	{
 		return properties;
 	}
-	
-	@Override
-	public boolean isAcceptResources()
-	{
-		return !needEmployees() && !full;
-	}
-
-	@Override
-	public void storeResource(ResourceSlot r)
-	{
-		// Iterate over slots
-		full = true;
-		for(ResourceSlot slot : resourceSlots)
-		{
-			if(!slot.isFull())
-			{
-				full = false;
-				if(!r.isEmpty())
-				{
-					if(slot.addAllFrom(r))
-						empty = false;
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Gets a resource from the warehouse until the given slot is full.
-	 * @param r
-	 * @return true if the given slot has been modified.
-	 */
-	public boolean retrieveResource(ResourceSlot r)
-	{
-		boolean retrieved = false;
-		empty = true;
 		
-		for(ResourceSlot slot : resourceSlots)
-		{
-			if(!r.isFull())
-			{
-				if(r.addAllFrom(slot))
-					retrieved = true;
-			}
-			if(!slot.isEmpty())
-				empty = false;
-		}
-				
-		if(retrieved)
-			full = false;
-		return retrieved;
-	}
-	
-	/**
-	 * Computes the free space for storing the given type of resource.
-	 * It may differ depending on the resource type.
-	 * @param type : resource type
-	 * @return free space in the warehouse
-	 */
-	public int getFreeSpaceForResource(byte type)
-	{
-		int stackLimit = Resource.get(type).getStackLimit();
-		
-		if(empty)
-			return stackLimit * resourceSlots.length;
-		if(full)
-			return 0;
-		
-		int space = 0;
-		for(ResourceSlot s : resourceSlots)
-		{
-			if(s.isEmpty())
-				space += stackLimit;
-			else if(s.getType() == type)
-				space += s.getFreeSpace();
-		}
-		
-		return space;
-	}
-	
-	/**
-	 * Counts how many resources of the given type are contained in the warehouse
-	 * @param type : resource type
-	 * @return total in units
-	 */
-	public int getResourceTotal(byte type)
-	{
-		int total = 0;		
-		for(ResourceSlot s : resourceSlots)
-		{
-			if(s.getType() == type)
-				total += s.getAmount();
-		}
-		return total;
-	}
-	
 	@Override
 	public void renderBuild(GameContainer gc, StateBasedGame game, Graphics gfx)
 	{
@@ -220,16 +126,7 @@ public class Warehouse extends PassiveWorkplace
 		}
 		return false;
 	}
-	
-	/**
-	 * Returns true if it contains resources availables for markets
-	 * @return
-	 */
-	public boolean containsResourcesForMarkets()
-	{
-		return containsResources();
-	}
-	
+		
 	@Override
 	public String getInfoLine()
 	{
@@ -274,14 +171,132 @@ public class Warehouse extends PassiveWorkplace
 		}
 		return n;
 	}
-
-	public boolean canStore(byte resType)
+	
+	@Override
+	public boolean store(ResourceSlot r, int amount)
 	{
-		if(isFull())
-			return false;
-		if(!isActive())
-			return false;
-		return getFreeSpaceForResource(resType) > 0;
+		// Iterate over slots
+		full = true;
+		boolean moved = false;
+		
+		for(ResourceSlot slot : resourceSlots)
+		{
+			if(!slot.isFull())
+			{
+				full = false;
+				if(!r.isEmpty())
+				{
+					if(slot.addFrom(r, amount))
+					{
+						moved = true;
+						empty = false;
+					}
+				}
+			}
+		}
+		
+		return moved;
+	}
+
+	@Override
+	public boolean retrieve(ResourceSlot r, byte type, int amount)
+	{		
+		boolean retrieved = false;
+		empty = true;
+		
+		for(ResourceSlot slot : resourceSlots)
+		{
+			if(!slot.isEmpty())
+				empty = false;
+			if(!r.isFull() && slot.getType() == type)
+			{
+				if(r.addAllFrom(slot))
+					retrieved = true;
+			}
+		}
+		
+		if(retrieved)
+			full = false;
+		return retrieved;
+	}
+
+	@Override
+	public int getResourceTotal(byte type)
+	{
+		int total = 0;		
+		for(ResourceSlot s : resourceSlots)
+		{
+			if(s.getType() == type)
+				total += s.getAmount();
+		}
+		return total;
+	}
+
+	@Override
+	public int getFreeSpaceForResource(byte resourceType)
+	{
+		int stackLimit = Resource.get(resourceType).getStackLimit();
+		
+		if(empty)
+			return stackLimit * resourceSlots.length;
+		if(full)
+			return 0;
+		
+		int space = 0;
+		for(ResourceSlot s : resourceSlots)
+		{
+			if(s.isEmpty())
+				space += stackLimit;
+			else if(s.getType() == resourceType)
+				space += s.getFreeSpace();
+		}
+		
+		return space;
+	}
+
+	@Override
+	public boolean containsFood()
+	{
+		for(ResourceSlot slot : resourceSlots)
+		{
+			if(slot.getSpecs().isFood())
+				return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean retrieveFood(ResourceSlot r, int amount)
+	{
+		boolean retrieved = false;
+		empty = true;
+		
+		for(ResourceSlot slot : resourceSlots)
+		{
+			if(!slot.isEmpty())
+				empty = false;
+			if(!r.isFull() && slot.getSpecs().isFood())
+			{
+				if(r.addAllFrom(slot))
+					retrieved = true;
+			}
+		}
+		
+		if(retrieved)
+			full = false;
+		return retrieved;
+	}
+
+	@Override
+	public boolean allowsStoring()
+	{
+		return isActive();
+	}
+
+	@Override
+	public boolean allowsRetrieving()
+	{
+		return isActive();
 	}
 
 }

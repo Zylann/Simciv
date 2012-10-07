@@ -19,7 +19,7 @@ import simciv.Map;
 import simciv.Resource;
 import simciv.ResourceSlot;
 import simciv.content.Content;
-import simciv.units.Conveyer;
+import simciv.units.StoreConveyer;
 import simciv.units.Jobs;
 import simciv.units.Unit;
 
@@ -146,13 +146,13 @@ public class Hunters extends Workplace
 		for(Integer uID : units)
 		{
 			Unit u = mapRef.getUnit(uID);
-			if(Conveyer.class.isInstance(u)) {
+			if(StoreConveyer.class.isInstance(u)) {
 				Log.debug(this + " can't export food, the conveyer is already out");
 				return false;
 			}
 		}
 		
-		Conveyer conveyer = new Conveyer(mapRef, this);
+		StoreConveyer conveyer = new StoreConveyer(mapRef, this);
 		conveyer.addResourceCarriage(new ResourceSlot(Resource.MEAT, 50));
 		addAndSpawnUnitAround(conveyer);
 		

@@ -11,7 +11,7 @@ import simciv.Resource;
 import simciv.ResourceSlot;
 import simciv.Map;
 import simciv.content.Content;
-import simciv.units.Conveyer;
+import simciv.units.StoreConveyer;
 
 /**
  * Farmlands are used to raise one type of plant.
@@ -107,8 +107,8 @@ public class FarmLand extends Workplace
 		
 		int harvestResult = (int) (50 + 25.f * Math.random());
 
-		Conveyer conveyers[] = new Conveyer[1];
-		conveyers[0] = new Conveyer(mapRef, this);
+		StoreConveyer conveyers[] = new StoreConveyer[1];
+		conveyers[0] = new StoreConveyer(mapRef, this);
 		conveyers[0].addResourceCarriage(new ResourceSlot(Resource.WHEAT, harvestResult));
 		
 		addAndSpawnUnitsAround(conveyers);

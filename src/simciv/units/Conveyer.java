@@ -1,38 +1,35 @@
 package simciv.units;
 
-import java.util.List;
-
 import org.newdawn.slick.Graphics;
+
 import backend.Direction2D;
 import backend.pathfinding.IMapTarget;
+
 import simciv.Entity;
 import simciv.Map;
 import simciv.ResourceSlot;
-import simciv.builds.Build;
-import simciv.builds.Warehouse;
 import simciv.builds.Workplace;
 import simciv.content.Content;
 
 /**
- * A conveyer can carry resources from a place to another.
- * It can be employed in different workplaces.
+ * Conveyers carries resources from a place to another.
+ * There is two main conveyer types : store and get conveyers.
+ * See sublclasses.
  * @author Marc
  *
  */
-public class Conveyer extends Citizen
+public abstract class Conveyer extends Citizen
 {
 	private static final long serialVersionUID = 1L;
-	private static final int PATHFINDING_DISTANCE = 4092;
-	
+
 	// States
 	private static final byte FIND_STORAGE = 0;
-	private static final byte STORE_RESOURCES = 1;
+	private static final byte DO_TRANSACTION = 1;
 	private static final byte BACK_TO_WORKPLACE = 2;
-	private static final byte FIND_ROAD = 3;
 	
 	/** Resources carried by the conveyer **/
-	private ResourceSlot carriedResource;
-	
+	protected ResourceSlot carriedResource;
+
 	/** Last state of the conveyer **/
 	private byte lastState;
 	
@@ -40,20 +37,28 @@ public class Conveyer extends Citizen
 	{
 		super(m, w);
 		carriedResource = new ResourceSlot();
-		state = FIND_STORAGE;
+		setState(FIND_STORAGE);
 	}
 	
-	public void addResourceCarriage(ResourceSlot r)
+	protected abstract IMapTarget getTransactionPlace();
+	
+	/**
+	 * Executes the resources transactions.
+	 * @return true if enough, false if we need another transaction.
+	 */
+	protected abstract boolean doTransaction();
+
+	protected void onBackToWorkplace()
 	{
-		carriedResource.addAllFrom(r);
+		getWorkplace().onConveyerIsBack(this);
 	}
-	
+
 	@Override
 	public void tick()
 	{
 		/*
 		 * Current behavior :
-		 * The conveyer goes out of its workplace with resources.
+		 * The conveyer goes out of its workplace with or without resources.
 		 * He moves at random, distributing resources.
 		 * When he distributed all his resources, he goes back to its workplace.
 		 */
@@ -63,9 +68,8 @@ public class Conveyer extends Citizen
 		switch(state)
 		{
 		case FIND_STORAGE : tickFindStorage(); break;
-		case STORE_RESOURCES : tickStoreResources(); break;
+		case DO_TRANSACTION : tickDoTransaction(); break;
 		case BACK_TO_WORKPLACE : tickBackToWorkplace(); break;
-		case FIND_ROAD : tickFindRoad(); break;
 		}
 		
 		lastState = lastStateTemp;
@@ -74,25 +78,23 @@ public class Conveyer extends Citizen
 	private void tickFindStorage()
 	{
 		if(state != lastState || isMovementBlocked())
-		{
 			setMovement(null);
-			if(!isOnRoad())
-				state = FIND_ROAD;
-		}
 		
 		if(!isMovement())
-			findAndGoTo(new FreeWarehouseTarget(), PATHFINDING_DISTANCE);
+			findAndGoTo(getTransactionPlace(), -1);
 		
 		if(isMovementFinished())
-			state = STORE_RESOURCES;
+			state = DO_TRANSACTION;
 	}
 
-	private void tickStoreResources()
+	private void tickDoTransaction()
 	{
-		if(state != lastState)
-			distributeResources();
+		boolean transactionSuccess = false;
 		
-		if(carriedResource.isEmpty())
+		if(state != lastState)
+			transactionSuccess = doTransaction();
+		
+		if(transactionSuccess)
 			state = BACK_TO_WORKPLACE;
 		else
 			state = FIND_STORAGE;
@@ -101,40 +103,25 @@ public class Conveyer extends Citizen
 	private void tickBackToWorkplace()
 	{
 		if(state != lastState || isMovementBlocked())
-		{
 			setMovement(null);
-			if(!isOnRoad())
-				state = FIND_ROAD;
-		}
 				
 		if(isMovement())
 		{
 			if(isMovementFinished())
+			{
+				onBackToWorkplace();
 				dispose();
+			}
 		}
 		else
 		{
 			if(isMyWorkplaceNearby())
+			{
+				onBackToWorkplace();
 				dispose();
+			}
 			else
-				findAndGoTo(new WorkplaceTarget(), PATHFINDING_DISTANCE);
-		}
-	}
-	
-	private void tickFindRoad()
-	{
-		if(state != lastState || isMovementBlocked())
-			setMovement(null);
-		
-		if(!isMovement())
-			goBackToRoad(32);
-		
-		if(isMovementFinished())
-		{
-			if(carriedResource.isEmpty())
-				state = BACK_TO_WORKPLACE;
-			else
-				state = FIND_STORAGE;
+				findAndGoTo(new WorkplaceTarget(), -1);
 		}
 	}
 	
@@ -147,33 +134,11 @@ public class Conveyer extends Citizen
 		{
 		case Entity.DEFAULT_STATE : stateName = "default state"; break;
 		case BACK_TO_WORKPLACE : stateName = "back to workplace"; break;
-		case FIND_ROAD : stateName = "finding a road"; break;
 		case FIND_STORAGE : stateName = "Finding storage"; break;
-		case STORE_RESOURCES : stateName = "Storing resources"; break;
+		case DO_TRANSACTION : stateName = "Doing transaction"; break;
 		}
 		
 		return super.getInfoLine() + " " + stateName;
-	}
-
-	@Override
-	public String getDisplayableName()
-	{
-		return "Conveyer";
-	}
-
-	/**
-	 * Distributes resources to neighboring builds if possible
-	 */
-	private void distributeResources()
-	{
-		if(carriedResource.isEmpty())
-			return;
-		List<Build> buildingsAround = getMap().getBuildsAround(getX(), getY());
-		for(Build b : buildingsAround)
-		{
-			if(b.isAcceptResources())
-				b.storeResource(carriedResource);
-		}
 	}
 	
 	@Override
@@ -191,20 +156,6 @@ public class Conveyer extends Citizen
 		}
 	}
 	
-	private class FreeWarehouseTarget implements IMapTarget
-	{
-		@Override
-		public boolean isTarget(int x, int y) {
-			Build b = mapRef.getBuild(x, y);
-			if(b != null && Warehouse.class.isInstance(b))
-			{
-				Warehouse w = (Warehouse)b;
-				return w.canStore(carriedResource.getType());
-			}
-			return false;
-		}
-	}
-	
 	private class WorkplaceTarget implements IMapTarget
 	{
 		@Override
@@ -214,6 +165,3 @@ public class Conveyer extends Citizen
 	}
 
 }
-
-
-

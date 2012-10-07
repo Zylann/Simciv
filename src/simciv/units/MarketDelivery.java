@@ -169,7 +169,8 @@ public class MarketDelivery extends Citizen
 			if(Warehouse.class.isInstance(b))
 			{
 				Warehouse w = (Warehouse)b;
-				w.retrieveResource(carriedResource);
+				if(w.allowsRetrieving())
+					w.retrieveFood(carriedResource, -1);
 			}
 			if(carriedResource.isFull())
 				return;
@@ -192,7 +193,8 @@ public class MarketDelivery extends Citizen
 			Build b = mapRef.getBuild(x, y);
 			if(Warehouse.class.isInstance(b))
 			{
-				if(((Warehouse) b).containsResourcesForMarkets())
+				Warehouse w = (Warehouse)b;
+				if(w.allowsRetrieving() && w.containsFood())
 					return true;
 			}
 			return false;

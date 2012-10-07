@@ -26,7 +26,7 @@ import simciv.units.Lumberjack;
  * @author Marc
  *
  */
-public class Loggers extends Workplace
+public class Loggers extends Workplace implements IResourceHolder
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -131,17 +131,6 @@ public class Loggers extends Workplace
 		renderLogs(gfx);
 	}
 	
-	public boolean containsLogs()
-	{
-		return logStacks != 0;
-	}
-	
-	public boolean retrieveLogs(ResourceSlot slot)
-	{
-		ResourceSlot logs = new ResourceSlot(Resource.LOGS, 100);
-		return slot.addAllFrom(logs);
-	}
-	
 	private void renderLogs(Graphics gfx)
 	{
 		if(logStacks >= 1)
@@ -184,6 +173,65 @@ public class Loggers extends Workplace
 		return report;
 	}
 
+	@Override
+	public int getResourceTotal(byte type)
+	{
+		if(type == Resource.LOGS)
+			return logStacks * Resource.get(Resource.LOGS).getStackLimit();
+		return 0;
+	}
+
+	@Override
+	public boolean containsFood() {
+		return false;
+	}
+
+	@Override
+	public boolean store(ResourceSlot s, int amount) {
+		return false;
+	}
+
+	@Override
+	public boolean retrieve(ResourceSlot s, byte type, int amount)
+	{
+		if(type == Resource.LOGS)
+		{
+			return s.addAllFrom(new ResourceSlot(
+				Resource.LOGS, Resource.get(Resource.LOGS).getStackLimit()));
+		}
+		return false;
+	}
+
+	@Override
+	public boolean retrieveFood(ResourceSlot s, int amount) {
+		return false;
+	}
+
+	@Override
+	public int getFreeSpaceForResource(byte resourceType) {
+		return 0;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return logStacks == 0;
+	}
+
+	@Override
+	public boolean isFull() {
+		return logStacks == MAX_LOG_STACKS;
+	}
+
+	@Override
+	public boolean allowsStoring() {
+		return false;
+	}
+
+	@Override
+	public boolean allowsRetrieving() {
+		return false;
+	}
+	
 	private class WalkableFloor implements IMapSpec
 	{
 		@Override

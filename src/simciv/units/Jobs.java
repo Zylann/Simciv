@@ -15,7 +15,7 @@ public abstract class Jobs
 {
 	// Job IDs
 	public static final byte EMPLOYER = 0;
-	public static final byte CONVEYER = 1;
+	public static final byte STORE_CONVEYER = 1;
 	public static final byte TAXMAN = 2;
 	public static final byte MARKET_DELIVERY = 3;
 	public static final byte ARCHITECT = 4;
@@ -23,12 +23,13 @@ public abstract class Jobs
 	public static final byte POLICEMAN = 6;
 	public static final byte HUNTER = 7;
 	public static final byte LUMBERJACK = 8;
+	public static final byte GET_CONVEYER = 9;
 	
 	public static Citizen createUnitFromJobID(byte jobID, Map m, Workplace w)
 	{
 		switch(jobID)
 		{
-		case CONVEYER : 		return new Conveyer(m, w);
+		case STORE_CONVEYER : 	return new StoreConveyer(m, w);
 		case TAXMAN : 			return new Taxman(m, w);
 		case MARKET_DELIVERY : 	return new MarketDelivery(m, w);
 		case ARCHITECT : 		return new Architect(m, w);
@@ -36,6 +37,7 @@ public abstract class Jobs
 		case POLICEMAN :		return new Policeman(m, w);
 		case HUNTER :			return new Hunter(m, w);
 		case LUMBERJACK :		return new Lumberjack(m, w);
+		case GET_CONVEYER : 	return new GetConveyer(m, w);
 		
 		default :
 			Log.error("unknown job ID: " + jobID);
