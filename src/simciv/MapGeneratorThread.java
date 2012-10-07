@@ -41,6 +41,7 @@ public class MapGeneratorThread extends Thread
 	public void run() // Note : to execute the thread, use start().
 	{
     	Log.info("Map generation begin");
+    	long timeBefore = System.currentTimeMillis();
     	
     	Log.info("Generating terrain...");
     	generateTerrain(mapRef.grid);
@@ -48,7 +49,8 @@ public class MapGeneratorThread extends Thread
     	Log.info("Generating fauna...");
     	generateFauna(mapRef);
     	
-    	Log.info("Map generation done.");
+    	long generateTime = System.currentTimeMillis() - timeBefore;
+    	Log.info("Map generation done in " + (float)generateTime / 1000.f + "s.");
 	}
     
     // Generation methods
