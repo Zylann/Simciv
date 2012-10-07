@@ -167,6 +167,23 @@ public class Loggers extends Workplace
 		}
 	}
 	
+	@Override
+	public BuildReport getReport()
+	{
+		BuildReport report = super.getReport();
+		
+		if(logStacks == MAX_LOG_STACKS)
+			report.add(BuildReport.PROBLEM_MINOR, 
+				"Our log storage is full. " +
+				"We are waiting for conveyers from the manufacture.");
+		
+		if(!checkMapForWood())
+			report.add(BuildReport.PROBLEM_MINOR,
+				"There is no trees around here.");
+		
+		return report;
+	}
+
 	private class WalkableFloor implements IMapSpec
 	{
 		@Override
