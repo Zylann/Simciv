@@ -9,6 +9,7 @@ import simciv.Game;
 
 /**
  * 2D camera with translation and scaling.
+ * TODO rewrite View and make it more generic
  * @author Marc
  *
  */
