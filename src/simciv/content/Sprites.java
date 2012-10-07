@@ -28,6 +28,7 @@ public class Sprites
 	public SpriteSheet buildPoliceStation;
 	public SpriteSheet buildHunters;
 	public SpriteSheet buildLoggers;
+	public SpriteSheet buildWoodManufacture;
 	
 	// Units
 	public SpriteSheet unitEmployer;

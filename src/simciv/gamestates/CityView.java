@@ -229,6 +229,7 @@ public class CityView extends UIBasicGameState
 		BuildMenu industryMenu = new BuildMenu(menuBar, 0, menuBar.getHeight(), 128);
 		industryMenu.addBuild("Warehouse");
 		industryMenu.addBuild("Loggers");
+		industryMenu.addBuild("WoodManufacture");
 		menuBar.addCategory(Content.sprites.uiCategIndustry, "Industry", industryMenu);
 		
 		// Administration

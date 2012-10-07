@@ -23,6 +23,7 @@
 	<spritesheet id="buildPoliceStation" tw="32" th="48" src="gfx/builds/police_station.png"/>
 	<spritesheet id="buildHunters" tw="32" th="48" src="gfx/builds/hunters.png"/>
 	<spritesheet id="buildLoggers" tw="48" th="64" src="gfx/builds/loggers.png"/>
+	<spritesheet id="buildWoodManufacture" tw="48" th="64" src="gfx/builds/wood_manufacture.png"/>
 	
 	<!-- Units -->
 	<spritesheet id="unitThinking" tw="5" th="5" src="gfx/units/think.png"/>
