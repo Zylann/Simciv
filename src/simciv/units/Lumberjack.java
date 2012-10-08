@@ -3,6 +3,7 @@ package simciv.units;
 import org.newdawn.slick.Graphics;
 
 import backend.Direction2D;
+import backend.MathHelper;
 import backend.geom.Vector2i;
 import backend.pathfinding.IMapSpec;
 import backend.pathfinding.IMapTarget;
@@ -76,6 +77,10 @@ public class Lumberjack extends Citizen
 			setMovement(null);
 		
 		// TODO add tree chop sound
+		if(getTicks() % 2 == 0)
+			Content.sounds.unitLumberjackChop.play(
+					0.9f + MathHelper.randS(0.1f), 0.2f);
+		
 		ticksChoppingTree--;
 		if(ticksChoppingTree == 0)
 		{

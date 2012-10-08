@@ -111,6 +111,7 @@
 	<!-- Units -->
 	<sound id="unitDuckDeath" src="sfx/units/killduck.ogg"/>
 	<sound id="unitHunterCatch" src="sfx/units/miniwoosh.ogg"/>
+	<sound id="unitLumberjackChop" src="sfx/units/chop_wood.ogg"/>
 	
 	<!-- UI -->
 	<sound id="uiButtonPress" src="sfx/ui/click2.ogg"/>
