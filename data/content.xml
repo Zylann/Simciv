@@ -48,6 +48,8 @@
 	<spritesheet id="resourceMeatCarriage" tw="16" th="16" src="gfx/res/fowl_meat_carriage.png"/>
 	<spritesheet id="resourceLogs" tw="16" th="16" src="gfx/res/logs.png"/>
 	<spritesheet id="resourceLogsCarriage" tw="16" th="16" src="gfx/res/logs_carriage.png"/>
+	<spritesheet id="resourceWood" tw="16" th="16" src="gfx/res/wood.png"/>
+	<spritesheet id="resourceWoodCarriage" tw="16" th="16" src="gfx/res/wood_carriage.png"/>
 	
 	<!-- Terrain -->
 	<image id="terrainRoad" src="gfx/terrain/road.png"/>

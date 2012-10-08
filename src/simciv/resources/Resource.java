@@ -31,7 +31,10 @@ public class Resource
 	{		
 		list = new Resource[COUNT];
 		
-		set(new Resource(WOOD, "Wood", 100));
+		set(new Resource(WOOD, "Wood", 100))
+			.setSprites(
+					Content.sprites.resourceWood,
+					Content.sprites.resourceWoodCarriage);
 		
 		set(new Resource(WHEAT, "Wheat", 100))
 			.setSprites(

@@ -53,6 +53,8 @@ public class Sprites
 	public SpriteSheet resourceMeatCarriage;
 	public SpriteSheet resourceLogs;
 	public SpriteSheet resourceLogsCarriage;
+	public SpriteSheet resourceWood;
+	public SpriteSheet resourceWoodCarriage;
 	
 	// Terrain
 	public Image terrainRoad;
