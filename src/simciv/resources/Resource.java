@@ -33,8 +33,8 @@ public class Resource
 		
 		set(new Resource(WOOD, "Wood", 100))
 			.setSprites(
-					Content.sprites.resourceWood,
-					Content.sprites.resourceWoodCarriage);
+					Content.sprites.resourceWoodCarriage,
+					Content.sprites.resourceWood);
 		
 		set(new Resource(WHEAT, "Wheat", 100))
 			.setSprites(
