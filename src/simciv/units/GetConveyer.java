@@ -7,10 +7,10 @@ import org.newdawn.slick.util.Log;
 import backend.pathfinding.IMapTarget;
 
 import simciv.Map;
-import simciv.Resource;
 import simciv.builds.Build;
 import simciv.builds.IResourceHolder;
 import simciv.builds.Workplace;
+import simciv.resources.Resource;
 
 /**
  * A "get" conveyer finds resources and retrieves it back to his workplace.

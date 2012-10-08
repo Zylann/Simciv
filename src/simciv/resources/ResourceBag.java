@@ -1,4 +1,4 @@
-package simciv;
+package simciv.resources;
 
 import java.io.Serializable;
 import java.util.HashMap;

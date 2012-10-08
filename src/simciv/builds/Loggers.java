@@ -14,9 +14,9 @@ import backend.pathfinding.IMapTarget;
 
 import simciv.Game;
 import simciv.Map;
-import simciv.Resource;
-import simciv.ResourceSlot;
 import simciv.content.Content;
+import simciv.resources.Resource;
+import simciv.resources.ResourceSlot;
 import simciv.units.Jobs;
 import simciv.units.Lumberjack;
 

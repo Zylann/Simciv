@@ -10,10 +10,10 @@ import backend.ui.UIBasicGameState;
 import backend.ui.UIRenderer;
 
 import simciv.CityBuilder;
-import simciv.Resource;
 import simciv.Road;
 import simciv.Terrain;
 import simciv.builds.BuildCategory;
+import simciv.resources.Resource;
 
 public abstract class GameInitScreen extends UIBasicGameState
 {

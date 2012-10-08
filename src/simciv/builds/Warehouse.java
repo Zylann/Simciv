@@ -5,10 +5,10 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
 import simciv.Game;
-import simciv.Resource;
-import simciv.ResourceSlot;
 import simciv.Map;
 import simciv.content.Content;
+import simciv.resources.Resource;
+import simciv.resources.ResourceSlot;
 
 /**
  * A Warehouse is a building for storing resources.

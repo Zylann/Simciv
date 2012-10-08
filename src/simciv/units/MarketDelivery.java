@@ -7,13 +7,13 @@ import org.newdawn.slick.Graphics;
 import backend.pathfinding.IMapTarget;
 
 import simciv.Map;
-import simciv.ResourceSlot;
 import simciv.builds.Build;
 import simciv.builds.House;
 import simciv.builds.Warehouse;
 import simciv.builds.Workplace;
 import simciv.content.Content;
 import simciv.movement.RandomRoadMovement;
+import simciv.resources.ResourceSlot;
 
 /**
  * Delivers resources to citizen houses.

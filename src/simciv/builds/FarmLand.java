@@ -7,10 +7,10 @@ import org.newdawn.slick.state.StateBasedGame;
 import simciv.Cheats;
 import simciv.Game;
 import simciv.MapGrid;
-import simciv.Resource;
-import simciv.ResourceSlot;
 import simciv.Map;
 import simciv.content.Content;
+import simciv.resources.Resource;
+import simciv.resources.ResourceSlot;
 import simciv.units.StoreConveyer;
 
 /**

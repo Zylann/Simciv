@@ -18,13 +18,13 @@ import backend.pathfinding.IMapSpec;
 import simciv.Cheats;
 import simciv.Entity;
 import simciv.Game;
-import simciv.Resource;
-import simciv.ResourceBag;
-import simciv.ResourceSlot;
 import simciv.Map;
 import simciv.content.Content;
 import simciv.effects.RisingIcon;
 import simciv.maptargets.RoadMapTarget;
+import simciv.resources.Resource;
+import simciv.resources.ResourceBag;
+import simciv.resources.ResourceSlot;
 import simciv.units.Robber;
 
 /**

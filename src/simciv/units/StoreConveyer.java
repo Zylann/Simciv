@@ -4,11 +4,11 @@ import java.util.List;
 
 import backend.pathfinding.IMapTarget;
 import simciv.Map;
-import simciv.ResourceSlot;
 import simciv.builds.Build;
 import simciv.builds.IResourceHolder;
 import simciv.builds.Warehouse;
 import simciv.builds.Workplace;
+import simciv.resources.ResourceSlot;
 
 /**
  * A store conveyer stores resources into a warehouse.

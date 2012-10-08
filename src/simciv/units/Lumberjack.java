@@ -10,10 +10,10 @@ import backend.pathfinding.IMapTarget;
 import simciv.Map;
 import simciv.MapCell;
 import simciv.Nature;
-import simciv.Resource;
 import simciv.builds.Loggers;
 import simciv.builds.Workplace;
 import simciv.content.Content;
+import simciv.resources.Resource;
 
 public class Lumberjack extends Citizen
 {

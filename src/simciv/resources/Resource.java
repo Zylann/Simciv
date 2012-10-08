@@ -1,4 +1,4 @@
-package simciv;
+package simciv.resources;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -6,6 +6,7 @@ import org.newdawn.slick.SpriteSheet;
 
 import backend.Direction2D;
 
+import simciv.Game;
 import simciv.content.Content;
 
 /**

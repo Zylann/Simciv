@@ -7,9 +7,9 @@ import backend.pathfinding.IMapTarget;
 
 import simciv.Entity;
 import simciv.Map;
-import simciv.ResourceSlot;
 import simciv.builds.Workplace;
 import simciv.content.Content;
+import simciv.resources.ResourceSlot;
 
 /**
  * Conveyers carries resources from a place to another.
