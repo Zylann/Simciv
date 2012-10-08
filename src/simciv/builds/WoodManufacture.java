@@ -60,7 +60,7 @@ public class WoodManufacture extends Workplace
 	public int getProductionProgress()
 	{
 		if(getState() == PRODUCE)
-			return MathHelper.percent(
+			return 100 - MathHelper.percent(
 					ticksBeforeExport, secondsToTicks(PRODUCE_TIME));
 		return 0;
 	}

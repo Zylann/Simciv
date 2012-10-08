@@ -143,6 +143,17 @@ public class MathHelper
 	{
 		return x * x;
 	}
+	
+	/**
+	 * Computes an integer percentage.
+	 * @param a : dividend (positive value)
+	 * @param b : divider (max value of a)
+	 * @return
+	 */
+	public static int percent(int a, int b)
+	{
+		return (int) (100.f * (float)a / (float)b);
+	}
 
 }
 
