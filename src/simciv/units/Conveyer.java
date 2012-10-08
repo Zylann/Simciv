@@ -52,6 +52,16 @@ public abstract class Conveyer extends Citizen
 	{
 		getWorkplace().onConveyerIsBack(this);
 	}
+	
+	public byte getResourceType()
+	{
+		return carriedResource.getType();
+	}
+	
+	public int getResourceAmount()
+	{
+		return carriedResource.getAmount();
+	}
 
 	@Override
 	public void tick()

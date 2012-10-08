@@ -194,8 +194,9 @@ public class Loggers extends Workplace implements IResourceHolder
 	@Override
 	public boolean retrieve(ResourceSlot s, byte type, int amount)
 	{
-		if(type == Resource.LOGS)
+		if(type == Resource.LOGS && logStacks != 0)
 		{
+			logStacks--;
 			return s.addAllFrom(new ResourceSlot(
 				Resource.LOGS, Resource.get(Resource.LOGS).getStackLimit()));
 		}
@@ -229,7 +230,7 @@ public class Loggers extends Workplace implements IResourceHolder
 
 	@Override
 	public boolean allowsRetrieving() {
-		return false;
+		return true;
 	}
 	
 	private class WalkableFloor implements IMapSpec
