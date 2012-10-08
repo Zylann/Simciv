@@ -1,8 +1,14 @@
 Simciv indev R4.0 (work in progress) :
 
-+ Added wild ducks (they breed naturally)
++ Added wild ducks (they breed naturally except if we kill them all)
 + Added hunters
++ Added robbers and criminality
++ Added policemen
++ Added loggers : trees can be cut !
++ Added wood manufactures
 + Added new sounds
+* Clicking on a notification will move the view if needed
+* Increased house inhabitants and required employees, except for farmlands
 ...
 
 Simciv indev R3.2 (2012-10-01) :

@@ -8,7 +8,7 @@ Description :
 
 Releases :
 
-	Last :
+	Latest :
 	SimCiv indev R3.2 : http://www.mediafire.com/?b6d1p5o74wypc3h
 	
 	Older :
@@ -27,21 +27,23 @@ Current features (for development version) :
 	- Builds maintenance and fire risk
 	- Farmlands with growing crops
 	- Hunting
+	- Criminality
 	- Ability to save/load a game (only 1 file yet)
 	- Draggable/hideable minimap
 	See more in the changelog file !
 
 Some planned features and ideas :
 
-	- Savage units
 	- Moar builds
 	- Technological tree
 	- Random natural events (weather...)
 	- World view (foreign cities...)
 	- Citizen social levels
 	- Tutorial mode, compaigns...
-	- Multiplayer mode (inter-city only)
+	- Multiplayer mode (common-world, inter-city only)
+	- Fight mode !
 	- Game update when a new version is available
+	- Map editor
 
 Dependencies :
 
