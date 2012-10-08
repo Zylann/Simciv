@@ -3,7 +3,6 @@ package simciv.builds;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.util.Log;
 
 import simciv.Game;
 import simciv.Map;
@@ -264,7 +263,6 @@ public class Warehouse extends PassiveWorkplace implements IResourceHolder
 		{
 			if(!slot.isEmpty())
 			{
-				Log.debug("" + slot);
 				if(slot.getSpecs().isFood())
 					return true;
 			}
