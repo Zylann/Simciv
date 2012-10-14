@@ -20,16 +20,16 @@ public class BuildInfoWindow extends Window
 		super(parent, 0, 0, 250, 150, title);
 		alignToCenter();
 		
-		infoText = new Label(this, 4, 4, getWidth() - 8, getHeight() - 8, "[Build info]");
+		infoText = new Label(this.getContent(), 
+				4, 4, getWidth() - 8, getHeight() - 8, "[Build info]");
 		infoText.setTextWrap(true);
 		infoText.setTextColor(Color.black);
-		add(infoText);
+		this.getContent().add(infoText);
 		
-		okButton = new PushButton(this, 0, 0, "OK");
-		okButton.setAlignX(ALIGN_CENTER);
-		okButton.setY(getHeight() - 36);
+		okButton = new PushButton(this.getContent(), 0, 0, "OK");
+		okButton.setAlign(ALIGN_CENTER, ALIGN_BOTTOM, 8, 8);
 		okButton.addActionListener(new CloseAction());
-		add(okButton);
+		this.getContent().add(okButton);
 	}
 	
 	public void setInfoText(String text)

@@ -17,6 +17,7 @@ import backend.ui.Widget;
 
 import simciv.Game;
 import simciv.persistence.GameSaveData;
+import simciv.ui.SettingsWindow;
 
 public class MainMenu extends UIBasicGameState
 {
@@ -65,7 +66,11 @@ public class MainMenu extends UIBasicGameState
 		int gs = UIRenderer.getGlobalScale();
 		ui = new RootPane(container.getWidth() / gs, container.getHeight() / gs);
 		
-		Panel panel = new Panel(ui, 150, 85);
+		// Settings
+		SettingsWindow settingsWindow = new SettingsWindow(ui);
+		ui.add(settingsWindow);
+		
+		Panel panel = new Panel(ui, 150, 100);
 		panel.alignToCenter();
 		ui.add(panel);
 		
@@ -78,8 +83,13 @@ public class MainMenu extends UIBasicGameState
 		loadGameBtn.setAlignX(Widget.ALIGN_CENTER);
 		loadGameBtn.addActionListener(new LoadGameAction());
 		panel.add(loadGameBtn);
+		
+		PushButton settingsBtn = new PushButton(panel, 0, 46, "Settings");
+		settingsBtn.setAlignX(Widget.ALIGN_CENTER);
+		settingsBtn.addActionListener(settingsWindow.new OpenAction());
+		panel.add(settingsBtn);
 
-		PushButton exitBtn = new PushButton(panel, 0, 56, "Quit");
+		PushButton exitBtn = new PushButton(panel, 0, 72, "Quit");
 		exitBtn.setAlignX(Widget.ALIGN_CENTER);
 		exitBtn.addActionListener(new QuitGameAction());
 		panel.add(exitBtn);
@@ -90,6 +100,7 @@ public class MainMenu extends UIBasicGameState
 		title.setAlignX(Widget.ALIGN_CENTER);
 		title.setTextColor(Color.white);
 		ui.add(title);
+				
 	}
 	
 	@Override

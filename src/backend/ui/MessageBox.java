@@ -11,17 +11,19 @@ public class MessageBox extends Window
 	{
 		super(parent, x, y, width, height, title);
 		
-		closeButton = new PushButton(this, 0, 0, "OK");
+		WidgetContainer content = this.getContent();
+		
+		closeButton = new PushButton(content, 0, 0, "OK");
 		closeButton.setAlign(ALIGN_CENTER, ALIGN_BOTTOM, 0, 8);
 		closeButton.addActionListener(new CloseAction());
 		
-		message = new Label(this, "---");
+		message = new Label(content, "---");
 		message.setTextColor(Color.black);
 		message.setSize(width, height - closeButton.getHeight());
 		message.setTextWrap(true);
 		
-		add(closeButton);
-		add(message);
+		content.add(closeButton);
+		content.add(message);
 	}
 	
 	public MessageBox(Widget parent, int w, int h, String title)

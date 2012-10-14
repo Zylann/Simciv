@@ -18,6 +18,7 @@ import backend.ui.RootPane;
 import backend.ui.UIBasicGameState;
 import backend.ui.UIRenderer;
 import backend.ui.Widget;
+import backend.ui.WidgetContainer;
 import backend.ui.Window;
 
 import simciv.CityBuilder;
@@ -169,21 +170,22 @@ public class CityView extends UIBasicGameState
 		// Pause window
 		
 		pauseWindow = new Window(ui, 0, 0, 150, 85, "Game paused");
+		WidgetContainer pauseWindowContent = pauseWindow.getContent();
 		
-		PushButton resumeButton = new PushButton(pauseWindow, 0, 10, "Resume game");
+		PushButton resumeButton = new PushButton(pauseWindowContent, 0, 10, "Resume game");
 		resumeButton.setAlignX(Widget.ALIGN_CENTER);
 		resumeButton.addActionListener(new TogglePauseAction());
-		pauseWindow.add(resumeButton);
+		pauseWindowContent.add(resumeButton);
 		
-		PushButton saveButton = new PushButton(pauseWindow, 0, 28, "Save game");
+		PushButton saveButton = new PushButton(pauseWindowContent, 0, 28, "Save game");
 		saveButton.setAlignX(Widget.ALIGN_CENTER);
 		saveButton.addActionListener(new SaveGameAction());
-		pauseWindow.add(saveButton);
+		pauseWindowContent.add(saveButton);
 
-		PushButton quitButton = new PushButton(pauseWindow, 0, 54, "Quit game");
+		PushButton quitButton = new PushButton(pauseWindowContent, 0, 54, "Quit game");
 		quitButton.setAlignX(Widget.ALIGN_CENTER);
 		quitButton.addActionListener(new QuitGameAction());
-		pauseWindow.add(quitButton);
+		pauseWindowContent.add(quitButton);
 		
 		pauseWindow.addOnCloseAction(new TogglePauseAction());
 		pauseWindow.setDraggable(false);
@@ -191,17 +193,19 @@ public class CityView extends UIBasicGameState
 		pauseWindow.alignToCenter();
 		ui.add(pauseWindow);
 		
+		// Menu bar
+		
 		menuBar = new BuildMenuBar(ui, 10, 10);
 		menuBar.cityBuilderRef = builder;
 		
 		// Minimap
 		
 		minimapWindow = new Window(ui, 0, 0, 134, 134, "Minimap");
-		minimap = new Minimap(minimapWindow, 0, 0, 0, 0);
+		minimap = new Minimap(minimapWindow.getContent(), 0, 0, 0, 0);
 		minimap.setView(map.view);
 		minimap.setViz(minimapUpdater.getViz());
 		minimap.setVisible(true);
-		minimapWindow.add(minimap);
+		minimapWindow.getContent().add(minimap);
 		minimapWindow.adaptSizeFromChildren();
 		minimapWindow.alignToCenter();
 		minimapWindow.setVisible(false);
