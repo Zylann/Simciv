@@ -1,5 +1,9 @@
 package simciv;
 
+import java.awt.Dimension;
+
+import org.newdawn.slick.util.Log;
+
 /**
  * Game settings
  * @author Marc
@@ -7,23 +11,27 @@ package simciv;
  */
 public class Settings
 {
-	// TODO serialize to XML
-	// Video settings
+	public static final String SETTINGS_FILE_PATH = "settings.xml";
+	
 	private int screenWidth;
 	private int screenHeight;
 	private int targetFramerate;
 	private boolean useVSync;
-	private boolean smoothDeltasEnabled;
-	private boolean renderFancyUnitMovements;
+	private boolean smoothDeltas;
+	private boolean fancyUnitMovements;
+	
+	// Note : don't forget tu update the settings.xml file after modifying attributes
 	
 	public Settings()
 	{
+		// Note : these values are just set to construct a compliant Settings object.
+		// they are not used by the game (see settings.xml file).
 		targetFramerate = 30;
-		screenWidth = Game.defaultScreenHeight;
-		screenHeight = Game.defaultScreenHeight;
+		screenWidth = 800;
+		screenHeight = 600;
 		useVSync = true;
-		smoothDeltasEnabled = true;
-		renderFancyUnitMovements = true;
+		smoothDeltas = true;
+		fancyUnitMovements = true;
 	}
 	
 	public int getScreenWidth() {
@@ -42,12 +50,12 @@ public class Settings
 		this.screenHeight = screenHeight;
 	}
 
-	public boolean isRenderFancyUnitMovements() {
-		return renderFancyUnitMovements;
+	public boolean isFancyUnitMovements() {
+		return fancyUnitMovements;
 	}
 
-	public void setRenderFancyUnitMovements(boolean renderFancyUnitMovements) {
-		this.renderFancyUnitMovements = renderFancyUnitMovements;
+	public void setFancyUnitMovements(boolean fancyUnitMovements) {
+		this.fancyUnitMovements = fancyUnitMovements;
 	}
 
 	public int getTargetFramerate() {
@@ -66,14 +74,47 @@ public class Settings
 		this.useVSync = useVSync;
 	}
 
-	public boolean isSmoothDeltasEnabled() {
-		return smoothDeltasEnabled;
+	public boolean isSmoothDeltas() {
+		return smoothDeltas;
 	}
 
-	public void setSmoothDeltasEnabled(boolean smoothDeltasEnabled) {
-		this.smoothDeltasEnabled = smoothDeltasEnabled;
+	public void setSmoothDeltas(boolean smoothDeltasEnabled) {
+		this.smoothDeltas = smoothDeltasEnabled;
 	}
+	
+	public void check()
+	{
+		Log.info("Check settings");
+		
+		// Check screen size
+		
+		Dimension desktopSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+		int dw = (int)desktopSize.getWidth();
+		int dh = (int)desktopSize.getHeight();
+		Log.debug("Desktop size : " + desktopSize);
+		
+		if(screenWidth > dw) 
+		{
+			Log.warn("Choosen screen width is to high. Max is " + dw + ".");
+			screenWidth = dw;
+		}
+		if(screenHeight > dh) 
+		{
+			Log.warn("Choosen screen height is to high. Max is " + dh + ".");
+			screenHeight = dh;
+		}
 
+		// Check target framerate
+		
+		if(targetFramerate < 25)
+		{
+			Log.warn("Choosen framerate is too low (" 
+					+ targetFramerate + "), " + "will be set to 25.");
+			targetFramerate = 25;
+		}
+
+	}
+	
 }
 
 

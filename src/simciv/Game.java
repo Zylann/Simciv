@@ -23,6 +23,7 @@ import org.newdawn.slick.util.Log;
 import backend.CanvasGameContainer2;
 import backend.ITopExceptionListener;
 import backend.LogSystem;
+import backend.XMLTools;
 import backend.ui.CrashWindow;
 import backend.ui.UIStateBasedGame;
 
@@ -49,8 +50,6 @@ public class Game extends UIStateBasedGame
 	// Game constants
 	public static final String title = "Simciv indev R4";
 	public static final int tilesSize = 16;
-	public static final int defaultScreenWidth = 800;
-	public static final int defaultScreenHeight = 600;
 	
 	// State constants
 	public static final int STATE_NULL = 0;
@@ -81,8 +80,8 @@ public class Game extends UIStateBasedGame
 	public CityView cityView; // direct access
 	
 	public static void main(String[] args)
-	{		
-		settings = new Settings();
+	{
+		loadSettings();
 		
 		try
 		{
@@ -99,7 +98,7 @@ public class Game extends UIStateBasedGame
 			
 			// Create canvas
 			canvas = new CanvasGameContainer2(game);
-			canvas.setSize(defaultScreenWidth, defaultScreenHeight);
+			canvas.setSize(settings.getScreenWidth(), settings.getScreenHeight());
 			canvas.setTopExceptionListener(new TopExceptionListener());
 			
 			// Configure game container
@@ -116,8 +115,8 @@ public class Game extends UIStateBasedGame
 			// Note : frame borders are not available before the frame is shown
 			// Setting frame size with content sized to default dimensions
 			gameFrame.setSize(
-					defaultScreenWidth + gameFrame.getInsets().left + gameFrame.getInsets().right,
-					defaultScreenHeight + gameFrame.getInsets().top + gameFrame.getInsets().bottom);
+					settings.getScreenWidth() + gameFrame.getInsets().left + gameFrame.getInsets().right,
+					settings.getScreenHeight() + gameFrame.getInsets().top + gameFrame.getInsets().bottom);
 			gameFrame.setLocationRelativeTo(null);
 			
 			// Add canvas to the content pane
@@ -136,13 +135,47 @@ public class Game extends UIStateBasedGame
 		// FIXME on game close : "AL lib: alc_cleanup: 1 device not closed" (serious or not?)
 	}
 	
+	public static void loadSettings()
+	{		
+		Log.info("Loading settings");
+
+		Settings oldSettings = settings;
+		
+		try {
+			settings = (Settings) XMLTools.decodeFromFile(Settings.SETTINGS_FILE_PATH);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		if(settings == null)
+			settings = oldSettings;
+		settings.check();
+	}
+	
 	public static void applySettings()
 	{
+		Log.info("Applying settings");
+		
 		GameContainer gc = canvas.getGameContainer();
 		
 		gc.setTargetFrameRate(settings.getTargetFramerate());
 		gc.setVSync(settings.isUseVSync());
-		gc.setSmoothDeltas(settings.isSmoothDeltasEnabled());
+		gc.setSmoothDeltas(settings.isSmoothDeltas());
+	}
+	
+	public static void saveSettings()
+	{
+		Log.info("Saving settings");
+		
+		try {
+			XMLTools.encodeToFile(settings, Settings.SETTINGS_FILE_PATH);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -194,6 +227,7 @@ public class Game extends UIStateBasedGame
 	{
 		canvas.getGameContainer().exit(); // Note : doesn't work without frame.dispose()
 		gameFrame.dispose();
+		saveSettings();
 	}
 
 	public Game(String title)

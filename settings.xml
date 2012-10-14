@@ -1,0 +1,8 @@
+<simciv.Settings>
+  <screenWidth>800</screenWidth>
+  <screenHeight>600</screenHeight>
+  <targetFramerate>30</targetFramerate>
+  <useVSync>true</useVSync>
+  <smoothDeltas>true</smoothDeltas>
+  <fancyUnitMovements>true</fancyUnitMovements>
+</simciv.Settings>

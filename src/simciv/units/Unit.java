@@ -363,7 +363,7 @@ public abstract class Unit extends TickableEntity
 	{
 		gfx.pushTransform();
 		
-		if(Game.settings.isRenderFancyUnitMovements())
+		if(Game.settings.isFancyUnitMovements())
 		{
 			// Interpolate last pos with next pos using tick time progress
 			if(getDirection() != Direction2D.NONE && isMoving())

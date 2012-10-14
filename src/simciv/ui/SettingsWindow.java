@@ -60,18 +60,18 @@ public class SettingsWindow extends Window
 	
 	private void updateControls()
 	{
-		fancyMovementsCB.setChecked(Game.settings.isRenderFancyUnitMovements());
+		fancyMovementsCB.setChecked(Game.settings.isFancyUnitMovements());
 		vsyncCB.setChecked(Game.settings.isUseVSync());
-		smoothDeltasCB.setChecked(Game.settings.isSmoothDeltasEnabled());
+		smoothDeltasCB.setChecked(Game.settings.isSmoothDeltas());
 	}
 	
 	private void applyChanges()
 	{
 		Log.debug("Applying setting changes");
 		
-		Game.settings.setRenderFancyUnitMovements(fancyMovementsCB.isChecked());
+		Game.settings.setFancyUnitMovements(fancyMovementsCB.isChecked());
 		Game.settings.setUseVSync(vsyncCB.isChecked());
-		Game.settings.setSmoothDeltasEnabled(smoothDeltasCB.isChecked());
+		Game.settings.setSmoothDeltas(smoothDeltasCB.isChecked());
 		
 		Game.applySettings();
 	}

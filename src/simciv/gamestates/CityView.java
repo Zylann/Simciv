@@ -553,7 +553,7 @@ public class CityView extends UIBasicGameState
 	{
 		if(key == Input.KEY_G)
 			map.grid.toggleRenderGrid();			
-		if(key == Input.KEY_P || key == Input.KEY_PAUSE)
+		if(key == Input.KEY_ESCAPE || key == Input.KEY_P || key == Input.KEY_PAUSE)
 		{
 			setPause(true);
 			pauseWindow.open();
