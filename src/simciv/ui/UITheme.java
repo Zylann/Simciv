@@ -86,27 +86,24 @@ public class UITheme implements ITheme
 	}
 
 	private void renderButton(
-			Graphics gfx, Button w, Image sprite,
+			Graphics gfx, Button w, SpriteSheet sprites,
 			Image icon, String text, int pressOffset)
 	{
 		int x = w.getAbsoluteX();
 		int y = w.getAbsoluteY();
-		
-		int srcOff = 0;
-		if(w.isMouseOver() && w.isEnabled())
-			srcOff = w.getHeight();
-		
+				
 		if(w.isPressed())
 			y += pressOffset;
 		
-		gfx.drawImage(sprite,
-				x, y,
-				x + w.getWidth(),
-				y + w.getHeight(),
-				0, srcOff,
-				w.getWidth(),
-				w.getHeight() + srcOff
-		);
+		int s = w.isMouseOver() && w.isEnabled() ? 1 : 0;
+		
+		if(sprites.getHorizontalCount() == 3)
+		{
+			UIRenderer.renderBar(gfx, sprites,
+				x, y, w.getWidth(), w.getHeight(), 16, s);
+		}
+		else
+			gfx.drawImage(sprites.getSprite(0, s), x, y);
 		
 		if(icon != null)
 			gfx.drawImage(icon, x, y);

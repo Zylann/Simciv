@@ -66,9 +66,14 @@ public class MainMenu extends UIBasicGameState
 		int gs = UIRenderer.getGlobalScale();
 		ui = new RootPane(container.getWidth() / gs, container.getHeight() / gs);
 		
-		// Settings
+		// Settings window
+		
 		SettingsWindow settingsWindow = new SettingsWindow(ui);
+		settingsWindow.alignToCenter();
+		settingsWindow.setVisible(false);
 		ui.add(settingsWindow);
+		
+		// Main menu panel
 		
 		Panel panel = new Panel(ui, 150, 100);
 		panel.alignToCenter();

@@ -14,12 +14,12 @@ public class SettingsWindow extends Window
 		
 		WidgetContainer content = this.getContent();
 		
-		PushButton cancelButton = new PushButton(content, 0, 0, "Cancel");
+		PushButton cancelButton = new PushButton(content, 0, 0, 64, "Cancel");
 		cancelButton.setAlign(ALIGN_LEFT, ALIGN_BOTTOM, 8, 8);
 		cancelButton.addActionListener(this.new CloseAction());
 		content.add(cancelButton);
 		
-		PushButton applyButton = new PushButton(content, 0, 0, "Apply");
+		PushButton applyButton = new PushButton(content, 0, 0, 64, "Apply");
 		applyButton.setAlign(ALIGN_RIGHT, ALIGN_BOTTOM, 8, 8);
 		applyButton.addActionListener(this.new ApplyAction());
 		content.add(applyButton);

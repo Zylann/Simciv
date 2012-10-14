@@ -76,7 +76,7 @@
 	<spritesheet id="uiFrame" tw="16" th="16" src="gfx/ui/ui_frame.png"/>
 	<spritesheet id="uiWindowTitleBar" tw="16" th="16" src="gfx/ui/ui_winbar.png"/>
 	<spritesheet id="uiWindowCloseButton" tw="16" th="16" src="gfx/ui/ui_winclosebtn.png"/>
-	<spritesheet id="uiPushButton" tw="128" th="16" src="gfx/ui/ui_push_button.png"/>
+	<spritesheet id="uiPushButton" tw="16" th="16" src="gfx/ui/ui_push_button.png"/>
 	<spritesheet id="uiProgressBar" tw="8" th="8" src="gfx/ui/ui_progressBar.png"/>
 	<spritesheet id="uiNotification" tw="16" th="16" src="gfx/ui/ui_notification.png"/>
 	<image id="uiIconCheck" src="gfx/ui/uiIconCheck.png"/>

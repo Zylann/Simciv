@@ -13,16 +13,21 @@ import simciv.content.Content;
 public class PushButton extends Button
 {
 	private static final int HEIGHT = 16;
+	private static final int DEFAULT_WIDTH = 128;
 
 	private String text;
 
-	public PushButton(Widget parent, int x, int y, String text)
+	public PushButton(Widget parent, int x, int y, int w, String text)
 	{
-		// TODO allow various button widths
-		super(parent, x, y, 128, HEIGHT);
+		super(parent, x, y, w, HEIGHT);
 		this.text = text;
 	}
-	
+
+	public PushButton(Widget parent, int x, int y, String text)
+	{
+		this(parent, x, y, DEFAULT_WIDTH, text);
+	}
+		
 	public PushButton(Widget parent, String text)
 	{
 		this(parent, 0, 0, text);
