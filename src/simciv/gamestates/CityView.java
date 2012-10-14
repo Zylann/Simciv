@@ -38,6 +38,7 @@ import simciv.ui.InfoBar;
 import simciv.ui.Minimap;
 import simciv.ui.IndicatorsBar;
 import simciv.ui.MapNotificationArea;
+import simciv.ui.SettingsWindow;
 import simciv.ui.TimeBar;
 
 /**
@@ -47,20 +48,39 @@ import simciv.ui.TimeBar;
  */
 public class CityView extends UIBasicGameState
 {
+	/* Data */
+	
 	/** Identifier of the game state **/
 	private int stateID = -1;
 	
 	/** Map where the player build his city **/
 	private Map map;
 	
+	/** Pointed map cell position (computed from mouse position) **/
+	private Vector2i pointedCell = new Vector2i();
+
+	/** Game saving thread started when the player wants to save the game **/
+	private GameSaverThread gameSaver;
+		
+	/** Is the player wants to quit the game? **/
+	private boolean quitGameRequested;
+	
+	/** Is the game paused ? **/
+	private boolean paused;
+	
+	/** Is the game starts when we enter this state? 
+	 * (can be false if we come from the AdminView or the WorldView,
+	 * other future gamestates)
+	 */
+	private boolean isGameBeginning;
+	
+	/* HUD */
+	
 	/** City builder tool **/
 	private CityBuilder builder;
 	
 	/** Info bar displaying informations about what the player is pointing **/
 	private InfoBar infoBar;
-		
-	/** Pointed map cell position (computed from mouse position) **/
-	private Vector2i pointedCell = new Vector2i();
 	
 	/** Smaller representation of the map allowing to scroll the view **/
 	private Minimap minimap;
@@ -89,20 +109,10 @@ public class CityView extends UIBasicGameState
 	/** Window containing informations about the build we right-clicked on **/
 	private BuildInfoWindow buildInfoWindow;
 	
-	/** Game saving thread started when the player wants to save the game **/
-	private GameSaverThread gameSaver;
-		
-	/** Is the player wants to quit the game? **/
-	private boolean quitGameRequested;
+	/** Settings window **/
+	private SettingsWindow settingsWindow;
 	
-	/** Is the game paused ? **/
-	private boolean paused;
-	
-	/** Is the game starts when we enter this state? 
-	 * (can be false if we come from the AdminView or the WorldView,
-	 * other future gamestates)
-	 */
-	private boolean isGameBeginning;
+	/* Debug */
 	
 	/** Is the debug panel visible? **/
 	private boolean debugInfoVisible;
@@ -167,27 +177,37 @@ public class CityView extends UIBasicGameState
 		int gs = UIRenderer.getGlobalScale();
 		ui = new RootPane(container.getWidth() / gs, container.getHeight() / gs);
 		
+		// Settings window
+		
+		settingsWindow = new SettingsWindow(ui);
+		settingsWindow.setVisible(false);
+		ui.add(settingsWindow);
+		
 		// Pause window
 		
-		pauseWindow = new Window(ui, 0, 0, 150, 85, "Game paused");
+		pauseWindow = new Window(ui, 0, 0, 150, 100, "Game paused");
 		WidgetContainer pauseWindowContent = pauseWindow.getContent();
 		
 		PushButton resumeButton = new PushButton(pauseWindowContent, 0, 10, "Resume game");
 		resumeButton.setAlignX(Widget.ALIGN_CENTER);
-		resumeButton.addActionListener(new TogglePauseAction());
+		resumeButton.addActionListener(pauseWindow.new CloseAction());
 		pauseWindowContent.add(resumeButton);
 		
 		PushButton saveButton = new PushButton(pauseWindowContent, 0, 28, "Save game");
 		saveButton.setAlignX(Widget.ALIGN_CENTER);
 		saveButton.addActionListener(new SaveGameAction());
 		pauseWindowContent.add(saveButton);
+		
+		PushButton settingsButton = new PushButton(pauseWindowContent, 0, 46, "Settings");
+		settingsButton.setAlignX(Widget.ALIGN_CENTER);
+		settingsButton.addActionListener(settingsWindow.new OpenAction());
+		pauseWindowContent.add(settingsButton);
 
-		PushButton quitButton = new PushButton(pauseWindowContent, 0, 54, "Quit game");
+		PushButton quitButton = new PushButton(pauseWindowContent, 0, 72, "Quit game");
 		quitButton.setAlignX(Widget.ALIGN_CENTER);
 		quitButton.addActionListener(new QuitGameAction());
 		pauseWindowContent.add(quitButton);
 		
-		pauseWindow.addOnCloseAction(new TogglePauseAction());
 		pauseWindow.setDraggable(false);
 		pauseWindow.setVisible(false);
 		pauseWindow.alignToCenter();
@@ -259,8 +279,6 @@ public class CityView extends UIBasicGameState
 		// Build info window
 		
 		buildInfoWindow = new BuildInfoWindow(ui, "Build info");
-		buildInfoWindow.addOnOpenAction(new SetPauseAction(true));
-		buildInfoWindow.addOnCloseAction(new SetPauseAction(false));
 		buildInfoWindow.setVisible(false);
 		ui.add(buildInfoWindow);
 		
@@ -348,6 +366,10 @@ public class CityView extends UIBasicGameState
 		Terrain.updateTerrains(delta);
 		
 		notificationArea.update(delta);
+		
+		paused = pauseWindow.isVisible() || 
+				buildInfoWindow.isVisible() || 
+				settingsWindow.isVisible();
 
 		if(gameSaver != null && !gameSaver.isFinished())
 			paused = true; // The game is saving
@@ -531,8 +553,11 @@ public class CityView extends UIBasicGameState
 	{
 		if(key == Input.KEY_G)
 			map.grid.toggleRenderGrid();			
-		if(key == Input.KEY_P || key == Input.KEY_PAUSE || key == Input.KEY_ESCAPE)
-			togglePause();
+		if(key == Input.KEY_P || key == Input.KEY_PAUSE)
+		{
+			setPause(true);
+			pauseWindow.open();
+		}
 		if(key == Input.KEY_F3)
 		{
 			debugInfoVisible = !debugInfoVisible;
@@ -547,12 +572,6 @@ public class CityView extends UIBasicGameState
 			map.setFastForward(!map.isFastForward());
 	}
 	
-	public void togglePause()
-	{
-		setPause(!paused);
-		pauseWindow.setVisible(paused);
-	}
-	
 	private void setPause(boolean p)
 	{
 		paused = p;
@@ -565,14 +584,6 @@ public class CityView extends UIBasicGameState
 	}
 	
 	// UI Actions
-	
-	class TogglePauseAction implements IActionListener
-	{
-		@Override
-		public void actionPerformed(Widget sender) {
-			togglePause();
-		}	
-	}
 	
 	class SetPauseAction implements IActionListener
 	{

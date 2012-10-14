@@ -103,10 +103,8 @@ public class Game extends UIStateBasedGame
 			canvas.setTopExceptionListener(new TopExceptionListener());
 			
 			// Configure game container
+			applySettings();
 			GameContainer gc = canvas.getGameContainer();
-			gc.setTargetFrameRate(settings.getTargetFramerate());
-			gc.setVSync(settings.isUseVSync());
-			gc.setSmoothDeltas(settings.isSmoothDeltasEnabled());
 			gc.setUpdateOnlyWhenVisible(true);
 
 			// Create main window
@@ -136,6 +134,15 @@ public class Game extends UIStateBasedGame
 		}
 		
 		// FIXME on game close : "AL lib: alc_cleanup: 1 device not closed" (serious or not?)
+	}
+	
+	public static void applySettings()
+	{
+		GameContainer gc = canvas.getGameContainer();
+		
+		gc.setTargetFrameRate(settings.getTargetFramerate());
+		gc.setVSync(settings.isUseVSync());
+		gc.setSmoothDeltas(settings.isSmoothDeltasEnabled());
 	}
 	
 	/**

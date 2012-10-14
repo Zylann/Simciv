@@ -69,7 +69,6 @@ public class MainMenu extends UIBasicGameState
 		// Settings window
 		
 		SettingsWindow settingsWindow = new SettingsWindow(ui);
-		settingsWindow.alignToCenter();
 		settingsWindow.setVisible(false);
 		ui.add(settingsWindow);
 		
