@@ -71,7 +71,7 @@ public class MapGeneratorThread extends Thread
     	{
     		for(x = 0; x < grid.getWidth(); x++)
     		{
-    			heightNoise = Noise.getPerlin((float)x, (float)y, seed, 4, 0.5f, 64.f);
+    			heightNoise = Noise.getPerlin((float)x, (float)y, seed, 4, 0.5f, 48.f);
     			localNoise = Noise.getf(x, y, seed+1);
     			
 				c.nature = 0;
