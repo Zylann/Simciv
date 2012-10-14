@@ -1,6 +1,6 @@
 bin/
 data_src/
-libs/
+libs/old-lwjgl/
 releases/
 modelio/
 diagrams/
