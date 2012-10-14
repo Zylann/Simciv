@@ -32,5 +32,6 @@ public interface ITheme
 	public void renderLabel(Graphics gfx, Label label);
 	public void renderMenuBarButton(Graphics gfx, MenuBarButton w);	
 	public void renderNotification(Graphics gfx, Notification n);
+	public void renderCheckBox(Graphics gfx, Checkbox checkBox);
 
 }

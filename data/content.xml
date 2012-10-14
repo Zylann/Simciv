@@ -83,6 +83,7 @@
 	<image id="uiIconInfo" src="gfx/ui/uiIconInfo.png"/>
 	<image id="uiIconWarning" src="gfx/ui/uiIconWarning.png"/>
 	<image id="uiIconError" src="gfx/ui/uiIconError.png"/>
+	<spritesheet id="uiCheckBox" tw="16" th="16" src="gfx/ui/checkbox.png"/>
 	
 	<image id="uiRedCross" src="gfx/ui/red_cross.png"/>
 	<image id="uiMinimapMask" src="gfx/ui/minimap_mask.png"/>

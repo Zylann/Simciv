@@ -94,6 +94,7 @@ public class Sprites
 	public Image uiIconInfo;
 	public Image uiIconWarning;
 	public Image uiIconError;
+	public SpriteSheet uiCheckBox;
 	
 	// Effects
 	public Image effectGreenStar;

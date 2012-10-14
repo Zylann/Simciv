@@ -7,6 +7,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
 import backend.ui.Button;
+import backend.ui.Checkbox;
 import backend.ui.ITheme;
 import backend.ui.Label;
 import backend.ui.MenuBarButton;
@@ -259,7 +260,22 @@ public class UITheme implements ITheme
 	{
 		return font;
 	}
-	
+
+	@Override
+	public void renderCheckBox(Graphics gfx, Checkbox w)
+	{
+		int x = w.getAbsoluteX();
+		int y = w.getAbsoluteY();
+		
+		if(w.isPressed())
+			y += 1;
+		
+		gfx.drawImage(
+			Content.sprites.uiCheckBox.getSprite(
+					0, w.isChecked() ? 1 : 0),
+			x, y);
+	}
+
 }
 
 

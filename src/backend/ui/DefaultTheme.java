@@ -190,6 +190,13 @@ public class DefaultTheme implements ITheme
 		return null;
 	}
 
+	@Override
+	public void renderCheckBox(Graphics gfx, Checkbox checkBox)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }
 
 
