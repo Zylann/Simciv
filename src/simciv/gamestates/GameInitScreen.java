@@ -9,7 +9,6 @@ import backend.ui.RootPane;
 import backend.ui.UIBasicGameState;
 import backend.ui.UIRenderer;
 
-import simciv.CityBuilder;
 import simciv.Road;
 import simciv.Terrain;
 import simciv.builds.BuildCategory;
@@ -53,7 +52,6 @@ public abstract class GameInitScreen extends UIBasicGameState
 		Terrain.initialize();
 		Resource.initialize();
 		Road.initialize();
-		CityBuilder.loadContent();
 		BuildCategory.initialize();
 	}
 

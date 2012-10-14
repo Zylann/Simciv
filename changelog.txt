@@ -7,6 +7,7 @@ Simciv indev R4.0 (work in progress) :
 + Added loggers : trees can be cut !
 + Added wood manufactures
 + Added new sounds
+* Roads are traced by pathfinding while dragging the cursor
 * Clicking on a notification will move the view if needed
 * Increased house inhabitants and required employees, except for farmlands
 ...

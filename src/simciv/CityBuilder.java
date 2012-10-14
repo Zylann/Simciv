@@ -1,15 +1,18 @@
 package simciv;
 
+import java.util.List;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 import org.newdawn.slick.util.Log;
 
 import backend.IntRange2D;
 import backend.geom.Vector2i;
+import backend.pathfinding.IMapSpec;
+import backend.pathfinding.IMapTarget;
 import backend.ui.INotificationListener;
 import backend.ui.Notification;
 
@@ -25,9 +28,9 @@ import simciv.units.Unit;
  */
 public class CityBuilder
 {
-	// Media
- 	private static Sound placeSound;
- 	private static Sound eraseSound;
+	// Constants
+	public static final int erasingCost = 1;
+	private static final int ROAD_PATHFINDING_DISTANCE = 4096;
  	private static Color canPlaceColor = new Color(64, 255, 64, 128);
  	private static Color cannotPlaceColor = new Color(255, 64, 64, 128);
  	
@@ -36,32 +39,52 @@ public class CityBuilder
  	public static final int MODE_ERASE = 1;
  	public static final int MODE_ROAD = 2;
 	public static final int MODE_BUILDS = 3;
-	
-	public static final int erasingCost = 1;
-	
-	// TODO clean up superfluous code
-
+		
  	// Map cursors
-	private Vector2i pos = new Vector2i(); // current pointed cell
-	private Vector2i lastPos = new Vector2i(); // last pointed cell (last cell change)
- 	private Vector2i lastClickPos = new Vector2i(); // last pointed cell on click
+	
+	/** Current pointed cell pos **/
+	private Vector2i pos = new Vector2i();
+	
+	/** Pointed cell pos on last mouse press **/
+ 	private Vector2i lastClickPos = new Vector2i();
+ 	
+ 	/** Cell position where the selected build will be placed
+ 	 * (centered to the pointed cell pos) 
+ 	 */
  	private Vector2i buildPos = new Vector2i();
+ 	
+ 	/** buildPos on last mouse click **/
  	private Vector2i lastClickBuildPos = new Vector2i();
+
+ 	/** Build zone computed from buildPos and lastClickBuildPos **/
  	private IntRange2D buildZone = new IntRange2D();
  	
- 	// Map access
+ 	/** The map we are currently editing **/
 	private transient Map mapRef;
+	
+	/** Enables sending notifications to the player **/
 	private transient INotificationListener notifListener;
 	
-	// State
+	/** Edit mode **/
 	private int mode;
-	private String modeString = "";
-	private Build build; // building to place
-	private Build pointedBuild;
+	
+	/** String identifier for the selected build **/
 	private String buildString = "";
+	
+	/** Selected build (enables access to build properties) **/
+	private Build build;
+	
+	/** Informations about what we are pointing at **/
 	private String infoLine = "---";
+	
+	/** Is the mouse button pressed ? **/
 	private boolean cursorPress = false;
+	
+	/** Last pressed mouse button **/
 	private int cursorButton;
+	
+	/** Path followed by the road (in ROAD_MODE) **/
+	private List<Vector2i> roadPath;
 	
 	public CityBuilder(Map mapRef) throws SlickException
 	{
@@ -79,12 +102,6 @@ public class CityBuilder
 	{
 		notifListener = n;
 	}
-
-	public static void loadContent() throws SlickException
-	{
-		placeSound = Content.sounds.uiPlace;
-		eraseSound = Content.sounds.uiErase;
-	}
 	
 	public String getInfoLine()
 	{
@@ -100,12 +117,6 @@ public class CityBuilder
 	public CityBuilder setMode(int mode)
 	{
 		this.mode = mode;
-		if(mode == MODE_ERASE)
-			modeString = "Erase mode";
-		else if(mode == MODE_ROAD)
-			modeString = "Road mode";
-		else if(mode == MODE_BUILDS)
-			modeString = "Builds mode";
 		return this;
 	}
 	
@@ -137,14 +148,62 @@ public class CityBuilder
 	
 	public void update(GameContainer gc)
 	{
-		if(mode == MODE_ROAD && cursorPress)
-		{
-			if(cursorButton == Input.MOUSE_LEFT_BUTTON)
-				placeRoad();
-		}
-		this.updateInfoLine();
+		updateInfoLine();
 	}
 	
+	private void updateBuildZone()
+	{
+		int w = 1;
+		int h = 1;
+		Vector2i startPos = lastClickPos;
+		Vector2i endPos = pos;
+		
+		if(mode == MODE_BUILDS)
+		{
+			w = build.getWidth();
+			h = build.getHeight();
+			startPos = lastClickBuildPos;
+			endPos = buildPos;
+		}
+		
+		int nbX = Math.abs(startPos.x - endPos.x) / w;
+		int nbY = Math.abs(startPos.y - endPos.y) / h;
+		
+		int kx = startPos.x <= endPos.x ? 1 : -1;
+		int ky = startPos.y <= endPos.y ? 1 : -1;
+		
+		int endX = startPos.x + kx * nbX * w;
+		int endY = startPos.y + ky * nbY * h;
+				
+		buildZone.set(startPos.x, startPos.y, endX, endY);		
+	}
+	
+	protected void updateInfoLine()
+	{
+		Build pointedBuild = mapRef.getBuild(pos.x, pos.y);
+		if(pointedBuild == null)
+		{
+			// TODO enlarge hover area (more convenient with moving units)
+			Unit u = mapRef.getUnit(pos.x, pos.y);
+			if(u != null)
+				infoLine = u.getInfoLine();
+			else
+				infoLine = "";
+		}
+		else
+			infoLine = pointedBuild.getInfoLine();
+	}
+
+	private void updateRoadPath()
+	{
+		mapRef.multiPathFinder.setFindBlockedTargets(false);
+		mapRef.multiPathFinder.setMaxDistance(ROAD_PATHFINDING_DISTANCE);
+		
+		roadPath = mapRef.multiPathFinder.findPath(
+				lastClickPos.x, lastClickPos.y, 
+				new RoadCompliantFloor(), new CursorTarget());
+	}
+
 	public void render(Graphics gfx)
 	{
 		// Pointed cell
@@ -179,14 +238,10 @@ public class CityBuilder
 			}
 			else if(mode == MODE_ROAD)
 			{
-				gfx.translate(pos.x, pos.y);
-				
-				if(mapRef.grid.canPlaceObject(pos.x, pos.y))
-					gfx.setColor(canPlaceColor);
+				if(cursorPress)
+					renderRoadPath(gfx);
 				else
-					gfx.setColor(cannotPlaceColor);
-					
-				gfx.fillRect(0, 0, 1, 1);
+					renderPlaceCursor(gfx, pos.x, pos.y);
 			}
 			
 			gfx.popTransform();
@@ -195,8 +250,8 @@ public class CityBuilder
 	
 	private void renderPlaceCursor(Graphics gfx, int x, int y)
 	{
-		int w = 1;
-		int h = 1;
+		int w = 1, h = 1;
+		
 		if(mode == MODE_ERASE)
 		{
 			gfx.setColor(cannotPlaceColor);
@@ -207,6 +262,13 @@ public class CityBuilder
 			h = build.getHeight();
 			
 			if(build.canBePlaced(mapRef.grid, x, y))
+				gfx.setColor(canPlaceColor);
+			else
+				gfx.setColor(cannotPlaceColor);
+		}
+		else if(mode == MODE_ROAD)
+		{
+			if(mapRef.isWalkable(x, y))
 				gfx.setColor(canPlaceColor);
 			else
 				gfx.setColor(cannotPlaceColor);
@@ -231,15 +293,24 @@ public class CityBuilder
 		}
 	}
 	
+	private void renderRoadPath(Graphics gfx)
+	{
+		if(roadPath == null)
+		{
+			renderPlaceCursor(gfx, pos.x, pos.y);
+			return;
+		}
+		
+		for(Vector2i p : roadPath)
+			renderPlaceCursor(gfx, p.x, p.y);
+	}
+	
 	public void renderDebugInfo(Graphics gfx)
 	{
 		gfx.setColor(Color.white);
-		if(mode == MODE_BUILDS)
-			gfx.drawString(modeString + " / " + buildString, 100, 30);
-		else
-			gfx.drawString(modeString, 100, 30);
+		gfx.drawString("Mode: " + mode + " / build: " + buildString, 100, 30);
 	}
-	
+		
 	public void cursorPressed(int button, Vector2i mapPos) throws SlickException
 	{
 		cursorPress = true;
@@ -261,10 +332,15 @@ public class CityBuilder
 				if(notifListener != null)
 				{
 					notifListener.notify(
-							Notification.TYPE_ERROR,
-							"You can't build this here.", 3000);
+						Notification.TYPE_ERROR,
+						"You can't build this here.", 3000);
 				}
 			}
+		}
+		else if(mode == MODE_ROAD)
+		{
+			roadPath = null;
+			placeRoad();
 		}
 	}
 	
@@ -272,7 +348,6 @@ public class CityBuilder
 	{
 		if(!pos.equals(mapPos))
 		{
-			lastPos.set(pos);
 			pos.set(mapPos);
 			onPointedCellChanged();
 		}
@@ -282,7 +357,7 @@ public class CityBuilder
 			// The cursor must be at the center of the building to place
 			buildPos.x = pos.x - build.getWidth()/2;
 			buildPos.y = pos.y - build.getHeight()/2;
-			build.setPosition(buildPos.x, buildPos.y);			
+			build.setPosition(buildPos.x, buildPos.y);
 			
 			if(build.getProperties().isRepeatable)
 				updateBuildZone();
@@ -295,49 +370,13 @@ public class CityBuilder
 	
 	private void onPointedCellChanged()
 	{
-		pointedBuild = mapRef.getBuild(pos.x, pos.y);
 		updateInfoLine();
-	}
-	
-	private void updateBuildZone()
-	{
-		int w = 1;
-		int h = 1;
-		Vector2i startPos = lastClickPos;
-		Vector2i endPos = pos;
 		
-		if(mode == MODE_BUILDS)
+		if(mode == MODE_ROAD)
 		{
-			w = build.getWidth();
-			h = build.getHeight();
-			startPos = lastClickBuildPos;
-			endPos = buildPos;
+			if(cursorPress)
+				updateRoadPath();
 		}
-		
-		int nbX = Math.abs(startPos.x - endPos.x) / w;
-		int nbY = Math.abs(startPos.y - endPos.y) / h;
-		
-		int kx = startPos.x <= endPos.x ? 1 : -1;
-		int ky = startPos.y <= endPos.y ? 1 : -1;
-		
-		int endX = startPos.x + kx * nbX * w;
-		int endY = startPos.y + ky * nbY * h;
-				
-		buildZone.set(startPos.x, startPos.y, endX, endY);		
-	}
-	
-	protected void updateInfoLine()
-	{
-		if(pointedBuild == null)
-		{
-			Unit u = mapRef.getUnit(pos.x, pos.y);
-			if(u != null)
-				infoLine = u.getInfoLine();
-			else
-				infoLine = "";
-		}
-		else
-			infoLine = pointedBuild.getInfoLine();
 	}
 
 	public void cursorReleased() throws SlickException
@@ -351,22 +390,33 @@ public class CityBuilder
 			}
 			else if(mode == MODE_ERASE)
 				eraseFromZone();
+			else if(mode == MODE_ROAD)
+				placeRoad();
 		}
 		cursorPress = false;
 	}
 	
-	/*
-	 * Actions :
-	 * (Later, they will cost money and/or resources)
-	 */
-	
+	// Actions
+		
 	private void placeRoad()
 	{
-		// TODO enable auto-pathfinding by letting the mouse pressed
-		if(mapRef.grid.placeRoad(pos.x, pos.y))
+		int length = 0;
+		
+		if(roadPath != null)
 		{
-			mapRef.playerCity.buy(Road.cost);
-			placeSound.play();
+			for(Vector2i p : roadPath)
+			{
+				if(mapRef.grid.placeRoad(p.x, p.y))
+					length++;
+			}
+		}
+		else if(mapRef.grid.placeRoad(pos.x, pos.y))
+			length++;
+				
+		if(length != 0)
+		{
+			mapRef.playerCity.buy(Road.cost * length);
+			Content.sounds.uiPlace.play();
 		}
 	}
 	
@@ -407,7 +457,7 @@ public class CityBuilder
 		{
 			mapRef.playerCity.buy(erasingCost);
 			if(playSound)
-				eraseSound.play();
+				Content.sounds.uiErase.play();
 		}
 		return res;
 	}
@@ -424,7 +474,7 @@ public class CityBuilder
 			}
 		}
 		if(nbErased != 0)
-			eraseSound.play();
+			Content.sounds.uiErase.play();
 		return nbErased;
 	}
 	
@@ -454,7 +504,7 @@ public class CityBuilder
 				mapRef.playerCity.buy(b.getProperties().cost);
 				if(notify)
 				{
-					placeSound.play();
+					Content.sounds.uiPlace.play();
 					onPointedCellChanged();
 				}
 				return true;
@@ -480,12 +530,28 @@ public class CityBuilder
 		}
 		if(nbPlaced != 0)
 		{
-			placeSound.play();
+			Content.sounds.uiPlace.play();
 			onPointedCellChanged();
 		}
 		return nbPlaced;
 	}
+		
+	private class RoadCompliantFloor implements IMapSpec
+	{
+		@Override
+		public boolean canPass(int x, int y) {
+			return mapRef.grid.canPlaceObject(x, y) || mapRef.grid.isRoad(x, y);
+		}	
+	}
 	
+	private class CursorTarget implements IMapTarget
+	{
+		@Override
+		public boolean isTarget(int x, int y) {
+			return pos.equals(x, y);
+		}	
+	}
+
 }
 
 
