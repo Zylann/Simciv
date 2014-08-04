@@ -4,7 +4,8 @@ Description :
 
 	Simciv is a simple management game, inspired on Sierra's Pharaoh game.
 	It is written in Java, and uses the Slick2D library.
-	It is currently under developpment, more features will be added soon.
+	It is no longer under developpment, but I started a new version in C++:
+	https://github.com/Zylann/SimcivOnline
 
 Releases :
 
